@@ -2,6 +2,10 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Query;
+    use b2db\Update;
+    use thebuggenie\core\entities\Issue;
+    use thebuggenie\core\entities\SearchFilter;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -10,21 +14,11 @@
     /**
      * Issues table
      *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
-
-    /**
-     * Issues table
-     *
      * @package thebuggenie
      * @subpackage tables
      *
      * @method static Issues getTable() Retrieves an instance of this table
-     * @method \thebuggenie\core\entities\Issue selectById(integer $id, Criteria $crit = null, $join = 'all') Retrieves an issue
+     * @method Issue selectById(integer $id, Criteria $query = null, $join = 'all') Retrieves an issue
      *
      * @Entity(class="\thebuggenie\core\entities\Issue")
      * @Table(name='issues')
@@ -86,71 +80,71 @@
         const VOTES_TOTAL = 'issues.votes_total';
         const MILESTONE_ORDER = 'issues.milestone_order';
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('project', self::PROJECT_ID);
-            $this->_addIndex('project', self::PROJECT_ID);
-            $this->_addIndex('last_updated', self::LAST_UPDATED);
-            $this->_addIndex('deleted', self::DELETED);
-            $this->_addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
-            $this->_addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
-            $this->_addIndex('deleted_project_issueno', array(self::DELETED, self::ISSUE_NO, self::PROJECT_ID));
-            $this->_addIndex('duplicateof', array(self::DUPLICATE_OF));
+            $this->addIndex('project', self::PROJECT_ID);
+            $this->addIndex('project', self::PROJECT_ID);
+            $this->addIndex('last_updated', self::LAST_UPDATED);
+            $this->addIndex('deleted', self::DELETED);
+            $this->addIndex('deleted_project', array(self::DELETED, self::PROJECT_ID));
+            $this->addIndex('deleted_state_project', array(self::DELETED, self::STATE, self::PROJECT_ID));
+            $this->addIndex('deleted_project_issueno', array(self::DELETED, self::ISSUE_NO, self::PROJECT_ID));
+            $this->addIndex('duplicateof', array(self::DUPLICATE_OF));
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate('issues.locked_category', true);
+            $update = new Update();
+            $update->add('issues.locked_category', true);
 
-            $this->doUpdate($crit);
+            $this->rawUpdate($update);
         }
 
         public function getCountsByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            $crit2 = clone $crit;
+            $query2 = clone $query;
 
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_CLOSED);
-            $crit2->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
-            return array($this->doCount($crit), $this->doCount($crit2));
+            $query->where(self::STATE, Issue::STATE_CLOSED);
+            $query2->where(self::STATE, Issue::STATE_OPEN);
+            return array($this->count($query), $this->count($query2));
         }
 
         public function getCountsByProjectIDandIssuetype($project_id, $issuetype_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ISSUE_TYPE, $issuetype_id);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ISSUE_TYPE, $issuetype_id);
 
-            $crit2 = clone $crit;
+            $query2 = clone $query;
 
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_CLOSED);
-            $crit2->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
-            return array($this->doCount($crit), $this->doCount($crit2));
+            $query->where(self::STATE, Issue::STATE_CLOSED);
+            $query2->where(self::STATE, Issue::STATE_OPEN);
+            return array($this->count($query), $this->count($query2));
         }
 
         protected function _getCountByProjectIDAndColumn($project_id, $column)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addSelectionColumn(self::ID, 'column_count', Criteria::DB_COUNT);
-            $crit->addSelectionColumn($column);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addGroupBy($column);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->addSelectionColumn(self::ID, 'column_count', \b2db\Query::DB_COUNT);
+            $query->addSelectionColumn($column);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->addGroupBy($column);
 
-            $crit2 = clone $crit;
+            $query2 = clone $query;
 
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_CLOSED);
-            $crit2->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query->where(self::STATE, Issue::STATE_CLOSED);
+            $query2->where(self::STATE, Issue::STATE_OPEN);
 
-            $res1 = $this->doSelect($crit, 'none');
-            $res2 = $this->doSelect($crit2, 'none');
+            $res1 = $this->rawSelect($query, 'none');
+            $res2 = $this->rawSelect($query2, 'none');
             $retarr = array();
 
             if ($res1)
@@ -193,27 +187,27 @@
          */
         public function getMilestoneDistributionDetails($milestone_id, $allowed_status_ids = array())
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::MILESTONE, $milestone_id);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::MILESTONE, $milestone_id);
             if (count($allowed_status_ids))
             {
-                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+                $query->where(self::STATUS, $allowed_status_ids, \b2db\Criterion::IN);
             }
-            $total = $this->doCount($crit);
+            $total = $this->count($query);
 
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::STATUS);
-            $crit->addSelectionColumn(self::ID, 'counts', Criteria::DB_COUNT);
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::MILESTONE, $milestone_id);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::STATUS);
+            $query->addSelectionColumn(self::ID, 'counts', \b2db\Query::DB_COUNT);
+            $query->where(self::DELETED, false);
+            $query->where(self::MILESTONE, $milestone_id);
             if (count($allowed_status_ids))
             {
-                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+                $query->where(self::STATUS, $allowed_status_ids, \b2db\Criterion::IN);
             }
-            $crit->addGroupBy(self::STATUS);
+            $query->addGroupBy(self::STATUS);
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $statuses = array('total' => $total, 'details' => array());
 
             if ($res)
@@ -239,33 +233,34 @@
          */
         public function getCountsByProjectIDandMilestone($project_id, $milestone_id, $allowed_status_ids = array())
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
             if (!$milestone_id)
             {
-                $ctn = $crit->returnCriterion(self::MILESTONE, null);
-                $ctn->addOr(self::MILESTONE, 0);
-                $crit->addWhere($ctn);
+                $criteria = new Criteria();
+                $criteria->where(self::MILESTONE, null);
+                $criteria->or(self::MILESTONE, 0);
+                $query->and($criteria);
             }
             else
             {
-                $crit->addWhere(self::MILESTONE, $milestone_id);
+                $query->where(self::MILESTONE, $milestone_id);
             }
             if (count($allowed_status_ids))
             {
-                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+                $query->where(self::STATUS, $allowed_status_ids, \b2db\Criterion::IN);
             }
 
-            $crit2 = clone $crit;
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_CLOSED);
-            $crit2->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query2 = clone $query;
+            $query->where(self::STATE, Issue::STATE_CLOSED);
+            $query2->where(self::STATE, Issue::STATE_OPEN);
             if (count($allowed_status_ids))
             {
-                $crit2->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+                $query2->where(self::STATUS, $allowed_status_ids, \b2db\Criterion::IN);
             }
-            return array($this->doCount($crit), $this->doCount($crit2));
+            return array($this->count($query), $this->count($query2));
         }
 
         public function getPriorityCountByProjectID($project_id)
@@ -310,12 +305,12 @@
 
         public function getOpenIssuesByProjectIDAndIssuetypeID($project_id, $issuetype_id)
         {
-            $crit = new Criteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::ISSUE_TYPE, $issuetype_id);
-            $issues = $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::STATE, Issue::STATE_OPEN);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::ISSUE_TYPE, $issuetype_id);
+            $issues = $this->select($query);
 
             foreach ($issues as $key => $issue)
             {
@@ -327,96 +322,111 @@
 
         public function getByID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->doSelectById($id, $crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            return $this->rawSelectById($id, $query);
         }
 
         public function getIssueByID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->selectById($id, $crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            return $this->selectById($id, $query);
         }
 
         public function getCountByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $res = $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::PROJECT_ID, $project_id);
+            $res = $this->count($query);
             return $res;
         }
 
         public function getNextIssueNumberForProductID($p_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::PROJECT_ID, $p_id);
-            $crit->addSelectionColumn(self::ISSUE_NO, 'issueno', Criteria::DB_MAX, '', '+1');
-            $row = $this->doSelectOne($crit, 'none');
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::PROJECT_ID, $p_id);
+            $query->addSelectionColumn(self::ISSUE_NO, 'issueno', \b2db\Query::DB_MAX, '', '+1');
+            $row = $this->rawSelectOne($query, 'none');
             $issue_no = $row->get('issueno');
             return ($issue_no < 1) ? 1 : $issue_no;
         }
 
+        /**
+         * @param $prefix
+         * @param $issue_no
+         * @return Issue
+         */
         public function getByPrefixAndIssueNo($prefix, $issue_no)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addJoin(Projects::getTable(), Projects::ID, self::PROJECT_ID);
-            $crit->addWhere(Projects::PREFIX, mb_strtolower($prefix), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
-            $crit->addWhere(Projects::DELETED, false);
-            $crit->addWhere(self::ISSUE_NO, $issue_no);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->selectOne($crit, false);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->join(Projects::getTable(), Projects::ID, self::PROJECT_ID);
+            $query->where(Projects::PREFIX, mb_strtolower($prefix), \b2db\Criterion::EQUALS, '', '', \b2db\Query::DB_LOWER);
+            $query->where(Projects::DELETED, false);
+            $query->where(self::ISSUE_NO, $issue_no);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            return $this->selectOne($query, false);
         }
 
+        /**
+         * @param $project_id
+         * @param $issue_no
+         * @return Issue
+         */
         public function getByProjectIDAndIssueNo($project_id, $issue_no)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::ISSUE_NO, $issue_no);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->selectOne($crit, false);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::ISSUE_NO, $issue_no);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            return $this->selectOne($query, false);
         }
 
         public function setDuplicate($issue_id, $duplicate_of)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::DUPLICATE_OF, $duplicate_of);
-            $this->doUpdateById($crit, $issue_id);
+            $update = new Update();
+            $update->add(self::DUPLICATE_OF, $duplicate_of);
+            $this->rawUpdateById($update, $issue_id);
         }
 
         public function getByMilestone($milestone_id, $project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
             if (!$milestone_id)
             {
-                $ctn = $crit->returnCriterion(self::MILESTONE, null);
-                $ctn->addOr(self::MILESTONE, 0);
-                $crit->addWhere($ctn);
-                $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
-                $crit->addWhere(self::PROJECT_ID, $project_id);
+                $criteria = new Criteria();
+                $criteria->where(self::MILESTONE, null);
+                $criteria->or(self::MILESTONE, 0);
+                $query->and($criteria);
+
+                $query->where(self::STATE, Issue::STATE_OPEN);
+                $query->where(self::PROJECT_ID, $project_id);
             }
             else
             {
-                $crit->addWhere(self::MILESTONE, $milestone_id);
+                $query->where(self::MILESTONE, $milestone_id);
             }
-            $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_DESC);
+            $query->addOrderBy(self::MILESTONE_ORDER, \b2db\QueryColumnSort::SORT_DESC);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function setOrderByIssueId($order, $issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addUpdate(self::MILESTONE_ORDER, $order);
-            $this->doUpdateById($crit, $issue_id);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::ID, $issue_id);
+
+            $update = new Update();
+            $update->add(self::MILESTONE_ORDER, $order);
+            $this->rawUpdate($update, $query);
         }
 
         /**
@@ -424,151 +434,155 @@
          */
         public function getPointsAndTimeByMilestone($milestone_id, $allowed_status_ids = array())
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
             if (!$milestone_id)
             {
-                $crit->addWhere(self::MILESTONE, null);
+                $query->where(self::MILESTONE, null);
             }
             else
             {
-                $crit->addWhere(self::MILESTONE, $milestone_id);
+                $query->where(self::MILESTONE, $milestone_id);
             }
             if (count($allowed_status_ids))
             {
-                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+                $query->where(self::STATUS, $allowed_status_ids, \b2db\Criterion::IN);
             }
-            $crit->addSelectionColumn(self::STATE, 'state');
-            $crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points');
-            $crit->addSelectionColumn(self::ESTIMATED_MINUTES, 'estimated_minutes');
-            $crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours');
-            $crit->addSelectionColumn(self::ESTIMATED_DAYS, 'estimated_days');
-            $crit->addSelectionColumn(self::ESTIMATED_WEEKS, 'estimated_weeks');
-            $crit->addSelectionColumn(self::ESTIMATED_MONTHS, 'estimated_months');
-            $crit->addSelectionColumn(self::SPENT_POINTS, 'spent_points');
-            $crit->addSelectionColumn(self::SPENT_MINUTES, 'spent_minutes');
-            $crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours');
-            $crit->addSelectionColumn(self::SPENT_DAYS, 'spent_days');
-            $crit->addSelectionColumn(self::SPENT_WEEKS, 'spent_weeks');
-            $crit->addSelectionColumn(self::SPENT_MONTHS, 'spent_months');
-            $res = $this->doSelect($crit);
+            $query->addSelectionColumn(self::STATE, 'state');
+            $query->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points');
+            $query->addSelectionColumn(self::ESTIMATED_MINUTES, 'estimated_minutes');
+            $query->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours');
+            $query->addSelectionColumn(self::ESTIMATED_DAYS, 'estimated_days');
+            $query->addSelectionColumn(self::ESTIMATED_WEEKS, 'estimated_weeks');
+            $query->addSelectionColumn(self::ESTIMATED_MONTHS, 'estimated_months');
+            $query->addSelectionColumn(self::SPENT_POINTS, 'spent_points');
+            $query->addSelectionColumn(self::SPENT_MINUTES, 'spent_minutes');
+            $query->addSelectionColumn(self::SPENT_HOURS, 'spent_hours');
+            $query->addSelectionColumn(self::SPENT_DAYS, 'spent_days');
+            $query->addSelectionColumn(self::SPENT_WEEKS, 'spent_weeks');
+            $query->addSelectionColumn(self::SPENT_MONTHS, 'spent_months');
+            $res = $this->rawSelect($query);
             return $res;
         }
 
         public function getByProjectIDandNoMilestone($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::MILESTONE, null);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::MILESTONE, null);
+            $query->where(self::PROJECT_ID, $project_id);
+            $res = $this->rawSelect($query);
             return $res;
         }
 
         public function getByProjectIDandNoMilestoneandTypes($project_id, $issuetypes)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::MILESTONE, null);
-            $crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::MILESTONE, null);
+            $query->where(self::ISSUE_TYPE, $issuetypes, \b2db\Criterion::IN);
+            $query->where(self::PROJECT_ID, $project_id);
+            $res = $this->rawSelect($query);
             return $res;
         }
 
         public function getByProjectIDandNoMilestoneandTypesandState($project_id, $issuetypes, $state)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::MILESTONE, null);
-            $crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::STATE, $state);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::MILESTONE, null);
+            $query->where(self::ISSUE_TYPE, $issuetypes, \b2db\Criterion::IN);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::STATE, $state);
+            $res = $this->rawSelect($query);
             return $res;
         }
 
         public function clearMilestone($milestone_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::MILESTONE, 0);
-            $crit->addUpdate(self::LAST_UPDATED, time());
-            $crit->addWhere(self::MILESTONE, $milestone_id);
-            $this->doUpdate($crit);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add(self::MILESTONE, 0);
+            $update->add(self::LAST_UPDATED, time());
+
+            $query->where(self::MILESTONE, $milestone_id);
+
+            $this->rawUpdate($update, $query);
         }
 
         public function getOpenIssuesByTeamAssigned($team_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::ASSIGNED_TEAM, $team_id);
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::ASSIGNED_TEAM, $team_id);
+            $query->where(self::STATE, Issue::STATE_OPEN);
 
-            $res = $this->select($crit);
+            $res = $this->select($query);
 
             return $res;
         }
 
         public function getOpenIssuesByUserAssigned($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::ASSIGNEE_USER, $user_id);
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::ASSIGNEE_USER, $user_id);
+            $query->where(self::STATE, Issue::STATE_OPEN);
 
-            $res = $this->select($crit);
+            $res = $this->select($query);
 
             return $res;
         }
 
         public function getOpenIssuesByProjectIDAndIssueTypes($project_id, $issuetypes, $order_by=null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::ISSUE_TYPE, $issuetypes, Criteria::DB_IN);
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::ISSUE_TYPE, $issuetypes, \b2db\Criterion::IN);
+            $query->where(self::STATE, Issue::STATE_OPEN);
 
             if ($order_by != null)
             {
-                $crit->addOrderBy($order_by);
+                $query->addOrderBy($order_by);
             }
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
 
             return $res;
         }
 
         public function getRecentByProjectIDandIssueType($project_id, $issuetype, $limit = 10)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::ISSUE_TYPE, $issuetype);
-            $crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::ISSUE_TYPE, $issuetype);
+            $query->addOrderBy(self::POSTED, \b2db\QueryColumnSort::SORT_DESC);
             if ($limit !== null)
-                $crit->setLimit($limit);
+                $query->setLimit($limit);
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
 
             return $res;
         }
 
         public function getTotalPointsByMilestoneID($milestone_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points', Criteria::DB_SUM);
-            $crit->addSelectionColumn(self::SPENT_POINTS, 'spent_points', Criteria::DB_SUM);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->addSelectionColumn(self::ESTIMATED_POINTS, 'estimated_points', \b2db\Query::DB_SUM);
+            $query->addSelectionColumn(self::SPENT_POINTS, 'spent_points', \b2db\Query::DB_SUM);
             if (!$milestone_id)
             {
-                $crit->addWhere(self::MILESTONE, null);
+                $query->where(self::MILESTONE, null);
             }
             else
             {
-                $crit->addWhere(self::MILESTONE, $milestone_id);
+                $query->where(self::MILESTONE, $milestone_id);
             }
-            if ($res = $this->doSelectOne($crit))
+            if ($res = $this->rawSelectOne($query))
             {
                 return array($res->get('estimated_points'), $res->get('spent_points'));
             }
@@ -583,30 +597,30 @@
          */
         public function getTotalPercentCompleteByProjectIDAndMilestoneID($project_id, $milestone_id, $allowed_status_ids = array())
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addSelectionColumn(self::PERCENT_COMPLETE, 'percent_complete', Criteria::DB_SUM);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->addSelectionColumn(self::PERCENT_COMPLETE, 'percent_complete', \b2db\Query::DB_SUM);
             if (!$project_id)
             {
-                $crit->addWhere(self::PROJECT_ID, null);
+                $query->where(self::PROJECT_ID, null);
             }
             else
             {
-                $crit->addWhere(self::PROJECT_ID, $project_id);
+                $query->where(self::PROJECT_ID, $project_id);
             }
             if (!$milestone_id)
             {
-                $crit->addWhere(self::MILESTONE, null);
+                $query->where(self::MILESTONE, null);
             }
             else
             {
-                $crit->addWhere(self::MILESTONE, $milestone_id);
+                $query->where(self::MILESTONE, $milestone_id);
             }
             if (count($allowed_status_ids))
             {
-                $crit->addWhere(self::STATUS, $allowed_status_ids, Criteria::DB_IN);
+                $query->where(self::STATUS, $allowed_status_ids, \b2db\Criterion::IN);
             }
-            if ($res = $this->doSelectOne($crit))
+            if ($res = $this->rawSelectOne($query))
             {
                 return $res->get('percent_complete');
             }
@@ -618,19 +632,19 @@
 
         public function getTotalHoursByMilestoneID($milestone_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours', Criteria::DB_SUM);
-            $crit->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', Criteria::DB_SUM);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->addSelectionColumn(self::ESTIMATED_HOURS, 'estimated_hours', \b2db\Query::DB_SUM);
+            $query->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', \b2db\Query::DB_SUM);
             if (!$milestone_id)
             {
-                $crit->addWhere(self::MILESTONE, null);
+                $query->where(self::MILESTONE, null);
             }
             else
             {
-                $crit->addWhere(self::MILESTONE, $milestone_id);
+                $query->where(self::MILESTONE, $milestone_id);
             }
-            if ($res = $this->doSelectOne($crit))
+            if ($res = $this->rawSelectOne($query))
             {
                 return array($res->get('estimated_hours'), $res->get('spent_hours'));
             }
@@ -656,238 +670,248 @@
 
         public function getUpdatedIssueIDsByTimestampAndProjectIDAndMilestoneID($last_updated, $project_id, $milestone_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID, 'id');
-            $crit->addSelectionColumn(self::LAST_UPDATED, 'last_updated');
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::MILESTONE, $milestone_id, Criteria::DB_EQUALS);
-            $crit->addWhere(self::LAST_UPDATED, $last_updated, Criteria::DB_GREATER_THAN_EQUAL);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID, 'id');
+            $query->addSelectionColumn(self::LAST_UPDATED, 'last_updated');
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::MILESTONE, $milestone_id, \b2db\Criterion::EQUALS);
+            $query->where(self::LAST_UPDATED, $last_updated, \b2db\Criterion::GREATER_THAN_EQUAL);
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             return ($res) ? $this->_getLastUpdatedArrayFromResultset($res) : array();
         }
 
         public function getUpdatedIssueIDsByTimestampAndProjectIDAndIssuetypeID($last_updated, $project_id, $issuetype_id = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID, 'id');
-            $crit->addSelectionColumn(self::LAST_UPDATED, 'last_updated');
-            $crit->addWhere(self::PROJECT_ID, $project_id);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID, 'id');
+            $query->addSelectionColumn(self::LAST_UPDATED, 'last_updated');
+            $query->where(self::PROJECT_ID, $project_id);
             if ($issuetype_id === null)
             {
-                $crit->addWhere(self::MILESTONE, 0, Criteria::DB_NOT_EQUALS);
+                $query->where(self::MILESTONE, 0, \b2db\Criterion::NOT_EQUALS);
             }
             else
             {
-                $crit->addWhere(self::ISSUE_TYPE, $issuetype_id);
+                $query->where(self::ISSUE_TYPE, $issuetype_id);
             }
-            $crit->addWhere(self::LAST_UPDATED, $last_updated, Criteria::DB_GREATER_THAN_EQUAL);
+            $query->where(self::LAST_UPDATED, $last_updated, \b2db\Criterion::GREATER_THAN_EQUAL);
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             return ($res) ? $this->_getLastUpdatedArrayFromResultset($res) : array();
         }
 
         public function markIssuesDeletedByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addUpdate(self::DELETED, true);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
 
-            $this->doUpdate($crit);
+            $update = new Update();
+            $update->add(self::DELETED, true);
+
+            $this->rawUpdate($update, $query);
         }
 
-        public static function parseFilter($crit, $filter, $filters, $ctn = null)
+        public static function parseFilter(Query $query, $filter, $filters, $criteria = null)
         {
             if (is_array($filter))
             {
                 foreach ($filter as $single_filter)
                 {
-                    $ctn = self::parseFilter($crit, $single_filter, $filters, $ctn);
+                    $criteria = self::parseFilter($query, $single_filter, $filters, $criteria);
                 }
             }
-            elseif ($filter instanceof \thebuggenie\core\entities\SearchFilter)
+            elseif ($filter instanceof SearchFilter)
             {
                 if ($filter->hasValue())
                 {
-                    $ctn = $filter->addToCriteria($crit, $filters, $ctn);
-                    if ($ctn !== null) $crit->addWhere($ctn);
+                    $criteria = $filter->addToCriteria($query, $filters, $criteria);
+                    if ($criteria !== null) $query->where($criteria);
                 }
             }
         }
 
         public function findIssues($filters = [], $results_per_page = 30, $offset = 0, $groupby = null, $grouporder = null, $sortfields = [self::LAST_UPDATED => 'asc'], $include_deleted = false)
         {
-            $crit = $this->getCriteria();
-            if (!$include_deleted) $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            if (!$include_deleted) {
+                $query->where(self::DELETED, false);
+            }
+
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+
             if (count($filters) > 0)
             {
-                $crit->addJoin(IssueCustomFields::getTable(), IssueCustomFields::ISSUE_ID, Issues::ID);
-                $crit->addJoin(IssueAffectsComponent::getTable(), IssueAffectsComponent::ISSUE, self::ID);
-                $crit->addJoin(IssueAffectsEdition::getTable(), IssueAffectsEdition::ISSUE, self::ID);
-                $crit->addJoin(IssueAffectsBuild::getTable(), IssueAffectsBuild::ISSUE, self::ID);
+                $query->join(IssueCustomFields::getTable(), IssueCustomFields::ISSUE_ID, self::ID);
+                $query->join(IssueAffectsComponent::getTable(), IssueAffectsComponent::ISSUE, self::ID);
+                $query->join(IssueAffectsEdition::getTable(), IssueAffectsEdition::ISSUE, self::ID);
+                $query->join(IssueAffectsBuild::getTable(), IssueAffectsBuild::ISSUE, self::ID);
 
                 $filter_keys = array_keys($filters);
                 foreach ($filters as $filter)
                 {
-                    self::parseFilter($crit, $filter, $filter_keys);
+                    self::parseFilter($query, $filter, $filter_keys);
                 }
             }
 
-            $crit->addSelectionColumn(self::ID);
-            $crit->setDistinct();
+            $query->addSelectionColumn(self::ID);
+            $query->setIsDistinct();
 
             if ($offset != 0)
-                $crit->setOffset($offset);
+                $query->setOffset($offset);
 
-            $crit2 = clone $crit;
-            $count = $this->doCount($crit2);
+            $query2 = clone $query;
+            $count = $this->count($query2);
 
             if ($count > 0)
             {
-                $crit3 = $this->getCriteria();
+                $query3 = $this->getQuery();
 
                 if ($results_per_page != 0)
-                    $crit->setLimit($results_per_page);
+                    $query->setLimit($results_per_page);
 
                 if ($offset != 0)
-                    $crit->setOffset($offset);
+                    $query->setOffset($offset);
 
                 if ($groupby !== null)
                 {
-                    $grouporder = ($grouporder !== null) ? (($grouporder == 'asc') ? Criteria::SORT_ASC : Criteria::SORT_DESC) : Criteria::SORT_ASC;
+                    $grouporder = ($grouporder !== null) ? (($grouporder == 'asc') ? \b2db\QueryColumnSort::SORT_ASC : \b2db\QueryColumnSort::SORT_DESC) : \b2db\QueryColumnSort::SORT_ASC;
                     switch ($groupby)
                     {
                         case 'category':
-                            $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::CATEGORY);
-                            $crit->addSelectionColumn(ListTypes::NAME);
-                            $crit->addOrderBy(ListTypes::NAME, $grouporder);
-                            $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::CATEGORY);
-                            $crit3->addOrderBy(ListTypes::NAME, $grouporder);
+                            $query->join(ListTypes::getTable(), ListTypes::ID, self::CATEGORY);
+                            $query->addSelectionColumn(ListTypes::NAME);
+                            $query->addOrderBy(ListTypes::NAME, $grouporder);
+                            $query3->join(ListTypes::getTable(), ListTypes::ID, self::CATEGORY);
+                            $query3->addOrderBy(ListTypes::NAME, $grouporder);
                             break;
                         case 'status':
-                            $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::STATUS);
-                            $crit->addSelectionColumn(self::STATUS);
-                            $crit->addOrderBy(ListTypes::ORDER, Criteria::SORT_DESC);
-                            $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::STATUS);
-                            $crit3->addOrderBy(ListTypes::ORDER, Criteria::SORT_DESC);
+                            $query->join(ListTypes::getTable(), ListTypes::ID, self::STATUS);
+                            $query->addSelectionColumn(self::STATUS);
+                            $query->addSelectionColumn(ListTypes::ORDER);
+                            $query->addOrderBy(ListTypes::ORDER, \b2db\QueryColumnSort::SORT_DESC);
+                            $query3->join(ListTypes::getTable(), ListTypes::ID, self::STATUS);
+                            $query3->addOrderBy(ListTypes::ORDER, \b2db\QueryColumnSort::SORT_DESC);
                             break;
                         case 'milestone':
-                            $crit->addSelectionColumn(self::MILESTONE);
-                            $crit->addSelectionColumn(self::PERCENT_COMPLETE);
-                            $crit->addOrderBy(self::MILESTONE, $grouporder);
-                            $crit->addOrderBy(self::PERCENT_COMPLETE, 'desc');
-                            $crit3->addOrderBy(self::MILESTONE, $grouporder);
-                            $crit3->addOrderBy(self::PERCENT_COMPLETE, 'desc');
+                            $query->addSelectionColumn(self::MILESTONE);
+                            $query->addSelectionColumn(self::PERCENT_COMPLETE);
+                            $query->addOrderBy(self::MILESTONE, $grouporder);
+                            $query->addOrderBy(self::PERCENT_COMPLETE, 'desc');
+                            $query3->addOrderBy(self::MILESTONE, $grouporder);
+                            $query3->addOrderBy(self::PERCENT_COMPLETE, 'desc');
                             break;
                         case 'assignee':
-                            $crit->addSelectionColumn(self::ASSIGNEE_TEAM);
-                            $crit->addSelectionColumn(self::ASSIGNEE_USER);
-                            $crit->addOrderBy(self::ASSIGNEE_TEAM);
-                            $crit->addOrderBy(self::ASSIGNEE_USER, $grouporder);
-                            $crit3->addOrderBy(self::ASSIGNEE_TEAM);
-                            $crit3->addOrderBy(self::ASSIGNEE_USER, $grouporder);
+                            $query->addSelectionColumn(self::ASSIGNEE_TEAM);
+                            $query->addSelectionColumn(self::ASSIGNEE_USER);
+                            $query->addOrderBy(self::ASSIGNEE_TEAM);
+                            $query->addOrderBy(self::ASSIGNEE_USER, $grouporder);
+                            $query3->addOrderBy(self::ASSIGNEE_TEAM);
+                            $query3->addOrderBy(self::ASSIGNEE_USER, $grouporder);
                             break;
                         case 'posted_by':
-                            $crit->addJoin(Users::getTable(), Users::ID, self::POSTED_BY);
-                            $crit3->addJoin(Users::getTable(), Users::ID, self::POSTED_BY);
-                            $crit->addSelectionColumn(self::POSTED_BY);
-                            $crit->addSelectionColumn(Users::UNAME);
-                            $crit->addOrderBy(Users::UNAME, $grouporder);
-                            $crit3->addOrderBy(Users::UNAME, $grouporder);
+                            $query->join(Users::getTable(), Users::ID, self::POSTED_BY);
+                            $query3->join(Users::getTable(), Users::ID, self::POSTED_BY);
+                            $query->addSelectionColumn(self::POSTED_BY);
+                            $query->addSelectionColumn(Users::UNAME);
+                            $query->addOrderBy(Users::UNAME, $grouporder);
+                            $query3->addOrderBy(Users::UNAME, $grouporder);
                             break;
                         case 'state':
-                            $crit->addSelectionColumn(self::STATE);
-                            $crit->addOrderBy(self::STATE, $grouporder);
-                            $crit3->addOrderBy(self::STATE, $grouporder);
+                            $query->addSelectionColumn(self::STATE);
+                            $query->addOrderBy(self::STATE, $grouporder);
+                            $query3->addOrderBy(self::STATE, $grouporder);
                             break;
                         case 'posted':
-                            $crit->addSelectionColumn(self::POSTED);
-                            $crit->addOrderBy(self::POSTED, $grouporder);
-                            $crit3->addOrderBy(self::POSTED, $grouporder);
+                            $query->addSelectionColumn(self::POSTED);
+                            $query->addOrderBy(self::POSTED, $grouporder);
+                            $query3->addOrderBy(self::POSTED, $grouporder);
                             break;
                         case 'severity':
-                            $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::SEVERITY);
-                            $crit->addSelectionColumn(self::SEVERITY);
-                            $crit->addOrderBy(ListTypes::ORDER, $grouporder);
-                            $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::SEVERITY);
-                            $crit3->addOrderBy(ListTypes::ORDER, $grouporder);
+                            $query->join(ListTypes::getTable(), ListTypes::ID, self::SEVERITY);
+                            $query->addSelectionColumn(self::SEVERITY);
+                            $query->addSelectionColumn(ListTypes::ORDER);
+                            $query->addOrderBy(ListTypes::ORDER, $grouporder);
+                            $query3->join(ListTypes::getTable(), ListTypes::ID, self::SEVERITY);
+                            $query3->addOrderBy(ListTypes::ORDER, $grouporder);
                             break;
                         case 'user_pain':
-                            $crit->addSelectionColumn(self::USER_PAIN);
-                            $crit->addOrderBy(self::USER_PAIN, $grouporder);
-                            $crit3->addOrderBy(self::USER_PAIN, $grouporder);
+                            $query->addSelectionColumn(self::USER_PAIN);
+                            $query->addOrderBy(self::USER_PAIN, $grouporder);
+                            $query3->addOrderBy(self::USER_PAIN, $grouporder);
                             break;
                         case 'votes':
-                            $crit->addSelectionColumn(self::VOTES_TOTAL);
-                            $crit->addOrderBy(self::VOTES_TOTAL, $grouporder);
-                            $crit3->addOrderBy(self::VOTES_TOTAL, $grouporder);
+                            $query->addSelectionColumn(self::VOTES_TOTAL);
+                            $query->addOrderBy(self::VOTES_TOTAL, $grouporder);
+                            $query3->addOrderBy(self::VOTES_TOTAL, $grouporder);
                             break;
                         case 'resolution':
-                            $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::RESOLUTION);
-                            $crit->addSelectionColumn(self::RESOLUTION);
-                            $crit->addOrderBy(ListTypes::ORDER, $grouporder);
-                            $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::RESOLUTION);
-                            $crit3->addOrderBy(ListTypes::ORDER, $grouporder);
+                            $query->join(ListTypes::getTable(), ListTypes::ID, self::RESOLUTION);
+                            $query->addSelectionColumn(self::RESOLUTION);
+                            $query->addSelectionColumn(ListTypes::ORDER);
+                            $query->addOrderBy(ListTypes::ORDER, $grouporder);
+                            $query3->join(ListTypes::getTable(), ListTypes::ID, self::RESOLUTION);
+                            $query3->addOrderBy(ListTypes::ORDER, $grouporder);
                             break;
                         case 'priority':
-                            $crit->addJoin(ListTypes::getTable(), ListTypes::ID, self::PRIORITY);
-                            $crit->addSelectionColumn(self::PRIORITY);
-                            $crit->addOrderBy(ListTypes::ORDER, $grouporder);
-                            $crit3->addJoin(ListTypes::getTable(), ListTypes::ID, self::PRIORITY);
-                            $crit3->addOrderBy(ListTypes::ORDER, $grouporder);
+                            $query->join(ListTypes::getTable(), ListTypes::ID, self::PRIORITY);
+                            $query->addSelectionColumn(self::PRIORITY);
+                            $query->addSelectionColumn(ListTypes::ORDER);
+                            $query->addOrderBy(ListTypes::ORDER, $grouporder);
+                            $query3->join(ListTypes::getTable(), ListTypes::ID, self::PRIORITY);
+                            $query3->addOrderBy(ListTypes::ORDER, $grouporder);
                             break;
                         case 'issuetype':
-                            $crit->addJoin(IssueTypes::getTable(), IssueTypes::ID, self::ISSUE_TYPE);
-                            $crit->addSelectionColumn(IssueTypes::NAME);
-                            $crit->addOrderBy(IssueTypes::NAME, $grouporder);
-                            $crit3->addJoin(IssueTypes::getTable(), IssueTypes::ID, self::ISSUE_TYPE);
-                            $crit3->addOrderBy(IssueTypes::NAME, $grouporder);
+                            $query->join(IssueTypes::getTable(), IssueTypes::ID, self::ISSUE_TYPE);
+                            $query->addSelectionColumn(IssueTypes::NAME);
+                            $query->addOrderBy(IssueTypes::NAME, $grouporder);
+                            $query3->join(IssueTypes::getTable(), IssueTypes::ID, self::ISSUE_TYPE);
+                            $query3->addOrderBy(IssueTypes::NAME, $grouporder);
                             break;
                         case 'edition':
-                            $crit->addJoin(IssueAffectsEdition::getTable(), IssueAffectsEdition::ISSUE, self::ID);
-                            $crit->addJoin(Editions::getTable(), Editions::ID, IssueAffectsEdition::EDITION, array(), Criteria::DB_LEFT_JOIN, IssueAffectsEdition::getTable());
-                            $crit->addSelectionColumn(Editions::NAME);
-                            $crit->addOrderBy(Editions::NAME, $grouporder);
-                            $crit3->addJoin(IssueAffectsEdition::getTable(), IssueAffectsEdition::ISSUE, self::ID);
-                            $crit3->addJoin(Editions::getTable(), Editions::ID, IssueAffectsEdition::EDITION, array(), Criteria::DB_LEFT_JOIN, IssueAffectsEdition::getTable());
-                            $crit3->addOrderBy(Editions::NAME, $grouporder);
+                            $query->join(IssueAffectsEdition::getTable(), IssueAffectsEdition::ISSUE, self::ID);
+                            $query->join(Editions::getTable(), Editions::ID, IssueAffectsEdition::EDITION, array(), \b2db\Join::LEFT, IssueAffectsEdition::getTable());
+                            $query->addSelectionColumn(Editions::NAME);
+                            $query->addOrderBy(Editions::NAME, $grouporder);
+                            $query3->join(IssueAffectsEdition::getTable(), IssueAffectsEdition::ISSUE, self::ID);
+                            $query3->join(Editions::getTable(), Editions::ID, IssueAffectsEdition::EDITION, array(), \b2db\Join::LEFT, IssueAffectsEdition::getTable());
+                            $query3->addOrderBy(Editions::NAME, $grouporder);
                             break;
                         case 'build':
-                            $crit->addJoin(IssueAffectsBuild::getTable(), IssueAffectsBuild::ISSUE, self::ID);
-                            $crit->addJoin(Builds::getTable(), Builds::ID, IssueAffectsBuild::BUILD, array(), Criteria::DB_LEFT_JOIN, IssueAffectsBuild::getTable());
-                            $crit->addSelectionColumn(Builds::NAME);
-                            $crit->addOrderBy(Builds::NAME, $grouporder);
-                            $crit3->addJoin(IssueAffectsBuild::getTable(), IssueAffectsBuild::ISSUE, self::ID);
-                            $crit3->addJoin(Builds::getTable(), Builds::ID, IssueAffectsBuild::BUILD, array(), Criteria::DB_LEFT_JOIN, IssueAffectsBuild::getTable());
-                            $crit3->addOrderBy(Builds::NAME, $grouporder);
+                            $query->join(IssueAffectsBuild::getTable(), IssueAffectsBuild::ISSUE, self::ID);
+                            $query->join(Builds::getTable(), Builds::ID, IssueAffectsBuild::BUILD, array(), \b2db\Join::LEFT, IssueAffectsBuild::getTable());
+                            $query->addSelectionColumn(Builds::NAME);
+                            $query->addOrderBy(Builds::NAME, $grouporder);
+                            $query3->join(IssueAffectsBuild::getTable(), IssueAffectsBuild::ISSUE, self::ID);
+                            $query3->join(Builds::getTable(), Builds::ID, IssueAffectsBuild::BUILD, array(), \b2db\Join::LEFT, IssueAffectsBuild::getTable());
+                            $query3->addOrderBy(Builds::NAME, $grouporder);
                             break;
                         case 'component':
-                            $crit->addJoin(IssueAffectsComponent::getTable(), IssueAffectsComponent::ISSUE, self::ID);
-                            $crit->addJoin(Components::getTable(), Components::ID, IssueAffectsComponent::COMPONENT, array(), Criteria::DB_LEFT_JOIN, IssueAffectsComponent::getTable());
-                            $crit->addSelectionColumn(Components::NAME);
-                            $crit->addOrderBy(Components::NAME, $grouporder);
-                            $crit3->addJoin(IssueAffectsComponent::getTable(), IssueAffectsComponent::ISSUE, self::ID);
-                            $crit3->addJoin(Components::getTable(), Components::ID, IssueAffectsComponent::COMPONENT, array(), Criteria::DB_LEFT_JOIN, IssueAffectsComponent::getTable());
-                            $crit3->addOrderBy(Components::NAME, $grouporder);
+                            $query->join(IssueAffectsComponent::getTable(), IssueAffectsComponent::ISSUE, self::ID);
+                            $query->join(Components::getTable(), Components::ID, IssueAffectsComponent::COMPONENT, array(), \b2db\Join::LEFT, IssueAffectsComponent::getTable());
+                            $query->addSelectionColumn(Components::NAME);
+                            $query->addOrderBy(Components::NAME, $grouporder);
+                            $query3->join(IssueAffectsComponent::getTable(), IssueAffectsComponent::ISSUE, self::ID);
+                            $query3->join(Components::getTable(), Components::ID, IssueAffectsComponent::COMPONENT, array(), \b2db\Join::LEFT, IssueAffectsComponent::getTable());
+                            $query3->addOrderBy(Components::NAME, $grouporder);
                             break;
                         case 'time_spent':
-                            $crit->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
-                            $crit->addSelectionColumn(IssueSpentTimes::EDITED_AT);
-                            $crit->addOrderBy(IssueSpentTimes::EDITED_AT, $grouporder);
-                            $crit3->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
-                            $crit3->addOrderBy(IssueSpentTimes::EDITED_AT, $grouporder);
+                            $query->join(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $query->addSelectionColumn(IssueSpentTimes::EDITED_AT);
+                            $query->addOrderBy(IssueSpentTimes::EDITED_AT, $grouporder);
+                            $query3->join(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $query3->addOrderBy(IssueSpentTimes::EDITED_AT, $grouporder);
                             break;
                     }
                 }
 
                 foreach ($sortfields as $field => $sortorder)
                 {
-                    $crit->addSelectionColumn($field);
-                    $crit->addOrderBy($field, $sortorder);
+                    $query->addSelectionColumn($field);
+                    $query->addOrderBy($field, $sortorder);
                 }
 
-                $res = $this->doSelect($crit, 'none');
+                $res = $this->rawSelect($query, 'none');
                 $ids = [];
                 $sums = [];
 
@@ -909,20 +933,20 @@
                         $sums[$row->get(self::ID)] = $sum;
                     }
 
-                    $crit3->addWhere(self::ID, $ids, Criteria::DB_IN);
+                    $query3->where(self::ID, $ids, \b2db\Criterion::IN);
                     foreach ($sortfields as $field => $sortorder)
                     {
                         if ($field == IssueSpentTimes::EDITED_AT)
                         {
-                            $crit3->addJoin(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
-                            $crit3->addGroupBy(self::ID);
-                            $crit3->addSelectionColumn($field);
+                            $query3->join(IssueSpentTimes::getTable(), IssueSpentTimes::ISSUE_ID, self::ID);
+                            $query3->addGroupBy(self::ID);
+                            $query3->addSelectionColumn($field);
                         }
 
-                        $crit3->addOrderBy($field, $sortorder);
+                        $query3->addOrderBy($field, $sortorder);
                     }
 
-                    $res3 = $this->doSelect($crit3);
+                    $res3 = $this->rawSelect($query3);
                     $rows = $res3->getAllRows();
                 }
                 else
@@ -944,20 +968,19 @@
 
         public function getDuplicateIssuesByIssueNo($issue_no)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addSelectionColumn(self::ID);
-            $crit->addWhere(self::DUPLICATE_OF, $issue_no);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->addSelectionColumn(self::ID);
+            $query->where(self::DUPLICATE_OF, $issue_no);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function saveVotesTotalForIssueID($votes_total, $issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::VOTES_TOTAL, $votes_total);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $this->doUpdateById($crit, $issue_id);
+            $update = new Update();
+            $update->add(self::VOTES_TOTAL, $votes_total);
+            $this->rawUpdateById($update, $issue_id);
         }
 
         /**
@@ -970,13 +993,13 @@
          */
         public function getIssuesPostedByUser($user_id, $limit = 15)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::POSTED_BY, $user_id);
-            $crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
-            $crit->setLimit($limit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::POSTED_BY, $user_id);
+            $query->addOrderBy(self::POSTED, \b2db\QueryColumnSort::SORT_DESC);
+            $query->setLimit($limit);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -995,107 +1018,113 @@
         {
             foreach ($conversions as $conversion)
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::PROJECT_ID, $project->getID());
-                $crit->addWhere(self::ISSUE_TYPE, $type->getID());
-                $crit->addWhere(self::WORKFLOW_STEP_ID, $conversion[0]);
+                $query = $this->getQuery();
+                $query->where(self::PROJECT_ID, $project->getID());
+                $query->where(self::ISSUE_TYPE, $type->getID());
+                $query->where(self::WORKFLOW_STEP_ID, $conversion[0]);
 
-                $crit->addUpdate(self::WORKFLOW_STEP_ID, $conversion[1]);
-                $this->doUpdate($crit);
+                $update = new Update();
+                $update->add(self::WORKFLOW_STEP_ID, $conversion[1]);
+                $this->rawUpdate($update, $query);
             }
         }
 
         public function getNextIssueFromIssueIDAndProjectID($issue_id, $project_id, $only_open = false)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ID, $issue_id, Criteria::DB_GREATER_THAN);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::DELETED, false);
-            if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query = $this->getQuery();
+            $query->where(self::ID, $issue_id, \b2db\Criterion::GREATER_THAN);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::DELETED, false);
+            if ($only_open) $query->where(self::STATE, Issue::STATE_OPEN);
 
-            $crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_ASC);
+            $query->addOrderBy(self::ISSUE_NO, \b2db\QueryColumnSort::SORT_ASC);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         public function getNextIssueFromIssueMilestoneOrderAndMilestoneID($milestone_order, $milestone_id, $only_open = false)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::MILESTONE_ORDER, $milestone_order, Criteria::DB_GREATER_THAN);
-            $crit->addWhere(self::MILESTONE, $milestone_id);
-            $crit->addWhere(self::DELETED, false);
-            if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query = $this->getQuery();
+            $query->where(self::MILESTONE_ORDER, $milestone_order, \b2db\Criterion::GREATER_THAN);
+            $query->where(self::MILESTONE, $milestone_id);
+            $query->where(self::DELETED, false);
+            if ($only_open) $query->where(self::STATE, Issue::STATE_OPEN);
 
-            $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_ASC);
-            $crit->addOrderBy(self::ID, Criteria::SORT_ASC);
+            $query->addOrderBy(self::MILESTONE_ORDER, \b2db\QueryColumnSort::SORT_ASC);
+            $query->addOrderBy(self::ID, \b2db\QueryColumnSort::SORT_ASC);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         public function getPreviousIssueFromIssueIDAndProjectID($issue_id, $project_id, $only_open = false)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ID, $issue_id, Criteria::DB_LESS_THAN);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::DELETED, false);
-            if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query = $this->getQuery();
+            $query->where(self::ID, $issue_id, \b2db\Criterion::LESS_THAN);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::DELETED, false);
+            if ($only_open) $query->where(self::STATE, Issue::STATE_OPEN);
 
-            $crit->addOrderBy(self::ISSUE_NO, Criteria::SORT_DESC);
+            $query->addOrderBy(self::ISSUE_NO, \b2db\QueryColumnSort::SORT_DESC);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         public function getPreviousIssueFromIssueMilestoneOrderAndMilestoneID($milestone_order, $milestone_id, $only_open = false)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::MILESTONE_ORDER, $milestone_order, Criteria::DB_LESS_THAN);
-            $crit->addWhere(self::MILESTONE, $milestone_id);
-            $crit->addWhere(self::DELETED, false);
-            if ($only_open) $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
+            $query = $this->getQuery();
+            $query->where(self::MILESTONE_ORDER, $milestone_order, \b2db\Criterion::LESS_THAN);
+            $query->where(self::MILESTONE, $milestone_id);
+            $query->where(self::DELETED, false);
+            if ($only_open) $query->where(self::STATE, Issue::STATE_OPEN);
 
-            $crit->addOrderBy(self::MILESTONE_ORDER, Criteria::SORT_DESC);
-            $crit->addOrderBy(self::ID, Criteria::SORT_DESC);
+            $query->addOrderBy(self::MILESTONE_ORDER, \b2db\QueryColumnSort::SORT_DESC);
+            $query->addOrderBy(self::ID, \b2db\QueryColumnSort::SORT_DESC);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         public function fixHours($issue_id)
         {
             $times = IssueSpentTimes::getTable()->getSpentTimeSumsByIssueId($issue_id);
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::SPENT_HOURS, $times['hours']);
-            $this->doUpdateById($crit, $issue_id);
+            $update = new Update();
+            $update->add(self::SPENT_HOURS, $times['hours']);
+            $this->rawUpdateById($update, $issue_id);
         }
 
         public function touchIssue($issue_id, $last_updated = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::LAST_UPDATED, isset($last_updated) ? $last_updated : time());
-            $this->doUpdateById($crit, $issue_id);
+            $update = new Update();
+            $update->add(self::LAST_UPDATED, isset($last_updated) ? $last_updated : time());
+            $this->rawUpdateById($update, $issue_id);
         }
 
         public function reAssignIssuesByMilestoneIds($current_milestone_id, $new_milestone_id, $milestone_order = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::LAST_UPDATED, time());
-            $crit->addUpdate(self::MILESTONE, $new_milestone_id);
+            $query = $this->getQuery();
+            $update = new Update();
 
-            if ($milestone_order !== null) $crit->addUpdate(self::MILESTONE_ORDER, $milestone_order);
+            $update->add(self::LAST_UPDATED, time());
+            $update->add(self::MILESTONE, $new_milestone_id);
 
-            $crit->addWhere(self::MILESTONE, $current_milestone_id);
-            $crit->addWhere(self::STATE, \thebuggenie\core\entities\Issue::STATE_OPEN);
-            $this->doUpdate($crit);
+            if ($milestone_order !== null) $update->add(self::MILESTONE_ORDER, $milestone_order);
+
+            $query->where(self::MILESTONE, $current_milestone_id);
+            $query->where(self::STATE, Issue::STATE_OPEN);
+            $this->rawUpdate($update, $query);
         }
 
         public function assignMilestoneIDbyIssueIDs($milestone_id, $issue_ids)
         {
             if (!empty($issue_ids))
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::LAST_UPDATED, time());
-                $crit->addUpdate(self::MILESTONE, $milestone_id);
-                $crit->addWhere(self::ID, $issue_ids, Criteria::DB_IN);
-                $this->doUpdate($crit);
+                $query = $this->getQuery();
+                $update = new Update();
+
+                $update->add(self::LAST_UPDATED, time());
+                $update->add(self::MILESTONE, $milestone_id);
+
+                $query->where(self::ID, $issue_ids, \b2db\Criterion::IN);
+                $this->rawUpdate($update, $query);
             }
         }
 

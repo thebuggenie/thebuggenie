@@ -129,21 +129,14 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         $('quicksearch_submit').enable();
                         $('quicksearch_submit').removeClassName('button-silver');
                         $('quicksearch_submit').addClassName('button-blue');
-                        $('quicksearch_clear').show();
                     },
                     afterUpdateElement: TBG.Core._extractAutocompleteValue,
                     onHide: function () {},
                     forceHide: function () {
                         new Effect.Fade($('searchfor_autocomplete_choices'),{duration:0.15});
-                        new Effect.Fade($('quicksearch_clear'),{duration:0.15});
                     }
                 }
             );
-            jQuery('#quicksearch_clear').on('click', function () {
-                TBG.autocompleter.options.forceHide();
-                $('searchfor').setValue('');
-                $('searchfor').focus();
-            });
         };
 
         /**
@@ -159,7 +152,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 $('quicksearch_submit').addClassName('button-silver');
                 $('searchfor').blur();
                 $('searchfor').setValue('');
-                $('quicksearch_clear').hide();
             } else {
                 var cb_elements = value.select('.backdrop');
                 if (cb_elements.size() == 1) {
@@ -168,7 +160,6 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     TBG.Main.Helpers.Backdrop.show(backdrop_url);
                     $('searchfor').blur();
                     $('searchfor').setValue('');
-                    $('quicksearch_clear').hide();
                     event.stopPropagation();
                     event.preventDefault();
                 }
@@ -870,7 +861,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     return (time < 10) ? '0' + time : time;
                 };
                 TBG.Core.AjaxCalls.each(function (info) {
-                    var content = '<li><span class="badge timestamp">' + ct(info.time.getHours()) + ':' + ct(info.time.getMinutes()) + ':' + ct(info.time.getSeconds()) + '.' + ct(info.time.getMilliseconds()) + '</span><span class="badge timing"><i class="fa fa-clock-o"></i>' + info.loadtime + '</span><span class="badge timing session" title="Time spent by php loading session data"><i class="fa fa-hdd-o"></i>' + info.session_loadtime + '</span><span class="badge timing calculated" title="Calculated load time, excluding session load time"><i class="fa fa-calculator"></i>' + info.calculated_loadtime + '</span><span class="partial">' + info.location + '</span> <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\'' + info.debug_id + '\');">Debug</a></li>';
+                    var content = '<li><span class="badge timestamp">' + ct(info.time.getHours()) + ':' + ct(info.time.getMinutes()) + ':' + ct(info.time.getSeconds()) + '.' + ct(info.time.getMilliseconds()) + '</span><span class="badge timing"><i class="far fa-clock"></i>' + info.loadtime + '</span><span class="badge timing session" title="Time spent by php loading session data"><i class="far fa-hdd"></i>' + info.session_loadtime + '</span><span class="badge timing calculated" title="Calculated load time, excluding session load time"><i class="fa fa-calculator"></i>' + info.calculated_loadtime + '</span><span class="partial">' + info.location + '</span> <a class="button button-silver" style="float: right;" href="javascript:void(0);" onclick="TBG.loadDebugInfo(\'' + info.debug_id + '\');">Debug</a></li>';
                     lai.insert(content, 'top');
                 });
             }
@@ -1770,7 +1761,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     remove: 'comment_' + comment_id,
                     callback: function () {
                         TBG.Main.Helpers.Dialog.dismiss();
-                        if ($('comments_box').childElements().size() == 0) $('comments_none').show();
+                        if ($('comments_box').childElements().size() == 0) {
+                            $('comments_none').show();
+                            $('.initial-placeholder').hide();
+                        }
                         $(commentcount_span).update($('comments_box').childElements().size());
                     }
                 }
@@ -1785,9 +1779,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: 'comment_edit_controls_' + cid
                 },
                 success: {
-                    hide: ['comment_edit_indicator_' + cid, 'comment_edit_' + cid],
+                    hide: ['comment_edit_indicator_' + cid],
                     show: ['comment_view_' + cid, 'comment_edit_controls_' + cid, 'comment_add_button'],
-                    update: {element: 'comment_' + cid + '_content', from: 'comment_body'}
+                    update: {element: 'comment_' + cid + '_content', from: 'comment_body'},
+                    callback: function () {
+                        $('comment_edit_' + cid).removeClassName('active');
+                        $('comment_' + cid + '_body').show();
+                    }
                 },
                 failure: {
                     show: ['comment_edit_controls_' + cid]
@@ -1806,11 +1804,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: ['comment_add_indicator', 'comment_add'],
                     clear: 'comment_bodybox',
                     callback: function (json) {
-                        $('comments_box').insert({top: json.comment_data});
+                        $('comments_box').insert({bottom: json.comment_data});
                         if ($('comment_form').serialize(true).comment_save_changes == '1') {
                             window.location = json.continue_url;
-                        } else if ($('comments_box').childElements().size() != 0) {
-                            $('comments_none').hide();
+                        } else {
+                            window.location.hash = "#comment_" + json.comment_id;
+                            if ($('comments_box').childElements().size() != 0) {
+                                $('comments_none').hide();
+                                $('.initial-placeholder').show();
+                            }
                         }
                         $('comment_visibility').setValue(1);
                         $(commentcount_span).update(json.commentcount);
@@ -1827,12 +1829,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     hide: 'comment_reply_controls_' + reply_comment_id
                 },
                 success: {
-                    hide: ['comment_reply_' + reply_comment_id],
                     clear: 'comment_reply_bodybox_' + reply_comment_id,
                     show: ['comment_reply_controls_' + reply_comment_id, 'comment_add_button'],
                     callback: function (json) {
-                        $('comments_box').insert({top: json.comment_data});
+                        $('comment_' + reply_comment_id + '_replies').insert({bottom: json.comment_data});
                         $('comment_reply_visibility_' + reply_comment_id).setValue(1);
+                        $('comment_reply_' + reply_comment_id).removeClassName('active');
                     }
                 },
                 failure: {
@@ -2123,12 +2125,12 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         };
 
-        TBG.Project.showBranchCommits = function (url, branchname, gitlab_repos_nss) {
+        TBG.Project.showBranchCommits = function (url, branch) {
             $$('body')[0].setStyle({'overflow': 'auto'});
 
             TBG.Main.Helpers.ajax(url, {
                 url_method: 'post',
-                additional_params: "offset=0" + (branchname != null ? "&branchname=" + branchname : '') + (gitlab_repos_nss != null ? "&gitlab_repos_nss=" + gitlab_repos_nss : ''),
+                additional_params: "branch=" + branch,
                 loading: {
                     indicator: 'fullpage_backdrop',
                     show: 'fullpage_backdrop_indicator',
@@ -2141,10 +2143,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
             });
         }
 
-        TBG.Project.Commits.update = function (url, branchname, gitlab_repos_nss) {
+        TBG.Project.Commits.update = function (url, branch) {
             TBG.Main.Helpers.ajax(url, {
                 url_method: 'post',
-                additional_params: "offset=" + $('commits_offset').getValue() + (branchname != null ? "&branchname=" + branchname : '') + (gitlab_repos_nss != null ? "&gitlab_repos_nss=" + gitlab_repos_nss : ''),
+                additional_params: "from_commit=" + $('from_commit').getValue() + "&branch=" + branch,
                 loading: {
                     indicator: 'commits_indicator',
                     hide: 'commits_more_link'
@@ -2153,7 +2155,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     update: {element: 'commits', insertion: true},
                     show: 'commits_more_link',
                     callback: function (json) {
-                        $('commits_offset').setValue(json.offset)
+                        $('from_commit').setValue(json.last_commit)
                     }
                 }
             });

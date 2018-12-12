@@ -18,9 +18,11 @@
                 <?= __('Only showing basic project details. More settings available in the main project configuration.'); ?>
             </h5>
         <?php endif; ?>
+        <?php \thebuggenie\core\framework\Event::createNew('core', 'project/editproject::above_content')->trigger(compact('project')); ?>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
             <form accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('configure_project_settings', ['project_id' => $project->getID()]); ?>" method="post" onsubmit="TBG.Project.submitInfo('<?= make_url('configure_project_settings', ['project_id' => $project->getID()]); ?>', <?= $project->getID(); ?>); return false;" id="project_info">
         <?php endif; ?>
+        <?php \thebuggenie\core\framework\Event::createNew('core', 'project/editproject::additional_form_elements')->trigger(compact('project')); ?>
         <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
             <tr>
                 <td style="width: 200px;"><label for="project_name_input" style="font-size: 1.15em;"><?= __('Project name'); ?></label></td>
@@ -60,42 +62,74 @@
                     </td>
                 </tr>
             <?php else: ?>
+                <tr class="project_type_container">
+                    <td>
+                        <label><?= __('Select type of project'); ?></label>
+                    </td>
+                    <td>
+                        <input type="hidden" name="project_type" value="classic" id="edit_project_type_input">
+                        <a href="javascript:void(0)" class="fancydropdown changeable" id="edit_project_type"><?= __('Classic software project'); ?></a>
+                        <ul data-input="edit_project_type_input" class="fancydropdown-list">
+                            <li data-input-value="classic" data-display-name="<?php echo __('Classic software project'); ?>" class="fancydropdown-item selected">
+                                <h1><?php echo fa_image_tag('code') . __('Classic software project'); ?></h1>
+                                <p>
+                                    <?php echo __('Classic project template without specific settings'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="team" data-display-name="<?php echo __('Distributed teams project'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('users') . __('Distributed teams project'); ?></h1>
+                                <p>
+                                    <?php echo __('For projects with multiple teams, often distributed across locations'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="open-source" data-display-name="<?php echo __('Classic open source'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('code-branch') . __('Classic open source'); ?></h1>
+                                <p>
+                                    <?php echo __('For medium/small open source projects without multiple teams'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="agile" data-display-name="<?php echo __('Agile software project'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('repeat', ['style' => 'transform: rotate(90deg)']) . __('Agile software project'); ?></h1>
+                                <p>
+                                    <?php echo __('For projects with an agile methodology like e.g. scrum or kanban'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="service-desk" data-display-name="<?php echo __('Helpdesk / support'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('phone') . __('Helpdesk / support'); ?></h1>
+                                <p>
+                                    <?php echo __('For helpdesk or support projects without a traditional software development cycle'); ?>
+                                </p>
+                            </li>
+                            <li data-input-value="personal" data-display-name="<?php echo __('Personal todo-list'); ?>" class="fancydropdown-item">
+                                <h1><?php echo fa_image_tag('th-list') . __('Personal todo-list'); ?></h1>
+                                <p>
+                                    <?php echo __('A project acting like a personal todo-list. No fuzz, no headache.'); ?>
+                                </p>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="config_explanation">
+                            <?= __('Select the type of project you are creating. The type of project decides initial workflows, issue types, settings and more. You can always configure this later.'); ?>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="2">
                         <label for="project_role_input"><?= __('Project permissions'); ?></label>
                         <div class="config_explanation">
                             <?= __('Choose the initial set of permissions and roles to apply. Permissions can be configured afterwards.'); ?>
                         </div>
-                        <input type="checkbox" checked class="fancycheckbox" id="project_set_owner_checkbox" name="mark_as_owner" value="1"><label for="project_set_owner_checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Set myself as project owner'); ?></label><br>
+                        <input type="checkbox" checked class="fancycheckbox" id="project_set_owner_checkbox" name="mark_as_owner" value="1"><label for="project_set_owner_checkbox"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Set myself as project owner'); ?></label><br>
                         <input type="hidden" name="assignee_type" value="<?= $assignee_type; ?>">
-                        <input type="checkbox" checked class="fancycheckbox" id="project_role_checkbox" name="assignee_id" value="<?= $assignee_id; ?>" onchange="($('project_role_checkbox').checked) ? $('project_role_input').enable() : $('project_role_input').disable();"><label for="project_role_checkbox"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('%name has the following role in this project: %list_of_roles', ['%name' => $assignee_name, '%list_of_roles' => '']); ?></label>
+                        <input type="checkbox" checked class="fancycheckbox" id="project_role_checkbox" name="assignee_id" value="<?= $assignee_id; ?>" onchange="($('project_role_checkbox').checked) ? $('project_role_input').enable() : $('project_role_input').disable();"><label for="project_role_checkbox"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('%name has the following role in this project: %list_of_roles', ['%name' => $assignee_name, '%list_of_roles' => '']); ?></label>
                         <select name="role_id" id="project_role_input">
                             <?php foreach ($roles as $role): ?>
                                 <option value="<?= $role->getID(); ?>"><?= $role->getName(); ?></option>
                             <?php endforeach; ?>
                         </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="project_type_container">
-                        <label><?= __('Select type of project'); ?></label>
-                        <div class="config_explanation">
-                            <?= __('Select the type of project you are creating. The type of project decides initial workflows, issue types, settings and more. You can always configure this later.'); ?>
-                        </div>
-                        <div class="fancylabels">
-                            <input type="radio" name="project_type" value="team" id="project_edit_type_team_project">
-                            <label for="project_edit_type_team_project"><?= fa_image_tag('users'); ?><span><h1><?= __('Distributed teams project'); ?></h1><?= __('For projects with multiple teams, often distributed across locations'); ?></span></label>
-                            <input type="radio" name="project_type" value="open-source" id="project_edit_type_open_source_regular">
-                            <label for="project_edit_type_open_source_regular"><?= fa_image_tag('code-fork'); ?><span><h1><?= __('Classic open source'); ?></h1><?= __('For medium/small open source projects without multiple teams'); ?></span></label>
-                            <input type="radio" name="project_type" value="classic" checked id="project_edit_type_regular">
-                            <label for="project_edit_type_regular"><?= fa_image_tag('code'); ?><span><h1><?= __('Classic software project'); ?></h1><?= __('Classic project template without specific settings'); ?></span></label>
-                            <input type="radio" name="project_type" value="agile" id="project_edit_type_agile">
-                            <label for="project_edit_type_agile"><?= fa_image_tag('repeat', ['style' => 'transform: rotate(90deg)']); ?><span><h1><?= __('Agile software project'); ?></h1><?= __('For projects with an agile methodology like e.g. scrum or kanban'); ?></span></label>
-                            <input type="radio" name="project_type" value="service-desk" id="project_edit_type_service_desk">
-                            <label for="project_edit_type_service_desk"><?= fa_image_tag('phone'); ?><span><h1><?= __('Helpdesk / support'); ?></h1><?= __('For helpdesk or support projects without a traditional software development cycle'); ?></span></label>
-                            <input type="radio" name="project_type" value="personal" id="project_edit_type_personal_todo">
-                            <label for="project_edit_type_personal_todo"><?= fa_image_tag('th-list'); ?><span><h1><?= __('Personal todo-list'); ?></h1><?= __('A project acting like a personal todo-list. No fuzz, no headache.'); ?></span></label>
-                        </div>
                     </td>
                 </tr>
             <?php endif; ?>

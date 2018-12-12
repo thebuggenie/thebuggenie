@@ -199,11 +199,10 @@
             return $this->component_override_map[$component];
         }
 
-        public function loadRoutes($module_name, $module_type = null)
+        public function loadRoutes($module_name)
         {
-            if ($module_type === null) $module_type = (Context::isInternalModule($module_name)) ? 'internal' : 'external';
-
-            $module_routes_filename = (($module_type == 'internal') ? \THEBUGGENIE_INTERNAL_MODULES_PATH : \THEBUGGENIE_MODULES_PATH) . $module_name . DS . 'configuration' . DS . 'routes.yml';
+            $module_path_prefix = (Context::isInternalModule($module_name)) ? \THEBUGGENIE_INTERNAL_MODULES_PATH : \THEBUGGENIE_MODULES_PATH;
+            $module_routes_filename = $module_path_prefix . $module_name . DS . 'configuration' . DS . 'routes.yml';
             if (file_exists($module_routes_filename))
             {
                 $this->loadYamlRoutes($module_routes_filename, $module_name);
@@ -352,7 +351,7 @@
                     }
                     elseif ($this->hasRoute($name))
                     {
-                        throw new exceptions\RoutingException('A route that overrides another route must have an @Override annotation');
+                        throw new exceptions\RoutingException("Trying to override route '{$name}' in {$module}/{$action}. A route that overrides another route must have an @Override annotation");
                     }
                     else
                     {
@@ -991,7 +990,7 @@
                     }
                 default :
                     $args = func_get_args();
-                    $args[1] = sfToolkit::arrayDeepMerge($args[0], $args[1]);
+                    $args[1] = self::arrayDeepMerge($args[0], $args[1]);
                     array_shift($args);
                     return call_user_func_array(array('self', 'arrayDeepMerge'), $args);
                     break;

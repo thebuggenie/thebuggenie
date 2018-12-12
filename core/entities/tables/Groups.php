@@ -35,21 +35,21 @@
         public function getAll($scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
             
-            $res = $this->select($crit);
+            $res = $this->select($query);
             
             return $res;
         }
 
         public function doesGroupNameExist($group_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $group_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::NAME, $group_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return (bool) $this->doCount($crit);
+            return (bool) $this->count($query);
         }
         
     }

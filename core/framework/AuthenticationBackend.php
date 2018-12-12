@@ -23,11 +23,11 @@
      * @package thebuggenie
      * @subpackage mvc
      */
-    class AuthenticationBackend implements AuthenticationProviderInterface
+    class AuthenticationBackend implements interfaces\AuthenticationProvider
     {
         function getAuthenticationMethod()
         {
-            return AuthenticationProviderInterface::AUTHENTICATION_TYPE_TOKEN;
+            return interfaces\AuthenticationProvider::AUTHENTICATION_TYPE_TOKEN;
         }
 
         function autoVerifyLogin($username, $password, $is_elevated = false)

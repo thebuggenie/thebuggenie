@@ -32,15 +32,16 @@
         const CONFIGURATION_SECTION_UPLOADS = 3;
         const CONFIGURATION_SECTION_ISSUEFIELDS = 4;
         const CONFIGURATION_SECTION_PERMISSIONS = 5;
-        const CONFIGURATION_SECTION_ROLES = 7;
         const CONFIGURATION_SECTION_ISSUETYPES = 6;
+        const CONFIGURATION_SECTION_ROLES = 7;
         const CONFIGURATION_SECTION_PROJECTS = 10;
         const CONFIGURATION_SECTION_SETTINGS = 12;
-        const CONFIGURATION_SECTION_THEMES = 18;
         const CONFIGURATION_SECTION_SCOPES = 14;
         const CONFIGURATION_SECTION_MODULES = 15;
         const CONFIGURATION_SECTION_IMPORT = 16;
         const CONFIGURATION_SECTION_AUTHENTICATION = 17;
+        const CONFIGURATION_SECTION_THEMES = 18;
+        const CONFIGURATION_SECTION_LICENSE = 19;
 
         const APPEARANCE_HEADER_THEME = 0;
         const APPEARANCE_HEADER_CUSTOM = 1;
@@ -87,6 +88,7 @@
         const SETTING_IS_PERMISSIVE_MODE = 'permissive';
         const SETTING_IS_SINGLE_PROJECT_TRACKER = 'singleprojecttracker';
         const SETTING_KEEP_COMMENT_TRAIL_CLEAN = 'cleancomments';
+        const SETTING_LICENSE_ID = 'license_identifier';
         const SETTING_NOTIFICATION_POLL_INTERVAL = 'notificationpollinterval';
         const SETTING_OFFLINESTATE = 'offlinestate';
         const SETTING_ONLINESTATE = 'onlinestate';
@@ -163,8 +165,8 @@
         const USER_DISPLAYNAME_FORMAT_BUDDY = 0;
 
         protected static $_ver_mj = 4;
-        protected static $_ver_mn = 2;
-        protected static $_ver_rev = 1;
+        protected static $_ver_mn = 3;
+        protected static $_ver_rev = 0;
         protected static $_ver_name = "On the road again";
         protected static $_defaultscope;
         protected static $_settings;
@@ -240,6 +242,16 @@
             tables\Settings::getTable()->deleteModuleSettings($module_name, $scope);
         }
 
+        /**
+         * Save a setting
+         *
+         * @param string $name The settings key / name of the setting to store
+         * @param mixed $value The value to store
+         * @param string $module The name / key of the module storing the setting
+         * @param int $scope A scope id (or 0 to apply to all scopes)
+         * @param int $uid A user id to save settings for
+         * @throws \Exception
+         */
         public static function saveSetting($name, $value, $module = 'core', $scope = 0, $uid = 0)
         {
             if ($scope == 0 && $name != 'defaultscope' && $module == 'core')
@@ -302,7 +314,6 @@
             if (!array_key_exists($name, self::$_settings[$module]))
             {
                 return null;
-                //self::$_settings[$name] = self::_loadSetting($name, $module, Context::getScope()->getID());
             }
             if ($uid !== 0 && array_key_exists($uid, self::$_settings[$module][$name]))
             {
@@ -335,12 +346,12 @@
             return [$current_version, $upgrade_available];
         }
 
-        public static function getUserSetting($user_id, $name, $module = 'core', $scope = null)
+        public static function getUserSetting($user_id, $name, $module = 'core', $scope = 0)
         {
             return self::get($name, $module, $scope, $user_id);
         }
 
-        public static function hasUserSetting($user_id, $name, $module = 'core', $scope = null)
+        public static function hasUserSetting($user_id, $name, $module = 'core', $scope = 0)
         {
             return self::getUserSetting($name, $module, $scope, $user_id) !== null;
         }
@@ -350,7 +361,7 @@
             return self::saveSetting($name, $value, $module, $scope, $user_id);
         }
 
-        public static function deleteUserSetting($user_id, $setting, $module = 'core', $scope = null)
+        public static function deleteUserSetting($user_id, $setting, $module = 'core', $scope = 0)
         {
             return self::deleteSetting($setting, $module, $scope, $user_id);
         }
@@ -389,27 +400,23 @@
             $scope = ($scope === null) ? Context::getScope()->getID() : $scope;
             $uid = ($uid === null) ? Context::getUser()->getID() : $uid;
 
-            $crit = new \b2db\Criteria();
-            $crit->addWhere(tables\Settings::NAME, $name);
-            $crit->addWhere(tables\Settings::MODULE, $module);
-            $crit->addWhere(tables\Settings::SCOPE, $scope);
-            $crit->addWhere(tables\Settings::UID, $uid);
+            $query = tables\Settings::getTable()->getQuery();
+            $query->where(tables\Settings::NAME, $name);
+            $query->where(tables\Settings::MODULE, $module);
+            $query->where(tables\Settings::SCOPE, $scope);
+            $query->where(tables\Settings::UID, $uid);
 
-            tables\Settings::getTable()->doDelete($crit);
+            tables\Settings::getTable()->rawDelete($query);
             unset(self::$_settings[$module][$name][$uid]);
         }
 
         private static function _loadSetting($name, $module = 'core', $scope = 0)
         {
-            $crit = new \b2db\Criteria();
-            $crit->addWhere(tables\Settings::NAME, $name);
-            $crit->addWhere(tables\Settings::MODULE, $module);
-            if ($scope == 0)
-            {
-                throw new \Exception('The Bug Genie has not been correctly installed. Please check that the default scope exists');
-            }
-            $crit->addWhere(tables\Settings::SCOPE, $scope);
-            $res = tables\Settings::getTable()->doSelect($crit);
+            $query = tables\Settings::getTable()->getQuery();
+            $query->where(tables\Settings::NAME, $name);
+            $query->where(tables\Settings::MODULE, $module);
+            $query->where(tables\Settings::SCOPE, $scope);
+            $res = tables\Settings::getTable()->rawSelect($query);
             if ($res)
             {
                 $retarr = array();
@@ -449,7 +456,7 @@
         {
             $format = self::get(self::SETTING_USER_DISPLAYNAME_FORMAT);
             if (!is_numeric($format))
-                $format = 0;
+                $format = self::USER_DISPLAYNAME_FORMAT_BUDDY;
             return (int) $format;
         }
 
@@ -571,7 +578,7 @@
 
         public static function isCommentTrailClean()
         {
-            return (bool) self::get(self::SETTING_KEEP_COMMENT_TRAIL_CLEAN);
+            return false;
         }
 
         public static function isCommentImagePreviewEnabled()
@@ -591,7 +598,7 @@
 
         public static function isDefaultUserGuest()
         {
-            return (bool) self::get(self::SETTING_DEFAULT_USER_IS_GUEST);
+            return true;
         }
 
         public static function getDefaultUserID()
@@ -1044,29 +1051,33 @@
             $config_sections = array('general' => array(), self::CONFIGURATION_SECTION_MODULES => array());
 
             if (Context::getScope()->getID() == 1)
-                $config_sections['general'][self::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'fa_icon' => 'clone', 'details' => $i18n->__('Scopes are self-contained Bug Genie environments. Configure them here.'));
+                $config_sections['general'][self::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'fa_style' => 'fas', 'fa_icon' => 'clone', 'details' => $i18n->__('Scopes are self-contained Bug Genie environments. Configure them here.'));
 
-            $config_sections['general'][self::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'fa_icon' => 'cog', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_THEMES] = array('route' => 'configuration_themes', 'description' => $i18n->__('Theme'), 'fa_icon' => 'paint-brush', 'details' => $i18n->__('Configure the selected theme from this section'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'fa_icon' => 'user-md', 'details' => $i18n->__('Configure roles in this section'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_AUTHENTICATION] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'fa_icon' => 'lock', 'details' => $i18n->__('Configure the authentication method in this section'));
+            if (Context::getScope()->isDefault()) {
+                $config_sections['general'][self::CONFIGURATION_SECTION_LICENSE] = array('route' => 'configure_license', 'description' => $i18n->__('License'), 'fa_style' => 'fas', 'fa_icon' => 'file-contract', 'details' => $i18n->__('Configure the license in this section'));
+            }
+            $config_sections['general'][self::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'fa_style' => 'fas', 'fa_icon' => 'cog', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_THEMES] = array('route' => 'configuration_themes', 'description' => $i18n->__('Theme'), 'fa_style' => 'fas', 'fa_icon' => 'paint-brush', 'details' => $i18n->__('Configure the selected theme from this section'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'fa_style' => 'fas', 'fa_icon' => 'user-md', 'details' => $i18n->__('Configure roles in this section'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_AUTHENTICATION] = array('route' => 'configure_authentication', 'description' => $i18n->__('Authentication'), 'fa_style' => 'fas', 'fa_icon' => 'lock', 'details' => $i18n->__('Configure the authentication method in this section'));
 
             if (Context::getScope()->isUploadsEnabled())
-                $config_sections['general'][self::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads and attachments'), 'fa_icon' => 'upload', 'details' => $i18n->__('All settings related to file uploads are controlled from this section.'));
+                $config_sections['general'][self::CONFIGURATION_SECTION_UPLOADS] = array('route' => 'configure_files', 'description' => $i18n->__('Uploads and attachments'), 'fa_style' => 'fas', 'fa_icon' => 'upload', 'details' => $i18n->__('All settings related to file uploads are controlled from this section.'));
 
-            $config_sections['general'][self::CONFIGURATION_SECTION_IMPORT] = array('route' => 'import_home', 'description' => $i18n->__('Import data'), 'fa_icon' => 'download', 'details' => $i18n->__('Import data from CSV files and other sources.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => $i18n->__('Projects'), 'fa_icon' => 'code', 'details' => $i18n->__('Set up all projects in this configuration section.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_ISSUETYPES] = array('route' => 'configure_issuetypes', 'fa_icon' => 'files-o', 'description' => $i18n->__('Issue types'), 'details' => $i18n->__('Manage issue types and configure issue fields for each issue type here'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_ISSUEFIELDS] = array('route' => 'configure_issuefields', 'fa_icon' => 'list', 'description' => $i18n->__('Issue fields'), 'details' => $i18n->__('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_WORKFLOW] = array('route' => 'configure_workflow', 'fa_icon' => 'code-fork', 'description' => $i18n->__('Workflow'), 'details' => $i18n->__('Set up and edit workflow configuration from this section'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams and clients'), 'fa_icon' => 'users', 'details' => $i18n->__('Manage users, user teams and clients from this section.'));
-            $config_sections['general'][self::CONFIGURATION_SECTION_MODULES] = array('route' => 'configure_modules', 'description' => $i18n->__('Manage modules'), 'fa_icon' => 'puzzle-piece', 'details' => $i18n->__('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
+            $config_sections['general'][self::CONFIGURATION_SECTION_IMPORT] = array('route' => 'import_home', 'description' => $i18n->__('Import data'), 'fa_style' => 'fas', 'fa_icon' => 'download', 'details' => $i18n->__('Import data from CSV files and other sources.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_PROJECTS] = array('route' => 'configure_projects', 'description' => $i18n->__('Projects'), 'fa_style' => 'fas', 'fa_icon' => 'code', 'details' => $i18n->__('Set up all projects in this configuration section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_ISSUETYPES] = array('route' => 'configure_issuetypes', 'fa_style' => 'fas', 'fa_icon' => 'copy', 'description' => $i18n->__('Issue types'), 'details' => $i18n->__('Manage issue types and configure issue fields for each issue type here'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_ISSUEFIELDS] = array('route' => 'configure_issuefields', 'fa_style' => 'fas', 'fa_icon' => 'list', 'description' => $i18n->__('Issue fields'), 'details' => $i18n->__('Status types, resolution types, categories, custom fields, etc. are configurable from this section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_WORKFLOW] = array('route' => 'configure_workflow', 'fa_style' => 'fas', 'fa_icon' => 'share-alt', 'description' => $i18n->__('Workflow'), 'details' => $i18n->__('Set up and edit workflow configuration from this section'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_USERS] = array('route' => 'configure_users', 'description' => $i18n->__('Users, teams and clients'), 'fa_style' => 'fas', 'fa_icon' => 'users', 'details' => $i18n->__('Manage users, user teams and clients from this section.'));
+            $config_sections['general'][self::CONFIGURATION_SECTION_MODULES] = array('route' => 'configure_modules', 'description' => $i18n->__('Manage modules'), 'fa_style' => 'fas', 'fa_icon' => 'puzzle-piece', 'details' => $i18n->__('Manage Bug Genie extensions from this section. New modules are installed from here.'), 'module' => 'core');
             foreach (Context::getModules() as $module)
             {
                 if ($module->hasConfigSettings() && $module->isEnabled()) {
                     $module_array = array('route' => array('configure_module', array('config_module' => $module->getName())), 'description' => Context::geti18n()->__($module->getConfigTitle()), 'icon' => $module->getName(), 'details' => Context::geti18n()->__($module->getConfigDescription()), 'module' => $module->getName());
                     if ($module->hasFontAwesomeIcon()) {
                         $module_array['fa_icon'] = $module->getFontAwesomeIcon();
+                        $module_array['fa_style'] = $module->getFontAwesomeStyle();
                         $module_array['fa_color'] = $module->getFontAwesomeColor();
                     }
                     $config_sections[self::CONFIGURATION_SECTION_MODULES][] = $module_array;
@@ -1074,6 +1085,37 @@
             }
 
             return $config_sections;
+        }
+
+        public static function getAccessLevel($section, $module = 'core')
+        {
+            return (Context::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
+        }
+
+        public static function hasLicenseIdentifier()
+        {
+            return false;
+            return (bool) (self::getLicenseIdentifier() !== '');
+        }
+
+        public static function getLicenseIdentifier()
+        {
+            return self::get(self::SETTING_LICENSE_ID);
+        }
+
+        public static function setLicenseIdentifier($license_id)
+        {
+            self::saveSetting(self::SETTING_LICENSE_ID, $license_id);
+        }
+
+        public static function clearLicenseIdentifier()
+        {
+            self::deleteSetting(self::SETTING_LICENSE_ID);
+        }
+
+        public static function isStable(): bool
+        {
+            return false;
         }
 
     }

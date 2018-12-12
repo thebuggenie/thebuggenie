@@ -14,7 +14,7 @@
                         <?php foreach($matched_issues as $matched_issue): ?>
                             <tr>
                                 <td class="issue_title">
-                                    <input type="checkbox" value="<?= $matched_issue->getID(); ?>" class="fancycheckbox" name="relate_issues[<?= $matched_issue->getID(); ?>]" id="relate_issue_<?= $matched_issue->getID(); ?>"><label for="relate_issue_<?= $matched_issue->getID(); ?>" style="font-weight: normal;"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?> [<?= ($matched_issue->isOpen()) ? __('Open') : __('Closed'); ?>] <?= $matched_issue->getFormattedTitle(); ?></label>
+                                    <input type="checkbox" value="<?= $matched_issue->getID(); ?>" class="fancycheckbox" name="relate_issues[<?= $matched_issue->getID(); ?>]" id="relate_issue_<?= $matched_issue->getID(); ?>"><label for="relate_issue_<?= $matched_issue->getID(); ?>" style="font-weight: normal;"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?> [<?= ($matched_issue->isOpen()) ? __('Open') : __('Closed'); ?>] <?= $matched_issue->getFormattedTitle(); ?></label>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

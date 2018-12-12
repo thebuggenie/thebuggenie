@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Criteria;
+    use b2db\Insertion;
     use thebuggenie\core\framework;
     use thebuggenie\core\entities\Project;
 
@@ -31,111 +33,112 @@
         const MODULE = 'permissions.module';
         const ROLE_ID = 'permissions.role_id';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::PERMISSION_TYPE, 100);
-            parent::_addVarchar(self::TARGET_ID, 200, 0);
-            parent::_addBoolean(self::ALLOWED);
-            parent::_addVarchar(self::MODULE, 50);
-            parent::_addForeignKeyColumn(self::UID, Users::getTable());
-            parent::_addForeignKeyColumn(self::GID, Groups::getTable());
-            parent::_addForeignKeyColumn(self::TID, Teams::getTable());
-            parent::_addForeignKeyColumn(self::ROLE_ID, ListTypes::getTable());
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::PERMISSION_TYPE, 100);
+            parent::addVarchar(self::TARGET_ID, 200, 0);
+            parent::addBoolean(self::ALLOWED);
+            parent::addVarchar(self::MODULE, 50);
+            parent::addForeignKeyColumn(self::UID, Users::getTable());
+            parent::addForeignKeyColumn(self::GID, Groups::getTable());
+            parent::addForeignKeyColumn(self::TID, Teams::getTable());
+            parent::addForeignKeyColumn(self::ROLE_ID, ListTypes::getTable());
         }
         
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope', array(self::SCOPE));
+            $this->addIndex('scope', array(self::SCOPE));
         }
 
         public function getAll($scope_id = null)
         {
             $scope_id = ($scope_id === null) ? framework\Context::getScope()->getID() : $scope_id;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $res = $this->doSelect($crit, 'none');
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope_id);
+            $res = $this->rawSelect($query, 'none');
             return $res;
         }
         
         public function removeSavedPermission($uid, $gid, $tid, $module, $permission_type, $target_id, $scope, $role_id = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $uid);
-            $crit->addWhere(self::GID, $gid);
-            $crit->addWhere(self::TID, $tid);
-            $crit->addWhere(self::MODULE, $module);
-            $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
-            $crit->addWhere(self::TARGET_ID, $target_id);
-            $crit->addWhere(self::SCOPE, $scope);
+            $query = $this->getQuery();
+            $query->where(self::UID, $uid);
+            $query->where(self::GID, $gid);
+            $query->where(self::TID, $tid);
+            $query->where(self::MODULE, $module);
+            $query->where(self::PERMISSION_TYPE, $permission_type);
+            $query->where(self::TARGET_ID, $target_id);
+            $query->where(self::SCOPE, $scope);
             if ($role_id !== null)
             {
-                $crit->addWhere(self::ROLE_ID, $role_id);
+                $query->where(self::ROLE_ID, $role_id);
             }
             
-            $res = $this->doDelete($crit);
+            $res = $this->rawDelete($query);
         }
 
         public function deleteAllPermissionsForCombination($uid, $gid, $tid, $target_id = 0, $role_id = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $uid);
-            $crit->addWhere(self::GID, $gid);
-            $crit->addWhere(self::TID, $tid);
+            $query = $this->getQuery();
+            $query->where(self::UID, $uid);
+            $query->where(self::GID, $gid);
+            $query->where(self::TID, $tid);
             if ($target_id == 0)
             {
-                $crit->addWhere(self::TARGET_ID, $target_id);
+                $query->where(self::TARGET_ID, $target_id);
             }
             else
             {
-                $ctn = $crit->returnCriterion(self::TARGET_ID, $target_id);
-                $ctn->addOr(self::TARGET_ID, 0);
-                $crit->addWhere($ctn);
+                $criteria = new Criteria();
+                $criteria->where(self::TARGET_ID, $target_id);
+                $criteria->or(self::TARGET_ID, 0);
+                $query->and($criteria);
             }
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
             if ($role_id !== null)
             {
-                $crit->addWhere(self::ROLE_ID, $role_id);
+                $query->where(self::ROLE_ID, $role_id);
             }
 
-            $res = $this->doDelete($crit);
+            $res = $this->rawDelete($query);
         }
 
         public function setPermission($uid, $gid, $tid, $allowed, $module, $permission_type, $target_id, $scope, $role_id = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::UID, (int) $uid);
-            $crit->addInsert(self::GID, (int) $gid);
-            $crit->addInsert(self::TID, (int) $tid);
-            $crit->addInsert(self::ALLOWED, $allowed);
-            $crit->addInsert(self::MODULE, $module);
-            $crit->addInsert(self::PERMISSION_TYPE, $permission_type);
-            $crit->addInsert(self::TARGET_ID, $target_id);
-            $crit->addInsert(self::SCOPE, $scope);
+            $insertion = new Insertion();
+            $insertion->add(self::UID, (int) $uid);
+            $insertion->add(self::GID, (int) $gid);
+            $insertion->add(self::TID, (int) $tid);
+            $insertion->add(self::ALLOWED, $allowed);
+            $insertion->add(self::MODULE, $module);
+            $insertion->add(self::PERMISSION_TYPE, $permission_type);
+            $insertion->add(self::TARGET_ID, $target_id);
+            $insertion->add(self::SCOPE, $scope);
             if ($role_id !== null)
             {
-                $crit->addInsert(self::ROLE_ID, $role_id);
+                $insertion->add(self::ROLE_ID, $role_id);
             }
             
-            $res = $this->doInsert($crit);
+            $res = $this->rawInsert($insertion);
             return $res->getInsertID();
         }
 
         public function deleteModulePermissions($module_name, $scope)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::MODULE, $module_name);
-            $crit->addWhere(self::SCOPE, $scope);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::MODULE, $module_name);
+            $query->where(self::SCOPE, $scope);
+            $this->rawDelete($query);
         }
 
         public function deleteRolePermissions($role_id, $scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $crit->addWhere(self::SCOPE, $scope);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ROLE_ID, $role_id);
+            $query->where(self::SCOPE, $scope);
+            $this->rawDelete($query);
         }
 
         /**
@@ -149,30 +152,30 @@
         public function deleteRolePermission($role_id, $module, $permission_type, $scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $crit->addWhere(self::MODULE, $module);
-            $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
-            $crit->addWhere(self::SCOPE, $scope);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ROLE_ID, $role_id);
+            $query->where(self::MODULE, $module);
+            $query->where(self::PERMISSION_TYPE, $permission_type);
+            $query->where(self::SCOPE, $scope);
+            $this->rawDelete($query);
         }
 
         public function deletePermissionsByRoleAndUser($role_id, $user_id, $scope)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, $scope);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ROLE_ID, $role_id);
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, $scope);
+            $this->rawDelete($query);
         }
 
         public function deletePermissionsByRoleAndTeam($role_id, $team_id, $scope)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $crit->addWhere(self::TEAM_ID, $team_id);
-            $crit->addWhere(self::SCOPE, $scope);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ROLE_ID, $role_id);
+            $query->where(self::TEAM_ID, $team_id);
+            $query->where(self::SCOPE, $scope);
+            $this->rawDelete($query);
         }
 
         public function loadFixtures(\thebuggenie\core\entities\Scope $scope, $admin_group_id, $guest_group_id)
@@ -244,7 +247,7 @@
 
         protected function _clonePermissions($cloned_id, $new_id, $mode)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             switch ($mode)
             {
                 case 'group':
@@ -254,9 +257,9 @@
                     $mode = self::TID;
                     break;
             }
-            $crit->addWhere($mode, $cloned_id);
+            $query->where($mode, $cloned_id);
             $permissions_to_add = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -266,14 +269,14 @@
 
             foreach ($permissions_to_add as $permission)
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $crit->addInsert(self::PERMISSION_TYPE, $permission['permission_type']);
-                $crit->addInsert(self::TARGET_ID, $permission['target_id']);
-                $crit->addInsert($mode, $new_id);
-                $crit->addInsert(self::ALLOWED, $permission['allowed']);
-                $crit->addInsert(self::MODULE, $permission['module']);
-                $res = $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $insertion->add(self::PERMISSION_TYPE, $permission['permission_type']);
+                $insertion->add(self::TARGET_ID, $permission['target_id']);
+                $insertion->add($mode, $new_id);
+                $insertion->add(self::ALLOWED, $permission['allowed']);
+                $insertion->add(self::MODULE, $permission['module']);
+                $res = $this->rawInsert($insertion);
             }
         }
 
@@ -313,28 +316,28 @@
                 $scope_id = framework\Context::getScope()->getID();
 
                 // Determine if permission already exists.
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::SCOPE, $scope_id);
-                $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
-                $crit->addWhere(self::TARGET_ID, $target_id);
-                $crit->addWhere(self::UID, $user_id);
-                $crit->addWhere(self::ALLOWED, true);
-                $crit->addWhere(self::MODULE, $module);
-                $crit->addWhere(self::ROLE_ID, $role_id);
-                $res = $this->doSelect($crit, 'none');
+                $query = $this->getQuery();
+                $query->where(self::SCOPE, $scope_id);
+                $query->where(self::PERMISSION_TYPE, $permission_type);
+                $query->where(self::TARGET_ID, $target_id);
+                $query->where(self::UID, $user_id);
+                $query->where(self::ALLOWED, true);
+                $query->where(self::MODULE, $module);
+                $query->where(self::ROLE_ID, $role_id);
+                $res = $this->rawSelect($query, 'none');
 
                 // If permission does not exist, add it.
                 if (!$res)
                 {
-                    $crit = $this->getCriteria();
-                    $crit->addInsert(self::SCOPE, $scope_id);
-                    $crit->addInsert(self::PERMISSION_TYPE, $permission_type);
-                    $crit->addInsert(self::TARGET_ID, $target_id);
-                    $crit->addInsert(self::UID, $user_id);
-                    $crit->addInsert(self::ALLOWED, true);
-                    $crit->addInsert(self::MODULE, $module);
-                    $crit->addInsert(self::ROLE_ID, $role_id);
-                    $this->doInsert($crit);
+                    $insertion = new Insertion();
+                    $insertion->add(self::SCOPE, $scope_id);
+                    $insertion->add(self::PERMISSION_TYPE, $permission_type);
+                    $insertion->add(self::TARGET_ID, $target_id);
+                    $insertion->add(self::UID, $user_id);
+                    $insertion->add(self::ALLOWED, true);
+                    $insertion->add(self::MODULE, $module);
+                    $insertion->add(self::ROLE_ID, $role_id);
+                    $this->rawInsert($insertion);
                 }
             }
 
@@ -357,41 +360,41 @@
                 $scope_id = framework\Context::getScope()->getID();
 
                 // Determine if permission already exists.
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::SCOPE, $scope_id);
-                $crit->addWhere(self::PERMISSION_TYPE, $permission_type);
-                $crit->addWhere(self::TARGET_ID, $target_id);
-                $crit->addWhere(self::TID, $team_id);
-                $crit->addWhere(self::ALLOWED, true);
-                $crit->addWhere(self::MODULE, $module);
-                $crit->addWhere(self::ROLE_ID, $role_id);
-                $res = $this->doSelect($crit, 'none');
+                $query = $this->getQuery();
+                $query->where(self::SCOPE, $scope_id);
+                $query->where(self::PERMISSION_TYPE, $permission_type);
+                $query->where(self::TARGET_ID, $target_id);
+                $query->where(self::TID, $team_id);
+                $query->where(self::ALLOWED, true);
+                $query->where(self::MODULE, $module);
+                $query->where(self::ROLE_ID, $role_id);
+                $res = $this->rawSelect($query, 'none');
 
                 // If permission does not exist, add it.
                 if (!$res)
                 {
-                    $crit = $this->getCriteria();
-                    $crit->addInsert(self::SCOPE, $scope_id);
-                    $crit->addInsert(self::PERMISSION_TYPE, $permission_type);
-                    $crit->addInsert(self::TARGET_ID, $target_id);
-                    $crit->addInsert(self::TID, $team_id);
-                    $crit->addInsert(self::ALLOWED, true);
-                    $crit->addInsert(self::MODULE, $module);
-                    $crit->addInsert(self::ROLE_ID, $role_id);
-                    $this->doInsert($crit);
+                    $insertion = new Insertion();
+                    $insertion->add(self::SCOPE, $scope_id);
+                    $insertion->add(self::PERMISSION_TYPE, $permission_type);
+                    $insertion->add(self::TARGET_ID, $target_id);
+                    $insertion->add(self::TID, $team_id);
+                    $insertion->add(self::ALLOWED, true);
+                    $insertion->add(self::MODULE, $module);
+                    $insertion->add(self::ROLE_ID, $role_id);
+                    $this->rawInsert($insertion);
                 }
             }
         }
 
         public function getByPermissionTargetIDAndModule($permission, $target_id, $module = 'core')
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PERMISSION_TYPE, $permission);
-            $crit->addWhere(self::TARGET_ID, $target_id);
-            $crit->addWhere(self::MODULE, $module);
+            $query = $this->getQuery();
+            $query->where(self::PERMISSION_TYPE, $permission);
+            $query->where(self::TARGET_ID, $target_id);
+            $query->where(self::MODULE, $module);
 
             $permissions = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -419,11 +422,11 @@
         
         public function deleteByPermissionTargetIDAndModule($permission, $target_id, $module = 'core')
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PERMISSION_TYPE, $permission);
-            $crit->addWhere(self::TARGET_ID, $target_id);
-            $crit->addWhere(self::MODULE, $module);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::PERMISSION_TYPE, $permission);
+            $query->where(self::TARGET_ID, $target_id);
+            $query->where(self::MODULE, $module);
+            $this->rawDelete($query);
         }
 
     }

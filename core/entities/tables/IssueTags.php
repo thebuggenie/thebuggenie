@@ -33,20 +33,20 @@
         const ADDED = 'issuetags.added';
         const SCOPE = 'issuetags.scope';
         
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
-            parent::_addVarchar(self::TAG_NAME, 50);
-            parent::_addInteger(self::ADDED, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
+            parent::addVarchar(self::TAG_NAME, 50);
+            parent::addInteger(self::ADDED, 10);
         }
         
         public function getByIssueID($issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE_ID, $issue_id);
-            $crit->addOrderBy(self::TAG_NAME, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::ISSUE_ID, $issue_id);
+            $query->addOrderBy(self::TAG_NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $res = $this->rawSelect($query);
             return $res;
         }
         

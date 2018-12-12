@@ -1,6 +1,6 @@
 <?php /** @var \thebuggenie\core\entities\Issue $issue */ ?>
 <div id="todos_box">
-    <legend class="viewissue_comments_header">
+    <legend>
         <?php echo __('Todos (%count_done / %count_total)',
             [
                 '%count_done' => '<span id="viewissue_todo_count_done">' . $issue->countDoneTodos() . '</span>',

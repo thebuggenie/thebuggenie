@@ -13,10 +13,10 @@
 
         public function getLinkedFileIds()
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::FILE_ID, 'file_id');
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::FILE_ID, 'file_id');
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $linked_file_ids = [];
 
             if ($res) {

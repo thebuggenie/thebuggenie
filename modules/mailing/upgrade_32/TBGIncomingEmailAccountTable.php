@@ -26,22 +26,22 @@
         const TIME_LAST_FETCHED = 'mailing_incoming_email_account.time_last_fetched';
         const SCOPE = 'mailing_incoming_email_account.scope';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::NAME, 200);
-            parent::_addVarchar(self::SERVER, 200);
-            parent::_addInteger(self::PORT, 3);
-            parent::_addInteger(self::SERVER_TYPE, 10);
-            parent::_addBoolean(self::SSL);
-            parent::_addBoolean(self::KEEP_EMAIL);
-            parent::_addVarchar(self::USERNAME, 200);
-            parent::_addVarchar(self::PASSWORD, 200);
-            parent::_addInteger(self::PROJECT, 10);
-            parent::_addInteger(self::ISSUETYPE, 10);
-            parent::_addInteger(self::NUM_LAST_FETCHED, 10);
-            parent::_addInteger(self::TIME_LAST_FETCHED, 10);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::NAME, 200);
+            parent::addVarchar(self::SERVER, 200);
+            parent::addInteger(self::PORT, 3);
+            parent::addInteger(self::SERVER_TYPE, 10);
+            parent::addBoolean(self::SSL);
+            parent::addBoolean(self::KEEP_EMAIL);
+            parent::addVarchar(self::USERNAME, 200);
+            parent::addVarchar(self::PASSWORD, 200);
+            parent::addInteger(self::PROJECT, 10);
+            parent::addInteger(self::ISSUETYPE, 10);
+            parent::addInteger(self::NUM_LAST_FETCHED, 10);
+            parent::addInteger(self::TIME_LAST_FETCHED, 10);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

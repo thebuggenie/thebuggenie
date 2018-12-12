@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\mailing\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\tables\ScopedTable,
         b2db\Criteria,
@@ -24,45 +25,45 @@
         const TO = 'mailing_queue.to';
         const MESSAGE_HTML = 'mailing_queue.part';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::SUBJECT, 255);
-            parent::_addVarchar(self::FROM, 255);
-            parent::_addText(self::TO);
-            parent::_addText(self::MESSAGE);
-            parent::_addText(self::MESSAGE_HTML);
-            parent::_addInteger(self::DATE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::SUBJECT, 255);
+            parent::addVarchar(self::FROM, 255);
+            parent::addText(self::TO);
+            parent::addText(self::MESSAGE);
+            parent::addText(self::MESSAGE_HTML);
+            parent::addInteger(self::DATE, 10);
         }
 
         public function addMailToQueue(Swift_Message $mail)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::SUBJECT, $mail->getSubject());
-            $crit->addInsert(self::FROM, serialize($mail->getFrom()));
-            $crit->addInsert(self::TO, serialize($mail->getTo()));
-            $crit->addInsert(self::MESSAGE, $mail->getBody());
-            $crit->addInsert(self::MESSAGE_HTML, serialize($mail->getChildren()));
-            $crit->addInsert(self::DATE, NOW);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion = new Insertion();
+            $insertion->add(self::SUBJECT, $mail->getSubject());
+            $insertion->add(self::FROM, serialize($mail->getFrom()));
+            $insertion->add(self::TO, serialize($mail->getTo()));
+            $insertion->add(self::MESSAGE, $mail->getBody());
+            $insertion->add(self::MESSAGE_HTML, serialize($mail->getChildren()));
+            $insertion->add(self::DATE, NOW);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
 
-            $res = $this->doInsert($crit);
+            $res = $this->rawInsert($insertion);
 
             return $res->getInsertID();
         }
 
         public function getQueuedMessages($limit = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
             if ($limit !== null)
             {
-                $crit->setLimit($limit);
+                $query->setLimit($limit);
             }
-            $crit->addOrderBy(self::DATE, Criteria::SORT_ASC);
+            $query->addOrderBy(self::DATE, \b2db\QueryColumnSort::SORT_ASC);
 
             $messages = array();
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
 
             if ($res)
             {
@@ -85,11 +86,11 @@
 
         public function deleteProcessedMessages($ids)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ID, (array) $ids, Criteria::DB_IN);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::ID, (array) $ids, \b2db\Criterion::IN);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            $res = $this->doDelete($crit);
+            $res = $this->rawDelete($query);
         }
 
     }

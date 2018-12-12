@@ -39,34 +39,34 @@
 
         public function getAll($limit = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy('clients.name', Criteria::SORT_ASC);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy('clients.name', \b2db\QueryColumnSort::SORT_ASC);
 
             if (isset($limit))
             {
-                $crit->setLimit($limit);
+                $query->setLimit($limit);
             }
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function doesClientNameExist($client_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $client_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::NAME, $client_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return (bool) $this->doCount($crit);
+            return (bool) $this->count($query);
         }
 
         public function quickfind($client_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, "%{$client_name}%", Criteria::DB_LIKE);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::NAME, "%{$client_name}%", \b2db\Criterion::LIKE);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
     }

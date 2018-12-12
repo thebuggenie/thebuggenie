@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -54,50 +55,50 @@
 
             foreach ($steps as $step)
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::WORKFLOW_ID, 1);
-                $crit->addInsert(self::SCOPE, $scope->getID());
-                $crit->addInsert(self::NAME, $step['name']);
-                $crit->addInsert(self::DESCRIPTION, $step['description']);
-                $crit->addInsert(self::STATUS_ID, $step['status_id']);
-                $crit->addInsert(self::CLOSED, $step['is_closed']);
-                $crit->addInsert(self::EDITABLE, $step['editable']);
-                $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::WORKFLOW_ID, 1);
+                $insertion->add(self::SCOPE, $scope->getID());
+                $insertion->add(self::NAME, $step['name']);
+                $insertion->add(self::DESCRIPTION, $step['description']);
+                $insertion->add(self::STATUS_ID, $step['status_id']);
+                $insertion->add(self::CLOSED, $step['is_closed']);
+                $insertion->add(self::EDITABLE, $step['editable']);
+                $this->rawInsert($insertion);
             }
         }
 
         public function countByWorkflowID($workflow_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::WORKFLOW_ID, $workflow_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::WORKFLOW_ID, $workflow_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function getByID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $row = $this->doSelectById($id, $crit, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $row = $this->rawSelectById($id, $query, false);
             return $row;
         }
         
         public function countByStatusID($status_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::STATUS_ID, $status_id);
+            $query = $this->getQuery();
+            $query->where(self::STATUS_ID, $status_id);
             
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function getAllByWorkflowSchemeID($scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addJoin(Workflows::getTable(), Workflows::ID, self::WORKFLOW_ID, array(), Criteria::DB_INNER_JOIN);
-            $crit->addJoin(WorkflowIssuetype::getTable(), WorkflowIssuetype::WORKFLOW_ID, self::WORKFLOW_ID, array(), Criteria::DB_INNER_JOIN);
-            $crit->addWhere(WorkflowIssuetype::WORKFLOW_SCHEME_ID, $scheme_id);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->join(Workflows::getTable(), Workflows::ID, self::WORKFLOW_ID, array(), \b2db\Join::INNER);
+            $query->join(WorkflowIssuetype::getTable(), WorkflowIssuetype::WORKFLOW_ID, self::WORKFLOW_ID, array(), \b2db\Join::INNER);
+            $query->where(WorkflowIssuetype::WORKFLOW_SCHEME_ID, $scheme_id);
+            $res = $this->rawSelect($query);
 
             $steps = array();
             if ($res)

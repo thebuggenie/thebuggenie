@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities\tables;
 
     use b2db\Table;
+    use thebuggenie\core\entities\User;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -62,20 +63,20 @@
             return $users;
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('userstate', self::USERSTATE);
-            $this->_addIndex('username_password', array(self::UNAME, self::PASSWORD));
-            $this->_addIndex('username_deleted', array(self::UNAME, self::DELETED));
+            $this->addIndex('userstate', self::USERSTATE);
+            $this->addIndex('username_password', array(self::UNAME, self::PASSWORD));
+            $this->addIndex('username_deleted', array(self::UNAME, self::DELETED));
         }
 
         protected function getUserMigrationDetails()
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn('users.id');
-            $crit->addSelectionColumn('users.scope');
-            $crit->addSelectionColumn('users.group_id');
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->addSelectionColumn('users.id');
+            $query->addSelectionColumn('users.scope');
+            $query->addSelectionColumn('users.group_id');
+            $res = $this->rawSelect($query);
 
             $users = array();
             while ($row = $res->getNextRow())
@@ -88,16 +89,16 @@
 
         /**
          * @param $username
-         * @return \thebuggenie\core\entities\User
+         * @return User
          */
         public function getByUsername($username)
         {
             if (!array_key_exists($username, $this->_username_lookup_cache)) {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::UNAME, strtolower($username), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
-                $crit->addWhere(self::DELETED, false);
+                $query = $this->getQuery();
+                $query->where(self::UNAME, strtolower($username), \b2db\Criterion::EQUALS, '', '', \b2db\Query::DB_LOWER);
+                $query->where(self::DELETED, false);
 
-                $user = $this->selectOne($crit);
+                $user = $this->selectOne($query);
                 $this->_username_lookup_cache[$username] = $user;
             }
 
@@ -106,96 +107,100 @@
 
         public function getByRealname($realname)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::REALNAME, strtolower($realname), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
-            $crit->addWhere(self::DELETED, false);
+            $query = $this->getQuery();
+            $query->where(self::REALNAME, strtolower($realname), \b2db\Criterion::EQUALS, '', '', \b2db\Query::DB_LOWER);
+            $query->where(self::DELETED, false);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         public function getByBuddyname($buddyname)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::BUDDYNAME, strtolower($buddyname), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
-            $crit->addWhere(self::DELETED, false);
+            $query = $this->getQuery();
+            $query->where(self::BUDDYNAME, strtolower($buddyname), \b2db\Criterion::EQUALS, '', '', \b2db\Query::DB_LOWER);
+            $query->where(self::DELETED, false);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         public function getByEmail($email)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::EMAIL, strtolower($email), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
-            $crit->addWhere(self::DELETED, false);
+            $query = $this->getQuery();
+            $query->where(self::EMAIL, strtolower($email), \b2db\Criterion::EQUALS, '', '', \b2db\Query::DB_LOWER);
+            $query->where(self::DELETED, false);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         public function isUsernameAvailable($username)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UNAME, strtolower($username), Criteria::DB_EQUALS, '', '', Criteria::DB_LOWER);
-            $crit->addWhere(self::DELETED, false);
+            $query = $this->getQuery();
+            $query->where(self::UNAME, strtolower($username), \b2db\Criterion::EQUALS, '', '', \b2db\Query::DB_LOWER);
+            $query->where(self::DELETED, false);
 
-            return !(bool) $this->doCount($crit);
+            return !(bool) $this->count($query);
         }
 
         public function getByUserIDs($userids)
         {
             if (empty($userids)) return array();
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::ID, $userids, Criteria::DB_IN);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::ID, $userids, \b2db\Criterion::IN);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
+        /**
+         * @param $userid
+         * @return User
+         */
         public function getByUserID($userid)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            return $this->selectById($userid, $crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            return $this->selectById($userid, $query);
         }
 
         public function doesIDExist($userid)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::ID, $userid);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::ID, $userid);
+            return $this->count($query);
         }
 
         public function getByDetails($details, $limit = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::DELETED, false);
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
             if (mb_stristr($details, "@"))
             {
-                $crit->addWhere(self::EMAIL, "%$details%", Criteria::DB_LIKE);
+                $query->where(self::EMAIL, "%$details%", \b2db\Criterion::LIKE);
             }
             else
             {
-                $crit->addWhere(self::UNAME, "%$details%", Criteria::DB_LIKE);
+                $query->where(self::UNAME, "%$details%", \b2db\Criterion::LIKE);
             }
 
             if ($limit)
             {
-                $crit->setLimit($limit);
+                $query->setLimit($limit);
             }
-            if (!$res = $this->select($crit))
+            if (!$res = $this->select($query))
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::DELETED, false);
-                $crit->addWhere(self::UNAME, "%$details%", Criteria::DB_LIKE);
-                $crit->addOr(self::BUDDYNAME, "%$details%", Criteria::DB_LIKE);
-                $crit->addOr(self::REALNAME, "%$details%", Criteria::DB_LIKE);
-                $crit->addOr(self::EMAIL, "%$details%", Criteria::DB_LIKE);
+                $query = $this->getQuery();
+                $query->where(self::DELETED, false);
+                $query->where(self::UNAME, "%$details%", \b2db\Criterion::LIKE);
+                $query->or(self::BUDDYNAME, "%$details%", \b2db\Criterion::LIKE);
+                $query->or(self::REALNAME, "%$details%", \b2db\Criterion::LIKE);
+                $query->or(self::EMAIL, "%$details%", \b2db\Criterion::LIKE);
                 if ($limit)
                 {
-                    $crit->setLimit($limit);
+                    $query->setLimit($limit);
                 }
-                $res = $this->select($crit);
+                $res = $this->select($query);
             }
 
             $users = array();
@@ -215,31 +220,32 @@
 
         public function findInConfig($details, $limit = 50, $allow_keywords = true)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
 
             switch ($details)
             {
                 case 'unactivated':
                     if ($allow_keywords)
                     {
-                        $crit->addWhere(self::ACTIVATED, false);
+                        $query->where(self::ACTIVATED, false);
                         $limit = 500;
                         break;
                     }
                 case 'newusers':
                     if ($allow_keywords)
                     {
-                        $crit->addWhere(self::JOINED, NOW - 1814400, Criteria::DB_GREATER_THAN_EQUAL);
+                        $query->where(self::JOINED, NOW - 1814400, \b2db\Criterion::GREATER_THAN_EQUAL);
                         $limit = 500;
                         break;
                     }
                 case '0-9':
                     if ($allow_keywords)
                     {
-                        $ctn = $crit->returnCriterion(self::UNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
-                        $ctn->addOr(self::BUDDYNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
-                        $ctn->addOr(self::REALNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), Criteria::DB_IN);
-                        $crit->addWhere($ctn);
+                        $criteria = new Criteria();
+                        $criteria->where(self::UNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), \b2db\Criterion::IN);
+                        $criteria->or(self::BUDDYNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), \b2db\Criterion::IN);
+                        $criteria->or(self::REALNAME, array('0%', '1%', '2%', '3%', '4%', '5%', '6%', '7%', '8%', '9%'), \b2db\Criterion::IN);
+                        $query->where($criteria);
                         $limit = 500;
                         break;
                     }
@@ -252,28 +258,29 @@
                 default:
                     if (mb_strlen($details) == 1) $limit = 500;
                     $details = (mb_strlen($details) == 1) ? mb_strtolower("$details%") : mb_strtolower("%$details%");
-                    $ctn = $crit->returnCriterion(self::UNAME, $details, Criteria::DB_LIKE);
-                    $ctn->addOr(self::BUDDYNAME, $details, Criteria::DB_LIKE);
-                    $ctn->addOr(self::REALNAME, $details, Criteria::DB_LIKE);
-                    $ctn->addOr(self::EMAIL, $details, Criteria::DB_LIKE);
-                    $crit->addWhere($ctn);
+                    $criteria = new Criteria();
+                    $criteria->where(self::UNAME, $details, \b2db\Criterion::LIKE);
+                    $criteria->or(self::BUDDYNAME, $details, \b2db\Criterion::LIKE);
+                    $criteria->or(self::REALNAME, $details, \b2db\Criterion::LIKE);
+                    $criteria->or(self::EMAIL, $details, \b2db\Criterion::LIKE);
+                    $query->where($criteria);
                     break;
             }
-            $crit->addJoin(UserScopes::getTable(), UserScopes::USER_ID, self::ID, array(), Criteria::DB_INNER_JOIN);
-            $crit->addWhere(UserScopes::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::DELETED, false);
+            $query->join(UserScopes::getTable(), UserScopes::USER_ID, self::ID, array(), \b2db\Join::INNER);
+            $query->where(UserScopes::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::DELETED, false);
 
             $users = array();
             $res = null;
 
-            if ($details != '' && $res = $this->doSelect($crit))
+            if ($details != '' && $res = $this->rawSelect($query))
             {
                 while (($row = $res->getNextRow()) && count($users) < $limit)
                 {
                     $user_id = (int) $row->get(self::ID);
                     $details = UserScopes::getTable()->getUserDetailsByScope($user_id, framework\Context::getScope()->getID());
                     if (!$details) continue;
-                    $users[$user_id] = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user_id);
+                    $users[$user_id] = User::getB2DBTable()->selectById($user_id);
                     $users[$user_id]->setScopeConfirmed($details['confirmed']);
                 }
             }
@@ -283,10 +290,10 @@
 
         public function getAllUserIDs()
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
 
-            $crit->addSelectionColumn(self::ID, 'uid');
-            $res = $this->doSelect($crit);
+            $query->addSelectionColumn(self::ID, 'uid');
+            $res = $this->rawSelect($query);
 
             $uids = array();
             if ($res)
@@ -305,9 +312,9 @@
         {
             if (!empty($user_ids))
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::ID, $user_ids, Criteria::DB_IN);
-                $users = $this->select($crit);
+                $query = $this->getQuery();
+                $query->where(self::ID, $user_ids, \b2db\Criterion::IN);
+                $users = $this->select($query);
                 unset($users);
             }
 

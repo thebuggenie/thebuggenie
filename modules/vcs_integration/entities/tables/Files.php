@@ -47,11 +47,11 @@
         public function getByCommitID($id, $scope = null)
         {
             $scope = ($scope === null) ? \thebuggenie\core\framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
-            $crit->addWhere(self::COMMIT_ID, $id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
+            $query->where(self::COMMIT_ID, $id);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
     }

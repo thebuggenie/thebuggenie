@@ -31,20 +31,20 @@
         const ID = 'users.id';
         const UNAME = 'users.username';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::UNAME, 50);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::UNAME, 50);
         }
 
         public function getAdminUsername()
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID);
-            $crit->addSelectionColumn(self::UNAME);
-            $crit->addWhere(self::ID, 1);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID);
+            $query->addSelectionColumn(self::UNAME);
+            $query->where(self::ID, 1);
 
-            $row = $this->doSelectOne($crit);
+            $row = $this->rawSelectOne($query);
             return $row[self::UNAME];
         }
 

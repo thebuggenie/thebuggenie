@@ -2,20 +2,12 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\RawQuery;
+    use b2db\Update;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
         b2db\Criterion;
-
-    /**
-     * Notifications table
-     *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
 
     /**
      * Notifications table
@@ -44,19 +36,19 @@
 
         public function getCountsByUserID($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::IS_READ, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TRIGGERED_BY_UID, $user_id, Criteria::DB_NOT_EQUALS);
-            $unread_count = $this->count($crit);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::IS_READ, false);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TRIGGERED_BY_UID, $user_id, \b2db\Criterion::NOT_EQUALS);
+            $unread_count = $this->count($query);
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::IS_READ, true);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TRIGGERED_BY_UID, $user_id, Criteria::DB_NOT_EQUALS);
-            $read_count = $this->count($crit);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::IS_READ, true);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TRIGGERED_BY_UID, $user_id, \b2db\Criterion::NOT_EQUALS);
+            $read_count = $this->count($query);
             
             return array($unread_count, $read_count);
         }
@@ -76,28 +68,30 @@
             $seconds = $minutes * 60;
 
             $custom_sql_unread = "SELECT SUM(subquery.custom_count) as custom_count FROM (SELECT {$notification_type_col}, {$created_at_col} DIV {$seconds}, COUNT({$id_col}) as real_count, (CASE WHEN {$notification_type_col} = '{$notification_type_issue_updated_col}' THEN 1 ELSE COUNT({$id_col}) END) as custom_count FROM {$b2dbname} WHERE {$user_id_col} = {$user_id} AND {$triggered_by_uid_col} != {$user_id} AND $is_read_col = 0 GROUP BY {$notification_type_col}, {$created_at_col} DIV {$seconds}, {$triggered_by_uid_col}) as subquery";
-            $statement = \b2db\Statement::getPreparedStatement($custom_sql_unread);
-            $res = $statement->statement->execute(array());
+            $query = new RawQuery($custom_sql_unread);
+            $statement = \b2db\Statement::getPreparedStatement($query);
+            $res = $statement->execute();
             if (!$res)
             {
                 $unread_count = 0;
             }
             else
             {
-                $resultset = $statement->statement->fetch();
+                $resultset = $statement->fetch();
                 $unread_count = is_null($resultset['custom_count']) ? 0 : $resultset['custom_count'];
             }
 
             $custom_sql_unread = "SELECT SUM(subquery.custom_count) as custom_count FROM (SELECT {$notification_type_col}, {$created_at_col} DIV {$seconds}, COUNT({$id_col}) as real_count, (CASE WHEN {$notification_type_col} = '{$notification_type_issue_updated_col}' THEN 1 ELSE COUNT({$id_col}) END) as custom_count FROM {$b2dbname} WHERE {$user_id_col} = {$user_id} AND {$triggered_by_uid_col} != {$user_id} AND $is_read_col = 1 GROUP BY {$notification_type_col}, {$created_at_col} DIV {$seconds}, {$triggered_by_uid_col}) as subquery";
-            $statement = \b2db\Statement::getPreparedStatement($custom_sql_unread);
-            $res = $statement->statement->execute(array());
+            $query = new RawQuery($custom_sql_unread);
+            $statement = \b2db\Statement::getPreparedStatement($query);
+            $res = $statement->execute();
             if (!$res)
             {
                 $read_count = 0;
             }
             else
             {
-                $resultset = $statement->statement->fetch();
+                $resultset = $statement->fetch();
                 $read_count = is_null($resultset['custom_count']) ? 0 : $resultset['custom_count'];
             }
 
@@ -106,13 +100,13 @@
         
         public function getByUserID($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TRIGGERED_BY_UID, $user_id, Criteria::DB_NOT_EQUALS);
-            $crit->addOrderBy(self::ID, 'DESC');
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TRIGGERED_BY_UID, $user_id, \b2db\Criterion::NOT_EQUALS);
+            $query->addOrderBy(self::ID, 'DESC');
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getByUserIDAndGroupableMinutes($user_id, $minutes = 0)
@@ -135,43 +129,42 @@
             $sql .= " GROUP BY {$this->b2db_alias}_custom_group_by, {$created_at_col} DIV {$seconds}, {$triggered_by_user_id_col}";
             $sql .= " ORDER BY {$id_col} DESC";
 
-            $crit = $this->getCriteria();
-            $crit->sql = $sql;
-            $crit->action = 'select';
-            $statement = \b2db\Statement::getPreparedStatement($crit);
-            $resultset = $statement->performQuery();
+            $query = new RawQuery($sql);
+            $statement = \b2db\Statement::getPreparedStatement($query);
+            $resultset = $statement->execute();
 
-            return $this->_populateFromResultset(($resultset->count()) ? $resultset : null);
+            return $this->populateFromResultset(($resultset->count()) ? $resultset : null);
         }
 
         public function markUserNotificationsReadByTypesAndId($types, $id, $user_id)
         {
             if (!is_array($types)) $types = array($types);
             
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
             if (count($types))
             {
                 if (is_array($id))
                 {
-                    $crit->addWhere(self::TARGET_ID, $id, Criteria::DB_IN);
+                    $query->where(self::TARGET_ID, $id, \b2db\Criterion::IN);
                 }
                 else
                 {
-                    $crit->addWhere(self::TARGET_ID, $id);
+                    $query->where(self::TARGET_ID, $id);
                 }
-                $crit->addWhere(self::NOTIFICATION_TYPE, $types, Criteria::DB_IN);
+                $query->where(self::NOTIFICATION_TYPE, $types, \b2db\Criterion::IN);
             }
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addUpdate(self::IS_READ, true);
-            $this->doUpdate($crit);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $update = new Update();
+            $update->add(self::IS_READ, true);
+            $this->rawUpdate($update, $query);
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::IS_READ, true);
-            $crit->addWhere('notifications.created_at', NOW - (86400 * 30), Criteria::DB_LESS_THAN_EQUAL);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::IS_READ, true);
+            $query->where('notifications.created_at', NOW - (86400 * 30), \b2db\Criterion::LESS_THAN_EQUAL);
+            $this->rawDelete($query);
         }
 
         public function markUserNotificationsReadByTypesAndIdAndGroupableMinutes($types, $id, $user_id, $minutes = 0, $is_read = 1, $mark_all = true)
@@ -216,11 +209,9 @@
 
             $sql = "UPDATE {$b2dbname} a JOIN ({$sub_sql}) b ON a.{$cols['id']} = b.{$cols['id']} SET a.{$cols['is_read']} = {$is_read} WHERE (a.{$cols['notification_type']} = '{$notification_type_issue_updated_col}') AND (a.{$cols['user_id']} = {$user_id}) AND (a.{$cols['scope']} = {$scope}) AND ((a.{$cols['created_at']} DIV {$seconds}) * a.{$cols['created_at']} DIV (a.{$cols['created_at']})) IN (b.created_at_div)";
 
-            $crit = $this->getCriteria();
-            $crit->sql = $sql;
-            $crit->action = 'update';
-            $statement = \b2db\Statement::getPreparedStatement($crit);
-            $statement->performQuery();
+            $query = new RawQuery($sql);
+            $statement = \b2db\Statement::getPreparedStatement($query);
+            $statement->execute();
 
             if (! $mark_all) return;
 
@@ -228,21 +219,21 @@
             $this->markUserNotificationsReadByTypesAndId($types, $id, $user_id);
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             switch ($old_table::B2DB_TABLE_VERSION)
             {
                 case 2:
-                    $crit = $this->getCriteria();
-                    $crit->addUpdate(self::SHOWN_AT, time());
-                    $this->doUpdate($crit);
+                    $update = new Update();
+                    $update->add(self::SHOWN_AT, time());
+                    $this->rawUpdate($update);
                     break;
             }
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('userid_targetid_notificationtype_scope', array(self::USER_ID, self::TARGET_ID, self::NOTIFICATION_TYPE, self::SCOPE));
+            $this->addIndex('userid_targetid_notificationtype_scope', array(self::USER_ID, self::TARGET_ID, self::NOTIFICATION_TYPE, self::SCOPE));
         }
 
     }

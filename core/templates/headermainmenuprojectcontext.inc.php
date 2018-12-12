@@ -14,7 +14,7 @@
         </li>
         <?php if ($tbg_user->canSearchForIssues()): ?>
             <li class="with-dropdown <?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?>selected<?php endif; ?>">
-                <?= link_tag(make_url('project_issues', array('project_key' => framework\Context::getCurrentProject()->getKey())), fa_image_tag('file-text-o') . __('Issues') . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
+                <?= link_tag(make_url('project_issues', array('project_key' => framework\Context::getCurrentProject()->getKey())), fa_image_tag('file-alt') . __('Issues') . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
                 <div id="issues_menu" class="tab_menu_dropdown popup_box two-columns">
                     <ul>
                         <li class="header"><?= __('Predefined searches'); ?></li>

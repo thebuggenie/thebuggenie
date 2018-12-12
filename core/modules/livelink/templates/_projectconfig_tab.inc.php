@@ -1,0 +1,1 @@
+<li id="tab_livelink"<?php if ($selected_tab == 'livelink'): ?> class="selected"<?php endif; ?>><?php echo javascript_link_tag(fa_image_tag('leaf', ['style' => 'width: 20px']) . __('TBG Live Link'), array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_livelink', 'project_config_menu');")); ?></li>

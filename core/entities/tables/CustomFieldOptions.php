@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Update;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -43,47 +44,47 @@
 
         public function getByValueAndCustomfieldID($value, $customfield_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::OPTION_VALUE, $value);
-            $crit->addWhere(self::CUSTOMFIELD_ID, $customfield_id);
+            $query = $this->getQuery();
+            $query->where(self::OPTION_VALUE, $value);
+            $query->where(self::CUSTOMFIELD_ID, $customfield_id);
 
-            $row = $this->selectOne($crit);
+            $row = $this->selectOne($query);
 
             return $row;
         }
 
         public function deleteCustomFieldOptions($customfield_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CUSTOMFIELD_ID, $customfield_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::CUSTOMFIELD_ID, $customfield_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $this->rawDelete($query);
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             switch ($old_table->getVersion())
             {
                 case 1:
-                    if ($res = $old_table->doSelectAll())
+                    if ($res = $old_table->rawSelectAll())
                     {
                         $customdatatypes_table = \thebuggenie\core\entities\CustomDatatype::getB2DBTable();
-                        $crit = $customdatatypes_table->getCriteria();
-                        $crit->indexBy(CustomFields::FIELD_KEY);
-                        $customfields = $customdatatypes_table->select($crit);
+                        $query = $customdatatypes_table->getQuery();
+                        $query->indexBy(CustomFields::FIELD_KEY);
+                        $customfields = $customdatatypes_table->select($query);
                         while ($row = $res->getNextRow())
                         {
                             $key = $row->get('customfieldoptions.customfield_key');
                             $customfield = (array_key_exists($key, $customfields)) ? $customfields[$key] : null;
                             if ($customfield instanceof \thebuggenie\core\entities\CustomDatatype)
                             {
-                                $crit = $this->getCriteria();
-                                $crit->addUpdate(self::CUSTOMFIELD_ID, $customfield->getID());
-                                $this->doUpdateById($crit, $row->get(self::ID));
+                                $update = new Update();
+                                $update->add(self::CUSTOMFIELD_ID, $customfield->getID());
+                                $this->rawUpdateById($update, $row->get(self::ID));
                             }
                             else
                             {
-                                $this->doDeleteById($row->get(self::ID));
+                                $this->rawDeleteById($row->get(self::ID));
                             }
                         }
                     }
@@ -95,11 +96,13 @@
         {
             foreach ($options as $key => $option_id)
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::SORT_ORDER, $key + 1);
-                $crit->addWhere(self::CUSTOMFIELD_ID, $customfield_id);
-                $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $this->doUpdateById($crit, $option_id);
+                $query = $this->getQuery();
+                $update = new Update();
+                $update->add(self::SORT_ORDER, $key + 1);
+                $query->where(self::ID, $option_id);
+                $query->where(self::CUSTOMFIELD_ID, $customfield_id);
+                $query->where(self::SCOPE, framework\Context::getScope()->getID());
+                $this->rawUpdate($update, $query);
             }
         }
 

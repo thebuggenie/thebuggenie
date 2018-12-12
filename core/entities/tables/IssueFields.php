@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\entities\IssuetypeScheme;
     use thebuggenie\core\entities\Scope;
     use thebuggenie\core\framework;
@@ -38,20 +39,20 @@
         const REPORTABLE = 'issuefields.is_reportable';
         const REQUIRED = 'issuefields.required';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::FIELD_KEY, 100);
-            parent::_addBoolean(self::REQUIRED);
-            parent::_addBoolean(self::REPORTABLE);
-            parent::_addBoolean(self::ADDITIONAL);
-            parent::_addForeignKeyColumn(self::ISSUETYPE_ID, IssueTypes::getTable(), IssueTypes::ID);
-            parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, IssuetypeSchemes::getTable(), IssuetypeSchemes::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::FIELD_KEY, 100);
+            parent::addBoolean(self::REQUIRED);
+            parent::addBoolean(self::REPORTABLE);
+            parent::addBoolean(self::ADDITIONAL);
+            parent::addForeignKeyColumn(self::ISSUETYPE_ID, IssueTypes::getTable(), IssueTypes::ID);
+            parent::addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, IssuetypeSchemes::getTable(), IssuetypeSchemes::ID);
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope_issuetypescheme_issuetype', array(self::SCOPE, self::ISSUETYPE_SCHEME_ID, self::ISSUETYPE_ID));
+            $this->addIndex('scope_issuetypescheme_issuetype', array(self::SCOPE, self::ISSUETYPE_SCHEME_ID, self::ISSUETYPE_ID));
         }
 
         public function getSchemeVisibleFieldsArrayByIssuetypeID($scheme_id, $issuetype_id)
@@ -76,83 +77,83 @@
 
         public function deleteBySchemeIDandIssuetypeID($scheme_id, $issuetype_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $query->where(self::ISSUETYPE_ID, $issuetype_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function copyBySchemeIDs($from_scheme_id, $to_scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $from_scheme_id);
-            if ($res = $this->doSelect($crit))
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ISSUETYPE_SCHEME_ID, $from_scheme_id);
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
-                    $crit2 = $this->getCriteria();
-                    $crit2->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                    $crit2->addInsert(self::ISSUETYPE_SCHEME_ID, $to_scheme_id);
-                    $crit2->addInsert(self::FIELD_KEY, $row->get(self::FIELD_KEY));
-                    $crit2->addInsert(self::ADDITIONAL, $row->get(self::ADDITIONAL));
-                    $crit2->addInsert(self::ISSUETYPE_ID, $row->get(self::ISSUETYPE_ID));
-                    $crit2->addInsert(self::REPORTABLE, $row->get(self::REPORTABLE));
-                    $crit2->addInsert(self::REQUIRED, $row->get(self::REQUIRED));
-                    $this->doInsert($crit2);
+                    $insertion = new Insertion();
+                    $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                    $insertion->add(self::ISSUETYPE_SCHEME_ID, $to_scheme_id);
+                    $insertion->add(self::FIELD_KEY, $row->get(self::FIELD_KEY));
+                    $insertion->add(self::ADDITIONAL, $row->get(self::ADDITIONAL));
+                    $insertion->add(self::ISSUETYPE_ID, $row->get(self::ISSUETYPE_ID));
+                    $insertion->add(self::REPORTABLE, $row->get(self::REPORTABLE));
+                    $insertion->add(self::REQUIRED, $row->get(self::REQUIRED));
+                    $this->rawInsert($insertion);
                 }
             }
         }
 
         public function addFieldAndDetailsBySchemeIDandIssuetypeID($scheme_id, $issuetype_id, $key, $details)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addInsert(self::FIELD_KEY, $key);
+            $insertion = new Insertion();
+            $insertion->add(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $insertion->add(self::ISSUETYPE_ID, $issuetype_id);
+            $insertion->add(self::FIELD_KEY, $key);
             if (array_key_exists('reportable', $details))
             {
-                $crit->addInsert(self::REPORTABLE, true);
+                $insertion->add(self::REPORTABLE, true);
             }
             if (array_key_exists('additional', $details))
             {
-                $crit->addInsert(self::ADDITIONAL, true);
+                $insertion->add(self::ADDITIONAL, true);
             }
             if (array_key_exists('required', $details))
             {
-                $crit->addInsert(self::REQUIRED, true);
+                $insertion->add(self::REQUIRED, true);
             }
 
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $this->doInsert($crit);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $this->rawInsert($insertion);
         }
 
         public function getBySchemeIDandIssuetypeID($scheme_id, $issuetype_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addJoin(CustomFields::getTable(), CustomFields::FIELD_KEY, self::FIELD_KEY);
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doSelect($crit, false);
+            $query = $this->getQuery();
+            $query->join(CustomFields::getTable(), CustomFields::FIELD_KEY, self::FIELD_KEY);
+            $query->where(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $query->where(self::ISSUETYPE_ID, $issuetype_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawSelect($query, false);
             return $res;
         }
 
         public function deleteByIssuetypeSchemeID($scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function deleteByIssueFieldKey($key)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::FIELD_KEY, $key);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::FIELD_KEY, $key);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function loadFixtures(Scope $scope, IssuetypeScheme $full_range_scheme, IssuetypeScheme $balanced_scheme, IssuetypeScheme $balanced_agile_scheme, IssuetypeScheme $simple_scheme, $issue_type_bug_report_id, $issue_type_feature_request_id, $issue_type_enhancement_id, $issue_type_task_id, $issue_type_user_story_id, $issue_type_idea_id, $issue_type_epic_id)
@@ -352,15 +353,15 @@
             foreach ($schemes as $scheme_id => $issuetypes) {
                 foreach ($issuetypes as $issuetype_id => $fields) {
                     foreach ($fields as $field => $settings) {
-                        $crit = $this->getCriteria();
-                        $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-                        $crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
-                        $crit->addInsert(self::FIELD_KEY, $field);
-                        $crit->addInsert(self::REPORTABLE, $settings['reportable']);
-                        $crit->addInsert(self::REQUIRED, $settings['required']);
-                        $crit->addInsert(self::ADDITIONAL, $settings['additional']);
-                        $crit->addInsert(self::SCOPE, $scope);
-                        $this->doInsert($crit);
+                        $insertion = new Insertion();
+                        $insertion->add(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+                        $insertion->add(self::ISSUETYPE_ID, $issuetype_id);
+                        $insertion->add(self::FIELD_KEY, $field);
+                        $insertion->add(self::REPORTABLE, $settings['reportable']);
+                        $insertion->add(self::REQUIRED, $settings['required']);
+                        $insertion->add(self::ADDITIONAL, $settings['additional']);
+                        $insertion->add(self::SCOPE, $scope);
+                        $this->rawInsert($insertion);
                     }
                 }
             }

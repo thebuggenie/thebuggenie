@@ -48,28 +48,28 @@
 
         public function getByHostname($hostname)
         {
-            $crit = $this->getCriteria();
-            $crit->addJoin(ScopeHostnames::getTable(), ScopeHostnames::SCOPE_ID, self::ID);
-            $crit->addWhere(ScopeHostnames::HOSTNAME, $hostname);
-            $row = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->join(ScopeHostnames::getTable(), ScopeHostnames::SCOPE_ID, self::ID);
+            $query->where(ScopeHostnames::HOSTNAME, $hostname);
+            $row = $this->rawSelectOne($query);
             return $row;
         }
 
         public function getByIds($ids)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ID, $ids, Criteria::DB_IN);
+            $query = $this->getQuery();
+            $query->where(self::ID, $ids, \b2db\Criterion::IN);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getPaginationItems()
         {
-            $crit = $this->getCriteria();
-            $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
-            $crit->indexBy(self::ID);
+            $query = $this->getQuery();
+            $query->addOrderBy(self::NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $query->indexBy(self::ID);
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $scope_ids = [];
             
             while ($row = $res->getNextRow()) {
@@ -81,25 +81,25 @@
 
         public function getDefault()
         {
-            return $this->doSelectById(1);
+            return $this->rawSelectById(1);
         }
 
         public function getByHostnameOrDefault($hostname = null)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if ($hostname !== null)
             {
-                $crit->addJoin(ScopeHostnames::getTable(), ScopeHostnames::SCOPE_ID, self::ID);
-                $crit->addWhere(ScopeHostnames::HOSTNAME, $hostname);
-                $crit->addOr(self::ID, 1);
-                $crit->addOrderBy(self::ID, 'desc');
+                $query->join(ScopeHostnames::getTable(), ScopeHostnames::SCOPE_ID, self::ID);
+                $query->where(ScopeHostnames::HOSTNAME, $hostname);
+                $query->or(self::ID, 1);
+                $query->addOrderBy(self::ID, 'desc');
             }
             else
             {
-                $crit->addWhere(self::ID, 1);
+                $query->where(self::ID, 1);
             }
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
     }

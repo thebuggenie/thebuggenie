@@ -42,23 +42,23 @@
         const SYSTEM_COMMENT = 'comments.system_comment';
         const REPLY_TO_COMMENT = 'comments.reply_to_comment';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addInteger(self::TARGET_ID, 10);
-            parent::_addInteger(self::TARGET_TYPE, 3);
-            parent::_addText(self::CONTENT, false);
-            parent::_addInteger(self::POSTED, 10);
-            parent::_addInteger(self::UPDATED, 10);
-            parent::_addInteger(self::COMMENT_NUMBER, 10);
-            parent::_addInteger(self::REPLY_TO_COMMENT, 10);
-            parent::_addBoolean(self::DELETED);
-            parent::_addBoolean(self::IS_PUBLIC, true);
-            parent::_addVarchar(self::MODULE, 50);
-            parent::_addBoolean(self::SYSTEM_COMMENT);
-            parent::_addInteger(self::SCOPE, 10);
-            parent::_addInteger(self::UPDATED_BY, 10);
-            parent::_addInteger(self::POSTED_BY, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addInteger(self::TARGET_ID, 10);
+            parent::addInteger(self::TARGET_TYPE, 3);
+            parent::addText(self::CONTENT, false);
+            parent::addInteger(self::POSTED, 10);
+            parent::addInteger(self::UPDATED, 10);
+            parent::addInteger(self::COMMENT_NUMBER, 10);
+            parent::addInteger(self::REPLY_TO_COMMENT, 10);
+            parent::addBoolean(self::DELETED);
+            parent::addBoolean(self::IS_PUBLIC, true);
+            parent::addVarchar(self::MODULE, 50);
+            parent::addBoolean(self::SYSTEM_COMMENT);
+            parent::addInteger(self::SCOPE, 10);
+            parent::addInteger(self::UPDATED_BY, 10);
+            parent::addInteger(self::POSTED_BY, 10);
         }
 
     }

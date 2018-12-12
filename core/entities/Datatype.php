@@ -136,4 +136,39 @@
             return tables\ListTypes::getTable()->getAllByItemType(static::ITEMTYPE);
         }
 
+        public function getFontAwesomeIcon()
+        {
+            switch ($this->_itemtype) {
+                case self::PRIORITY:
+                    switch ($this->_itemdata) {
+                        case Priority::CRITICAL:
+                            return 'exclamation';
+                        case Priority::HIGH:
+                            return 'angle-up';
+                        case Priority::NORMAL:
+                            return 'minus';
+                        case Priority::LOW:
+                            return 'angle-down';
+                        case Priority::TRIVIAL:
+                            return 'angle-double-down';
+                    }
+                case self::RESOLUTION:
+                    return 'clipboard-check';
+                case self::REPRODUCABILITY:
+                    return 'list-ol';
+                case self::SEVERITY:
+                    return 'chart-line';
+            }
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            switch ($this->_itemtype) {
+                case self::PRIORITY:
+                    return 'fas';
+                default:
+                    return 'fas';
+            }
+        }
+
     }

@@ -783,7 +783,7 @@
             $search_object = $board->getBacklogSearchObject();
             if ($search_object instanceof \thebuggenie\core\entities\SavedSearch)
             {
-                $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criteria::DB_GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
+                $search_object->setFilter('last_updated', \thebuggenie\core\entities\SearchFilter::createFilter('last_updated', array('o' => \b2db\Criterion::GREATER_THAN_EQUAL, 'v' => $last_refreshed - 2)));
             }
 
             if ($request['mode'] == 'whiteboard')

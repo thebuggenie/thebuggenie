@@ -5,6 +5,7 @@
     use thebuggenie\core\entities\common\QaLeadable,
         thebuggenie\core\helpers\MentionableProvider,
         thebuggenie\core\framework;
+    use thebuggenie\core\entities\tables\Projects;
     use thebuggenie\core\framework\Settings;
 
     /**
@@ -22,6 +23,8 @@
      *
      * @package thebuggenie
      * @subpackage main
+     *
+     * @method static tables\Projects getB2DBTable()
      *
      * @Table(name="\thebuggenie\core\entities\tables\Projects")
      */
@@ -450,9 +453,9 @@
         /**
          * Recent activities
          *
-         * @var Array
+         * @var LogItem[][]
          */
-        protected $_recentactivities = null;
+        protected $_recent_activities = null;
 
         /**
          * Whether to show a "Download" link and corresponding section
@@ -535,7 +538,7 @@
         {
             if (self::$_projects === null)
             {
-                self::$_projects = self::getB2DBTable()->getAll();
+                self::$_projects = Projects::getTable()->getAll();
                 foreach (self::$_projects as $key => $project) {
                     if (!$project->hasAccess()) {
                         unset(self::$_projects[$key]);
@@ -760,10 +763,11 @@
         protected function _preSave($is_new)
         {
             parent::_preSave($is_new);
-            $project = self::getByKey($this->getKey());
+            $key = $this->getKey();
+            $project = self::getByKey($key);
             if ($project instanceof Project && $project->getID() != $this->getID())
             {
-                throw new \InvalidArgumentException("A project with this key already exists");
+                throw new \InvalidArgumentException("A project with this key ({$key}, {$this->getID()}) already exists ({$project->getID()})");
             }
         }
 
@@ -774,9 +778,9 @@
                 self::$_num_projects = null;
                 self::$_projects = null;
 
-                                $dashboard = new \thebuggenie\core\entities\Dashboard();
-                                $dashboard->setProject($this);
-                                $dashboard->save();
+                $dashboard = new \thebuggenie\core\entities\Dashboard();
+                $dashboard->setProject($this);
+                $dashboard->save();
 
                 framework\Context::setPermission("canseeproject", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("canseeprojecthierarchy", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
@@ -1134,7 +1138,7 @@
         {
             if ($this->_editions === null)
             {
-                $this->_b2dbLazyload('_editions');
+                $this->_b2dbLazyLoad('_editions');
                 foreach ($this->_editions as $key => $component)
                 {
                     if (!$component->hasAccess()) unset($this->_editions[$key]);
@@ -1214,7 +1218,7 @@
             {
                 return count($this->_editions);
             }
-            return $this->_b2dbLazycount('_editions');
+            return $this->_b2dbLazyCount('_editions');
         }
 
         /**
@@ -1244,7 +1248,7 @@
         {
             if ($this->_components === null)
             {
-                $this->_b2dbLazyload('_components');
+                $this->_b2dbLazyLoad('_components');
                 foreach ($this->_components as $key => $component)
                 {
                     if (!$component->hasAccess()) unset($this->_components[$key]);
@@ -1269,7 +1273,7 @@
             {
                 return count($this->_components);
             }
-            return $this->_b2dbLazycount('_components');
+            return $this->_b2dbLazyCount('_components');
         }
 
         /**
@@ -1298,7 +1302,7 @@
         {
             if ($this->_milestones === null)
             {
-                $this->_b2dbLazyload('_milestones');
+                $this->_b2dbLazyLoad('_milestones');
             }
         }
 
@@ -1502,7 +1506,7 @@
         protected function _populateAssignedUsers()
         {
             if ($this->_assigned_users === null) {
-                $this->_b2dbLazyload('_assigned_users');
+                $this->_b2dbLazyLoad('_assigned_users');
             }
         }
 
@@ -1515,7 +1519,7 @@
         protected function _populateAssignedTeams()
         {
             if ($this->_assigned_teams === null) {
-                $this->_b2dbLazyload('_assigned_teams');
+                $this->_b2dbLazyLoad('_assigned_teams');
             }
         }
 
@@ -1670,7 +1674,7 @@
 
                 foreach (Issuetype::getAll() as $issuetype)
                 {
-                    if ($issuetype->getIcon() == 'developer_report')
+                    if ($issuetype->getType() == Issuetype::TYPE_USER_STORY)
                     {
                         $issuetypes[] = $issuetype->getID();
                     }
@@ -1811,7 +1815,7 @@
             }
             if (empty($this->_issuecounts['last15']))
             {
-                list ($closed, $open) = tables\Log::getTable()->getLast15IssueCountsByProjectID($this->getID());
+                list ($closed, $open) = tables\LogItems::getTable()->getLast15IssueCountsByProjectID($this->getID());
                 $this->_issuecounts['last15']['open'] = $open;
                 $this->_issuecounts['last15']['closed'] = $closed;
             }
@@ -2445,55 +2449,19 @@
             return framework\Context::getUser()->hasPermission('canseeproject', $this->getID());
         }
 
-        protected function _populateLogItems($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        protected function _populateLogItems($limit = null, $important = true, $offset = null)
         {
             $varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';
             if ($this->$varname === null)
             {
-                $this->$varname = array();
+                $this->$varname = [];
                 if ($important)
                 {
-                    list($res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $offset, $limit_to_target);
-
-                    if (is_array($limit_to_target) && count($limit_to_target) != $limit)
-                    {
-                        $i = 0;
-                        while (true)
-                        {
-                            list($more_res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $limit * $i + $limit, $limit_to_target);
-                            $i++;
-
-                            if (!count($more_res)) break;
-
-                            $res = array_merge($res, $more_res);
-
-                            if (count($limit_to_target) >= $limit) break;
-                        }
-                    }
+                    $this->$varname = tables\LogItems::getTable()->getImportantByProjectID($this->getID(), $limit, $offset);
                 }
                 else
                 {
-                    list($res, $limit_to_target) = tables\Log::getTable()->getByProjectID($this->getID(), $limit, $offset, $limit_to_target);
-
-                    if (is_array($limit_to_target) && count($limit_to_target) != $limit)
-                    {
-                        $i = 0;
-                        while (true)
-                        {
-                            list($more_res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $limit * $i + $limit, $limit_to_target);
-                            $i++;
-
-                            if (!count($more_res)) break;
-
-                            $res = array_merge($res, $more_res);
-
-                            if (count($limit_to_target) >= $limit) break;
-                        }
-                    }
-                }
-                if ($res)
-                {
-                    $this->$varname = $res;
+                    $this->$varname = tables\LogItems::getTable()->getByProjectID($this->getID(), $limit, $offset);
                 }
             }
         }
@@ -2501,11 +2469,14 @@
         /**
          * Return this projects most recent log items
          *
+         * @param null $limit
+         * @param bool $important
+         * @param null $offset
          * @return LogItem[]
          */
-        public function getRecentLogItems($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        public function getRecentLogItems($limit = null, $important = true, $offset = null)
         {
-            $this->_populateLogItems($limit, $important, $offset, $limit_to_target);
+            $this->_populateLogItems($limit, $important, $offset);
             return ($important) ? $this->_recentimportantlogitems : $this->_recentlogitems;
         }
 
@@ -2699,60 +2670,19 @@
             return $this->_recentissues[$issuetype_id];
         }
 
-        protected function _populateRecentActivities($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        protected function _populateRecentActivities($limit = null, $important = true, $offset = null)
         {
-            if ($this->_recentactivities === null)
+            if ($this->_recent_activities === null)
             {
-                $this->_recentactivities = array();
-                foreach ($this->getRecentLogItems($limit, $important, $offset, $limit_to_target) as $log_item)
+                $this->_recent_activities = [];
+                foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
                 {
-                    if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
+                    if (!array_key_exists($log_item->getTime(), $this->_recent_activities))
                     {
-                        $this->_recentactivities[$log_item['timestamp']] = array();
+                        $this->_recent_activities[$log_item->getTime()] = [];
                     }
-                    $this->_recentactivities[$log_item['timestamp']][] = $log_item;
+                    $this->_recent_activities[$log_item->getTime()][] = $log_item;
                 }
-
-                ksort($this->_recentactivities, SORT_NUMERIC);
-                end($this->_recentactivities);
-                $max_timestamp = key($this->_recentactivities);
-                reset($this->_recentactivities);
-                $min_timestamp = key($this->_recentactivities);
-
-                foreach ($this->getBuilds() as $build)
-                {
-                    if ($build->isReleased() && $build->getReleaseDate() <= NOW && $build->getReleaseDate() >= $min_timestamp && $build->getReleaseDate() <= $max_timestamp)
-                    {
-                        if (!array_key_exists($build->getReleaseDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$build->getReleaseDate()] = array();
-                        }
-                        $this->_recentactivities[$build->getReleaseDate()][] = array('change_type' => 'build_release', 'info' => $build->getName());
-                    }
-                }
-                foreach ($this->getMilestones() as $milestone)
-                {
-                    if ($milestone->isStarting() && $milestone->isSprint())
-                    {
-                        if ($milestone->getStartingDate() > NOW || $milestone->getStartingDate() < $min_timestamp || $milestone->getStartingDate() > $max_timestamp) continue;
-                        if (!array_key_exists($milestone->getStartingDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$milestone->getStartingDate()] = array();
-                        }
-                        $this->_recentactivities[$milestone->getStartingDate()][] = array('change_type' => 'sprint_start', 'info' => $milestone->getName());
-                    }
-                    if ($milestone->isScheduled() && $milestone->isReached())
-                    {
-                        if ($milestone->getReachedDate() > NOW || $milestone->getReachedDate() < $min_timestamp || $milestone->getReachedDate() > $max_timestamp) continue;
-                        if (!array_key_exists($milestone->getReachedDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$milestone->getReachedDate()] = array();
-                        }
-                        $this->_recentactivities[$milestone->getReachedDate()][] = array('change_type' => (($milestone->isSprint()) ? 'sprint_end' : 'milestone_release'), 'info' => $milestone->getName());
-                    }
-                }
-
-                krsort($this->_recentactivities, SORT_NUMERIC);
             }
         }
 
@@ -2760,31 +2690,28 @@
          * Return a list of recent activity for the project
          *
          * @param integer $limit Limit number of activities
+         * @param bool $important
+         * @param null $offset
          * @return array
          */
-        public function getRecentActivities($limit = null, $important = false, $offset = null, $limit_to_target = false)
+        public function getRecentActivities($limit = null, $important = false, $offset = null)
         {
-            $this->_populateRecentActivities($limit, $important, $offset, $limit_to_target);
+            $this->_populateRecentActivities($limit, $important, $offset);
             if ($limit !== null)
             {
-                $recent_activities = array_slice($this->_recentactivities, 0, $limit, true);
+                $recent_activities = array_slice($this->_recent_activities, 0, $limit, true);
             }
             else
             {
-                $recent_activities = $this->_recentactivities;
+                $recent_activities = $this->_recent_activities;
             }
 
             return $recent_activities;
         }
 
-        public function getRecentImportantActivities($limit = null, $offset = null, $limit_to_target = false)
-        {
-            return $this->getRecentActivities($limit, true, $offset, $limit_to_target);
-        }
-
         public function clearRecentActivities()
         {
-            $this->_recentactivities = null;
+            $this->_recent_activities = null;
             $this->_recentissues = null;
             $this->_recentlogitems = null;
         }
@@ -2797,7 +2724,7 @@
         public function getWorkflowScheme()
         {
             if (!$this->_workflow_scheme_id instanceof \thebuggenie\core\entities\WorkflowScheme)
-                $this->_b2dbLazyload('_workflow_scheme_id');
+                $this->_b2dbLazyLoad('_workflow_scheme_id');
 
             return $this->_workflow_scheme_id;
         }
@@ -2825,7 +2752,7 @@
         public function getIssuetypeScheme()
         {
             if (!$this->_issuetype_scheme_id instanceof \thebuggenie\core\entities\IssuetypeScheme)
-                $this->_b2dbLazyload('_issuetype_scheme_id');
+                $this->_b2dbLazyLoad('_issuetype_scheme_id');
 
             return $this->_issuetype_scheme_id;
         }
@@ -2909,7 +2836,7 @@
          */
         public function getClient()
         {
-            return $this->_b2dbLazyload('_client');
+            return $this->_b2dbLazyLoad('_client');
         }
 
         /**
@@ -3040,7 +2967,7 @@
 
         public function getParent()
         {
-            return $this->_b2dbLazyload('_parent');
+            return $this->_b2dbLazyLoad('_parent');
         }
 
         public function getParentID()
@@ -3134,7 +3061,7 @@
          */
         public function getSmallIcon()
         {
-            return $this->_b2dbLazyload('_small_icon');
+            return $this->_b2dbLazyLoad('_small_icon');
         }
 
         public function getSmallIconName()
@@ -3162,7 +3089,7 @@
          */
         public function getLargeIcon()
         {
-            return $this->_b2dbLazyload('_large_icon');
+            return $this->_b2dbLazyLoad('_large_icon');
         }
 
         public function getLargeIconName()
@@ -3329,7 +3256,7 @@
          */
         public function getDashboards()
         {
-            $this->_b2dbLazyload('_dashboards');
+            $this->_b2dbLazyLoad('_dashboards');
             return $this->_dashboards;
         }
 

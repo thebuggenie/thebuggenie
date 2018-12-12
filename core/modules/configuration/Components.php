@@ -32,7 +32,13 @@
 
         public function componentModulebox()
         {
+            $this->license_ok = framework\Settings::hasLicenseIdentifier();
             $this->is_default_scope = (isset($this->is_default_scope)) ? $this->is_default_scope : framework\Context::getScope()->isDefault();
+        }
+
+        public function componentOnlineModule()
+        {
+            $this->license_ok = framework\Settings::hasLicenseIdentifier();
         }
 
         public function componentOnlineModules()
@@ -40,7 +46,7 @@
             try
             {
                 $client = new \Net_Http_Client();
-                $client->get('http://www.thebuggenie.com/addons.json');
+                $client->get('https://www.thebuggenie.com/addons.json?license_key=' . framework\Settings::getLicenseIdentifier());
                 $json_modules = json_decode($client->getBody());
             }
             catch (\Exception $e) {}
@@ -61,7 +67,7 @@
             try
             {
                 $client = new \Net_Http_Client();
-                $client->get('http://www.thebuggenie.com/themes.json');
+                $client->get('http://www.thebuggenie.com/themes.json?license_key=' . framework\Settings::getLicenseIdentifier());
                 $json_themes = json_decode($client->getBody());
             }
             catch (\Exception $e) {}
@@ -80,7 +86,7 @@
 
         public function componentTheme()
         {
-            $this->enabled = (\thebuggenie\core\framework\Settings::getThemeName() == $this->theme['key']);
+            $this->enabled = (framework\Settings::getThemeName() == $this->theme['key']);
             $this->is_default_scope = framework\Context::getScope()->isDefault();
         }
 

@@ -2,6 +2,8 @@
 
     namespace thebuggenie\modules\publish\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\tables\ScopedTable,
         thebuggenie\modules\publish\entities\Article,
@@ -34,37 +36,38 @@
 
         public function getAllArticles()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::NAME);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::NAME);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getManualSidebarArticles(\thebuggenie\core\entities\Project $project = null, $filter = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere('articles.article_type', Article::TYPE_MANUAL);
-            $crit->addWhere('articles.name', '%' . strtolower($filter) . '%', Criteria::DB_LIKE);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where('articles.article_type', Article::TYPE_MANUAL);
+            $query->where('articles.name', '%' . strtolower($filter) . '%', \b2db\Criterion::LIKE);
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $ctn = $crit->returnCriterion(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
-                $ctn->addOr(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_LIKE);
-                $crit->addWhere($ctn);
+                $criteria = new Criteria();
+                $criteria->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::LIKE);
+                $criteria->or(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::LIKE);
+                $query->where($criteria);
             }
             else
             {
                 foreach (\thebuggenie\core\entities\tables\Projects::getTable()->getAllIncludingDeleted() as $project)
                 {
-                    $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
 
-            $crit->addOrderBy(self::NAME, 'asc');
+            $query->addOrderBy(self::NAME, 'asc');
 
-            $articles = $this->select($crit);
+            $articles = $this->select($query);
             foreach ($articles as $i => $article)
             {
                 if (!$article->hasAccess())
@@ -76,26 +79,26 @@
 
         public function getManualSidebarCategories(\thebuggenie\core\entities\Project $project = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere('articles.article_type', Article::TYPE_MANUAL);
-            $crit->addWhere('articles.parent_article_id', 0);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where('articles.article_type', Article::TYPE_MANUAL);
+            $query->where('articles.parent_article_id', 0);
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_LIKE);
+                $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::LIKE);
             }
             else
             {
                 foreach (\thebuggenie\core\entities\tables\Projects::getTable()->getAllIncludingDeleted() as $project)
                 {
-                    $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
 
-            $crit->addOrderBy(self::NAME, 'asc');
+            $query->addOrderBy(self::NAME, 'asc');
 
-            $articles = $this->select($crit);
+            $articles = $this->select($query);
             foreach ($articles as $i => $article)
             {
                 if (!$article->hasAccess())
@@ -107,27 +110,27 @@
 
         public function getArticles(\thebuggenie\core\entities\Project $project = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere('articles.article_type', Article::TYPE_WIKI);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where('articles.article_type', Article::TYPE_WIKI);
 
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_LIKE);
-                $crit->addOr(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+                $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::LIKE);
+                $query->or(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::LIKE);
             }
             else
             {
                 foreach (\thebuggenie\core\entities\tables\Projects::getTable()->getAllIncludingDeleted() as $project)
                 {
-                    $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
 
-            $crit->addOrderBy(self::DATE, 'desc');
+            $query->addOrderBy(self::DATE, 'desc');
 
-            $articles = $this->select($crit);
+            $articles = $this->select($query);
             foreach ($articles as $id => $article)
             {
                 if (!$article->hasAccess())
@@ -139,36 +142,36 @@
 
         public function getArticleByName($name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->selectOne($crit, 'none');
+            $query = $this->getQuery();
+            $query->where(self::NAME, $name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            return $this->selectOne($query, 'none');
         }
 
         public function getArticleByID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->doSelectById($id, $crit);
+            return $this->rawSelectById($id, $query);
         }
 
         public function doesArticleExist($name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::NAME, $name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return (bool) $this->doCount($crit);
+            return (bool) $this->count($query);
         }
 
         public function deleteArticleByName($name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->setLimit(1);
-            $row = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::NAME, $name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->setLimit(1);
+            $row = $this->rawDelete($query);
 
             return $row;
         }
@@ -177,85 +180,92 @@
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $name);
-            $crit->addWhere(self::ID, $id, Criteria::DB_NOT_EQUALS);
-            $crit->addWhere(self::SCOPE, $scope);
+            $query = $this->getQuery();
+            $query->where(self::NAME, $name);
+            $query->where(self::ID, $id, \b2db\Criterion::NOT_EQUALS);
+            $query->where(self::SCOPE, $scope);
 
-            return (bool) $this->doCount($crit);
+            return (bool) $this->count($query);
         }
 
         public function findArticlesContaining($content, $project = null, $limit = 5, $offset = 0)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
-                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $ctn->addWhere(self::NAME, "category:" . $project->getKey() . "%", Criteria::DB_LIKE);
-                $crit->addWhere($ctn);
+                $criteria = new Criteria();
+                $criteria->where(self::NAME, "%{$content}%", \b2db\Criterion::LIKE);
+                $criteria->where(self::SCOPE, framework\Context::getScope()->getID());
+                $criteria->where(self::NAME, "category:" . $project->getKey() . "%", \b2db\Criterion::LIKE);
+                $query->where($criteria);
 
-                $ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
-                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
-                $crit->addOr($ctn);
+                $criteria = new Criteria();
+                $criteria->where(self::NAME, "%{$content}%", \b2db\Criterion::LIKE);
+                $criteria->where(self::SCOPE, framework\Context::getScope()->getID());
+                $criteria->where(self::NAME, $project->getKey() . "%", \b2db\Criterion::LIKE);
+                $query->or($criteria);
 
-                $ctn = $crit->returnCriterion(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
-                $ctn->addWhere(self::NAME, $project->getKey() . "%", Criteria::DB_LIKE);
-                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $crit->addOr($ctn);
+                $criteria = new Criteria();
+                $criteria->where(self::CONTENT, "%{$content}%", \b2db\Criterion::LIKE);
+                $criteria->where(self::NAME, $project->getKey() . "%", \b2db\Criterion::LIKE);
+                $criteria->where(self::SCOPE, framework\Context::getScope()->getID());
+                $query->or($criteria);
             }
             else
             {
-                $ctn = $crit->returnCriterion(self::NAME, "%{$content}%", Criteria::DB_LIKE);
-                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $crit->addWhere($ctn);
+                $criteria = new Criteria();
+                $criteria->where(self::NAME, "%{$content}%", \b2db\Criterion::LIKE);
+                $criteria->where(self::SCOPE, framework\Context::getScope()->getID());
+                $query->where($criteria);
 
-                $ctn = $crit->returnCriterion(self::CONTENT, "%{$content}%", Criteria::DB_LIKE);
-                $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $crit->addOr($ctn);
+                $criteria = new Criteria();
+                $criteria->where(self::CONTENT, "%{$content}%", \b2db\Criterion::LIKE);
+                $criteria->where(self::SCOPE, framework\Context::getScope()->getID());
+                $query->or($criteria);
             }
 
-            $resultcount = $this->doCount($crit);
+            $resultcount = $this->count($query);
 
             if ($resultcount)
             {
-                $crit->setLimit($limit);
+                $query->setLimit($limit);
 
-                if ($offset)
-                    $crit->setOffset($offset);
+                if ($offset) {
+                    $query->setOffset($offset);
+                }
 
-                return array($resultcount, $this->select($crit));
+                return [$resultcount, $this->select($query)];
             }
             else
             {
-                return array($resultcount, array());
+                return [$resultcount, []];
             }
         }
 
         public function save($name, $content, $published, $author, $id = null, $scope = null)
         {
             $scope = ($scope !== null) ? $scope : framework\Context::getScope()->getID();
-            $crit = $this->getCriteria();
             if ($id == null)
             {
-                $crit->addInsert(self::NAME, $name);
-                $crit->addInsert(self::CONTENT, $content);
-                $crit->addInsert(self::IS_PUBLISHED, (bool) $published);
-                $crit->addInsert(self::AUTHOR, $author);
-                $crit->addInsert(self::DATE, NOW);
-                $crit->addInsert(self::SCOPE, $scope);
-                $res = $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::NAME, $name);
+                $insertion->add(self::CONTENT, $content);
+                $insertion->add(self::IS_PUBLISHED, (bool) $published);
+                $insertion->add(self::AUTHOR, $author);
+                $insertion->add(self::DATE, NOW);
+                $insertion->add(self::SCOPE, $scope);
+                $res = $this->rawInsert($insertion);
                 return $res->getInsertID();
             }
             else
             {
-                $crit->addUpdate(self::NAME, $name);
-                $crit->addUpdate(self::CONTENT, $content);
-                $crit->addUpdate(self::IS_PUBLISHED, (bool) $published);
-                $crit->addUpdate(self::AUTHOR, $author);
-                $crit->addUpdate(self::DATE, NOW);
-                $res = $this->doUpdateById($crit, $id);
+                $update = new Update();
+                $update->add(self::NAME, $name);
+                $update->add(self::CONTENT, $content);
+                $update->add(self::IS_PUBLISHED, (bool) $published);
+                $update->add(self::AUTHOR, $author);
+                $update->add(self::DATE, NOW);
+                $res = $this->rawUpdateById($update, $id);
                 return $res;
             }
         }
@@ -264,10 +274,10 @@
         {
             $names = ArticleLinks::getTable()->getUniqueArticleNames();
 
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+                $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::LIKE);
             }
             else
             {
@@ -275,15 +285,15 @@
                 {
                     if (trim($project->getKey()) == '')
                         continue;
-                    $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
-            $crit->addWhere(self::NAME, $names, Criteria::DB_NOT_IN);
-            $crit->addWhere(self::CONTENT, '#REDIRECT%', Criteria::DB_NOT_LIKE);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::NAME, $names, \b2db\Criterion::NOT_IN);
+            $query->where(self::CONTENT, '#REDIRECT%', \b2db\Criterion::NOT_LIKE);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getAllByLinksToArticleName($article_name)
@@ -298,21 +308,21 @@
                 $names[] = $row[ArticleLinks::ARTICLE_NAME];
             }
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $names, Criteria::DB_IN);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::NAME, $names, \b2db\Criterion::IN);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getUnlinkedArticles(\thebuggenie\core\entities\Project $project = null)
         {
             $names = ArticleLinks::getTable()->getUniqueLinkedArticleNames();
 
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+                $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::LIKE);
             }
             else
             {
@@ -320,23 +330,23 @@
                 {
                     if (trim($project->getKey()) == '')
                         continue;
-                    $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
-            $crit->addWhere(self::NAME, $names, Criteria::DB_NOT_IN);
-            $crit->addWhere(self::CONTENT, '#REDIRECT%', Criteria::DB_NOT_LIKE);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::NAME, $names, \b2db\Criterion::NOT_IN);
+            $query->where(self::CONTENT, '#REDIRECT%', \b2db\Criterion::NOT_LIKE);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getUncategorizedArticles(\thebuggenie\core\entities\Project $project = null)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+                $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::LIKE);
             }
             else
             {
@@ -344,24 +354,24 @@
                 {
                     if (trim($project->getKey()) == '')
                         continue;
-                    $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
-            $crit->addWhere(self::NAME, "Category:%", Criteria::DB_NOT_LIKE);
-            $crit->addWhere(self::CONTENT, '#REDIRECT%', Criteria::DB_NOT_LIKE);
-            $crit->addWhere(self::CONTENT, '%[Category:%', Criteria::DB_NOT_LIKE);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::NAME, "Category:%", \b2db\Criterion::NOT_LIKE);
+            $query->where(self::CONTENT, '#REDIRECT%', \b2db\Criterion::NOT_LIKE);
+            $query->where(self::CONTENT, '%[Category:%', \b2db\Criterion::NOT_LIKE);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getUncategorizedCategories(\thebuggenie\core\entities\Project $project = null)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+                $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . ":%", \b2db\Criterion::LIKE);
             }
             else
             {
@@ -369,23 +379,23 @@
                 {
                     if (trim($project->getKey()) == '')
                         continue;
-                    $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
-            $crit->addWhere(self::CONTENT, '#REDIRECT%', Criteria::DB_NOT_LIKE);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::CONTENT, '#REDIRECT%', \b2db\Criterion::NOT_LIKE);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getAllArticlesSpecial(\thebuggenie\core\entities\Project $project = null)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
-                $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+                $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
+                $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::LIKE);
             }
             else
             {
@@ -393,36 +403,36 @@
                 {
                     if (trim($project->getKey()) == '')
                         continue;
-                    $crit->addWhere(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "Category:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         protected function _getAllInNamespace($namespace, \thebuggenie\core\entities\Project $project = null)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if ($project instanceof \thebuggenie\core\entities\Project)
             {
-                $crit->addWhere(self::NAME, "{$namespace}:" . ucfirst($project->getKey()) . ":%", Criteria::DB_LIKE);
+                $query->where(self::NAME, "{$namespace}:" . ucfirst($project->getKey()) . ":%", \b2db\Criterion::LIKE);
             }
             else
             {
-                $crit->addWhere(self::NAME, "{$namespace}:%", Criteria::DB_LIKE);
+                $query->where(self::NAME, "{$namespace}:%", \b2db\Criterion::LIKE);
                 foreach (\thebuggenie\core\entities\tables\Projects::getTable()->getAllIncludingDeleted() as $project)
                 {
                     if (trim($project->getKey()) == '')
                         continue;
-                    $crit->addWhere(self::NAME, "{$namespace}:" . ucfirst($project->getKey()) . "%", Criteria::DB_NOT_LIKE);
-                    $crit->addWhere(self::NAME, ucfirst($project->getKey()) . ":%", Criteria::DB_NOT_LIKE);
+                    $query->where(self::NAME, "{$namespace}:" . ucfirst($project->getKey()) . "%", \b2db\Criterion::NOT_LIKE);
+                    $query->where(self::NAME, ucfirst($project->getKey()) . ":%", \b2db\Criterion::NOT_LIKE);
                 }
             }
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getAllCategories(\thebuggenie\core\entities\Project $project = null)
@@ -437,10 +447,14 @@
 
         public function fixArticleTypes()
         {
-            $criteria = $this->getCriteria();
-            $criteria->addWhere('articles.article_type', 0);
-            $criteria->addUpdate('articles.article_type', Article::TYPE_WIKI);
-            $this->doUpdate($criteria);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add('articles.article_type', Article::TYPE_WIKI);
+
+            $query->where('articles.article_type', 0);
+
+            $this->rawUpdate($update, $query);
         }
 
     }

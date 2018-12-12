@@ -41,8 +41,8 @@
 
         public function getOwner()
         {
-            $this->_b2dbLazyload('_owner_team');
-            $this->_b2dbLazyload('_owner_user');
+            $this->_b2dbLazyLoad('_owner_team');
+            $this->_b2dbLazyLoad('_owner_user');
 
             if ($this->_owner_team instanceof \thebuggenie\core\entities\Team) {
                 return $this->_owner_team;

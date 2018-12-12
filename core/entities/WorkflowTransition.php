@@ -490,7 +490,7 @@
          */
         public function getWorkflow()
         {
-            return $this->_b2dbLazyload('_workflow_id');
+            return $this->_b2dbLazyLoad('_workflow_id');
         }
 
         public function setWorkflow(Workflow $workflow)
@@ -561,7 +561,7 @@
          */
         public function getOutgoingStep()
         {
-            return $this->_b2dbLazyload('_outgoing_step_id');
+            return $this->_b2dbLazyLoad('_outgoing_step_id');
         }
         
         /**

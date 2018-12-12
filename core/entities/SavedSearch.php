@@ -367,7 +367,7 @@
          */
         public function getAppliesToProject()
         {
-            return $this->_b2dbLazyload('_applies_to_project');
+            return $this->_b2dbLazyLoad('_applies_to_project');
         }
 
         public function getProject()
@@ -526,7 +526,7 @@
          */
         public function getUser()
         {
-            return $this->_b2dbLazyload('_uid');
+            return $this->_b2dbLazyLoad('_uid');
         }
 
         public function getUserID()
@@ -553,7 +553,7 @@
             if ($this->_filters === null)
             {
                 $filters = array();
-                $this->_b2dbLazyload('_filters');
+                $this->_b2dbLazyLoad('_filters');
                 foreach ($this->_filters as $filter)
                 {
                     $filters[$filter->getFilterKey()] = $filter;
@@ -716,6 +716,10 @@
             list ($this->_issues, $this->_total_number_of_issues) = Issue::findIssues($this->getFilters(), $this->getIssuesPerPage(), $this->getOffset(), $this->getGroupby(), $this->getGrouporder(), $this->getSortFields(), $include_deleted);
         }
 
+        /**
+         * @param bool $include_deleted
+         * @return Issue[]
+         */
         public function getIssues($include_deleted = false)
         {
             if ($this->hasQuickfoundIssues()) {

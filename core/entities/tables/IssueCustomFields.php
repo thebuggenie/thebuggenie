@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -37,22 +39,22 @@
 
         protected $_preloaded_custom_fields = null;
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
-            parent::_addForeignKeyColumn(self::CUSTOMFIELDS_ID, CustomFields::getTable(), CustomFields::ID);
-            parent::_addForeignKeyColumn(self::CUSTOMFIELDOPTION_ID, CustomFieldOptions::getTable(), CustomFieldOptions::ID);
-            parent::_addText(self::OPTION_VALUE, false);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
+            parent::addForeignKeyColumn(self::CUSTOMFIELDS_ID, CustomFields::getTable(), CustomFields::ID);
+            parent::addForeignKeyColumn(self::CUSTOMFIELDOPTION_ID, CustomFieldOptions::getTable(), CustomFieldOptions::ID);
+            parent::addText(self::OPTION_VALUE, false);
         }
 
         public function getAllValuesByIssueIDs($issue_ids)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::ISSUE_ID, $issue_ids, \b2db\Criterion::IN);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            $res = $this->doSelect($crit, false);
+            $res = $this->rawSelect($query, false);
 
             return $res;
         }
@@ -110,89 +112,91 @@
 
         public function getRowByCustomFieldIDandIssueID($customdatatype_id, $issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE_ID, $issue_id);
-            $crit->addWhere(self::CUSTOMFIELDS_ID, $customdatatype_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::ISSUE_ID, $issue_id);
+            $query->where(self::CUSTOMFIELDS_ID, $customdatatype_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            $row = $this->doSelectOne($crit);
+            $row = $this->rawSelectOne($query);
 
             return $row;
         }
 
         public function saveIssueCustomFieldValue($value, $customdatatype_id, $issue_id)
         {
-            $crit = $this->getCriteria();
             if ($row = $this->getRowByCustomFieldIDandIssueID($customdatatype_id, $issue_id))
             {
                 if ($value === null)
                 {
-                    $this->doDeleteById($row->get(self::ID));
+                    $this->rawDeleteById($row->get(self::ID));
                 }
                 else
                 {
-                    $crit->addUpdate(self::OPTION_VALUE, $value);
-                    $res = $this->doUpdateById($crit, $row->get(self::ID));
+                    $update = new Update();
+                    $update->add(self::OPTION_VALUE, $value);
+                    $this->rawUpdateById($update, $row->get(self::ID));
                 }
             }
             elseif ($value !== null)
             {
-                $crit->addInsert(self::ISSUE_ID, $issue_id);
-                $crit->addInsert(self::OPTION_VALUE, $value);
-                $crit->addInsert(self::CUSTOMFIELDS_ID, $customdatatype_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $res = $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::ISSUE_ID, $issue_id);
+                $insertion->add(self::OPTION_VALUE, $value);
+                $insertion->add(self::CUSTOMFIELDS_ID, $customdatatype_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $this->rawInsert($insertion);
             }
         }
         
         public function saveIssueCustomFieldOption($option_id, $customdatatype_id, $issue_id)
         {
-            $crit = $this->getCriteria();
             if ($row = $this->getRowByCustomFieldIDandIssueID($customdatatype_id, $issue_id))
             {
                 if ($option_id === null)
                 {
-                    $this->doDeleteById($row->get(self::ID));
+                    $this->rawDeleteById($row->get(self::ID));
                 }
                 else
                 {
-                    $crit->addUpdate(self::CUSTOMFIELDOPTION_ID, $option_id);
-                    $res = $this->doUpdateById($crit, $row->get(self::ID));
+                    $update = new Update();
+                    $update->add(self::CUSTOMFIELDOPTION_ID, $option_id);
+                    $this->rawUpdateById($update, $row->get(self::ID));
                 }
             }
             elseif ($option_id !== null)
             {
-                $crit->addInsert(self::ISSUE_ID, $issue_id);
-                $crit->addInsert(self::CUSTOMFIELDOPTION_ID, $option_id);
-                $crit->addInsert(self::CUSTOMFIELDS_ID, $customdatatype_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $res = $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::ISSUE_ID, $issue_id);
+                $insertion->add(self::CUSTOMFIELDOPTION_ID, $option_id);
+                $insertion->add(self::CUSTOMFIELDS_ID, $customdatatype_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $this->rawInsert($insertion);
             }
         }
 
         public function doDeleteByFieldId($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CUSTOMFIELDS_ID, $id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::CUSTOMFIELDS_ID, $id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             
             if ($res)
             {
                 while ($row = $res->getNextRow())
                 {
-                    $this->doDeleteById($row->get(self::ID));
+                    $this->rawDeleteById($row->get(self::ID));
                 }
             }
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             switch ($old_table->getVersion())
             {
                 case 1:
-                    if ($res = $old_table->doSelectAll())
+                    if ($res = $old_table->rawSelectAll())
                     {
                         $customfields = \thebuggenie\core\entities\CustomDatatype::getB2DBTable()->selectAll();
                         while ($row = $res->getNextRow())
@@ -204,14 +208,14 @@
                                 $customfieldoption = CustomFieldOptions::getTable()->getByValueAndCustomfieldID((int) $row->get(self::OPTION_VALUE), $customfield->getID());
                                 if ($customfieldoption instanceof \thebuggenie\core\entities\CustomDatatypeOption)
                                 {
-                                    $crit = $this->getCriteria();
-                                    $crit->addUpdate(self::CUSTOMFIELDOPTION_ID, $customfieldoption->getID());
-                                    $crit->addUpdate(self::OPTION_VALUE, null);
-                                    $this->doUpdateById($crit, $row->get(self::ID));
+                                    $update = new Update();
+                                    $update->add(self::CUSTOMFIELDOPTION_ID, $customfieldoption->getID());
+                                    $update->add(self::OPTION_VALUE, null);
+                                    $this->rawUpdateById($update, $row->get(self::ID));
                                 }
                                 elseif($row->get(self::ID))
                                 {
-                                    $this->doDeleteById($row->get(self::ID));
+                                    $this->rawDeleteById($row->get(self::ID));
                                 }
                             }
                         }
@@ -220,9 +224,9 @@
             }
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('issueid_scope', array(self::ISSUE_ID, self::SCOPE));
+            $this->addIndex('issueid_scope', array(self::ISSUE_ID, self::SCOPE));
         }
 
     }

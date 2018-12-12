@@ -144,7 +144,7 @@ class Upgrade
         \thebuggenie\core\entities\tables\WorkflowTransitionActions::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\WorkflowStepTransitions::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\Links::getTable()->createIndexes();
-        \thebuggenie\core\entities\tables\Log::getTable()->createIndexes();
+        tables\LogItems::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\Teams::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\IssueCustomFields::getTable()->createIndexes();
         \thebuggenie\core\entities\tables\ListTypes::getTable()->createIndexes();
@@ -285,6 +285,55 @@ class Upgrade
         }
     }
 
+    protected function _upgradeFrom4dot2dot1()
+    {
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating branches table.\n");
+        }
+        tables\Branches::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating commits table.\n");
+        }
+        tables\Commits::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating commit_files table.\n");
+        }
+        tables\CommitFiles::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating branch_commits table.\n");
+        }
+        tables\BranchCommits::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating commit_file_diffs table.\n");
+        }
+        tables\CommitFileDiffs::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating issuecommits table.\n");
+        }
+        tables\IssueCommits::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating issuefiles table.\n");
+        }
+        tables\IssueFiles::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Creating livelink_imports table.\n");
+        }
+        tables\LivelinkImports::getTable()->create();
+
+        if (defined('TBG_CLI')) {
+            Command::cli_echo("Upgrading log table. This may take a few minutes.\n");
+        }
+
+        tables\LogItems::getTable()->upgrade(\thebuggenie\core\modules\installation\upgrade_421\LogItem::getB2DBTable());
+    }
+
     /**
      * Perform the actual upgrade
      *
@@ -311,6 +360,9 @@ class Upgrade
             }
 
             switch ($this->current_version) {
+                case '4.2.1':
+                case '4.2.0':
+                    break;
                 default:
                     $this->_prepareUpgradeFrom4dot1dot13($request);
                     break;
@@ -349,6 +401,9 @@ class Upgrade
                 case '4.1.13':
                 case '4.1.14':
                     $this->_upgradeFrom4dot1dot13();
+                case '4.2.0':
+                case '4.2.1':
+                    $this->_upgradeFrom4dot2dot1();
                 default:
                     $this->upgrade_complete = true;
                     break;

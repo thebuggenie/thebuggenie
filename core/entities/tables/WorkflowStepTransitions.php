@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -36,39 +38,39 @@
         const TRANSITION_ID = 'workflow_step_transitions.transition_id';
         const WORKFLOW_ID = 'workflow_step_transitions.workflow_id';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::WORKFLOW_ID, Workflows::getTable(), Workflows::ID);
-            parent::_addForeignKeyColumn(self::FROM_STEP_ID, WorkflowSteps::getTable(), WorkflowSteps::ID);
-            parent::_addForeignKeyColumn(self::TRANSITION_ID, WorkflowTransitions::getTable(), WorkflowTransitions::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::WORKFLOW_ID, Workflows::getTable(), Workflows::ID);
+            parent::addForeignKeyColumn(self::FROM_STEP_ID, WorkflowSteps::getTable(), WorkflowSteps::ID);
+            parent::addForeignKeyColumn(self::TRANSITION_ID, WorkflowTransitions::getTable(), WorkflowTransitions::ID);
         }
 
         protected function _deleteByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
-            return $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
+            return $this->rawDelete($query);
         }
 
         protected function _countByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
+            return $this->count($query);
         }
 
         protected function _getByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
-            $crit->addJoin(WorkflowTransitions::getTable(), WorkflowTransitions::ID, self::TRANSITION_ID);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::FROM_STEP_ID : self::TRANSITION_ID), $id);
+            $query->join(WorkflowTransitions::getTable(), WorkflowTransitions::ID, self::TRANSITION_ID);
 
             $return_array = array();
-            if ($res = $this->doSelect($crit, false))
+            if ($res = $this->rawSelect($query, false))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -108,30 +110,30 @@
 
         public function addNew($from_step_id, $transition_id, $workflow_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addInsert(self::FROM_STEP_ID, $from_step_id);
-            $crit->addInsert(self::TRANSITION_ID, $transition_id);
-            $crit->addInsert(self::WORKFLOW_ID, $workflow_id);
-            $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion->add(self::FROM_STEP_ID, $from_step_id);
+            $insertion->add(self::TRANSITION_ID, $transition_id);
+            $insertion->add(self::WORKFLOW_ID, $workflow_id);
+            $this->rawInsert($insertion);
         }
         
         public function copyByWorkflowIDs($old_workflow_id, $new_workflow_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::WORKFLOW_ID, $old_workflow_id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::WORKFLOW_ID, $old_workflow_id);
             
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
-                    $crit2 = $this->getCriteria();
-                    $crit2->addInsert(self::FROM_STEP_ID, $row->get(self::FROM_STEP_ID));
-                    $crit2->addInsert(self::SCOPE, $row->get(self::SCOPE));
-                    $crit2->addInsert(self::TRANSITION_ID, $row->get(self::TRANSITION_ID));
-                    $crit2->addInsert(self::WORKFLOW_ID, $new_workflow_id);
-                    $this->doInsert($crit2);
+                    $insertion = new Insertion();
+                    $insertion->add(self::FROM_STEP_ID, $row->get(self::FROM_STEP_ID));
+                    $insertion->add(self::SCOPE, $row->get(self::SCOPE));
+                    $insertion->add(self::TRANSITION_ID, $row->get(self::TRANSITION_ID));
+                    $insertion->add(self::WORKFLOW_ID, $new_workflow_id);
+                    $this->rawInsert($insertion);
                 }
             }
         }
@@ -148,22 +150,26 @@
 
         public function deleteByTransitionAndStepID($transition_id, $step_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TRANSITION_ID, $transition_id);
-            $crit->addWhere(self::FROM_STEP_ID, $step_id);
-            return $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TRANSITION_ID, $transition_id);
+            $query->where(self::FROM_STEP_ID, $step_id);
+            return $this->rawDelete($query);
         }
 
         public function reMapStepIDsByWorkflowID($workflow_id, $mapper_array)
         {
             foreach ($mapper_array as $old_step_id => $new_step_id)
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::FROM_STEP_ID, $new_step_id);
-                $crit->addWhere(self::FROM_STEP_ID, $old_step_id);
-                $crit->addWhere(self::WORKFLOW_ID, $workflow_id);
-                $this->doUpdate($crit);
+                $query = $this->getQuery();
+                $update = new Update();
+
+                $update->add(self::FROM_STEP_ID, $new_step_id);
+
+                $query->where(self::FROM_STEP_ID, $old_step_id);
+                $query->where(self::WORKFLOW_ID, $workflow_id);
+
+                $this->rawUpdate($update, $query);
             }
         }
         
@@ -171,17 +177,21 @@
         {
             foreach ($mapper_array as $old_transition_id => $new_transition_id)
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::TRANSITION_ID, $new_transition_id);
-                $crit->addWhere(self::TRANSITION_ID, $old_transition_id);
-                $crit->addWhere(self::WORKFLOW_ID, $workflow_id);
-                $this->doUpdate($crit);
+                $query = $this->getQuery();
+                $update = new Update();
+
+                $update->add(self::TRANSITION_ID, $new_transition_id);
+
+                $query->where(self::TRANSITION_ID, $old_transition_id);
+                $query->where(self::WORKFLOW_ID, $workflow_id);
+
+                $this->rawUpdate($update, $query);
             }
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope_fromstepid', array(self::SCOPE, self::FROM_STEP_ID));
+            $this->addIndex('scope_fromstepid', array(self::SCOPE, self::FROM_STEP_ID));
         }
 
     }

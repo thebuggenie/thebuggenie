@@ -18,6 +18,8 @@
     /**
      * B2DB Table, vcs_integration -> VCSIntegrationCommitsTable
      *
+     * @method static Commits getTable()
+     *
      * @package thebuggenie
      * @subpackage vcs_integration
      *
@@ -52,41 +54,41 @@
          */
         public function getCommitsByProject($id, $limit = 40, $offset = null, $branch = null, $gitlab_repos_nss = null)
         {
-            $crit = new Criteria();
+            $query = new Criteria();
 
-            $crit->addWhere(self::PROJECT_ID, $id);
-            $crit->addOrderBy(self::DATE, Criteria::SORT_DESC);
+            $query->where(self::PROJECT_ID, $id);
+            $query->addOrderBy(self::DATE, \b2db\QueryColumnSort::SORT_DESC);
 
             if ($branch !== null)
             {
                 if ($gitlab_repos_nss !== null)
                 {
-                    $crit->addWhere(self::DATA, 'branch:'.$branch.'|gitlab_repos_ns:'.$gitlab_repos_nss);
+                    $query->where(self::DATA, 'branch:'.$branch.'|gitlab_repos_ns:'.$gitlab_repos_nss);
                 }
                 else
                 {
-                    $crit->addWhere(self::DATA, 'branch:'.$branch.'%', Criteria::DB_LIKE);
+                    $query->where(self::DATA, 'branch:'.$branch.'%', \b2db\Criterion::LIKE);
                 }
             }
             else
             {
                 if ($gitlab_repos_nss !== null)
                 {
-                    $crit->addWhere(self::DATA, '%|gitlab_repos_ns:'.$gitlab_repos_nss, Criteria::DB_LIKE);
+                    $query->where(self::DATA, '%|gitlab_repos_ns:'.$gitlab_repos_nss, \b2db\Criterion::LIKE);
                 }
             }
 
             if ($limit !== null)
             {
-                $crit->setLimit($limit);
+                $query->setLimit($limit);
             }
 
             if ($offset !== null)
             {
-                $crit->setOffset($offset);
+                $query->setOffset($offset);
             }
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -96,12 +98,12 @@
          */
         public function getCommitByCommitId($id, $project)
         {
-            $crit = new Criteria();
+            $query = new Criteria();
 
-            $crit->addWhere(self::NEW_REV, $id);
-            $crit->addWhere(self::PROJECT_ID, $project);
+            $query->where(self::NEW_REV, $id);
+            $query->where(self::PROJECT_ID, $project);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
         /**
@@ -111,12 +113,12 @@
          */
         public function isProjectCommitProcessed($id, $project)
         {
-            $crit = new Criteria();
+            $query = new Criteria();
 
-            $crit->addWhere(self::NEW_REV, $id);
-            $crit->addWhere(self::PROJECT_ID, $project);
+            $query->where(self::NEW_REV, $id);
+            $query->where(self::PROJECT_ID, $project);
 
-            return (bool) $this->count($crit);
+            return (bool) $this->count($query);
         }
 
     }

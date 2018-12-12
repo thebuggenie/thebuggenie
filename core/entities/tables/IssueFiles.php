@@ -2,19 +2,10 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework,
         b2db\Criteria,
         thebuggenie\core\entities\traits\FileLink;
-
-    /**
-     * Issues <-> Files table
-     *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
 
     /**
      * Issues <-> Files table
@@ -40,36 +31,36 @@
 
         protected $_preloaded_issue_counts;
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
-            parent::_addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
-            parent::_addForeignKeyColumn(self::FILE_ID, Files::getTable(), Files::ID);
-            parent::_addInteger(self::ATTACHED_AT, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
+            parent::addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
+            parent::addForeignKeyColumn(self::FILE_ID, Files::getTable(), Files::ID);
+            parent::addInteger(self::ATTACHED_AT, 10);
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('issueid', self::ISSUE_ID);
+            $this->addIndex('issueid', self::ISSUE_ID);
         }
 
         public function addByIssueIDandFileID($issue_id, $file_id, $insert = true)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE_ID, $issue_id);
-            $crit->addWhere(self::FILE_ID, $file_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            if ($this->doCount($crit) == 0)
+            $query = $this->getQuery();
+            $query->where(self::ISSUE_ID, $issue_id);
+            $query->where(self::FILE_ID, $file_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            if ($this->count($query) == 0)
             {
                 if (! $insert) return true;
 
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $crit->addInsert(self::ATTACHED_AT, NOW);
-                $crit->addInsert(self::ISSUE_ID, $issue_id);
-                $crit->addInsert(self::FILE_ID, $file_id);
-                $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $insertion->add(self::ATTACHED_AT, NOW);
+                $insertion->add(self::ISSUE_ID, $issue_id);
+                $insertion->add(self::FILE_ID, $file_id);
+                $this->rawInsert($insertion);
 
                 return true;
             }
@@ -79,10 +70,10 @@
 
         public function getByIssueID($issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE_ID, $issue_id);
-            $crit->addJoin(Files::getTable(), Files::ID, self::FILE_ID);
-            $res = $this->doSelect($crit, false);
+            $query = $this->getQuery();
+            $query->where(self::ISSUE_ID, $issue_id);
+            $query->join(Files::getTable(), Files::ID, self::FILE_ID);
+            $res = $this->rawSelect($query, false);
 
             $ret_arr = array();
 
@@ -101,13 +92,13 @@
 
         public function preloadIssueFileCounts($target_ids)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID, 'num_files', Criteria::DB_COUNT);
-            $crit->addSelectionColumn(self::ISSUE_ID);
-            $crit->addWhere(self::ISSUE_ID, $target_ids, Criteria::DB_IN);
-            $crit->addGroupBy(self::ISSUE_ID);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID, 'num_files', \b2db\Query::DB_COUNT);
+            $query->addSelectionColumn(self::ISSUE_ID);
+            $query->where(self::ISSUE_ID, $target_ids, \b2db\Criterion::IN);
+            $query->addGroupBy(self::ISSUE_ID);
 
-            $res = $this->doSelect($crit, false);
+            $res = $this->rawSelect($query, false);
             $this->_preloaded_issue_counts = array();
             if ($res)
             {
@@ -138,18 +129,18 @@
 
         public function countByIssueID($issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE_ID, $issue_id);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::ISSUE_ID, $issue_id);
+            return $this->count($query);
         }
 
         public function getIssuesByFileID($file_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::FILE_ID, $file_id);
+            $query = $this->getQuery();
+            $query->where(self::FILE_ID, $file_id);
 
             $issue_ids = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -162,13 +153,13 @@
 
         public function removeByIssueIDandFileID($issue_id, $file_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE_ID, $issue_id);
-            $crit->addWhere(self::FILE_ID, $file_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            if ($res = $this->doSelectOne($crit))
+            $query = $this->getQuery();
+            $query->where(self::ISSUE_ID, $issue_id);
+            $query->where(self::FILE_ID, $file_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            if ($res = $this->rawSelectOne($query))
             {
-                $this->doDelete($crit);
+                $this->rawDelete($query);
             }
             return $res;
         }

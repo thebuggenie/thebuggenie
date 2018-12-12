@@ -161,7 +161,7 @@
          */
         public function getAuthor()
         {
-            return $this->_b2dbLazyload('_author');
+            return $this->_b2dbLazyLoad('_author');
         }
 
 

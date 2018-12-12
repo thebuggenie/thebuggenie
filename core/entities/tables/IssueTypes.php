@@ -40,27 +40,27 @@
 
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            return $this->select($query);
         }
 
         public function getByIds($ids)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ID, $ids, Criteria::DB_IN);
-            $crit->indexBy(self::ID);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ID, $ids, \b2db\Criterion::IN);
+            $query->indexBy(self::ID);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getAllIDsByScopeID($scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $crit->addSelectionColumn(self::ID, 'id');
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope_id);
+            $query->addSelectionColumn(self::ID, 'id');
+            $res = $this->rawSelect($query);
 
             $ids = array();
             if ($res) {
@@ -75,10 +75,10 @@
 
         public function getBugReportTypeIDs()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ICON, 'bug_report');
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::ICON, 'bug_report');
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawSelect($query);
 
             $retarr = array();
             if ($res)

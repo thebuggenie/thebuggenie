@@ -155,7 +155,7 @@
                 }
                 $this->_search_object->setIssuesPerPage(0);
                 $this->_search_object->setOffset(0);
-                $this->_search_object->setSortFields(array(\thebuggenie\core\entities\tables\Issues::MILESTONE_ORDER => \b2db\Criteria::SORT_ASC));
+                $this->_search_object->setSortFields(array(\thebuggenie\core\entities\tables\Issues::MILESTONE_ORDER => \b2db\QueryColumnSort::SORT_ASC));
                 $this->_search_object->setGroupby(null);
             }
         }

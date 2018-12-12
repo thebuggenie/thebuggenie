@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework;
 
     /**
@@ -34,28 +36,28 @@
         const REPORTABLE = 'issuetype_scheme_link.reportable';
         const REDIRECT_AFTER_REPORTING = 'issuetype_scheme_link.redirect_after_reporting';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, IssuetypeSchemes::getTable(), IssuetypeSchemes::ID);
-            parent::_addForeignKeyColumn(self::ISSUETYPE_ID, IssueTypes::getTable(), IssueTypes::ID);
-            parent::_addBoolean(self::REPORTABLE, true);
-            parent::_addBoolean(self::REDIRECT_AFTER_REPORTING, true);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::ISSUETYPE_SCHEME_ID, IssuetypeSchemes::getTable(), IssuetypeSchemes::ID);
+            parent::addForeignKeyColumn(self::ISSUETYPE_ID, IssueTypes::getTable(), IssueTypes::ID);
+            parent::addBoolean(self::REPORTABLE, true);
+            parent::addBoolean(self::REDIRECT_AFTER_REPORTING, true);
         }
 
-        public function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('issuetypescheme_scope', array(self::ISSUETYPE_SCHEME_ID, self::SCOPE));
+            $this->addIndex('issuetypescheme_scope', array(self::ISSUETYPE_SCHEME_ID, self::SCOPE));
         }
 
         public function getByIssuetypeSchemeID($issuetype_scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
             $return_array = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -85,63 +87,71 @@
 
         public function deleteByIssuetypeSchemeID($scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function deleteByIssuetypeID($type_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_ID, $type_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ISSUETYPE_ID, $type_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function associateIssuetypeWithScheme($issuetype_id, $scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addInsert(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion->add(self::ISSUETYPE_ID, $issuetype_id);
+            $insertion->add(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $this->rawInsert($insertion);
         }
 
         public function unAssociateIssuetypeWithScheme($issuetype_id, $scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ISSUETYPE_ID, $issuetype_id);
+            $query->where(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $this->rawDelete($query);
         }
 
         public function setIssuetypeRedirectedAfterReportingForScheme($issuetype_id, $issuetype_scheme_id, $redirected = true)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
-            $crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addUpdate(self::REDIRECT_AFTER_REPORTING, $redirected);
-            $this->doUpdate($crit);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add(self::REDIRECT_AFTER_REPORTING, $redirected);
+
+            $query->where(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
+            $query->where(self::ISSUETYPE_ID, $issuetype_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+
+            $this->rawUpdate($update, $query);
         }
 
         public function setIssuetypeReportableForScheme($issuetype_id, $issuetype_scheme_id, $reportable = true)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
-            $crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addUpdate(self::REPORTABLE, $reportable);
-            $this->doUpdate($crit);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add(self::REPORTABLE, $reportable);
+
+            $query->where(self::ISSUETYPE_SCHEME_ID, $issuetype_scheme_id);
+            $query->where(self::ISSUETYPE_ID, $issuetype_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+
+            $this->rawUpdate($update, $query);
         }
 
         public function countByIssuetypeID($issuetype_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-            return $this->count($crit);
+            $query = $this->getQuery();
+            $query->where(self::ISSUETYPE_ID, $issuetype_id);
+            return $this->count($query);
         }
 
     }

@@ -106,7 +106,7 @@
          */
         public function getBoard()
         {
-            return $this->_b2dbLazyload('_board_id');
+            return $this->_b2dbLazyLoad('_board_id');
         }
 
         public function setBoard($board)

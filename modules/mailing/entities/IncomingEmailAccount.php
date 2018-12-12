@@ -365,7 +365,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project');
+            return $this->_b2dbLazyLoad('_project');
         }
 
         /**
@@ -375,7 +375,7 @@
          */
         public function getIssuetype()
         {
-            return $this->_b2dbLazyload('_issuetype');
+            return $this->_b2dbLazyLoad('_issuetype');
         }
 
         public function getIssuetypeID()

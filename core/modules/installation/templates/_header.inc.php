@@ -25,6 +25,8 @@
         <style type="text/css">
             <?php include THEBUGGENIE_PATH . 'themes' . DS . 'oxygen' . DS . 'css' . DS . 'theme.css'; ?>
         </style>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/v4-shims.css">
         <style type="text/css">
             @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i|Fira+Mono:400,500,700&subset=cyrillic,cyrillic-ext,latin-ext');
 
@@ -145,6 +147,43 @@
                 margin-top: -5px;
                 border: 1px solid #BEBEBE;
             }
+
+            .message-box {
+                display: flex;
+                width: calc(100% - 20px);
+                box-sizing: border-box;
+                margin: 10px;
+                padding: 10px;
+                border: 1px solid rgba(200, 200, 200, 0.7);
+                align-items: baseline;
+                border-radius: 3px;
+            }
+            .message-box.type-warning {
+                background-color: rgba(249, 245, 178, 0.6);
+            }
+            .message-box.type-info {
+                background-color: rgba(177, 210, 143, 0.3);
+            }
+            .message-box .fas,
+            .message-box .fab,
+            .message-box .far {
+                margin-right: 5px;
+            }
+            .message-box .message {
+                flex: 1 1 auto;
+                font-size: 1.1em;
+                color: rgba(0, 0, 0, .4);
+            }
+            .message-box .actions {
+                flex: 0 0 auto;
+            }
+            .message-box .message + .actions {
+                margin-left: 10px;
+            }
+            .message-box .actions .button {
+                padding: 4px 7px;
+            }
+
         </style>
     </head>
     <body>

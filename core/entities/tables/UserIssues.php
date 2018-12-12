@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
 
     /**
@@ -32,26 +33,26 @@
         const ISSUE = 'userissues.issue';
         const UID = 'userissues.uid';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ISSUE, Issues::getTable(), Issues::ID);
-            parent::_addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::ISSUE, Issues::getTable(), Issues::ID);
+            parent::addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
         }
 
-        public function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('uid_scope', array(self::UID, self::SCOPE));
+            $this->addIndex('uid_scope', array(self::UID, self::SCOPE));
         }
 
         public function getUserIDsByIssueID($issue_id)
         {
             $uids = array();
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             
-            $crit->addWhere(self::ISSUE, $issue_id);
+            $query->where(self::ISSUE, $issue_id);
             
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -70,15 +71,15 @@
 
             if (count($old_watchers))
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::ISSUE, $to_issue_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
+                $insertion = new Insertion();
+                $insertion->add(self::ISSUE, $to_issue_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
                 foreach ($old_watchers as $uid)
                 {
                     if (!in_array($uid, $new_watchers))
                     {
-                        $crit->addInsert(self::UID, $uid);
-                        $this->doInsert($crit);
+                        $insertion->add(self::UID, $uid);
+                        $this->rawInsert($insertion);
                     }
                 }
             }
@@ -86,14 +87,14 @@
         
         public function getUserStarredIssues($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $user_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addJoin(Issues::getTable(), Issues::ID, self::ISSUE);
-            $crit->addWhere(Issues::DELETED, 0);
-            $crit->addSelectionColumn(Issues::ID, 'issue_id');
+            $query = $this->getQuery();
+            $query->where(self::UID, $user_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->join(Issues::getTable(), Issues::ID, self::ISSUE);
+            $query->where(Issues::DELETED, 0);
+            $query->addSelectionColumn(Issues::ID, 'issue_id');
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $issues = array();
             if ($res) {
                 while ($row = $res->getNextRow()) {
@@ -106,21 +107,21 @@
         
         public function addStarredIssue($user_id, $issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ISSUE, $issue_id);
-            $crit->addInsert(self::UID, $user_id);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion = new Insertion();
+            $insertion->add(self::ISSUE, $issue_id);
+            $insertion->add(self::UID, $user_id);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
 
-            $this->doInsert($crit);
+            $this->rawInsert($insertion);
         }
         
         public function removeStarredIssue($user_id, $issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE, $issue_id);
-            $crit->addWhere(self::UID, $user_id);
+            $query = $this->getQuery();
+            $query->where(self::ISSUE, $issue_id);
+            $query->where(self::UID, $user_id);
                 
-            $this->doDelete($crit);
+            $this->rawDelete($query);
             return true;
         }
     }

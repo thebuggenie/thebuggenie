@@ -2,20 +2,12 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Update;
+    use thebuggenie\core\entities\Milestone;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
         b2db\Criterion;
-
-    /**
-     * Milestones table
-     *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
 
     /**
      * Milestones table
@@ -45,64 +37,67 @@
         const SCHEDULED = 'milestones.scheduleddate';
         const PERCENTAGE_TYPE = 'milestones.percentage_type';
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate('milestones.visible_issues', true);
-            $crit->addUpdate('milestones.visible_roadmap', true);
+            $update = new Update();
+            $update->add('milestones.visible_issues', true);
+            $update->add('milestones.visible_roadmap', true);
             
-            $this->doUpdate($crit);
+            $this->rawUpdate($update);
         }
         
         public function getByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT, $project_id);
-            $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT, $project_id);
+            $query->addOrderBy(self::NAME, \b2db\QueryColumnSort::SORT_ASC);
+            return $this->select($query);
         }
 
         public function doesIDExist($userid)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ID, $userid);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::ID, $userid);
+            return $this->count($query);
         }
 
         public function setReached($milestone_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::REACHED, NOW);
-            $this->doUpdateById($crit, $milestone_id);
+            $update = new Update();
+            $update->add(self::REACHED, NOW);
+            $this->rawUpdateById($update, $milestone_id);
         }
 
         public function clearReached($milestone_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::REACHED, null);
-            $this->doUpdateById($crit, $milestone_id);
+            $update = new Update();
+            $update->add(self::REACHED, null);
+            $this->rawUpdateById($update, $milestone_id);
         }
 
         public function getByIDs($ids)
         {
             if (empty($ids)) return array();
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ID, $ids, Criteria::DB_IN);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ID, $ids, \b2db\Criterion::IN);
+            return $this->select($query);
         }
 
+        /**
+         * @return Milestone[]
+         */
         public function selectAll()
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
 
-            $crit->addJoin(Projects::getTable(), Projects::ID, self::PROJECT);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(Projects::NAME, Criteria::SORT_ASC);
-            $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
+            $query->join(Projects::getTable(), Projects::ID, self::PROJECT);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(Projects::NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $query->addOrderBy(self::NAME, \b2db\QueryColumnSort::SORT_ASC);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
     }

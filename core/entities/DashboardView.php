@@ -320,7 +320,7 @@
          */
         public function getDashboard()
         {
-            return $this->_b2dbLazyload('_dashboard_id');
+            return $this->_b2dbLazyLoad('_dashboard_id');
         }
 
         public function getTemplate()

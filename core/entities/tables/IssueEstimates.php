@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
     use b2db\Criteria;
 
@@ -40,34 +41,34 @@
         const ESTIMATED_MINUTES = 'issue_estimates.estimated_minutes';
         const ESTIMATED_POINTS = 'issue_estimates.estimated_points';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
-            parent::_addForeignKeyColumn(self::EDITED_BY, Users::getTable(), Users::ID);
-            parent::_addInteger(self::EDITED_AT, 10);
-            parent::_addInteger(self::ESTIMATED_MONTHS, 10);
-            parent::_addInteger(self::ESTIMATED_WEEKS, 10);
-            parent::_addInteger(self::ESTIMATED_DAYS, 10);
-            parent::_addInteger(self::ESTIMATED_HOURS, 10);
-            parent::_addInteger(self::ESTIMATED_MINUTES, 10);
-            parent::_addFloat(self::ESTIMATED_POINTS);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
+            parent::addForeignKeyColumn(self::EDITED_BY, Users::getTable(), Users::ID);
+            parent::addInteger(self::EDITED_AT, 10);
+            parent::addInteger(self::ESTIMATED_MONTHS, 10);
+            parent::addInteger(self::ESTIMATED_WEEKS, 10);
+            parent::addInteger(self::ESTIMATED_DAYS, 10);
+            parent::addInteger(self::ESTIMATED_HOURS, 10);
+            parent::addInteger(self::ESTIMATED_MINUTES, 10);
+            parent::addFloat(self::ESTIMATED_POINTS);
         }
 
         public function saveEstimate($issue_id, $months, $weeks, $days, $hours, $minutes, $points)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ESTIMATED_MONTHS, $months);
-            $crit->addInsert(self::ESTIMATED_WEEKS, $weeks);
-            $crit->addInsert(self::ESTIMATED_DAYS, $days);
-            $crit->addInsert(self::ESTIMATED_HOURS, $hours);
-            $crit->addInsert(self::ESTIMATED_MINUTES, $minutes);
-            $crit->addInsert(self::ESTIMATED_POINTS, $points);
-            $crit->addInsert(self::ISSUE_ID, $issue_id);
-            $crit->addInsert(self::EDITED_AT, NOW);
-            $crit->addInsert(self::EDITED_BY, framework\Context::getUser()->getID());
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::ESTIMATED_MONTHS, $months);
+            $insertion->add(self::ESTIMATED_WEEKS, $weeks);
+            $insertion->add(self::ESTIMATED_DAYS, $days);
+            $insertion->add(self::ESTIMATED_HOURS, $hours);
+            $insertion->add(self::ESTIMATED_MINUTES, $minutes);
+            $insertion->add(self::ESTIMATED_POINTS, $points);
+            $insertion->add(self::ISSUE_ID, $issue_id);
+            $insertion->add(self::EDITED_AT, NOW);
+            $insertion->add(self::EDITED_BY, framework\Context::getUser()->getID());
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $this->rawInsert($insertion);
         }
 
         public function getEstimatesByDateAndIssueIDs($startdate, $enddate, $issue_ids)
@@ -92,16 +93,16 @@
 
             if (count($issue_ids))
             {
-                $crit = $this->getCriteria();
+                $query = $this->getQuery();
                 if ($startdate && $enddate)
                 {
-                    $crit->addWhere(self::EDITED_AT, $enddate, Criteria::DB_LESS_THAN_EQUAL);
+                    $query->where(self::EDITED_AT, $enddate, \b2db\Criterion::LESS_THAN_EQUAL);
                 }
 
-                $crit->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
-                $crit->addOrderBy(self::EDITED_AT, Criteria::SORT_ASC);
+                $query->where(self::ISSUE_ID, $issue_ids, \b2db\Criterion::IN);
+                $query->addOrderBy(self::EDITED_AT, \b2db\QueryColumnSort::SORT_ASC);
 
-                if ($res = $this->doSelect($crit))
+                if ($res = $this->rawSelect($query))
                 {
                     while ($row = $res->getNextRow())
                     {

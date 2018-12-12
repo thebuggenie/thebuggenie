@@ -106,7 +106,7 @@
 
         public function getUploadedBy()
         {
-            return $this->_b2dbLazyload('_uid');
+            return $this->_b2dbLazyLoad('_uid');
         }
 
         public function setUploadedBy($uploaded_by)

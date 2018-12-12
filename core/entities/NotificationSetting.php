@@ -113,7 +113,7 @@
 
         public function getUser()
         {
-            return $this->_b2dbLazyload('_user_id');
+            return $this->_b2dbLazyLoad('_user_id');
         }
 
         public function setUser($uid)

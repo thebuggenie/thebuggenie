@@ -836,11 +836,11 @@
             switch (framework\Settings::getUserDisplaynameFormat())
             {
                 case framework\Settings::USER_DISPLAYNAME_FORMAT_REALNAME:
-                    return ($this->_realname) ? $this->_realname . ' (' . $this->_username . ')' : $this->_username;
+                    return ($this->_realname) ? $this->_realname . ' (@' . $this->_username . ')' : '@' . $this->_username;
 
                 case framework\Settings::USER_DISPLAYNAME_FORMAT_BUDDY:
                 default:
-                    return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : (($this->_realname) ? $this->_realname . ' (' . $this->_username . ')' : $this->_username);
+                    return ($this->_buddyname) ? $this->_buddyname . ' (@' . $this->_username . ')' : (($this->_realname) ? $this->_realname . ' (@' . $this->_username . ')' : '@' . $this->_username);
             }
         }
 
@@ -914,7 +914,7 @@
             if ($this->teams === null)
             {
                 $this->_teams = array('assigned' => array(), 'ondemand' => array());
-                $this->_b2dbLazyload('teams');
+                $this->_b2dbLazyLoad('teams');
                 framework\Logging::log('Populating user teams');
                 if (count($this->teams))
                 {
@@ -950,7 +950,7 @@
         {
             if ($this->clients === null)
             {
-                $this->_b2dbLazyload('clients');
+                $this->_b2dbLazyLoad('clients');
             }
         }
 
@@ -1277,7 +1277,7 @@
             $away = $this->isAway();
             if (($active || $away) && $this->_customstate)
             {
-                $this->_b2dbLazyload('_userstate');
+                $this->_b2dbLazyLoad('_userstate');
                 if ($this->_userstate instanceof Userstate)
                 {
                     return $this->_userstate;
@@ -1814,7 +1814,7 @@
         public function getCommentSortOrder()
         {
             $val = framework\Settings::get(framework\Settings::SETTING_USER_COMMENT_ORDER, 'core', framework\Context::getScope(), $this->getID());
-            return ($val !== null) ? $val : 'desc';
+            return ($val !== null) ? $val : 'asc';
         }
 
         public function getActivationKey()
@@ -2390,11 +2390,11 @@
          *
          * @param integer $number Limit to a number of changes
          *
-         * @return array
+         * @return LogItem[]
          */
         public function getLatestActions($number = 10)
         {
-            $items = tables\Log::getTable()->getByUserID($this->getID(), $number);
+            $items = tables\LogItems::getTable()->getByUserID($this->getID(), $number);
             return $items;
         }
 
@@ -2493,7 +2493,7 @@
          */
         public function getScopes()
         {
-            $this->_b2dbLazyload('_scopes');
+            $this->_b2dbLazyLoad('_scopes');
             return $this->_scopes;
         }
 
@@ -2758,7 +2758,7 @@
          */
         public function getDashboards()
         {
-            $this->_b2dbLazyload('_dashboards');
+            $this->_b2dbLazyLoad('_dashboards');
             return $this->_dashboards;
         }
 
@@ -2790,7 +2790,7 @@
          */
         public function getUserSessions()
         {
-            $this->_b2dbLazyload('_user_sessions');
+            $this->_b2dbLazyLoad('_user_sessions');
             return $this->_user_sessions;
         }
 
@@ -2841,7 +2841,7 @@
          */
         public function getApplicationPasswords()
         {
-            $this->_b2dbLazyload('_application_passwords');
+            $this->_b2dbLazyLoad('_application_passwords');
             return $this->_application_passwords;
         }
 

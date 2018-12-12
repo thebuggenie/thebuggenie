@@ -485,12 +485,12 @@
 
         public function getNumberOfProjects()
         {
-            return (int) $this->_b2dbLazycount('_projects');
+            return (int) $this->_b2dbLazyCount('_projects');
         }
 
         public function getNumberOfIssues()
         {
-            return (int) $this->_b2dbLazycount('_issues');
+            return (int) $this->_b2dbLazyCount('_issues');
         }
 
     }

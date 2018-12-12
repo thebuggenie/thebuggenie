@@ -1,6 +1,12 @@
 <?php $canedititem = (($itemtype == 'build' && $issue->canEditAffectedBuilds()) || ($itemtype == 'component' && $issue->canEditAffectedComponents()) || ($itemtype == 'edition' && $issue->canEditAffectedEditions())); ?>
 <li id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>" class="affected_item">
-    <?php echo image_tag('icon_'.$itemtype.'_large.png', array('alt' => $itemtypename, 'class' => 'icon_affected_type')); ?>
+    <?php if ($itemtype == 'component'): ?>
+        <?php echo fa_image_tag('puzzle-piece', ['title' => $itemtypename, 'class' => 'icon_affected_type']); ?>
+    <?php elseif ($itemtype == 'edition'): ?>
+        <?php echo fa_image_tag('window-restore', ['title' => $itemtypename, 'class' => 'icon_affected_type'], 'far'); ?>
+    <?php else: ?>
+        <?php echo fa_image_tag('compact-disc', ['title' => $itemtypename, 'class' => 'icon_affected_type']); ?>
+    <?php endif; ?>
     <?php if ($canedititem): ?>
         <a href="javascript:void(0);" class="removelink" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove %itemname?', array('%itemname' => $item[$itemtype]->getName())); ?>', '<?php echo __('Please confirm that you want to remove this item from the list of items affected by this issue'); ?>', {yes: {click: function() {TBG.Issues.Affected.remove('<?php echo make_url('remove_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'])).'\', '.'\''.$itemtype.'_'.$item['a_id']; ?>');TBG.Main.Helpers.Dialog.dismiss();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo fa_image_tag('times', array('id' => 'affected_'.$itemtype.'_'.$item['a_id'].'_delete_icon', 'class' => 'delete')); ?></a>
     <?php endif; ?>
