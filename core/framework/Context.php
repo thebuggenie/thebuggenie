@@ -2561,6 +2561,18 @@ class Context
         defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
 
         self::initialize();
+
+        if (defined('TBG_CLI')) {
+            self::setupI18n();
+
+            // Available permissions cannot be cached during
+            // installation because the scope is not set-up at that
+            // point. Permissions also must be cached at this point,
+            // and not together with self::initializeUser since i18n
+            // system must be initialised beforehand.
+            if (!self::isInstallmode())
+                self::_cacheAvailablePermissions();
+        }
     }
 
     /**
