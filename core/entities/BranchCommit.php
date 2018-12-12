@@ -53,7 +53,7 @@
          */
         public function getCommit()
         {
-            return $this->_b2dbLazyload('_commit_id');
+            return $this->_b2dbLazyLoad('_commit_id');
         }
 
         /**
@@ -71,7 +71,7 @@
          */
         public function getBranch()
         {
-            return $this->_b2dbLazyload('_branch_id');
+            return $this->_b2dbLazyLoad('_branch_id');
         }
 
         /**

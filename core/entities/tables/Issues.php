@@ -14,16 +14,6 @@
     /**
      * Issues table
      *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
-
-    /**
-     * Issues table
-     *
      * @package thebuggenie
      * @subpackage tables
      *
@@ -102,7 +92,7 @@
             $this->addIndex('duplicateof', array(self::DUPLICATE_OF));
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             $update = new Update();
             $update->add('issues.locked_category', true);

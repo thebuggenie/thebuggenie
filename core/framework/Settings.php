@@ -314,7 +314,6 @@
             if (!array_key_exists($name, self::$_settings[$module]))
             {
                 return null;
-                //self::$_settings[$name] = self::_loadSetting($name, $module, Context::getScope()->getID());
             }
             if ($uid !== 0 && array_key_exists($uid, self::$_settings[$module][$name]))
             {
@@ -580,7 +579,6 @@
         public static function isCommentTrailClean()
         {
             return false;
-//            return (bool) self::get(self::SETTING_KEEP_COMMENT_TRAIL_CLEAN);
         }
 
         public static function isCommentImagePreviewEnabled()
@@ -601,7 +599,6 @@
         public static function isDefaultUserGuest()
         {
             return true;
-//            return (bool) self::get(self::SETTING_DEFAULT_USER_IS_GUEST);
         }
 
         public static function getDefaultUserID()
@@ -1056,7 +1053,9 @@
             if (Context::getScope()->getID() == 1)
                 $config_sections['general'][self::CONFIGURATION_SECTION_SCOPES] = array('route' => 'configure_scopes', 'description' => $i18n->__('Scopes'), 'fa_style' => 'fas', 'fa_icon' => 'clone', 'details' => $i18n->__('Scopes are self-contained Bug Genie environments. Configure them here.'));
 
-            $config_sections['general'][self::CONFIGURATION_SECTION_LICENSE] = array('route' => 'configure_license', 'description' => $i18n->__('License'), 'fa_style' => 'fas', 'fa_icon' => 'file-contract', 'details' => $i18n->__('Configure the license in this section'));
+            if (Context::getScope()->isDefault()) {
+                $config_sections['general'][self::CONFIGURATION_SECTION_LICENSE] = array('route' => 'configure_license', 'description' => $i18n->__('License'), 'fa_style' => 'fas', 'fa_icon' => 'file-contract', 'details' => $i18n->__('Configure the license in this section'));
+            }
             $config_sections['general'][self::CONFIGURATION_SECTION_SETTINGS] = array('route' => 'configure_settings', 'description' => $i18n->__('Settings'), 'fa_style' => 'fas', 'fa_icon' => 'cog', 'details' => $i18n->__('Every setting in the bug genie can be adjusted in this section.'));
             $config_sections['general'][self::CONFIGURATION_SECTION_THEMES] = array('route' => 'configuration_themes', 'description' => $i18n->__('Theme'), 'fa_style' => 'fas', 'fa_icon' => 'paint-brush', 'details' => $i18n->__('Configure the selected theme from this section'));
             $config_sections['general'][self::CONFIGURATION_SECTION_ROLES] = array('route' => 'configure_roles', 'description' => $i18n->__('Roles'), 'fa_style' => 'fas', 'fa_icon' => 'user-md', 'details' => $i18n->__('Configure roles in this section'));
@@ -1093,6 +1092,12 @@
             return (Context::getUser()->canSaveConfiguration($section, $module)) ? self::ACCESS_FULL : self::ACCESS_READ;
         }
 
+        public static function hasLicenseIdentifier()
+        {
+            return false;
+            return (bool) (self::getLicenseIdentifier() !== '');
+        }
+
         public static function getLicenseIdentifier()
         {
             return self::get(self::SETTING_LICENSE_ID);
@@ -1101,6 +1106,11 @@
         public static function setLicenseIdentifier($license_id)
         {
             self::saveSetting(self::SETTING_LICENSE_ID, $license_id);
+        }
+
+        public static function clearLicenseIdentifier()
+        {
+            self::deleteSetting(self::SETTING_LICENSE_ID);
         }
 
         public static function isStable(): bool

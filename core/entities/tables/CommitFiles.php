@@ -5,7 +5,7 @@
     use \thebuggenie\core\framework;
 
     /**
-     * B2DB Table, vcs_integration -> VCSIntegrationFilesTable
+     * Commit files table
      *
      * @method static CommitFiles getTable()
      *

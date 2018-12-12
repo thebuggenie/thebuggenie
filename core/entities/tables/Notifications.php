@@ -2,21 +2,12 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\RawQuery;
     use b2db\Update;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
         b2db\Criterion;
-
-    /**
-     * Notifications table
-     *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
 
     /**
      * Notifications table
@@ -77,28 +68,30 @@
             $seconds = $minutes * 60;
 
             $custom_sql_unread = "SELECT SUM(subquery.custom_count) as custom_count FROM (SELECT {$notification_type_col}, {$created_at_col} DIV {$seconds}, COUNT({$id_col}) as real_count, (CASE WHEN {$notification_type_col} = '{$notification_type_issue_updated_col}' THEN 1 ELSE COUNT({$id_col}) END) as custom_count FROM {$b2dbname} WHERE {$user_id_col} = {$user_id} AND {$triggered_by_uid_col} != {$user_id} AND $is_read_col = 0 GROUP BY {$notification_type_col}, {$created_at_col} DIV {$seconds}, {$triggered_by_uid_col}) as subquery";
-            $statement = \b2db\Statement::getPreparedStatement($custom_sql_unread);
-            $res = $statement->statement->execute(array());
+            $query = new RawQuery($custom_sql_unread);
+            $statement = \b2db\Statement::getPreparedStatement($query);
+            $res = $statement->execute();
             if (!$res)
             {
                 $unread_count = 0;
             }
             else
             {
-                $resultset = $statement->statement->fetch();
+                $resultset = $statement->fetch();
                 $unread_count = is_null($resultset['custom_count']) ? 0 : $resultset['custom_count'];
             }
 
             $custom_sql_unread = "SELECT SUM(subquery.custom_count) as custom_count FROM (SELECT {$notification_type_col}, {$created_at_col} DIV {$seconds}, COUNT({$id_col}) as real_count, (CASE WHEN {$notification_type_col} = '{$notification_type_issue_updated_col}' THEN 1 ELSE COUNT({$id_col}) END) as custom_count FROM {$b2dbname} WHERE {$user_id_col} = {$user_id} AND {$triggered_by_uid_col} != {$user_id} AND $is_read_col = 1 GROUP BY {$notification_type_col}, {$created_at_col} DIV {$seconds}, {$triggered_by_uid_col}) as subquery";
-            $statement = \b2db\Statement::getPreparedStatement($custom_sql_unread);
-            $res = $statement->statement->execute(array());
+            $query = new RawQuery($custom_sql_unread);
+            $statement = \b2db\Statement::getPreparedStatement($query);
+            $res = $statement->execute();
             if (!$res)
             {
                 $read_count = 0;
             }
             else
             {
-                $resultset = $statement->statement->fetch();
+                $resultset = $statement->fetch();
                 $read_count = is_null($resultset['custom_count']) ? 0 : $resultset['custom_count'];
             }
 
@@ -136,9 +129,7 @@
             $sql .= " GROUP BY {$this->b2db_alias}_custom_group_by, {$created_at_col} DIV {$seconds}, {$triggered_by_user_id_col}";
             $sql .= " ORDER BY {$id_col} DESC";
 
-            $query = $this->getQuery();
-            $query->sql = $sql;
-            $query->action = 'select';
+            $query = new RawQuery($sql);
             $statement = \b2db\Statement::getPreparedStatement($query);
             $resultset = $statement->execute();
 
@@ -218,9 +209,7 @@
 
             $sql = "UPDATE {$b2dbname} a JOIN ({$sub_sql}) b ON a.{$cols['id']} = b.{$cols['id']} SET a.{$cols['is_read']} = {$is_read} WHERE (a.{$cols['notification_type']} = '{$notification_type_issue_updated_col}') AND (a.{$cols['user_id']} = {$user_id}) AND (a.{$cols['scope']} = {$scope}) AND ((a.{$cols['created_at']} DIV {$seconds}) * a.{$cols['created_at']} DIV (a.{$cols['created_at']})) IN (b.created_at_div)";
 
-            $query = $this->getQuery();
-            $query->sql = $sql;
-            $query->action = 'update';
+            $query = new RawQuery($sql);
             $statement = \b2db\Statement::getPreparedStatement($query);
             $statement->execute();
 
@@ -230,7 +219,7 @@
             $this->markUserNotificationsReadByTypesAndId($types, $id, $user_id);
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             switch ($old_table::B2DB_TABLE_VERSION)
             {

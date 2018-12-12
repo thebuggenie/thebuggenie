@@ -1121,7 +1121,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project_id');
+            return $this->_b2dbLazyLoad('_project_id');
         }
 
         /**
@@ -1142,7 +1142,7 @@
          */
         public function getWorkflowStep()
         {
-            return $this->_b2dbLazyload('_workflow_step_id');
+            return $this->_b2dbLazyLoad('_workflow_step_id');
         }
 
         /**
@@ -1431,7 +1431,7 @@
          */
         public function getDuplicateOf()
         {
-            return $this->_b2dbLazyload('_duplicate_of');
+            return $this->_b2dbLazyLoad('_duplicate_of');
         }
 
         /**
@@ -1995,7 +1995,7 @@
          */
         public function getIssueType()
         {
-            return $this->_b2dbLazyload('_issuetype');
+            return $this->_b2dbLazyLoad('_issuetype');
         }
 
         public function hasIssueType()
@@ -2058,7 +2058,7 @@
          */
         public function getStatus()
         {
-            return $this->_b2dbLazyload('_status');
+            return $this->_b2dbLazyLoad('_status');
         }
 
         /**
@@ -2281,6 +2281,7 @@
             {
                 $comment = new Comment();
                 $comment->setPostedBy(framework\Context::getUser()->getID());
+                $comment->setSystemComment(true);
                 $comment->setTargetID($this->getID());
                 $comment->setTargetType(Comment::TYPE_ISSUE);
                 if ($file_comment)
@@ -2322,7 +2323,7 @@
         {
             if ($this->_duplicate_issues === null)
             {
-                $this->_b2dbLazyload('_duplicate_issues');
+                $this->_b2dbLazyLoad('_duplicate_issues');
                 foreach ($this->_duplicate_issues as $issue_id => $issue)
                 {
                     if (!$issue->hasAccess()) unset($this->_duplicate_issues[$issue_id]);
@@ -2719,7 +2720,7 @@
          */
         public function getCategory()
         {
-            return $this->_b2dbLazyload('_category');
+            return $this->_b2dbLazyLoad('_category');
         }
 
         /**
@@ -2753,7 +2754,7 @@
          */
         public function getReproducability()
         {
-            return $this->_b2dbLazyload('_reproducability');
+            return $this->_b2dbLazyLoad('_reproducability');
         }
 
         /**
@@ -2773,7 +2774,7 @@
          */
         public function getPriority()
         {
-            return $this->_b2dbLazyload('_priority');
+            return $this->_b2dbLazyLoad('_priority');
         }
 
         /**
@@ -3014,7 +3015,7 @@
          */
         public function getMilestone()
         {
-            return $this->_b2dbLazyload('_milestone');
+            return $this->_b2dbLazyLoad('_milestone');
         }
 
         /**
@@ -3185,7 +3186,7 @@
          */
         public function getPostedBy()
         {
-            $this->_posted_by = $this->_b2dbLazyload('_posted_by');
+            $this->_posted_by = $this->_b2dbLazyLoad('_posted_by');
             return $this->_posted_by;
         }
 
@@ -3285,7 +3286,7 @@
          */
         public function getResolution()
         {
-            return $this->_b2dbLazyload('_resolution');
+            return $this->_b2dbLazyLoad('_resolution');
         }
 
         /**
@@ -3305,7 +3306,7 @@
          */
         public function getSeverity()
         {
-            return $this->_b2dbLazyload('_severity');
+            return $this->_b2dbLazyLoad('_severity');
         }
 
         /**
@@ -4636,7 +4637,7 @@
         {
             if ($this->_spent_times === null)
             {
-                $this->_b2dbLazyload('_spent_times');
+                $this->_b2dbLazyLoad('_spent_times');
             }
         }
 
@@ -5757,7 +5758,7 @@
          */
         public function getUserWorkingOnIssue()
         {
-            return $this->_b2dbLazyload('_being_worked_on_by_user');
+            return $this->_b2dbLazyLoad('_being_worked_on_by_user');
         }
 
         /**
@@ -6106,8 +6107,8 @@
          */
         public function getAssignee()
         {
-            $this->_b2dbLazyload('_assignee_team');
-            $this->_b2dbLazyload('_assignee_user');
+            $this->_b2dbLazyLoad('_assignee_team');
+            $this->_b2dbLazyLoad('_assignee_user');
 
             if ($this->_assignee_team instanceof Team) {
                 return $this->_assignee_team;
@@ -6152,8 +6153,8 @@
          */
         public function getOwner()
         {
-            $this->_b2dbLazyload('_owner_team');
-            $this->_b2dbLazyload('_owner_user');
+            $this->_b2dbLazyLoad('_owner_team');
+            $this->_b2dbLazyLoad('_owner_user');
 
             if ($this->_owner_team instanceof Team) {
                 return $this->_owner_team;
@@ -6198,7 +6199,7 @@
          */
         public function getSubscribers()
         {
-            $this->_b2dbLazyload('_subscribers');
+            $this->_b2dbLazyLoad('_subscribers');
             return $this->_subscribers;
         }
 

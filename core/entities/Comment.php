@@ -7,7 +7,6 @@
     use thebuggenie\core\helpers\MentionableProvider;
     use thebuggenie\core\framework;
     use thebuggenie\modules\publish;
-    use \Michelf\MarkdownExtra;
 
     /**
      * Class used for comments
@@ -801,7 +800,7 @@
         {
             if (!is_object($this->_reply_to_comment) && $this->_reply_to_comment)
             {
-                $this->_b2dbLazyload('_reply_to_comment');
+                $this->_b2dbLazyLoad('_reply_to_comment');
             }
             return $this->_reply_to_comment;
         }
@@ -828,12 +827,12 @@
 
         public function getLogItems()
         {
-            return $this->_b2dbLazyload('_log_items');
+            return $this->_b2dbLazyLoad('_log_items');
         }
 
         public function getReplies()
         {
-            return $this->_b2dbLazyload('_replies');
+            return $this->_b2dbLazyLoad('_replies');
         }
 
         public function getSyntax()

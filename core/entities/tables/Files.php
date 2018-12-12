@@ -67,7 +67,7 @@
             return $res->getInsertID();
         }
 
-        public function _migrateData(Table $old_table)
+        protected function migrateData(Table $old_table)
         {
             switch ($old_table::B2DB_TABLE_VERSION) {
                 case 1:
@@ -146,11 +146,11 @@
         public function fixScopes()
         {
             $issue_file_scopes = [];
-            $issue_files_crit = IssueFiles::getTable()->getCriteria();
-            $issue_files_crit->addSelectionColumn(IssueFiles::SCOPE);
-            $issue_files_crit->addSelectionColumn(IssueFiles::FILE_ID);
+            $issue_files_query = IssueFiles::getTable()->getQuery();
+            $issue_files_query->addSelectionColumn(IssueFiles::SCOPE);
+            $issue_files_query->addSelectionColumn(IssueFiles::FILE_ID);
 
-            $issue_files_res = IssueFiles::getTable()->rawSelect($issue_files_crit);
+            $issue_files_res = IssueFiles::getTable()->rawSelect($issue_files_query);
 
             if (!$issue_files_res) {
                 return;

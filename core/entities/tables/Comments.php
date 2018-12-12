@@ -49,7 +49,7 @@
             $this->addIndex('type_target_deleted_system', array(self::TARGET_TYPE, self::TARGET_ID, self::DELETED, self::SYSTEM_COMMENT));
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             switch ($old_table::B2DB_TABLE_VERSION)
             {
@@ -71,9 +71,9 @@
                         $cc = 0;
                         $pct = 0;
                         foreach ($ids as $id) {
-                            $log_crit = $log_table->getCriteria();
-                            $log_crit->where(LogItems::COMMENT_ID, $id);
-                            if ($log_table->count($log_crit)) {
+                            $log_query = $log_table->getQuery();
+                            $log_query->where(LogItems::COMMENT_ID, $id);
+                            if ($log_table->count($log_query)) {
                                 $update = new Update();
                                 $update->add(self::HAS_ASSOCIATED_CHANGES, true);
                                 $this->rawUpdateById($update, $id);

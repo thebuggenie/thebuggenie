@@ -29,7 +29,7 @@
         const AUTHOR = 'articlehistory.author';
         const SCOPE = 'articlehistory.scope';
 
-        protected function _initialize()
+        protected function initialize()
         {
             parent::setup(self::B2DBNAME, self::ID);
             parent::addVarchar(self::ARTICLE_NAME, 255);
@@ -316,11 +316,11 @@
             {
                 $projects_table = Projects::getTable();
 
-                $project_crit = $projects_table->getCriteria();
-                $project_crit->where(Projects::SCOPE, framework\Context::getScope()->getID());
-                $project_crit->addSelectionColumn(Projects::KEY);
+                $project_query = $projects_table->getQuery();
+                $project_query->where(Projects::SCOPE, framework\Context::getScope()->getID());
+                $project_query->addSelectionColumn(Projects::KEY);
 
-                $project_res = $projects_table->rawSelect($project_crit);
+                $project_res = $projects_table->rawSelect($project_query);
 
                 if ($project_res)
                 {

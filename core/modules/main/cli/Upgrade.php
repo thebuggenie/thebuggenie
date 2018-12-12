@@ -50,6 +50,7 @@
                     $result = $upgrader->upgrade();
                     if ($result) {
                         $this->cliEcho("Upgrade complete!\n");
+                        unlink(THEBUGGENIE_PATH . 'upgrade');
                     } else {
                         $this->cliEcho("Upgrade failed!\n", 'red');
                     }

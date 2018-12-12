@@ -87,7 +87,7 @@
          */
         public function getCommit()
         {
-            return $this->_b2dbLazyload('_commit_id');
+            return $this->_b2dbLazyLoad('_commit_id');
         }
 
         /**
@@ -178,7 +178,7 @@
          */
         public function getDiffs()
         {
-            return $this->_b2dbLazyload('_commit_file_diffs');
+            return $this->_b2dbLazyLoad('_commit_file_diffs');
         }
 
         public function getCommitFileDiffs()

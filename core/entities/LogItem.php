@@ -4,6 +4,7 @@
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
     use thebuggenie\core\entities\tables\Builds;
+    use thebuggenie\core\entities\tables\Commits;
     use thebuggenie\core\entities\tables\Issues;
     use thebuggenie\core\entities\tables\Milestones;
 
@@ -80,6 +81,8 @@
          * @Column(type="integer", length=10)
          */
         protected $_target;
+
+        protected $_target_object;
 
         /**
          * @Column(type="integer", length=10)
@@ -222,7 +225,7 @@
          */
         public function getUser()
         {
-            return $this->_b2dbLazyload('_uid');
+            return $this->_b2dbLazyLoad('_uid');
         }
 
         public function setUser($uid)
@@ -232,7 +235,7 @@
 
         public function getComment()
         {
-            return $this->_b2dbLazyload('_comment_id');
+            return $this->_b2dbLazyLoad('_comment_id');
         }
 
         public function setComment($comment_id)
@@ -240,9 +243,12 @@
             $this->_comment_id = $comment_id;
         }
 
+        /**
+         * @return Project
+         */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project_id');
+            return $this->_b2dbLazyLoad('_project_id');
         }
 
         public function setProject($project_id)
@@ -256,9 +262,13 @@
         public function getIssue()
         {
             if ($this->getTargetType() == LogItem::TYPE_ISSUE) {
-                try {
-                    return Issues::getTable()->selectById($this->getTarget());
-                } catch (\Exception $e) { }
+                if (!$this->_target_object instanceof Issue) {
+                    try {
+                        $this->_target_object = Issues::getTable()->selectById($this->getTarget());
+                    } catch (\Exception $e) { }
+                }
+
+                return $this->_target_object;
             }
         }
 
@@ -268,9 +278,13 @@
         public function getMilestone()
         {
             if ($this->getTargetType() == LogItem::TYPE_MILESTONE) {
-                try {
-                    return Milestones::getTable()->selectById($this->getTarget());
-                } catch (\Exception $e) { }
+                if (!$this->_target_object instanceof Milestone) {
+                    try {
+                        $this->_target_object = Milestones::getTable()->selectById($this->getTarget());
+                    } catch (\Exception $e) { }
+                }
+
+                return $this->_target_object;
             }
         }
 
@@ -280,9 +294,29 @@
         public function getBuild()
         {
             if ($this->getTargetType() == LogItem::TYPE_BUILD) {
-                try {
-                    return Builds::getTable()->selectById($this->getTarget());
-                } catch (\Exception $e) { }
+                if (!$this->_target_object instanceof Build) {
+                    try {
+                        $this->_target_object = Builds::getTable()->selectById($this->getTarget());
+                    } catch (\Exception $e) { }
+                }
+
+                return $this->_target_object;
+            }
+        }
+
+        /**
+         * @return Commit
+         */
+        public function getCommit()
+        {
+            if ($this->getTargetType() == LogItem::TYPE_COMMIT) {
+                if (!$this->_target_object instanceof Commit) {
+                    try {
+                        $this->_target_object = Commits::getTable()->selectById($this->getTarget());
+                    } catch (\Exception $e) { }
+                }
+
+                return $this->_target_object;
             }
         }
 

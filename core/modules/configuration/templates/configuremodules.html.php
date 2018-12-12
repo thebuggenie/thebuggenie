@@ -5,6 +5,12 @@
         <td valign="top" class="main_configuration_content">
             <div style="width: 730px;" id="config_modules" class="config_plugins">
                 <h3><?php echo __('Configure modules'); ?></h3>
+                <?php if (!$license_ok): ?>
+                    <div class="message-box type-info">
+                        <span class="message"><?= fa_image_tag('receipt') . '<span>'.__('A valid subscription license enables additional features such as automatic module installation and upgrades.').'</span>'; ?></span>
+                        <span class="actions"><a href="https://thebuggenie.com/register/self-hosted" target="_blank" class="button button-silver button-purchase"><?= __('Purchase a subscription'); ?></a></span>
+                    </div>
+                <?php endif; ?>
                 <div class="content faded_out">
                     <p>
                         <?php echo __('Manage existing or download and install new modules for The Bug Genie here.'); ?>

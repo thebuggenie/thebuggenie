@@ -53,10 +53,8 @@
             </dt>
             <dd>
                 <select name="db_type" id="db_type">
-                <?php foreach (\b2db\Core::getDBtypes() as $db_type => $db_desc): ?>
-                    <?php if (extension_loaded("pdo_{$db_type}")): ?>
-                        <option value="<?php echo $db_type; ?>"<?php if (isset($b2db_dbtype) && $b2db_dbtype == $db_type): ?> selected<?php endif; ?>><?php echo $db_desc; ?></option>
-                    <?php endif; ?>
+                <?php foreach (\b2db\Core::getDrivers() as $db_type => $db_desc): ?>
+                    <option value="<?php echo $db_type; ?>"<?php if (isset($b2db_dbtype) && $b2db_dbtype == $db_type): ?> selected<?php endif; ?><?php if (!extension_loaded("pdo_{$db_type}")) echo ' disabled title="PHP extension missing"'; ?>><?php echo $db_desc; ?></option>
                 <?php endforeach; ?>
                 </select>
             </dd>
@@ -75,6 +73,9 @@
                 <span class="helptext">The database used to store the bug genie tables <i>(must already exist!)</i></span>
             </dd>
         </dl>
+        <div class="message-box type-warning">
+            <span class="message"><?= fa_image_tag('exclamation-triangle'); ?>The installation routine will overwrite any pre-existing tables from previous installations, if pointed to an existing TBG database</span>
+        </div>
         <div style="padding-top: 20px; clear: both; text-align: center;">
             <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to test the database connection details</label>
             <img src="images/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;">

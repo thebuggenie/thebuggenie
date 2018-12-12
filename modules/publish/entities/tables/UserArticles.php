@@ -34,7 +34,7 @@
         const ARTICLE = 'userarticles.article';
         const UID = 'userarticles.uid';
 
-        protected function _initialize()
+        protected function initialize()
         {
             parent::setup(self::B2DBNAME, self::ID);
             parent::addForeignKeyColumn(self::ARTICLE, Articles::getTable(), Articles::ID);

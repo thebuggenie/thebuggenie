@@ -39,7 +39,7 @@
         const FILE_ID = 'articlefiles.file_id';
         const ARTICLE_ID = 'articlefiles.article_id';
 
-        protected function _initialize()
+        protected function initialize()
         {
             parent::setup(self::B2DBNAME, self::ID);
             parent::addForeignKeyColumn(self::UID, \thebuggenie\core\entities\tables\Users::getTable(), \thebuggenie\core\entities\tables\Users::ID);

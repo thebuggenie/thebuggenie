@@ -247,7 +247,7 @@
 
         protected function _clonePermissions($cloned_id, $new_id, $mode)
         {
-            $insertion = $this->getCriteria();
+            $query = $this->getQuery();
             switch ($mode)
             {
                 case 'group':
@@ -257,9 +257,9 @@
                     $mode = self::TID;
                     break;
             }
-            $insertion->where($mode, $cloned_id);
+            $query->where($mode, $cloned_id);
             $permissions_to_add = array();
-            if ($res = $this->rawSelect($insertion))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {

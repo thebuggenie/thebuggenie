@@ -72,7 +72,7 @@
                 $criteria->where(self::UID, $user_id);
             }
 
-            $criteria->where(self::TIME, NOW, \b2db\Criterion::LESS_THAN_EQUAL);
+            $criteria->where(self::TIME, NOW, Criterion::LESS_THAN_EQUAL);
 
             $query = $this->getQuery();
             $query->where($criteria);
@@ -109,16 +109,16 @@
          *
          * @return LogItem[]
          */
-        public function getByProjectID($project_id, $limit = 20, $offset = null)
+        public function getByProjectID($project_id, $limit = 50, $offset = null)
         {
             $query = $this->getQueryWithCriteriaForProjectOrUser($limit, $offset, $project_id);
             return $this->select($query);
         }
 
-        public function getImportantByProjectID($project_id, $limit = 20, $offset = null)
+        public function getImportantByProjectID($project_id, $limit = 50, $offset = null)
         {
             $query = $this->getQueryWithCriteriaForProjectOrUser($limit, $offset, $project_id);
-            $query->where(self::CHANGE_TYPE, array(LogItem::ACTION_ISSUE_CREATED, LogItem::ACTION_ISSUE_CLOSE), \b2db\Criterion::IN);
+            $query->where(self::CHANGE_TYPE, array(LogItem::ACTION_ISSUE_CREATED, LogItem::ACTION_ISSUE_CLOSE), Criterion::IN);
             return $this->select($query);
         }
 
@@ -130,13 +130,13 @@
             {
                 $query = $this->getQuery();
                 $query->join(Issues::getTable(), Issues::ID, self::TARGET, array(array(Issues::PROJECT_ID, $project_id), array(Issues::DELETED, false)));
-                $query->where(self::CHANGE_TYPE, array(LogItem::ACTION_ISSUE_CREATED, LogItem::ACTION_ISSUE_CLOSE), \b2db\Criterion::IN);
+                $query->where(self::CHANGE_TYPE, array(LogItem::ACTION_ISSUE_CREATED, LogItem::ACTION_ISSUE_CLOSE), Criterion::IN);
                 $query->where(self::TARGET_TYPE, LogItem::TYPE_ISSUE);
                 $query->where(Issues::DELETED, false);
                 $query->where('log.project_id', $project_id);
                 $query->where(self::SCOPE, framework\Context::getScope()->getID());
-                $query->where(self::TIME, NOW - (86400 * ($cc + 1)), \b2db\Criterion::GREATER_THAN_EQUAL);
-                $query->where(self::TIME, NOW - (86400 * $cc), \b2db\Criterion::LESS_THAN_EQUAL);
+                $query->where(self::TIME, NOW - (86400 * ($cc + 1)), Criterion::GREATER_THAN_EQUAL);
+                $query->where(self::TIME, NOW - (86400 * $cc), Criterion::LESS_THAN_EQUAL);
 
                 $closed_count = array();
                 $open_count = array();
@@ -163,12 +163,12 @@
             $this->addIndex('target_uid_commentid_scope', array(self::TARGET, self::UID, self::COMMENT_ID, self::SCOPE));
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             switch ($old_table::B2DB_TABLE_VERSION)
             {
                 case 2:
-                    $query = $this->getCriteria();
+                    $query = $this->getQuery();
                     $query->setIsDistinct();
                     $query->addSelectionColumn(self::TARGET);
                     $query->join(Issues::getTable(), Issues::ID, self::TARGET, [[Issues::DELETED, false]]);
@@ -196,9 +196,9 @@
 
                             $update->add('log.project_id', $project_id);
 
-                            $query->where(self::TARGET, $issues, \b2db\Criterion::IN);
+                            $query->where(self::TARGET, $issues, Criterion::IN);
 
-                            $this->rawUpdate($query, $query);
+                            $this->rawUpdate($update, $query);
                         }
                     }
 

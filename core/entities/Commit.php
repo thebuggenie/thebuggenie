@@ -364,7 +364,7 @@
          */
         public function getPreviousCommit()
         {
-            return $this->_b2dbLazyload('_previous_commit_id');
+            return $this->_b2dbLazyLoad('_previous_commit_id');
         }
 
         /**
@@ -414,14 +414,14 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project');
+            return $this->_b2dbLazyLoad('_project');
         }
 
         private function _populateAffectedFiles()
         {
             if ($this->_files === null)
             {
-                $this->_files = $this->_b2dbLazyload('_files');
+                $this->_files = $this->_b2dbLazyLoad('_files');
                 uasort($this->_files, function ($file_1, $file_2) {
                     /** @var CommitFile $file_1 */
                     /** @var CommitFile $file_2 */
@@ -434,7 +434,7 @@
         {
             if ($this->_branch_commits === null)
             {
-                $this->_branch_commits = $this->_b2dbLazyload('_branch_commits');
+                $this->_branch_commits = $this->_b2dbLazyLoad('_branch_commits');
                 $this->_branches = [];
                 foreach ($this->_branch_commits as $branch_commit) {
                     $branch = $branch_commit->getBranch();

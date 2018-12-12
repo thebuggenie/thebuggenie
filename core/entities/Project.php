@@ -453,9 +453,9 @@
         /**
          * Recent activities
          *
-         * @var Array
+         * @var LogItem[][]
          */
-        protected $_recentactivities = null;
+        protected $_recent_activities = null;
 
         /**
          * Whether to show a "Download" link and corresponding section
@@ -1138,7 +1138,7 @@
         {
             if ($this->_editions === null)
             {
-                $this->_b2dbLazyload('_editions');
+                $this->_b2dbLazyLoad('_editions');
                 foreach ($this->_editions as $key => $component)
                 {
                     if (!$component->hasAccess()) unset($this->_editions[$key]);
@@ -1218,7 +1218,7 @@
             {
                 return count($this->_editions);
             }
-            return $this->_b2dbLazycount('_editions');
+            return $this->_b2dbLazyCount('_editions');
         }
 
         /**
@@ -1248,7 +1248,7 @@
         {
             if ($this->_components === null)
             {
-                $this->_b2dbLazyload('_components');
+                $this->_b2dbLazyLoad('_components');
                 foreach ($this->_components as $key => $component)
                 {
                     if (!$component->hasAccess()) unset($this->_components[$key]);
@@ -1273,7 +1273,7 @@
             {
                 return count($this->_components);
             }
-            return $this->_b2dbLazycount('_components');
+            return $this->_b2dbLazyCount('_components');
         }
 
         /**
@@ -1302,7 +1302,7 @@
         {
             if ($this->_milestones === null)
             {
-                $this->_b2dbLazyload('_milestones');
+                $this->_b2dbLazyLoad('_milestones');
             }
         }
 
@@ -1506,7 +1506,7 @@
         protected function _populateAssignedUsers()
         {
             if ($this->_assigned_users === null) {
-                $this->_b2dbLazyload('_assigned_users');
+                $this->_b2dbLazyLoad('_assigned_users');
             }
         }
 
@@ -1519,7 +1519,7 @@
         protected function _populateAssignedTeams()
         {
             if ($this->_assigned_teams === null) {
-                $this->_b2dbLazyload('_assigned_teams');
+                $this->_b2dbLazyLoad('_assigned_teams');
             }
         }
 
@@ -2454,7 +2454,7 @@
             $varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';
             if ($this->$varname === null)
             {
-                $this->$varname = array();
+                $this->$varname = [];
                 if ($important)
                 {
                     $this->$varname = tables\LogItems::getTable()->getImportantByProjectID($this->getID(), $limit, $offset);
@@ -2672,19 +2672,17 @@
 
         protected function _populateRecentActivities($limit = null, $important = true, $offset = null)
         {
-            if ($this->_recentactivities === null)
+            if ($this->_recent_activities === null)
             {
-                $this->_recentactivities = [];
+                $this->_recent_activities = [];
                 foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
                 {
-                    if (!array_key_exists($log_item->getTime(), $this->_recentactivities))
+                    if (!array_key_exists($log_item->getTime(), $this->_recent_activities))
                     {
-                        $this->_recentactivities[$log_item->getTime()] = array();
+                        $this->_recent_activities[$log_item->getTime()] = [];
                     }
-                    $this->_recentactivities[$log_item->getTime()][] = $log_item;
+                    $this->_recent_activities[$log_item->getTime()][] = $log_item;
                 }
-
-//                ksort($this->_recentactivities, SORT_NUMERIC);
             }
         }
 
@@ -2701,11 +2699,11 @@
             $this->_populateRecentActivities($limit, $important, $offset);
             if ($limit !== null)
             {
-                $recent_activities = array_slice($this->_recentactivities, 0, $limit, true);
+                $recent_activities = array_slice($this->_recent_activities, 0, $limit, true);
             }
             else
             {
-                $recent_activities = $this->_recentactivities;
+                $recent_activities = $this->_recent_activities;
             }
 
             return $recent_activities;
@@ -2713,7 +2711,7 @@
 
         public function clearRecentActivities()
         {
-            $this->_recentactivities = null;
+            $this->_recent_activities = null;
             $this->_recentissues = null;
             $this->_recentlogitems = null;
         }
@@ -2726,7 +2724,7 @@
         public function getWorkflowScheme()
         {
             if (!$this->_workflow_scheme_id instanceof \thebuggenie\core\entities\WorkflowScheme)
-                $this->_b2dbLazyload('_workflow_scheme_id');
+                $this->_b2dbLazyLoad('_workflow_scheme_id');
 
             return $this->_workflow_scheme_id;
         }
@@ -2754,7 +2752,7 @@
         public function getIssuetypeScheme()
         {
             if (!$this->_issuetype_scheme_id instanceof \thebuggenie\core\entities\IssuetypeScheme)
-                $this->_b2dbLazyload('_issuetype_scheme_id');
+                $this->_b2dbLazyLoad('_issuetype_scheme_id');
 
             return $this->_issuetype_scheme_id;
         }
@@ -2838,7 +2836,7 @@
          */
         public function getClient()
         {
-            return $this->_b2dbLazyload('_client');
+            return $this->_b2dbLazyLoad('_client');
         }
 
         /**
@@ -2969,7 +2967,7 @@
 
         public function getParent()
         {
-            return $this->_b2dbLazyload('_parent');
+            return $this->_b2dbLazyLoad('_parent');
         }
 
         public function getParentID()
@@ -3063,7 +3061,7 @@
          */
         public function getSmallIcon()
         {
-            return $this->_b2dbLazyload('_small_icon');
+            return $this->_b2dbLazyLoad('_small_icon');
         }
 
         public function getSmallIconName()
@@ -3091,7 +3089,7 @@
          */
         public function getLargeIcon()
         {
-            return $this->_b2dbLazyload('_large_icon');
+            return $this->_b2dbLazyLoad('_large_icon');
         }
 
         public function getLargeIconName()
@@ -3258,7 +3256,7 @@
          */
         public function getDashboards()
         {
-            $this->_b2dbLazyload('_dashboards');
+            $this->_b2dbLazyLoad('_dashboards');
             return $this->_dashboards;
         }
 

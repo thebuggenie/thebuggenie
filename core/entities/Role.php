@@ -153,7 +153,7 @@
         {
             if ($this->_permissions === null)
             {
-                $this->_b2dbLazyload('_permissions');
+                $this->_b2dbLazyLoad('_permissions');
             }
         }
 

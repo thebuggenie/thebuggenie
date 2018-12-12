@@ -2,25 +2,17 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Query;
     use thebuggenie\core\entities\Commit;
     use thebuggenie\core\entities\Project;
     use thebuggenie\core\entities\tables\ScopedTable;
     use b2db\Criteria;
 
     /**
-     * B2DB Table, vcs_integration -> VCSIntegrationCommitsTable
-     *
-     * @author Philip Kent <kentphilip@gmail.com>
-     * @version 3.2
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage vcs_integration
-     */
-
-    /**
-     * B2DB Table, vcs_integration -> VCSIntegrationCommitsTable
+     * Commits table
      *
      * @method static Commits getTable()
+     * @method Commit selectById($id)
      *
      * @package thebuggenie
      * @subpackage vcs_integration

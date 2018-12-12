@@ -154,15 +154,15 @@
 
             if ($startdate && $enddate)
             {
-                $crit2 = $this->getCriteria();
-                $crit2->addSelectionColumn(self::SPENT_POINTS, 'spent_points', \b2db\Query::DB_SUM);
-                $crit2->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', \b2db\Query::DB_SUM);
-                $crit2->addSelectionColumn(self::SPENT_MINUTES, 'spent_minutes', \b2db\Query::DB_SUM);
-                $crit2->where(self::EDITED_AT, $startdate, \b2db\Criterion::LESS_THAN);
+                $query2 = $this->getQuery();
+                $query2->addSelectionColumn(self::SPENT_POINTS, 'spent_points', \b2db\Query::DB_SUM);
+                $query2->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', \b2db\Query::DB_SUM);
+                $query2->addSelectionColumn(self::SPENT_MINUTES, 'spent_minutes', \b2db\Query::DB_SUM);
+                $query2->where(self::EDITED_AT, $startdate, \b2db\Criterion::LESS_THAN);
 
-                if (count($issue_ids)) $crit2->where(self::ISSUE_ID, $issue_ids, \b2db\Criterion::IN);
+                if (count($issue_ids)) $query2->where(self::ISSUE_ID, $issue_ids, \b2db\Criterion::IN);
 
-                if ($res2 = $this->rawSelectOne($crit2))
+                if ($res2 = $this->rawSelectOne($query2))
                 {
                     $returnarr['points_spent_before'] = $res2->get('spent_points');
                     $returnarr['hours_spent_before'] = $res2->get('spent_hours');
@@ -218,11 +218,11 @@
         public function fixScopes()
         {
             $issue_scopes = [];
-            $issue_crit = Issues::getTable()->getCriteria();
-            $issue_crit->addSelectionColumn(Issues::SCOPE);
-            $issue_crit->addSelectionColumn(Issues::ID);
+            $issue_query = Issues::getTable()->getQuery();
+            $issue_query->addSelectionColumn(Issues::SCOPE);
+            $issue_query->addSelectionColumn(Issues::ID);
 
-            $issues_res = Issues::getTable()->rawSelect($issue_crit);
+            $issues_res = Issues::getTable()->rawSelect($issue_query);
 
             if (!$issues_res) {
                 return;

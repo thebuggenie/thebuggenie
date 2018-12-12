@@ -478,10 +478,19 @@
             $this->_name = $name;
         }
 
+        /**
+         * @param $plugin_type
+         * @param $plugin_key
+         * @throws framework\exceptions\ModuleDownloadException
+         */
         public static function downloadPlugin($plugin_type, $plugin_key)
         {
             try
             {
+                if (!framework\Settings::getLicenseIdentifier()) {
+                    throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::MISSING_LICENSE);
+                }
+
                 $client = new \Net_Http_Client();
                 $client->get('http://www.thebuggenie.com/'.$plugin_type.'s/'.$plugin_key . '.json');
                 $plugin_json = json_decode($client->getBody());
@@ -514,11 +523,19 @@
             }
         }
 
+        /**
+         * @param $module_key
+         * @throws framework\exceptions\ModuleDownloadException
+         */
         public static function downloadModule($module_key)
         {
             self::downloadPlugin('addon', $module_key);
         }
 
+        /**
+         * @param $module_key
+         * @throws framework\exceptions\ModuleDownloadException
+         */
         public static function downloadTheme($theme_key)
         {
             self::downloadPlugin('theme', $theme_key);

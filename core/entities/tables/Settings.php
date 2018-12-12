@@ -89,13 +89,13 @@
             if ($res instanceof \b2db\Row)
             {
                 $theID = $res->get(self::ID);
-                $crit2 = new Criteria();
-                $crit2->where(self::NAME, $name);
-                $crit2->where(self::MODULE, $module);
-                $crit2->where(self::UID, $uid);
-                $crit2->where(self::SCOPE, $scope);
-                $crit2->where(self::ID, $theID, \b2db\Criterion::NOT_EQUALS);
-                $res2 = $this->rawDelete($crit2);
+                $query = $this->getQuery();
+                $query->where(self::NAME, $name);
+                $query->where(self::MODULE, $module);
+                $query->where(self::UID, $uid);
+                $query->where(self::SCOPE, $scope);
+                $query->where(self::ID, $theID, \b2db\Criterion::NOT_EQUALS);
+                $res2 = $this->rawDelete($query);
 
                 $update = new Update();
                 $update->add(self::NAME, $name);

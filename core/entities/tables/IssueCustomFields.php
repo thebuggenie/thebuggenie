@@ -191,7 +191,7 @@
             }
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             switch ($old_table->getVersion())
             {

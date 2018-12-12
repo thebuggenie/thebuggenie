@@ -53,6 +53,7 @@
                 $log_item->setTargetType(LogItem::TYPE_ISSUE_COMMIT);
                 $log_item->setProject($this->getCommit()->getProject());
                 $log_item->setUser($this->getCommit()->getAuthor()->getID());
+                $log_item->setTime($this->getCommit()->getDate());
                 $log_item->save();
             }
         }
@@ -63,7 +64,7 @@
          */
         public function getIssue()
         {
-            return $this->_b2dbLazyload('_issue');
+            return $this->_b2dbLazyLoad('_issue');
         }
 
         /**
@@ -72,7 +73,7 @@
          */
         public function getCommit()
         {
-            return $this->_b2dbLazyload('_commit');
+            return $this->_b2dbLazyLoad('_commit');
         }
 
         /**

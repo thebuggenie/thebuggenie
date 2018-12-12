@@ -102,7 +102,7 @@
          */
         public function getCommitFile()
         {
-            return $this->_b2dbLazyload('_commit_file_id');
+            return $this->_b2dbLazyLoad('_commit_file_id');
         }
 
         /**

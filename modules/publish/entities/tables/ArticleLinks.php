@@ -19,7 +19,7 @@
         const LINK_ARTICLE_NAME = 'articlelinks.link_article_name';
         const SCOPE = 'articlelinks.scope';
 
-        protected function _initialize()
+        protected function initialize()
         {
             parent::setup(self::B2DBNAME, self::ID);
             parent::addVarchar(self::ARTICLE_NAME, 300);

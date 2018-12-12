@@ -142,7 +142,7 @@
                         $this->cliEcho("The Bug Genie uses a database to store information. To be able to connect\nto your database, The Bug Genie needs some information, such as\ndatabase type, username, password, etc.\n\n");
                         $this->cliEcho("Please select what kind of database you are installing The Bug Genie on:\n");
                         $db_types = array();
-                        foreach (\b2db\Core::getDBtypes() as $db_type => $db_desc)
+                        foreach (\b2db\Core::getDrivers() as $db_type => $db_desc)
                         {
                             $db_types[] = $db_type;
                             $this->cliEcho(count($db_types) . ': ' . $db_desc . "\n", 'white', 'bold');

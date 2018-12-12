@@ -199,13 +199,13 @@ class Main extends framework\Action
             if (\b2db\Core::isInitialized())
             {
                 $this->preloaded = true;
-                $this->username = \b2db\Core::getUname();
-                $this->password = \b2db\Core::getPasswd();
+                $this->username = \b2db\Core::getUsername();
+                $this->password = \b2db\Core::getPassword();
                 $this->dsn = \b2db\Core::getDSN();
-                $this->hostname = \b2db\Core::getHost();
+                $this->hostname = \b2db\Core::getHostname();
                 $this->port = \b2db\Core::getPort();
-                $this->b2db_dbtype = \b2db\Core::getDBtype();
-                $this->db_name = \b2db\Core::getDBname();
+                $this->b2db_dbtype = \b2db\Core::getDriver();
+                $this->db_name = \b2db\Core::getDatabaseName();
             }
         }
     }
@@ -270,7 +270,7 @@ class Main extends framework\Action
                     throw new \Exception('There was an error connecting to the database: '.$e->getMessage());
                 }
 
-                if (\b2db\Core::getDBname() == '')
+                if (\b2db\Core::getDatabaseName() == '')
                     throw new \Exception('You must provide a database to use');
 
                 \b2db\Core::saveConnectionParameters(\THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml");

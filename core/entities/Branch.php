@@ -83,7 +83,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project');
+            return $this->_b2dbLazyLoad('_project');
         }
 
         /**
@@ -103,7 +103,7 @@
          */
         public function getLatestCommit()
         {
-            return $this->_b2dbLazyload('_latest_commit_id');
+            return $this->_b2dbLazyLoad('_latest_commit_id');
         }
 
         /**

@@ -50,7 +50,7 @@
         public function getScope()
         {
             if (!$this->_scope instanceof \thebuggenie\core\entities\Scope)
-                $this->_b2dbLazyload('_scope');
+                $this->_b2dbLazyLoad('_scope');
 
             return $this->_scope;
         }

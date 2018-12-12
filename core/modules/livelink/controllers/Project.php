@@ -56,6 +56,8 @@
             $commits = $branch->getCommits($commit);
             $commit_ids = array_reduce($commits, function ($ids, $commit) {
                 $ids[] = $commit->getID();
+
+                return $ids;
             }, []);
             $branch_points = Branches::getTable()->getByCommitsAndProject($commit_ids, $this->selected_project);
             Comments::getTable()->preloadCommentCounts(Comment::TYPE_COMMIT, $commit_ids);

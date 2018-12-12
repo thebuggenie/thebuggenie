@@ -41,7 +41,7 @@
         {
             if ($this->_comments === null)
             {
-                $this->_b2dbLazyload('_comments');
+                $this->_b2dbLazyLoad('_comments');
             }
         }
 
@@ -57,7 +57,7 @@
                 if ($this->_comments !== null)
                     $this->_num_comments = count($this->_comments);
                 else
-                    $this->_num_comments = $this->_b2dbLazycount('_comments');
+                    $this->_num_comments = $this->_b2dbLazyCount('_comments');
             }
 
             return $this->_num_comments;

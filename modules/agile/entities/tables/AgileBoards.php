@@ -49,7 +49,7 @@
             return $this->select($query);
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             if ($old_table instanceof \thebuggenie\core\modules\installation\upgrade_413\AgileBoardsTable)
             {

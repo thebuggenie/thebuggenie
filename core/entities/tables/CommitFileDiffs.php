@@ -2,10 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
-    use \thebuggenie\core\framework;
-
     /**
-     * B2DB Table, vcs_integration -> VCSIntegrationFilesTable
+     * Commit file diffs table
      *
      * @method static CommitFiles getTable()
      *

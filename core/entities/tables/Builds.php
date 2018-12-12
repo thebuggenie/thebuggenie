@@ -42,7 +42,7 @@
         const FILE_ID = 'builds.file_id';
         const FILE_URL = 'builds.file_url';
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             $sqls = array();
             $tn = $this->_getTableNameSQL();

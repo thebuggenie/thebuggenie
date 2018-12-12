@@ -161,7 +161,7 @@
         public function componentDashboardViewProjectRecentActivities()
         {
             $this->project = framework\Context::getCurrentProject();
-            $this->recent_activities = $this->project->getRecentActivities(10, false);
+            $this->recent_activities = $this->project->getRecentActivities(30, false);
         }
 
         public function componentDashboardViewProjectDownloads()

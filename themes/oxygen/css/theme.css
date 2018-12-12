@@ -96,7 +96,7 @@ code {
     border-radius: 2px;
     font-size: 0.9em;
     font-family: 'Fira Mono', monospace;
-    letter-spacing: -1px;
+    letter-spacing: 0;
 }
 input, select, textarea, button {
     font-family: 'Fira Sans', sans-serif;
@@ -1512,6 +1512,30 @@ footer img {
     font-size: .9em;
     line-height: 1em;
 }
+.initial-placeholder {
+    background-color: #FFF;
+    border: none;
+    border-bottom: 2px solid rgba(225, 225, 225, .5);
+    border-radius: 5px;
+    display: inline-block;
+    padding: 7px 15px 7px 5px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+}
+.initial-placeholder > span {
+    font-size: 1.2em;
+}
+.initial-placeholder span {
+    vertical-align: middle;
+    display: inline-block;
+}
+.initial-placeholder .icon {
+    color: rgba(177, 210, 143, 0.3);
+    font-size: 1.7em;
+    vertical-align: middle;
+    margin-right: 7px;
+}
 .comment:not(.reply):not(.system_comment) + .comment:not(.reply)::before {
     content: '';
     display: block;
@@ -1533,6 +1557,16 @@ footer img {
     border-left: 3px solid rgba(225, 225, 225, .5);
     position: absolute;
     top: -1px;
+    left: 40px;
+}
+.initial-placeholder::after {
+    content: '';
+    display: block;
+    height: 25px;
+    width: 1px;
+    border-left: 3px solid rgba(225, 225, 225, .5);
+    position: absolute;
+    bottom: -26px;
     left: 40px;
 }
 
@@ -1712,10 +1746,6 @@ footer img {
 
 .commentbody .image_container.thumb img.image {
     width: 130px;
-}
-
-.commentcontent {
-    overflow: hidden;
 }
 
 .commenttools {
@@ -2805,7 +2835,7 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
 }
 
 .syntax_picker_container {
-    top: 33px;
+    top: 5px;
     right: 0;
     position: absolute;
 }
@@ -2814,14 +2844,25 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 3px 7px;
+    padding: 5px 7px;
     font-size: 1em;
     white-space: nowrap;
     text-align: right;
     background: #FFF;
-    box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
-    border-radius: 0 0 0 5px;
+    box-shadow: none;
+    border-radius: 3px;
     transition: opacity 0.3s ease-in-out;
+    border: transparent;
+    color: rgb(150, 150, 150);
+    text-transform: uppercase;
+}
+.button.syntax_picker.button-pressed {
+    background-color: rgba(78, 129, 171, .1);
+}
+.button.syntax_picker > span {
+    text-transform: none;
+    color: #333;
+    font-weight: 500;
 }
 
 .syntax_picker + ul {
@@ -4689,7 +4730,7 @@ ul.client_users li, ul.team_users li, ul.project_users li {
     display: flex;
     align-items: baseline;
 }
-.commit-details-list .commit-sha {
+.commit-details-list .commit-sha, .commit-details-list .commit-sha:hover {
     font-size: 1em;
     padding: 3px 7px;
     font-weight: 500;
@@ -4732,11 +4773,12 @@ ul.client_users li, ul.team_users li, ul.project_users li {
     vertical-align: middle;
     line-height: 1.4em;
 }
-.commit-sha {
+.commit-sha, .commit-sha:hover {
     margin: 0 10px;
     border: 1px solid #4E81AB;
     padding: 2px 4px;
     border-radius: 3px;
+    color: #333;
 }
 .commits-list .commit .commit-sha {
     flex: 0 0 auto;
@@ -5095,6 +5137,13 @@ a.friend {
     padding: 2px;
 }
 
+input.padded {
+    padding: .6em;
+    width: 100%;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
 #report_form input#title {
     width: 804px;
 }
@@ -5313,19 +5362,27 @@ a.friend {
 }
 
 #issue_view pre {
-    padding: 3px;
+    padding: 6px;
     line-height: 1.4;
-    background-color: #F1F1F1;
+    background-color: rgba(225 ,225 ,225, .2);
     border: 1px solid #B4B4B4;
     border-radius: 3px;
     font-family: 'Fira Mono', monospace;
+    font-size: 1em;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Undo some of the default styling done for code tag if it is nested
    with pre tag. */
 #issue_view pre code {
-    padding: 0px;
+    padding: 0;
     border: none;
+    background: transparent;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #viewissue_vcs_integration_commits pre {
@@ -6699,7 +6756,7 @@ dd:hover .far.dropdown, .hoverable:hover .far.dropdown {
     transform: scaleX(1);
     margin-right: 5px;
     cursor: pointer;
-    padding: 5px;
+    padding: 4px;
     border-radius: 3px;
 }
 .fas.dropdown:hover, .far.dropdown:hover {
@@ -6958,8 +7015,8 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 
 .more_actions_dropdown li.disabled a,
 .more_actions_dropdown li.disabled a:hover,
-.more_actions_dropdown li.disabled div,
-.more_actions_dropdown li.disabled:hover div {
+.more_actions_dropdown li.disabled div:not(.tooltip),
+.more_actions_dropdown li.disabled:hover div:not(.tooltip) {
     color: #AAA;
     text-shadow: 1px 1px 0 #FFF;
     padding: 5px;
@@ -14399,7 +14456,7 @@ table.sortable tr th.nosort {
 
 .markItUpEditor {
     box-sizing: border-box;
-    font: 12px 'Fira Mono', monospace;
+    font: 1.4em 'Fira Mono', monospace;
     padding: 5px;
     width: 690px;
     height: 320px;
@@ -14809,6 +14866,9 @@ table.sortable tr th.nosort {
 }
 .message-box .actions {
     flex: 0 0 auto;
+}
+.message-box .message + .actions {
+    margin-left: 10px;
 }
 .message-box .actions .button {
     padding: 4px 7px;

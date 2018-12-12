@@ -71,12 +71,21 @@
             return 'TBG Live Link';
         }
 
+        public function isEnabled()
+        {
+            return false;
+        }
+
         /**
          * @Listener(module='core', identifier='project_sidebar_links')
          * @param \thebuggenie\core\framework\Event $event
          */
         public function listen_project_links(framework\Event $event)
         {
+            if (!$this->isEnabled()) {
+                return;
+            }
+
             if (framework\Context::getUser()->hasProjectPageAccess('project_commits', framework\Context::getCurrentProject()))
                 $event->addToReturnList(array('url' => framework\Context::getRouting()->generate('livelink_project_commits', array('project_key' => framework\Context::getCurrentProject()->getKey())), 'title' => framework\Context::getI18n()->__('Commits')));
         }
@@ -144,6 +153,10 @@
          */
         public function listen_projectSettingsPostSave(framework\Event $event)
         {
+            if (!$this->isEnabled()) {
+                return;
+            }
+
             /** @var Project $project */
             $project = $event->getSubject();
             /** @var framework\Request $request */
@@ -193,6 +206,10 @@
          */
         public function listen_project_template(framework\Event $event)
         {
+            if (!$this->isEnabled()) {
+                return;
+            }
+
             $request = framework\Context::getRequest();
             $options = [
                 'project' => $event->getParameter('project'),
@@ -217,6 +234,10 @@
          */
         public function listen_project_template_additional_form_elements(framework\Event $event)
         {
+            if (!$this->isEnabled()) {
+                return;
+            }
+
             $request = framework\Context::getRequest();
             if ($request->hasParameter('connector')) {
                 $options = [
@@ -265,6 +286,10 @@
          */
         public function listen_projectconfig_tab(framework\Event $event)
         {
+            if (!$this->isEnabled()) {
+                return;
+            }
+
             include_component('livelink/projectconfig_tab', array('selected_tab' => $event->getParameter('selected_tab')));
         }
 
@@ -274,6 +299,10 @@
          */
         public function listen_projectconfig_panel(framework\Event $event)
         {
+            if (!$this->isEnabled()) {
+                return;
+            }
+
             $options = [
                 'selected_tab' => $event->getParameter('selected_tab'),
                 'access_level' => $event->getParameter('access_level'),

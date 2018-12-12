@@ -1,12 +1,14 @@
 <?php
 
+    use thebuggenie\core\entities\Commit;
+
     /** @var \thebuggenie\core\entities\Branch $branch */
     /** @var \thebuggenie\core\entities\Commit $commit */
     /** @var \thebuggenie\core\entities\Project $project */
     /** @var \thebuggenie\core\entities\Project $selected_project */
     /** @var \thebuggenie\core\framework\Response $tbg_response */
 
-    $tbg_response->setTitle(__('"%project_name" commits', ['%project_name' => $selected_project->getName()]));
+    $tbg_response->setTitle(__('"%project_name" commit %commit_sha', ['%project_name' => $selected_project->getName(), '%commit_sha' => $commit->getRevisionString()]));
     $branch_string = (isset($branch)) ? '&nbsp;&raquo;&nbsp;' . $branch->getName() : '';
     include_component('project/projectheader', ['selected_project' => $selected_project, 'subpage' => __('Project commits') . $branch_string . '&nbsp;&raquo;&nbsp;' . $commit->getRevisionString()]);
 
@@ -30,6 +32,12 @@
                     <div class="property"><?= __('Committed at'); ?></div>
                     <div class="value"><?= tbg_formatTime($commit->getDate(), 25); ?></div>
                 </li>
+                <?php if ($commit->getPreviousCommit() instanceof Commit): ?>
+                    <li>
+                        <div class="property"><?= __('Previous commit'); ?></div>
+                        <div class="value"><a href="<?= make_url('livelink_project_commit', ['commit_hash' => $commit->getPreviousCommit()->getRevision(), 'project_key' => $commit->getProject()->getKey(), 'branch' => $branch->getName()]); ?>" class="commit-sha"><?= $commit->getPreviousCommit()->getShortRevision(); ?></a></div>
+                    </li>
+                <?php endif; ?>
                 <li>
                     <div class="property"><?= __('Branch(es)'); ?></div>
                     <div class="value">

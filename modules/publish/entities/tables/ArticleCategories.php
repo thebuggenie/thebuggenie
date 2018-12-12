@@ -21,7 +21,7 @@
         const CATEGORY_NAME = 'articlecategories.category_name';
         const SCOPE = 'articlecategories.scope';
 
-        protected function _initialize()
+        protected function initialize()
         {
             parent::setup(self::B2DBNAME, self::ID);
             parent::addVarchar(self::ARTICLE_NAME, 300);

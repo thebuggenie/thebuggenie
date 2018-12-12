@@ -154,7 +154,7 @@ class Main extends framework\Action
                     $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
                 }
             }
-            if (is_null($found_issue))
+            if ($found_issue === null)
                 break;
         }
         while ($found_issue instanceof entities\Issue && !$found_issue->hasAccess());
@@ -519,14 +519,14 @@ class Main extends framework\Action
                 switch ($request['say'])
                 {
                     case 'get_module_updates':
-                        $addons_param = array();
+                        $addons_param = array('license_key' => framework\Settings::getLicenseIdentifier());
                         foreach ($request['addons'] as $addon) {
                             $addons_param[] = 'addons[]='.$addon;
                         }
                         try
                         {
                             $client = new \Net_Http_Client();
-                            $client->get('http://www.thebuggenie.com/addons.json?'.join('&', $addons_param));
+                            $client->get('https://www.thebuggenie.com/addons.json?'.join('&', $addons_param));
                             $addons_json = json_decode($client->getBody(), true);
                         }
                         catch (\Exception $e) {}
@@ -548,7 +548,7 @@ class Main extends framework\Action
                         return $this->renderJSON($counts_json);
                         break;
                     case 'get_theme_updates':
-                        $addons_param = array();
+                        $addons_param = array('license_key' => framework\Settings::getLicenseIdentifier());
                         foreach ($request['addons'] as $addon) {
                             $addons_param[] = 'themes[]='.$addon;
                         }

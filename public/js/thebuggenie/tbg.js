@@ -1761,7 +1761,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     remove: 'comment_' + comment_id,
                     callback: function () {
                         TBG.Main.Helpers.Dialog.dismiss();
-                        if ($('comments_box').childElements().size() == 0) $('comments_none').show();
+                        if ($('comments_box').childElements().size() == 0) {
+                            $('comments_none').show();
+                            $('.initial-placeholder').hide();
+                        }
                         $(commentcount_span).update($('comments_box').childElements().size());
                     }
                 }
@@ -1808,6 +1811,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                             window.location.hash = "#comment_" + json.comment_id;
                             if ($('comments_box').childElements().size() != 0) {
                                 $('comments_none').hide();
+                                $('.initial-placeholder').show();
                             }
                         }
                         $('comment_visibility').setValue(1);

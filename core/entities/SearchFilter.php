@@ -328,7 +328,7 @@
          */
         public function getSearch()
         {
-            return $this->_b2dbLazyload('_search_id');
+            return $this->_b2dbLazyLoad('_search_id');
         }
 
         /**
@@ -658,7 +658,7 @@
                         $issue_no = Issue::extractIssueNoFromNumber($this['value']);
                         if ($this['operator'] == '=')
                         {
-                            $comparison = (Core::getDBtype() == 'pgsql') ? \b2db\Criterion::ILIKE : \b2db\Criterion::LIKE;
+                            $comparison = (Core::getDriver() == 'pgsql') ? \b2db\Criterion::ILIKE : \b2db\Criterion::LIKE;
                             if ($criteria === null) {
                                 $criteria = new Criteria();
                                 $criteria->where(tables\Issues::TITLE, $searchterm, $comparison);
@@ -670,7 +670,7 @@
                         }
                         else
                         {
-                            $comparison = (Core::getDBtype() == 'pgsql') ? \b2db\Criterion::NOT_ILIKE : \b2db\Criterion::NOT_LIKE;
+                            $comparison = (Core::getDriver() == 'pgsql') ? \b2db\Criterion::NOT_ILIKE : \b2db\Criterion::NOT_LIKE;
                             if ($criteria === null) {
                                 $criteria = new Criteria();
                                 $criteria->where(tables\Issues::TITLE, $searchterm, $comparison);

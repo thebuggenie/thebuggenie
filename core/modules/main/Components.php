@@ -419,7 +419,6 @@
 
         public function componentLogitem()
         {
-            $this->issue = $this->item->getIssue();
         }
 
         public function componentCommentitem()
