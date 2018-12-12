@@ -13,9 +13,9 @@
                 $type = (isset($details['type'])) ? $details['type'] : 'unknown';
                 $function = (isset($details['function'])) ? $details['function'] : 'unknown';
             ?>
-            <span class="badge timing"><?= fa_image_tag('clock-o'); ?><span><?php echo ($details['time'] >= 1) ? round($details['time'], 2) . 's' : round($details['time'] * 1000, 1) . 'ms'; ?></span></span>
+            <span class="badge timing"><?= fa_image_tag('clock'); ?><span><?php echo ($details['time'] >= 1) ? round($details['time'], 2) . 's' : round($details['time'] * 1000, 1) . 'ms'; ?></span></span>
             <span class="partial code"><?php echo $classname . $type . $function; ?>()</span>
-            <span class="partial hidden"><?= fa_image_tag('file-text-o', ['class' => 'file-icon']); ?><span class="filename"><?php echo join(DS, $file_details).DS.'<b>'.$filename.'</b>' ?>:<?php echo $details['line']; ?></span></span>
+            <span class="partial hidden"><?= fa_image_tag('file-alt', ['class' => 'file-icon']); ?><span class="filename"><?php echo join(DS, $file_details).DS.'<b>'.$filename.'</b>' ?>:<?php echo $details['line']; ?></span></span>
             <span class="partial hidden expander" onclick="$(this).up().toggleClassName('expanded');"><?= fa_image_tag('plus-circle', ['class' => 'expand']); ?><?= fa_image_tag('minus-circle', ['class' => 'collapse']); ?></span>
             <ul class="backtrace">
                 <li class="b2db-hidden-toggler" onclick="$(this).up().toggleClassName('b2db-hidden-visible');">...</li>
@@ -29,7 +29,7 @@
                     ?>
                     <li class="<?php if (substr($classname, 0, 5) == 'b2db\\') echo 'b2db-hidden'; ?>">
                         <span class="partial code"><?php echo $classname . $type . $function; ?>()</span>
-                        <span class="partial"><?= fa_image_tag('file-text-o', ['class' => 'file-icon']); ?><?php echo join(DS, $file_details).DS.'<b>'.$filename.'</b>' ?>:<?php echo $trace['line']; ?></span>
+                        <span class="partial"><?= fa_image_tag('file-alt', ['class' => 'file-icon']); ?><?php echo join(DS, $file_details).DS.'<b>'.$filename.'</b>' ?>:<?php echo $trace['line']; ?></span>
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -53,7 +53,7 @@
                 $type = (isset($details['type'])) ? $details['type'] : 'unknown';
                 $function = (isset($details['function'])) ? $details['function'] : 'unknown';
             ?>
-            <span class="badge timing"><?= fa_image_tag('clock-o'); ?><span><?php echo ($details['time'] >= 1) ? round($details['time'], 2) . 's' : round($details['time'] * 1000, 1) . 'ms'; ?></span></span>
+            <span class="badge timing"><?= fa_image_tag('clock'); ?><span><?php echo ($details['time'] >= 1) ? round($details['time'], 2) . 's' : round($details['time'] * 1000, 1) . 'ms'; ?></span></span>
             <span class="badge classcount"><?php echo $details['num_classes']; ?></span>
             <?php foreach ($details['classnames'] as $classname): ?>
                 <span class="badge classname"><?php echo $classname; ?></span>

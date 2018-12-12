@@ -82,7 +82,7 @@
         /**
          * Dashboard views
          *
-         * @var array|\thebuggenie\core\entities\DashboardView
+         * @var \thebuggenie\core\entities\DashboardView[]
          * @Relates(class="\thebuggenie\core\entities\DashboardView", collection=true, foreign_column="dashboard_id", orderby="sort_order")
          */
         protected $_dashboard_views = null;
@@ -156,7 +156,7 @@
          */
         public function getUser()
         {
-            return $this->_b2dbLazyload('_user_id');
+            return $this->_b2dbLazyLoad('_user_id');
         }
 
         public function setUser($user)
@@ -171,7 +171,7 @@
          */
         public function getTeam()
         {
-            return $this->_b2dbLazyload('_team_id');
+            return $this->_b2dbLazyLoad('_team_id');
         }
 
         public function setTeam($team)
@@ -186,7 +186,7 @@
          */
         public function getClient()
         {
-            return $this->_b2dbLazyload('_client_id');
+            return $this->_b2dbLazyLoad('_client_id');
         }
 
         public function setClient($client)
@@ -201,7 +201,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project_id');
+            return $this->_b2dbLazyLoad('_project_id');
         }
 
         public function setProject($project)
@@ -215,7 +215,7 @@
             {
                 return count($this->_dashboard_views);
             }
-            return $this->_b2dbLazycount('_dashboard_views');
+            return $this->_b2dbLazyCount('_dashboard_views');
         }
 
         /**
@@ -223,7 +223,7 @@
          */
         public function getViews()
         {
-            return $this->_b2dbLazyload('_dashboard_views');
+            return $this->_b2dbLazyLoad('_dashboard_views');
         }
 
         public function getName()

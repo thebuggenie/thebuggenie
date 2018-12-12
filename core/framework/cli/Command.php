@@ -315,6 +315,9 @@
             }
 
             echo $return_text;
+            if (!empty(ob_get_status())) {
+                ob_end_flush();
+            }
         }
 
         public function cliEcho($text, $color = 'white', $style = null)
@@ -322,7 +325,7 @@
             self::cli_echo($text, $color, $style);
         }
 
-        public static function cliError($title, $exception)
+        public static function cliError($title, $exception, $include_sql_queries = false)
         {
             $trace_elements = null;
             if ($exception instanceof \Exception || $exception instanceof \Error)
@@ -362,10 +365,12 @@
                 echo "\n";
                 self::cli_echo($title, 'red', 'bold');
                 echo "\n";
-                self::cli_echo("occured in\n");
-                self::cli_echo($exception['file'] . ', line ' . $exception['line'], 'blue', 'bold');
-                echo "\n";
-                echo "\n";
+                if (isset($exception['file']) && isset($exception['line'])) {
+                    self::cli_echo("occured in\n");
+                    self::cli_echo($exception['file'] . ', line ' . $exception['line'], 'blue', 'bold');
+                    echo "\n";
+                    echo "\n";
+                }
                 self::cli_echo("Backtrace:\n", 'white', 'bold');
                 $trace_elements = debug_backtrace();
             }
@@ -396,7 +401,7 @@
                 }
                 echo "\n";
             }
-            if (class_exists('\\b2db\\Core'))
+            if (class_exists('\\b2db\\Core') && $include_sql_queries)
             {
                 echo "\n";
                 $sqlhits = \b2db\Core::getSQLHits();

@@ -34,15 +34,15 @@
         const TARGET_TYPE = 'dashboard_views.target_type';
         const SCOPE = 'dashboard_views.scope';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::NAME, 200);
-            parent::_addInteger(self::VIEW);
-            parent::_addInteger(self::PID);
-            parent::_addInteger(self::TARGET_TYPE);
-            parent::_addInteger(self::TID);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::NAME, 200);
+            parent::addInteger(self::VIEW);
+            parent::addInteger(self::PID);
+            parent::addInteger(self::TARGET_TYPE);
+            parent::addInteger(self::TID);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

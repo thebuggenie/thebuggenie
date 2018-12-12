@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Update;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -41,28 +42,28 @@
 
         protected function _deleteByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
-            return $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
+            return $this->rawDelete($query);
         }
 
         protected function _countByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
+            return $this->count($query);
         }
 
         protected function _getByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
 
             $return_array = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -97,11 +98,15 @@
         {
             foreach ($mapper_array as $old_step_id => $new_step_id)
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::OUTGOING_STEP_ID, $new_step_id);
-                $crit->addWhere(self::OUTGOING_STEP_ID, $old_step_id);
-                $crit->addWhere(self::WORKFLOW_ID, $workflow_id);
-                $this->doUpdate($crit);
+                $query = $this->getQuery();
+                $update = new Update();
+
+                $update->add(self::OUTGOING_STEP_ID, $new_step_id);
+
+                $query->where(self::OUTGOING_STEP_ID, $old_step_id);
+                $query->where(self::WORKFLOW_ID, $workflow_id);
+
+                $this->rawUpdate($update, $query);
             }
         }
 

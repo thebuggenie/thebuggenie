@@ -29,7 +29,7 @@
                         <label for="clone_group_<?php echo $group->getID(); ?>_new_name"><?php echo __('New group name'); ?></label>
                         <input type="text" id="clone_group_<?php echo $group->getID(); ?>_new_name" name="group_name"><br />
                         <input type="checkbox" class="fancycheckbox" id="clone_group_<?php echo $group->getID(); ?>_permissions" name="clone_permissions" value="1" checked />
-                        <label for="clone_group_<?php echo $group->getID(); ?>_permissions"><?php echo fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Clone permissions from the old group for the new group'); ?></label>
+                        <label for="clone_group_<?php echo $group->getID(); ?>_permissions"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Clone permissions from the old group for the new group'); ?></label>
                     </div>
                 </form>
                 <div style="text-align: right;">

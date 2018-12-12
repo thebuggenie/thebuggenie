@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -33,25 +34,25 @@
         const UID = 'teammembers.uid';
         const TID = 'teammembers.tid';
         
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::UID, Users::getTable());
-            parent::_addForeignKeyColumn(self::TID, Teams::getTable());
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::UID, Users::getTable());
+            parent::addForeignKeyColumn(self::TID, Teams::getTable());
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope_uid', array(self::UID, self::SCOPE));
+            $this->addIndex('scope_uid', array(self::UID, self::SCOPE));
         }
 
         public function getUIDsForTeamID($team_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::TID, $team_id);
+            $query = $this->getQuery();
+            $query->where(self::TID, $team_id);
 
             $uids = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -66,12 +67,12 @@
         {
             $team_ids = array();
             
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $user_id);
-            $crit->addJoin(Teams::getTable(), Teams::ID, self::TID);
-            $crit->addWhere(Teams::ONDEMAND, false);
+            $query = $this->getQuery();
+            $query->where(self::UID, $user_id);
+            $query->join(Teams::getTable(), Teams::ID, self::TID);
+            $query->where(Teams::ONDEMAND, false);
             
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -81,28 +82,28 @@
             
             if (!empty($team_ids))
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::UID, $user_id);
-                $crit->addWhere(self::TID, array_keys($team_ids), Criteria::DB_IN);
-                $res = $this->doDelete($crit);
+                $query = $this->getQuery();
+                $query->where(self::UID, $user_id);
+                $query->where(self::TID, array_keys($team_ids), \b2db\Criterion::IN);
+                $res = $this->rawDelete($query);
             }
         }
 
         public function getNumberOfMembersByTeamID($team_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::TID, $team_id);
-            $count = $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::TID, $team_id);
+            $count = $this->count($query);
 
             return $count;
         }
 
         public function cloneTeamMemberships($cloned_team_id, $new_team_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::TID, $cloned_team_id);
+            $query = $this->getQuery();
+            $query->where(self::TID, $cloned_team_id);
             $memberships_to_add = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -112,38 +113,38 @@
 
             foreach ($memberships_to_add as $uid)
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::UID, $uid);
-                $crit->addInsert(self::TID, $new_team_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::UID, $uid);
+                $insertion->add(self::TID, $new_team_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $this->rawInsert($insertion);
             }
         }
         
         public function addUserToTeam($user_id, $team_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addInsert(self::TID, $team_id);
-            $crit->addInsert(self::UID, $user_id);
-            $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion->add(self::TID, $team_id);
+            $insertion->add(self::UID, $user_id);
+            $this->rawInsert($insertion);
         }
         
         public function removeUserFromTeam($user_id, $team_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TID, $team_id);
-            $crit->addWhere(self::UID, $user_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TID, $team_id);
+            $query->where(self::UID, $user_id);
+            $this->rawDelete($query);
         }
         
         public function removeUsersFromTeam($team_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TID, $team_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TID, $team_id);
+            $this->rawDelete($query);
         }
         
     }

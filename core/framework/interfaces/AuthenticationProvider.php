@@ -1,9 +1,10 @@
 <?php
 
-    namespace thebuggenie\core\framework;
+    namespace thebuggenie\core\framework\interfaces;
 
     use thebuggenie\core\entities\User;
     use thebuggenie\core\entities\UserSession;
+    use thebuggenie\core\framework\Request;
 
     /**
      * An authentication module
@@ -11,7 +12,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    interface AuthenticationProviderInterface
+    interface AuthenticationProvider
     {
 
         const AUTHENTICATION_TYPE_PASSWORD = 'authenticate_password';

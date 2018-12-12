@@ -31,17 +31,17 @@
 
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addOrderBy('mailing_incoming_email_account.project', Criteria::SORT_ASC);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->addOrderBy('mailing_incoming_email_account.project', \b2db\QueryColumnSort::SORT_ASC);
+            return $this->select($query);
         }
 
         public function getAllByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT, $project_id);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT, $project_id);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
     }

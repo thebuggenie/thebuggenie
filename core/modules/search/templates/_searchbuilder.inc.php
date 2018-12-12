@@ -90,7 +90,7 @@
                             <ul class="interactive_menu_values">
                                 <?php foreach ($columns as $c_key => $c_name): ?>
                                     <li data-value="<?= $c_key; ?>" class="search_column filtervalue unfiltered scs_<?= $c_key; ?>" id="search_column_<?= $c_key; ?>_toggler">
-                                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                        <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                         <input id="search_column_<?= $c_key; ?>_toggler_checkbox" type="checkbox" value="<?= $c_key; ?>" name="columns[<?= $c_key; ?>]" data-text="<?= $c_name; ?>">
                                         <?= $c_name; ?>
                                     </li>
@@ -105,7 +105,7 @@
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="interactive_plus_button" id="interactive_template_button"><?= fa_image_tag('sliders'); ?></div>
+                <div class="interactive_plus_button" id="interactive_template_button"><?= fa_image_tag('sliders-h'); ?></div>
                 <div class="interactive_filters_list interactive_menu two_columns wide">
                     <div class="column">
                         <h1><?= __('Select how to present search results'); ?></h1>
@@ -138,20 +138,20 @@
                                 <ul class="interactive_menu_values" id="filter_grouping_options">
                                     <?php foreach (array('asc' => __('Ascending'), 'desc' => __('Descending')) as $dir => $dir_desc): ?>
                                         <li data-sort-order="<?= $dir; ?>" data-value="<?= $dir; ?>" class="grouporder filtervalue sticky unfiltered <?php if ($search_object->getGrouporder() == $dir) echo 'selected'; ?>" data-exclusive data-selection-group="1" style="<?php if (!$search_object->getGroupby()) echo 'display: none;'; ?>">
-                                            <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                            <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                             <input type="radio" value="<?= $dir; ?>" name="grouporder" data-text="<?= $dir_desc; ?>" id="search_grouping_grouporder_<?= $dir; ?>" <?php if ($search_object->getGrouporder() == $dir) echo 'checked'; ?>>
                                             <?= $dir_desc; ?>
                                         </li>
                                     <?php endforeach; ?>
                                     <li class="separator"></li>
                                     <li data-groupby="" data-value="" class="groupby filtervalue unfiltered <?php if (!$search_object->getGroupby()) echo 'selected'; ?>" data-exclusive data-selection-group="2">
-                                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                        <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                         <input type="radio" value="" name="groupby" data-text="<?= __('No grouping'); ?>" id="search_grouping_none" <?php if (!$search_object->getGroupby()) echo 'checked'; ?>>
                                         <?= __('No grouping'); ?>
                                     </li>
                                     <?php foreach ($groupoptions as $grouping => $group_desc): ?>
                                         <li data-groupby="<?= $grouping; ?>" data-value="<?= $grouping; ?>" class="groupby filtervalue unfiltered <?php if ($search_object->getGroupby() == $grouping) echo 'selected'; ?>" data-exclusive data-selection-group="2">
-                                            <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                            <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                             <input type="radio" value="<?= $grouping; ?>" name="groupby" data-text="<?= $group_desc; ?>" id="search_grouping_groupby_<?= $grouping; ?>" <?php if ($search_object->getGroupby() == $grouping) echo 'checked'; ?>>
                                             <?= $group_desc; ?>
                                         </li>
@@ -182,9 +182,9 @@
                                     <?= fa_image_tag('download', array('class' => 'icon')) . __('Download as OpenDocument spreadsheet (.ods)'); ?>
                                 </li>
                                 <li onclick="TBG.Search.download('xlsx');">
-                                    <?= fa_image_tag('file-excel-o', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.xlsx)'); ?>
+                                    <?= fa_image_tag('file-excel', array('class' => 'icon')) . __('Download as Microsoft Excel spreadsheet (.xlsx)'); ?>
                                 </li>
-                                <li onclick="TBG.Search.download('rss');">
+                                <li onclick="TBG.Search.download('rss-square');">
                                     <?= fa_image_tag('rss', array('class' => 'icon')) . __('Download as RSS feed'); ?>
                                 </li>
                             </ul>

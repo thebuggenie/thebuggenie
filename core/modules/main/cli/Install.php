@@ -142,7 +142,7 @@
                         $this->cliEcho("The Bug Genie uses a database to store information. To be able to connect\nto your database, The Bug Genie needs some information, such as\ndatabase type, username, password, etc.\n\n");
                         $this->cliEcho("Please select what kind of database you are installing The Bug Genie on:\n");
                         $db_types = array();
-                        foreach (\b2db\Core::getDBtypes() as $db_type => $db_desc)
+                        foreach (\b2db\Core::getDrivers() as $db_type => $db_desc)
                         {
                             $db_types[] = $db_type;
                             $this->cliEcho(count($db_types) . ': ' . $db_desc . "\n", 'white', 'bold');
@@ -189,22 +189,22 @@
                         while (!$e_ok);
                         try
                         {
-                            \b2db\Core::setHost($db_hostname);
-                            \b2db\Core::setUname($db_username);
-                            \b2db\Core::setPasswd($db_password);
-                            \b2db\Core::setDBtype($db_type);
+                            \b2db\Core::setHostname($db_hostname);
+                            \b2db\Core::setUsername($db_username);
+                            \b2db\Core::setPassword($db_password);
+                            \b2db\Core::setDriver($db_type);
                             \b2db\Core::setTablePrefix('tbg_');
 
                             \b2db\Core::doConnect();
                             \b2db\Core::createDatabase($db_name);
-                            \b2db\Core::setDBname($db_name);
+                            \b2db\Core::setDatabaseName($db_name);
                             \b2db\Core::doConnect();
                         }
                         catch (\Exception $e)
                         {
                             throw new \Exception("Could not connect to the database:\n" . $e->getMessage());
                         }
-                        \b2db\Core::setDBname($db_name);
+                        \b2db\Core::setDatabaseName($db_name);
                         $this->cliEcho("\nSuccessfully connected to the database.\n", 'green');
                         $this->cliEcho("Press ENTER to continue ... ");
                         $this->pressEnterToContinue();

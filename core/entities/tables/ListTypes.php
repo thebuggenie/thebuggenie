@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Update;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -59,10 +60,10 @@
             if (self::$_item_cache === null)
             {
                 self::$_item_cache = array();
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $crit->addOrderBy(self::ORDER, Criteria::SORT_ASC);
-                $items = $this->select($crit);
+                $query = $this->getQuery();
+                $query->where(self::SCOPE, framework\Context::getScope()->getID());
+                $query->addOrderBy(self::ORDER, \b2db\QueryColumnSort::SORT_ASC);
+                $items = $this->select($query);
                 foreach ($items as $item)
                 {
                     self::$_item_cache[$item->getItemtype()][$item->getID()] = $item;
@@ -90,32 +91,30 @@
 
         public function deleteByTypeAndId($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ITEMTYPE, $type);
-            $crit->addWhere(self::ID, $id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::ITEMTYPE, $type);
+            $query->where(self::ID, $id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            $res = $this->doDelete($crit);
+            $res = $this->rawDelete($query);
         }
 
         public function saveOptionOrder($options, $type)
         {
             foreach ($options as $key => $option_id)
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::ORDER, $key + 1);
-                $crit->addWhere(self::ITEMTYPE, $type);
-                $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $this->doUpdateById($crit, $option_id);
+                $update = new Update();
+                $update->add(self::ORDER, $key + 1);
+                $this->rawUpdateById($update, $option_id);
             }
         }
 
         public function getStatusListForUpgrade()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ITEMTYPE, \thebuggenie\core\entities\Datatype::STATUS);
-            $crit->addJoin(Scopes::getTable(), Scopes::ID, self::SCOPE);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::ITEMTYPE, \thebuggenie\core\entities\Datatype::STATUS);
+            $query->join(Scopes::getTable(), Scopes::ID, self::SCOPE);
+            $res = $this->rawSelect($query);
             
             $statuses = array();
             while ($row = $res->getNextRow())
@@ -127,9 +126,9 @@
             return $statuses;
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope', array(self::SCOPE));
+            $this->addIndex('scope', array(self::SCOPE));
         }
 
     }

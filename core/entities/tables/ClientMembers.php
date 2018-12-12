@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
 
     /**
@@ -32,20 +33,20 @@
         const UID = 'clientmembers.uid';
         const CID = 'clientmembers.cid';
         
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::UID, Users::getTable());
-            parent::_addForeignKeyColumn(self::CID, Clients::getTable());
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::UID, Users::getTable());
+            parent::addForeignKeyColumn(self::CID, Clients::getTable());
         }
 
         public function getUIDsForClientID($client_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CID, $client_id);
+            $query = $this->getQuery();
+            $query->where(self::CID, $client_id);
 
             $uids = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -58,26 +59,26 @@
         
         public function clearClientsByUserID($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $user_id);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::UID, $user_id);
+            $res = $this->rawDelete($query);
         }
 
         public function getNumberOfMembersByClientID($client_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CID, $client_id);
-            $count = $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::CID, $client_id);
+            $count = $this->count($query);
 
             return $count;
         }
 
         public function cloneClientMemberships($cloned_client_id, $new_client_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CID, $cloned_client_id);
+            $query = $this->getQuery();
+            $query->where(self::CID, $cloned_client_id);
             $memberships_to_add = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -87,45 +88,45 @@
 
             foreach ($memberships_to_add as $uid)
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::UID, $uid);
-                $crit->addInsert(self::CID, $new_client_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::UID, $uid);
+                $insertion->add(self::CID, $new_client_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $this->rawInsert($insertion);
             }
         }
 
         public function getClientIDsForUserID($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $user_id);
-            return $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::UID, $user_id);
+            return $this->rawSelect($query);
         }
 
         public function addUserToClient($user_id, $client_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addInsert(self::CID, $client_id);
-            $crit->addInsert(self::UID, $user_id);
-            $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion->add(self::CID, $client_id);
+            $insertion->add(self::UID, $user_id);
+            $this->rawInsert($insertion);
         }
         
         public function removeUserFromClient($user_id, $client_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::CID, $client_id);
-            $crit->addWhere(self::UID, $user_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::CID, $client_id);
+            $query->where(self::UID, $user_id);
+            $this->rawDelete($query);
         }
         
         public function removeUsersFromClient($client_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::CID, $client_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::CID, $client_id);
+            $this->rawDelete($query);
         }
 
     }

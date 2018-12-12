@@ -135,10 +135,10 @@
             ];
             foreach ($schemes as $scheme) {
                 foreach (Issuetype::getAll() as $issuetype) {
-                    if (in_array($issuetype->getIcon(), $scheme['types'])) {
+                    if (in_array($issuetype->getType(), $scheme['types'])) {
                         $scheme['scheme']->setIssueTypeEnabled($issuetype);
                     }
-                    $scheme['scheme']->setIssuetypeReportable($issuetype, in_array($issuetype->getIcon(), $scheme['reportable']));
+                    $scheme['scheme']->setIssuetypeReportable($issuetype, in_array($issuetype->getType(), $scheme['reportable']));
                 }
             }
 

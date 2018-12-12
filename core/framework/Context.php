@@ -32,6 +32,9 @@ use thebuggenie\core\helpers\TextParserMarkdown;
 class Context
 {
 
+    const INTERNAL_MODULES = 'internal_modules';
+    const EXTERNAL_MODULES = 'external_modules';
+
     protected static $_environment = 2;
     protected static $_debug_mode = true;
     protected static $debug_id = null;
@@ -56,16 +59,23 @@ class Context
     /**
      * List of modules
      *
-     * @var array|\thebuggenie\core\entities\Module
+     * @var Module[]
      */
     protected static $_modules = array();
 
     /**
      * List of internal modules
      *
-     * @var array|string
+     * @var CoreModule[]
      */
     protected static $_internal_modules = array();
+
+    /**
+     * List of internal module paths
+     *
+     * @var string[]
+     */
+    protected static $_internal_module_paths = array();
 
     /**
      * List of permissions
@@ -496,11 +506,6 @@ class Context
             $starttime = explode(' ', microtime());
             define('NOW', (integer) $starttime[1]);
 
-            // Set up error and exception handling
-            set_exception_handler(array('\thebuggenie\core\framework\Context', 'exceptionHandler'));
-            set_error_handler(array('\thebuggenie\core\framework\Context', 'errorHandler'));
-            error_reporting(E_ALL | E_NOTICE | E_STRICT);
-
             // Set the start time
             self::setLoadStart($starttime[1] + $starttime[0]);
 
@@ -711,15 +716,26 @@ class Context
         Logging::log('... done (loading event listeners)');
     }
 
+    /**
+     * @return interfaces\ModuleInterface[][]
+     */
+    public static function getAllModules()
+    {
+        return [
+            self::INTERNAL_MODULES => self::$_internal_modules,
+            self::EXTERNAL_MODULES => self::getModules()
+        ];
+    }
+
     protected static function loadRoutes()
     {
         Logging::log('Loading routes from routing files', 'routing');
 
-        foreach (array('internal' => self::$_internal_modules, 'external' => self::getModules()) as $module_type => $modules)
+        foreach (self::getAllModules() as $modules)
         {
             foreach ($modules as $module_name => $module)
             {
-                self::getRouting()->loadRoutes($module_name, $module_type);
+                self::getRouting()->loadRoutes($module_name);
             }
         }
         self::getRouting()->loadYamlRoutes(\THEBUGGENIE_CONFIGURATION_PATH . 'routes.yml');
@@ -976,9 +992,13 @@ class Context
 
     public static function switchUserContext(User $user)
     {
+        if (self::getUser() instanceof User && $user->getID() == self::getUser()->getID()) {
+            return;
+        }
+
         self::setUser($user);
         Settings::forceSettingsReload();
-        self::cacheAllPermissions();
+        self::reloadPermissionsCache();
     }
 
     /**
@@ -996,13 +1016,22 @@ class Context
                 if (in_array($modulename, array('.', '..')) || !is_dir(THEBUGGENIE_INTERNAL_MODULES_PATH . $modulename))
                     continue;
 
-                self::$_internal_modules[$modulename] = $modulename;
+                self::$_internal_module_paths[$modulename] = $modulename;
             }
+
+            self::getCache()->add(Cache::KEY_INTERNAL_MODULES, $modules, false);
         }
         else
         {
             Logging::log('Loading cached modules');
-            self::$_internal_modules = $modules;
+            self::$_internal_module_paths = $modules;
+        }
+
+        foreach (self::$_internal_module_paths as $modulename)
+        {
+            $classname = "\\thebuggenie\\core\\modules\\{$modulename}\\" . ucfirst($modulename);
+            self::$_internal_modules[$modulename] = new $classname($modulename);
+            self::$_internal_modules[$modulename]->initialize();
         }
 
         Logging::log('...done (loading internal modules)');
@@ -1054,7 +1083,7 @@ class Context
     /**
      * Adds a module to the module list
      *
-     * @param \thebuggenie\core\entities\Module $module
+     * @param Module $module
      */
     public static function addModule($module, $module_name)
     {
@@ -1082,7 +1111,7 @@ class Context
     /**
      * Returns an array of modules
      *
-     * @return array
+     * @return Module[]
      */
     public static function getModules()
     {
@@ -1114,7 +1143,7 @@ class Context
     /**
      * Get uninstalled modules
      *
-     * @return array|\thebuggenie\core\entities\Module
+     * @return Module[]
      */
     public static function getUninstalledModules()
     {
@@ -1141,7 +1170,7 @@ class Context
      *
      * @param string $module_name
      *
-     * @return \thebuggenie\core\entities\Module
+     * @return Module
      */
     public static function getModule($module_name)
     {
@@ -1181,36 +1210,36 @@ class Context
      */
     public static function getAllPermissions($type, $uid, $tid, $gid, $target_id = null, $all = false)
     {
-        $crit = new \b2db\Criteria();
-        $crit->addWhere(Permissions::SCOPE, self::getScope()->getID());
-        $crit->addWhere(Permissions::PERMISSION_TYPE, $type);
+        $query = Permissions::getTable()->getQuery();
+        $query->where(Permissions::SCOPE, self::getScope()->getID());
+        $query->where(Permissions::PERMISSION_TYPE, $type);
 
         if (($uid + $tid + $gid) == 0 && !$all)
         {
-            $crit->addWhere(Permissions::UID, $uid);
-            $crit->addWhere(Permissions::TID, $tid);
-            $crit->addWhere(Permissions::GID, $gid);
+            $query->where(Permissions::UID, $uid);
+            $query->where(Permissions::TID, $tid);
+            $query->where(Permissions::GID, $gid);
         }
         else
         {
             switch (true)
             {
                 case ($uid != 0):
-                    $crit->addWhere(Permissions::UID, $uid);
+                    $query->where(Permissions::UID, $uid);
                 case ($tid != 0):
-                    $crit->addWhere(Permissions::TID, $tid);
+                    $query->where(Permissions::TID, $tid);
                 case ($gid != 0):
-                    $crit->addWhere(Permissions::GID, $gid);
+                    $query->where(Permissions::GID, $gid);
             }
         }
         if ($target_id !== null)
         {
-            $crit->addWhere(Permissions::TARGET_ID, $target_id);
+            $query->where(Permissions::TARGET_ID, $target_id);
         }
 
         $permissions = array();
 
-        if ($res = Permissions::getTable()->doSelect($crit))
+        if ($res = Permissions::getTable()->rawSelect($query))
         {
             while ($row = $res->getNextRow())
             {
@@ -1288,6 +1317,15 @@ class Context
     {
         self::getCache()->delete(Cache::KEY_PERMISSIONS_CACHE, true, true);
         self::getCache()->fileDelete(Cache::KEY_PERMISSIONS_CACHE, true, true);
+    }
+
+    public static function reloadPermissionsCache()
+    {
+        self::$_available_permission_paths = null;
+        self::$_available_permissions = null;
+
+        self::_cacheAvailablePermissions();
+        self::cacheAllPermissions();
     }
 
     /**
@@ -2495,6 +2533,34 @@ class Context
             Logging::log("Cannot find the method {$actionToRunName}() in class {$actionClassName}.", 'core', Logging::LEVEL_FATAL);
             throw new exceptions\ActionNotFoundException("Cannot find the method {$actionToRunName}() in class {$actionClassName}. Make sure the method exists.");
         }
+    }
+
+    public static function bootstrap()
+    {
+        // Set up error and exception handling
+        set_exception_handler([self::class, 'exceptionHandler']);
+        set_error_handler([self::class, 'errorHandler']);
+        error_reporting(E_ALL | E_NOTICE | E_STRICT);
+
+        if (PHP_VERSION_ID < 70100)
+            die('This software requires PHP 7.1.0 or newer. Please upgrade to a newer version of php to use The Bug Genie.');
+
+        gc_enable();
+        date_default_timezone_set('UTC');
+
+        if (!defined('THEBUGGENIE_PATH'))
+            die('You must define the THEBUGGENIE_PATH constant so we can find the files we need');
+
+        defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+        defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
+        defined('THEBUGGENIE_VENDOR_PATH') || define('THEBUGGENIE_VENDOR_PATH', THEBUGGENIE_PATH . 'vendor' . DS);
+        defined('THEBUGGENIE_CACHE_PATH') || define('THEBUGGENIE_CACHE_PATH', THEBUGGENIE_PATH . 'cache' . DS);
+        defined('THEBUGGENIE_CONFIGURATION_PATH') || define('THEBUGGENIE_CONFIGURATION_PATH', THEBUGGENIE_CORE_PATH . 'config' . DS);
+        defined('THEBUGGENIE_INTERNAL_MODULES_PATH') || define('THEBUGGENIE_INTERNAL_MODULES_PATH', THEBUGGENIE_CORE_PATH . 'modules' . DS);
+        defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DS);
+        defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
+
+        self::initialize();
     }
 
     /**

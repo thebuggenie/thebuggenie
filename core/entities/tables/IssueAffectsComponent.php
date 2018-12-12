@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -37,27 +39,27 @@
         
         protected $_preloaded_values = null;
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addBoolean(self::CONFIRMED);
-            parent::_addForeignKeyColumn(self::COMPONENT, Components::getTable(), Components::ID);
-            parent::_addForeignKeyColumn(self::ISSUE, Issues::getTable(), Issues::ID);
-            parent::_addForeignKeyColumn(self::STATUS, ListTypes::getTable(), ListTypes::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addBoolean(self::CONFIRMED);
+            parent::addForeignKeyColumn(self::COMPONENT, Components::getTable(), Components::ID);
+            parent::addForeignKeyColumn(self::ISSUE, Issues::getTable(), Issues::ID);
+            parent::addForeignKeyColumn(self::STATUS, ListTypes::getTable(), ListTypes::ID);
         }
         
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('issue', self::ISSUE);
+            $this->addIndex('issue', self::ISSUE);
         }
 
         public function getByIssueIDs($issue_ids)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE, $issue_ids, Criteria::DB_IN);
-            $crit->addJoin(Issues::getTable(), Issues::ID, self::ISSUE, array(), Criteria::DB_INNER_JOIN);
-            $crit->addJoin(Components::getTable(), Components::ID, self::COMPONENT, array(), Criteria::DB_INNER_JOIN);
-            $res = $this->doSelect($crit, false);
+            $query = $this->getQuery();
+            $query->where(self::ISSUE, $issue_ids, \b2db\Criterion::IN);
+            $query->join(Issues::getTable(), Issues::ID, self::ISSUE, array(), \b2db\Join::INNER);
+            $query->join(Components::getTable(), Components::ID, self::COMPONENT, array(), \b2db\Join::INNER);
+            $res = $this->rawSelect($query, false);
             return $res;
         }
 
@@ -119,10 +121,10 @@
 
         public function getByIssueIDandComponentID($issue_id, $component_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::COMPONENT, $component_id);
-            $crit->addWhere(self::ISSUE, $issue_id);
-            $res = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->where(self::COMPONENT, $component_id);
+            $query->where(self::ISSUE, $issue_id);
+            $res = $this->rawSelectOne($query);
             return $res;
         }
 
@@ -134,10 +136,10 @@
             }
             else
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::ISSUE, $issue_id);
-                $crit->addWhere(self::COMPONENT, $component_id);
-                $this->doDelete($crit);
+                $query = $this->getQuery();
+                $query->where(self::ISSUE, $issue_id);
+                $query->where(self::COMPONENT, $component_id);
+                $this->rawDelete($query);
                 return true;
             }
         }
@@ -150,9 +152,9 @@
             }
             else
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::CONFIRMED, $confirmed);
-                $this->doUpdateById($crit, $res->get(self::ID));
+                $update = new Update();
+                $update->add(self::CONFIRMED, $confirmed);
+                $this->rawUpdateById($update, $res->get(self::ID));
                 return true;
             }                
         }
@@ -165,9 +167,9 @@
             }
             else
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::STATUS, $status_id);
-                $this->doUpdateById($crit, $res->get(self::ID));
+                $update = new Update();
+                $update->add(self::STATUS, $status_id);
+                $this->rawUpdateById($update, $res->get(self::ID));
                 
                 return true;
             }                
@@ -177,11 +179,11 @@
         {
             if (!$this->getByIssueIDandComponentID($issue_id, $component_id))
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::ISSUE, $issue_id);
-                $crit->addInsert(self::COMPONENT, $component_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $ret = $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::ISSUE, $issue_id);
+                $insertion->add(self::COMPONENT, $component_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $ret = $this->rawInsert($insertion);
                 return $ret->getInsertID();
             }
             else
@@ -192,9 +194,9 @@
         
         public function deleteByComponentID($component_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::COMPONENT, $component_id);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::COMPONENT, $component_id);
+            $res = $this->rawDelete($query);
             return $res;
         }
     }

@@ -70,7 +70,7 @@
          */
         public function getCommit()
         {
-            return $this->_b2dbLazyload('_commit');
+            return $this->_b2dbLazyLoad('_commit');
         }
 
         /**

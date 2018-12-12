@@ -275,7 +275,7 @@
                                                                 'base_id'            => 'popup_assigned_to_'.$transition->getID(),
                                                                 'include_teams'        => true,
                                                                 'allow_clear'        => false,
-                                                                'style'                => array('top' => '38px', 'right' => '5px'),
+                                                                'style'                => array('top' => '68px', 'right' => '5px'),
                                                                 'absolute'            => true)); ?>
     <?php endif; ?>
 </div>

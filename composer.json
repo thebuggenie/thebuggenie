@@ -15,22 +15,22 @@
     "license" : [
         "MPL-2.0"
     ],
-    "config": {
-        "platform": {
-            "php": "7.0"
-        }
-    },
     "require" : {
-        "php": "^7.0|^7.1|^7.2",
-        "thebuggenie/b2db" : "^2.0",
-        "easybook/geshi" : "^1.0",
-        "michelf/php-markdown" : "1.3",
+        "php": "^7.1|^7.2",
+        "thebuggenie/b2db" : "^3.0",
         "swiftmailer/swiftmailer" : "4.2.*",
         "webit/eval-math" : "^1.0",
         "mustangostang/spyc": "0.5.*",
         "realityking/pchart": "dev-master",
         "phpoffice/phpexcel": "~1.8",
         "kriswallsmith/assetic": "~1.2",
+        "lib-pcre" : "8.*",
+        "net/http" : "^1.1",
+        "guzzlehttp/guzzle": "^6.3",
+        "scrivo/highlight.php": "v9.12.0.1",
+        "ramsey/uuid": "^3.7",
+        "erusev/parsedown": "^1.7",
+        "ext-apc" : "*",
         "ext-gd" : "*",
         "ext-curl" : "*",
         "ext-PDO" : "*",
@@ -40,11 +40,7 @@
         "ext-pcre" : "*",
         "ext-xml" : "*",
         "ext-Reflection" : "*",
-        "lib-pcre" : "8.*",
-        "net/http" : "^1.1",
-        "guzzlehttp/guzzle": "^6.3",
-        "scrivo/highlight.php": "v9.12.0.1",
-        "ramsey/uuid": "^3.7"
+        "ext-zip" : "*"
     },
     "require-dev" : {
         "symfony/finder" : "~2.7",

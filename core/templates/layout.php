@@ -1,7 +1,11 @@
 <?php
 
-    $header_name = \thebuggenie\core\framework\Settings::getSiteHeaderName();
-    if ($header_name == '') $header_name = 'The Bug Genie';
+    /**
+     * @var \thebuggenie\core\framework\Response $tbg_response
+     * @var string $webroot
+     */
+
+    $header_name = \thebuggenie\core\framework\Settings::getSiteHeaderName() ?? 'The Bug Genie';
 
 ?>
 <!DOCTYPE html>
@@ -50,12 +54,12 @@
         <?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
             <link rel="alternate" type="application/rss+xml" title="<?= str_replace('"', '\'', $feed_title); ?>" href="<?= $feed_url; ?>">
         <?php endforeach; ?>
-        <?php $rand = substr(md5(microtime()),rand(0,26),5); ?>
+        <?php $rand = \Ramsey\Uuid\Uuid::uuid4()->toString(); ?>
         <?php $minified = ! \thebuggenie\core\framework\Context::isDebugMode() && \thebuggenie\core\framework\Context::isMinifiedAssets() ? '.min' :''; ?>
         <?php $tbgVersion = \thebuggenie\core\framework\Settings::getVersion(); ?>
         <?php include THEBUGGENIE_PATH . 'themes' . DS . \thebuggenie\core\framework\Settings::getThemeName() . DS . 'theme.php'; ?>
 
-        <?php list ($localcss, $externalcss) = $tbg_response->getStylesheets(); ?>
+        <?php [$localcss, $externalcss] = $tbg_response->getStylesheets(); ?>
         <?php foreach ($localcss as $css): ?>
             <?php if ( ! empty($minified)) : $pathinfo = pathinfo($css); $css = $pathinfo['dirname'] . '/' . $pathinfo['filename'] . $minified . '.' . $pathinfo['extension']; endif; ?>
             <link rel="stylesheet" href="<?php print $css; ?>">
@@ -64,7 +68,8 @@
             <link rel="stylesheet" href="<?= $css; ?>">
         <?php endforeach; ?>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/v4-shims.css">
 
         <script type="text/javascript" src="<?= make_url('home'); ?>js/HackTimer<?= $minified; ?>.js"></script>
         <script type="text/javascript" src="<?= make_url('home'); ?>js/HackTimerWorker<?= $minified; ?>.js"></script>

@@ -37,15 +37,15 @@
 
         public function getByTransitionID($transition_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::TRANSITION_ID, $transition_id);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::TRANSITION_ID, $transition_id);
+            return $this->select($query);
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope_transitionid', array(self::SCOPE, self::TRANSITION_ID));
+            $this->addIndex('scope_transitionid', array(self::SCOPE, self::TRANSITION_ID));
         }
 
     }

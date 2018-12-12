@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
 
     /**
@@ -32,30 +33,30 @@
         const UID = 'buddies.uid';
         const BID = 'buddies.bid';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
-            parent::_addForeignKeyColumn(self::BID, Users::getTable(), Users::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
+            parent::addForeignKeyColumn(self::BID, Users::getTable(), Users::ID);
         }
 
         public function addFriend($user_id, $friend_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::UID, $user_id);
-            $crit->addInsert(self::BID, $friend_id);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::UID, $user_id);
+            $insertion->add(self::BID, $friend_id);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $this->rawInsert($insertion);
         }
 
         public function getFriendsByUserID($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $user_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::UID, $user_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
             $friends = array();
-            if ($res = $this->doSelect($crit, false))
+            if ($res = $this->rawSelect($query, false))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -68,11 +69,11 @@
 
         public function removeFriendByUserID($user_id, $friend_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $user_id);
-            $crit->addWhere(self::BID, $friend_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::UID, $user_id);
+            $query->where(self::BID, $friend_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $this->rawDelete($query);
         }
 
     }

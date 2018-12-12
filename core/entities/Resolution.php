@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     /**
+     * @method static Resolution getByKeyish($key)
      * @Table(name="\thebuggenie\core\entities\tables\ListTypes")
      */
     class Resolution extends Datatype

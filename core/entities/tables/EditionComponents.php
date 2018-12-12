@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
 
     /**
@@ -32,48 +33,48 @@
         const EDITION = 'editioncomponents.edition';
         const COMPONENT = 'editioncomponents.component';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::EDITION, Editions::getTable(), Editions::ID);
-            parent::_addForeignKeyColumn(self::COMPONENT, Components::getTable(), Components::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::EDITION, Editions::getTable(), Editions::ID);
+            parent::addForeignKeyColumn(self::COMPONENT, Components::getTable(), Components::ID);
         }
 
         public function getByEditionID($edition_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::EDITION, $edition_id);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::EDITION, $edition_id);
+            $res = $this->rawSelect($query);
 
             return $res;
         }
 
         public function deleteByEditionID($edition_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::EDITION, $edition_id);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::EDITION, $edition_id);
+            $res = $this->rawDelete($query);
             return $res;
         }
 
         public function getByEditionIDandComponentID($edition_id, $component_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::EDITION, $edition_id);
-            $crit->addWhere(self::COMPONENT, $component_id);
+            $query = $this->getQuery();
+            $query->where(self::EDITION, $edition_id);
+            $query->where(self::COMPONENT, $component_id);
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function addEditionComponent($edition_id, $component_id)
         {
             if ($this->getByEditionIDandComponentID($edition_id, $component_id) == 0)
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::EDITION, $edition_id);
-                $crit->addInsert(self::COMPONENT, $component_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $res = $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::EDITION, $edition_id);
+                $insertion->add(self::COMPONENT, $component_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $res = $this->rawInsert($insertion);
 
                 return true;
             }
@@ -82,18 +83,18 @@
 
         public function removeEditionComponent($edition_id, $component_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::EDITION, $edition_id);
-            $crit->addWhere(self::COMPONENT, $component_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::EDITION, $edition_id);
+            $query->where(self::COMPONENT, $component_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function deleteByComponentID($component_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::COMPONENT, $component_id);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::COMPONENT, $component_id);
+            $res = $this->rawDelete($query);
             return $res;
         }
 

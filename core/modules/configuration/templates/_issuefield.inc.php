@@ -8,19 +8,19 @@
         <?php endif; ?>
         <div style="padding: 2px; font-size: 12px; display: inline;" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_name"><?php echo $item->getName(); ?></div>
         <div class="button-group" style="float: right;">
-            <a href="javascript:void(0);" class="button button-icon button-silver" onclick="$('item_option_<?php echo $type; ?>_<?php echo $item->getID(); ?>_content').hide();$('edit_item_option_<?php echo $item->getID(); ?>').show();$('<?php echo $type; ?>_<?php echo $item->getID(); ?>_name_input').focus();" title="<?php echo __('Edit this item'); ?>"><?php echo fa_image_tag('pencil'); ?></a>
-            <a href="javascript:void(0);" class="button button-icon button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issuefield_permissions', 'item_id' => $item->getID(), 'item_key' => $item->getPermissionsKey(), 'access_level' => $access_level)); ?>');" title="<?php echo __('Set permissions for this item'); ?>"><?php echo image_tag('cfg_icon_permissions.png'); ?></a>
+            <a href="javascript:void(0);" class="button button-icon button-silver" onclick="$('item_option_<?php echo $type; ?>_<?php echo $item->getID(); ?>_content').hide();$('edit_item_option_<?php echo $item->getID(); ?>').show();$('<?php echo $type; ?>_<?php echo $item->getID(); ?>_name_input').focus();" title="<?php echo __('Edit this item'); ?>"><?php echo fa_image_tag('edit'); ?></a>
+            <a href="javascript:void(0);" class="button button-icon button-silver" onclick="TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issuefield_permissions', 'item_id' => $item->getID(), 'item_key' => $item->getPermissionsKey(), 'access_level' => $access_level)); ?>');" title="<?php echo __('Set permissions for this item'); ?>"><?php echo fa_image_tag('user-lock'); ?></a>
             <?php if ($item->canBeDeleted()): ?>
-                <a href="javascript:void(0);" class="button button-icon button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Really delete %itemname?', array('%itemname' => $item->getName())); ?>', '<?php echo __('Are you really sure you want to delete this item?'); ?>', {yes: {click: function() {TBG.Config.Issuefields.Options.remove('<?php echo make_url('configure_issuefields_delete', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>); TBG.Main.Helpers.Dialog.dismiss(); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete.png'); ?></a>
+                <a href="javascript:void(0);" class="button button-icon button-silver" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Really delete %itemname?', array('%itemname' => $item->getName())); ?>', '<?php echo __('Are you really sure you want to delete this item?'); ?>', {yes: {click: function() {TBG.Config.Issuefields.Options.remove('<?php echo make_url('configure_issuefields_delete', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>); TBG.Main.Helpers.Dialog.dismiss(); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});" id="delete_<?php echo $item->getID(); ?>_link"><?php echo fa_image_tag('trash-alt', [], 'far'); ?></a>
             <?php else: ?>
-                <a href="javascript:void(0);" class="button button-icon button-silver disabled" onclick="TBG.Main.Helpers.Message.error('<?php echo __('This item cannot be deleted'); ?>', '<?php echo __('Other items - such as workflow steps - may depend on this item to exist. Remove the dependant item or unlink it from this item to continue.'); ?>');" id="delete_<?php echo $item->getID(); ?>_link"><?php echo image_tag('icon_delete_disabled.png'); ?></a>
+                <a href="javascript:void(0);" class="button button-icon button-silver disabled" onclick="TBG.Main.Helpers.Message.error('<?php echo __('This item cannot be deleted'); ?>', '<?php echo __('Other items - such as workflow steps - may depend on this item to exist. Remove the dependant item or unlink it from this item to continue.'); ?>');" id="delete_<?php echo $item->getID(); ?>_link"><?php echo fa_image_tag('trash-alt', [], 'far'); ?></a>
             <?php endif; ?>
         </div>
         <?php echo image_tag('spinning_16.gif', array('id' => 'delete_' . $type . '_' . $item->getID() . '_indicator', 'style' => 'display: none; float: right; margin: 2px 5px 0 0;')); ?>
     </div>
     <div id="edit_item_option_<?php echo $item->getID(); ?>" style="display: none;">
         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>" onsubmit="TBG.Config.Issuefields.Options.update('<?php echo make_url('configure_issuefields_edit', array('type' => $type, 'id' => $item->getID())); ?>', '<?php echo $type; ?>', <?php echo $item->getID(); ?>);return false;" id="edit_<?php echo $type; ?>_<?php echo $item->getID(); ?>_form">
-            <table style="width: 100%;" cellpadding="0" cellspacing="0">
+            <table style="width: 100%; table-layout: fixed;" cellpadding="0" cellspacing="0">
                 <tr>
                     <?php if (in_array($type, array('status', 'category'))): ?>
                         <td style="font-size: 14px; width: 70px;">
@@ -28,12 +28,10 @@
                         </td>
                     <?php endif; ?>
                     <?php if ($type == 'priority'): ?>
-                        <td style="font-size: 14px; width: 70px;">
-                            <select name="itemdata" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_itemdata_input">
-                                <?php foreach (\thebuggenie\core\entities\Priority::getAvailableValues() as $value): ?>
-                                    <option value="<?php echo $value; ?>"<?php if ($item->getItemdata() == $value) echo ' selected'; ?>><?php echo $value; ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <td style="font-size: 14px; width: 220px;">
+                            <?php foreach (\thebuggenie\core\entities\Priority::getAvailableValues() as $value => $icon): ?>
+                                <label><input type="radio" name="itemdata" value="<?php echo $value; ?>"<?php if ($item->getItemdata() == $value) echo ' checked'; ?>><?php echo fa_image_tag($icon); ?></label>
+                            <?php endforeach; ?>
                         </td>
                     <?php endif; ?>
                     <?php if (!array_key_exists($type, \thebuggenie\core\entities\Datatype::getTypes())): ?>
@@ -42,7 +40,7 @@
                         </td>
                     <?php endif; ?>
                     <td>
-                        <input type="text" name="name" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_name_input" style="width: 400px;" value="<?php echo $item->getName(); ?>">
+                        <input type="text" name="name" id="<?php echo $type; ?>_<?php echo $item->getID(); ?>_name_input" style="width: calc(100% - 20px);" value="<?php echo $item->getName(); ?>">
                     </td>
                     <td style="text-align: right; width: 150px;">
                         <?php echo image_tag('spinning_16.gif', array('style' => 'margin-right: 5px; display: none;', 'id' => 'edit_' . $type . '_' . $item->getID() . '_indicator')); ?>

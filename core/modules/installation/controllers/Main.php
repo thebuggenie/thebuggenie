@@ -199,13 +199,13 @@ class Main extends framework\Action
             if (\b2db\Core::isInitialized())
             {
                 $this->preloaded = true;
-                $this->username = \b2db\Core::getUname();
-                $this->password = \b2db\Core::getPasswd();
+                $this->username = \b2db\Core::getUsername();
+                $this->password = \b2db\Core::getPassword();
                 $this->dsn = \b2db\Core::getDSN();
-                $this->hostname = \b2db\Core::getHost();
+                $this->hostname = \b2db\Core::getHostname();
                 $this->port = \b2db\Core::getPort();
-                $this->b2db_dbtype = \b2db\Core::getDBtype();
-                $this->db_name = \b2db\Core::getDBname();
+                $this->b2db_dbtype = \b2db\Core::getDriver();
+                $this->db_name = \b2db\Core::getDatabaseName();
             }
         }
     }
@@ -225,10 +225,10 @@ class Main extends framework\Action
         {
             if ($this->username = $request['db_username'])
             {
-                \b2db\Core::setUname($this->username);
+                \b2db\Core::setUsername($this->username);
                 \b2db\Core::setTablePrefix($request['db_prefix']);
                 if ($this->password = $request->getRawParameter('db_password'))
-                    \b2db\Core::setPasswd($this->password);
+                    \b2db\Core::setPassword($this->password);
 
                 if ($this->selected_connection_detail == 'dsn')
                 {
@@ -241,9 +241,9 @@ class Main extends framework\Action
                 {
                     if ($this->db_type = $request['db_type'])
                     {
-                        \b2db\Core::setDBtype($this->db_type);
+                        \b2db\Core::setDriver($this->db_type);
                         if ($this->db_hostname = $request['db_hostname'])
-                            \b2db\Core::setHost($this->db_hostname);
+                            \b2db\Core::setHostname($this->db_hostname);
                         else
                             throw new \Exception('You must provide a database hostname');
 
@@ -251,7 +251,7 @@ class Main extends framework\Action
                             \b2db\Core::setPort($this->db_port);
 
                         if ($this->db_databasename = $request['db_name'])
-                            \b2db\Core::setDBname($this->db_databasename);
+                            \b2db\Core::setDatabaseName($this->db_databasename);
                         else
                             throw new \Exception('You must provide a database to use');
                     }
@@ -270,7 +270,7 @@ class Main extends framework\Action
                     throw new \Exception('There was an error connecting to the database: '.$e->getMessage());
                 }
 
-                if (\b2db\Core::getDBname() == '')
+                if (\b2db\Core::getDatabaseName() == '')
                     throw new \Exception('You must provide a database to use');
 
                 \b2db\Core::saveConnectionParameters(\THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml");
@@ -452,7 +452,7 @@ class Main extends framework\Action
 
         $this->upgrade_complete = false;
         $this->adminusername = UsersTable::getTable()->getAdminUsername();
-        $this->requires_password_reset = true;
+        $this->requires_password_reset = $this->current_version != '4.2.0';
         try
         {
             if ($this->upgrade_available)

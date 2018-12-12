@@ -146,14 +146,16 @@
     <div id="account_details_container">
         <div style="clear: both;" class="tab_menu inset">
             <ul id="account_tabs">
-                <li <?php if ($selected_tab == 'profile'): ?> class="selected"<?php endif; ?> id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('pencil-square-o').__('Profile'); ?></a></li>
+                <li <?php if ($selected_tab == 'profile'): ?> class="selected"<?php endif; ?> id="tab_profile"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_profile', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('edit').__('Profile'); ?></a></li>
                 <li id="tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('cog').__('Settings'); ?></a></li>
                 <li id="tab_notificationsettings"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_notificationsettings', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('bell').__('Notification settings'); ?></a></li>
                 <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tabs')->trigger(); ?>
-                <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
-                    <?php if ($module->hasAccountSettings()): ?>
-                        <li id="tab_settings_<?= $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?= $module_name; ?>', 'account_tabs', true);" href="javascript:void(0);"><?= $module->getAccountSettingsLogo().__($module->getAccountSettingsName()); ?></a></li>
-                    <?php endif; ?>
+                <?php foreach (\thebuggenie\core\framework\Context::getAllModules() as $modules): ?>
+                    <?php foreach ($modules as $module_name => $module): ?>
+                        <?php if ($module->hasAccountSettings()): ?>
+                            <li id="tab_settings_<?= $module_name; ?>"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_settings_<?= $module_name; ?>', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag($module->getAccountSettingsLogo()).__($module->getAccountSettingsName()); ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 <?php endforeach; ?>
                 <li <?php if ($selected_tab == 'security'): ?> class="selected"<?php endif; ?> id="tab_security"><a onclick="TBG.Main.Helpers.tabSwitcher('tab_security', 'account_tabs', true);" href="javascript:void(0);"><?= fa_image_tag('lock').__('Security'); ?></a></li>
                 <?php if (count($tbg_user->getScopes()) > 1): ?>
@@ -367,7 +369,7 @@
                                                     <ul class="interactive_menu_values">
                                                         <?php foreach (\thebuggenie\core\entities\Category::getAll() as $category_id => $category): ?>
                                                             <li data-value="<?= $category_id; ?>" class="filtervalue<?php if (false && $filter->hasValue($category_id)) echo ' selected'; ?>">
-                                                                <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) ?>
+                                                                <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') ?>
                                                                 <input type="checkbox" value="<?= $category_id; ?>" name="core_<?= $key; ?>_value_<?= $category_id; ?>" data-text="<?= __($category->getName()); ?>" id="core_<?= $key; ?>_value_<?= $category_id; ?>" <?php if (false && $filter->hasValue($category_id)) echo 'checked'; ?>>
                                                                 <label for="core_<?= $key; ?>_value_<?= $category_id; ?>"><?= __($category->getName()); ?></label>
                                                             </li>
@@ -379,7 +381,7 @@
                                     </td>
                                 <?php else: ?>
                                     <td style="width: 50px; text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <input type="checkbox" class="fancycheckbox" name="core_<?= $key; ?>" value="1" id="<?= $key; ?>_yes"<?php if (!$tbg_user->getNotificationSetting($key, true)->isOff()): ?> checked<?php endif; ?>><label for="<?= $key; ?>_yes"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label>
+                                        <input type="checkbox" class="fancycheckbox" name="core_<?= $key; ?>" value="1" id="<?= $key; ?>_yes"<?php if (!$tbg_user->getNotificationSetting($key, true)->isOff()): ?> checked<?php endif; ?>><label for="<?= $key; ?>_yes"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label>
                                     </td>
                                 <?php endif; ?>
                             </tr>
@@ -401,14 +403,14 @@
                                         <div class="interactive_values_container">
                                             <ul class="interactive_menu_values">
                                                 <li data-value="0" class="filtervalue <?php if ($all_projects_subscription) echo ' selected'; ?>" data-exclusive data-selection-group="1" data-exclude-group="2">
-                                                    <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                                    <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                                     <input type="checkbox" value="all" name="core_<?= $project_issues_key; ?>_all" data-text="<?= __('All my projects'); ?>" id="core_<?= $project_issues_key; ?>_value_all" <?php if ($all_projects_subscription) echo 'checked'; ?>>
                                                     <label for="core_<?= $project_issues_key; ?>_value_all"><?= __('All my projects'); ?></label>
                                                 </li>
                                                 <li class="separator"></li>
                                                 <?php foreach ($projects as $project_id => $project): ?>
                                                     <li data-value="<?= $project_id; ?>" class="filtervalue<?php if (in_array($project_id, $selected_project_subscriptions)) echo ' selected'; ?>" data-selection-group="2" data-exclude-group="1">
-                                                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                                        <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                                         <input type="checkbox" value="<?= $project_id; ?>" name="core_<?= $project_issues_key; ?>_<?= $project_id; ?>" data-text="<?= __($project->getName()); ?>" id="core_<?= $project_issues_key; ?>_value_<?= $project_id; ?>" <?php if (in_array($project_id, $selected_project_subscriptions)) echo 'checked'; ?>>
                                                         <label for="core_<?= $project_issues_key; ?>_value_<?= $project_id; ?>"><?= __($project->getName()); ?></label>
                                                     </li>
@@ -436,7 +438,7 @@
                                             <ul class="interactive_menu_values">
                                                 <?php foreach ($categories as $category_id => $category): ?>
                                                     <li data-value="<?= $category_id; ?>" class="filtervalue<?php if (in_array($category_id, $selected_category_subscriptions)) echo ' selected'; ?>">
-                                                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                                        <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                                         <input type="checkbox" value="<?= $category_id; ?>" name="core_<?= $category_key; ?>_<?= $category_id; ?>" data-text="<?= __($category->getName()); ?>" id="core_<?= $category_key; ?>_value_<?= $category_id; ?>" <?php if (in_array($category_id, $selected_category_subscriptions)) echo 'checked'; ?>>
                                                         <label for="core_<?= $category_key; ?>_value_<?= $category_id; ?>"><?= __($category->getName()); ?></label>
                                                     </li>
@@ -469,7 +471,7 @@
                                     <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle"></td>
                                 <?php else: ?>
                                     <td style="text-align: center; border-bottom: 1px solid #DDD;" valign="middle">
-                                        <input type="checkbox" class="fancycheckbox" name="core_<?= $key; ?>" value="1" id="<?= $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, $key == Settings::SETTINGS_USER_NOTIFY_MENTIONED, 'core')->isOn()) echo ' checked'; ?>><label for="<?= $key; ?>_yes"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?></label>
+                                        <input type="checkbox" class="fancycheckbox" name="core_<?= $key; ?>" value="1" id="<?= $key; ?>_yes"<?php if ($tbg_user->getNotificationSetting($key, $key == Settings::SETTINGS_USER_NOTIFY_MENTIONED, 'core')->isOn()) echo ' checked'; ?>><label for="<?= $key; ?>_yes"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label>
                                     </td>
                                     <?php \thebuggenie\core\framework\Event::createNew('core', 'account_pane_notificationsettings_cell')->trigger(compact('key')); ?>
                                 <?php endif; ?>
@@ -496,7 +498,7 @@
                                             <ul class="interactive_menu_values">
                                                 <?php foreach ($categories as $category_id => $category): ?>
                                                     <li data-value="<?= $category_id; ?>" class="filtervalue<?php if (in_array($category_id, $selected_category_notifications)) echo ' selected'; ?>">
-                                                        <?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']); ?>
+                                                        <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                                         <input type="checkbox" value="<?= $category_id; ?>" name="core_<?= $category_key; ?>_<?= $category_id; ?>" data-text="<?= __($category->getName()); ?>" id="core_<?= $category_key; ?>_value_<?= $category_id; ?>" <?php if (in_array($category_id, $selected_category_notifications)) echo 'checked'; ?>>
                                                         <label for="core_<?= $category_key; ?>_value_<?= $category_id; ?>"><?= __($category->getName()); ?></label>
                                                     </li>
@@ -530,7 +532,7 @@
                         <tr>
                             <td>
                                 <input type="checkbox" class="fancycheckbox" name="enable_desktop_notifications_new_tab" value="1" id="profile_enable_desktop_notifications_new_tab"<?php if ($tbg_user->isDesktopNotificationsNewTabEnabled()): ?> checked<?php endif; ?>>
-                                <label for="profile_enable_desktop_notifications_new_tab"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Open desktop notifications in new tab'); ?></label>
+                                <label for="profile_enable_desktop_notifications_new_tab"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Open desktop notifications in new tab'); ?></label>
                             </td>
                         </tr>
                         <tr>
@@ -578,14 +580,14 @@
                 </ul>
             </div>
             <?php \thebuggenie\core\framework\Event::createNew('core', 'account_tab_panes')->trigger(); ?>
-            <?php foreach (\thebuggenie\core\framework\Context::getModules() as $module_name => $module): ?>
-                <?php if ($module->hasAccountSettings()): ?>
-                    <div id="tab_settings_<?= $module_name; ?>_pane" style="display: none;">
-                        <form accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?= make_url('account_save_module_settings', array('target_module' => $module_name)); ?>" onsubmit="TBG.Main.Profile.updateModuleSettings('<?= make_url('account_save_module_settings', array('target_module' => $module_name)); ?>', '<?= $module_name; ?>'); return false;" method="post" id="profile_<?= $module_name; ?>_form">
+            <?php foreach (\thebuggenie\core\framework\Context::getAllModules() as $modules): ?>
+                <?php foreach ($modules as $module_name => $module): ?>
+                    <?php if ($module->hasAccountSettings()): ?>
+                        <div id="tab_settings_<?= $module_name; ?>_pane" style="display: none;">
                             <?php include_component("{$module_name}/accountsettings", array('module' => $module)); ?>
-                        </form>
-                    </div>
-                <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             <?php endforeach; ?>
             <?php if (count($tbg_user->getScopes()) > 1): ?>
                 <div id="tab_scopes_pane" style="display: none;">

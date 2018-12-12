@@ -36,17 +36,17 @@
         const ALLOWED = 'permissions.allowed';
         const MODULE = 'permissions.module';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::PERMISSION_TYPE, 100);
-            parent::_addVarchar(self::TARGET_ID, 200, 0);
-            parent::_addBoolean(self::ALLOWED);
-            parent::_addVarchar(self::MODULE, 50);
-            parent::_addInteger(self::UID, 10);
-            parent::_addInteger(self::GID, 10);
-            parent::_addInteger(self::TID, 10);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::PERMISSION_TYPE, 100);
+            parent::addVarchar(self::TARGET_ID, 200, 0);
+            parent::addBoolean(self::ALLOWED);
+            parent::addVarchar(self::MODULE, 50);
+            parent::addInteger(self::UID, 10);
+            parent::addInteger(self::GID, 10);
+            parent::addInteger(self::TID, 10);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

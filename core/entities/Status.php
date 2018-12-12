@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     /**
+     * @method static Status getByKeyish($key)
      * @Table(name="\thebuggenie\core\entities\tables\ListTypes")
      */
     class Status extends common\Colorizable

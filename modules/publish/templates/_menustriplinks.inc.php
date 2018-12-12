@@ -1,7 +1,7 @@
 <li class="with-dropdown <?php if (strpos($selected_tab, 'publish_') === 0): ?>selected<?php endif; ?>">
     <?php $dropper_class = (count(\thebuggenie\core\entities\Project::getAllRootProjects())) ? 'dropper' : ''; ?>
     <?php if (!isset($wiki_url)): ?>
-        <?= link_tag(((isset($project_url)) ? $project_url : $url), fa_image_tag('newspaper-o', [], false, 'publish') . \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project) . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => $dropper_class]); ?>
+        <?= link_tag(((isset($project_url)) ? $project_url : $url), fa_image_tag('newspaper') . \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project) . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => $dropper_class]); ?>
     <?php else: ?>
         <?= link_tag($wiki_url, \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project) . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['target' => 'blank', 'class' => $dropper_class]) ?>
     <?php endif; ?>

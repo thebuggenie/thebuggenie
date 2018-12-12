@@ -1,0 +1,16 @@
+{
+    "name": "thebuggenie/livelink",
+    "description": "Github integration with The Bug Genie",
+    "type": "library",
+    "require": {
+        "php-http/guzzle6-adapter": "^1.1",
+        "knplabs/github-api": "^2.3"
+    },
+    "license": "MPL 2.0",
+    "authors": [
+        {
+            "name": "zegenie Studios",
+            "email": "support@zegeniestudios.net"
+        }
+    ]
+}

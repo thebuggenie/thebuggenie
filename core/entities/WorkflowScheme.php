@@ -187,7 +187,7 @@
         {
             if ($this->_projects === null)
             {
-                return $this->_b2dbLazycount('_projects');
+                return $this->_b2dbLazyCount('_projects');
             }
             return count($this->_projects);
         }

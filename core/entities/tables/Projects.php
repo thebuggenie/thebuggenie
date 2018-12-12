@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Update;
+    use thebuggenie\core\entities\Project;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -24,7 +26,7 @@
      * @subpackage tables
      *
      * @method static Projects getTable() Retrieves an instance of this table
-     * @method \thebuggenie\core\entities\Project selectById(integer $id) Retrieves a project
+     * @method Project selectById(integer $id) Retrieves a project
      *
      * @Table(name="projects")
      * @Entity(class="\thebuggenie\core\entities\Project")
@@ -73,42 +75,42 @@
         const PARENT_PROJECT_ID = 'projects.parent';
         const ARCHIVED = 'projects.archived';
 
-        public function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope', self::SCOPE);
-            $this->_addIndex('scope_name', array(self::SCOPE, self::NAME));
-            $this->_addIndex('workflow_scheme_id', self::WORKFLOW_SCHEME_ID);
-            $this->_addIndex('issuetype_scheme_id', self::ISSUETYPE_SCHEME_ID);
-            $this->_addIndex('parent', self::PARENT_PROJECT_ID);
-            $this->_addIndex('parent_scope', array(self::PARENT_PROJECT_ID, self::SCOPE));
+            $this->addIndex('scope', self::SCOPE);
+            $this->addIndex('scope_name', array(self::SCOPE, self::NAME));
+            $this->addIndex('workflow_scheme_id', self::WORKFLOW_SCHEME_ID);
+            $this->addIndex('issuetype_scheme_id', self::ISSUETYPE_SCHEME_ID);
+            $this->addIndex('parent', self::PARENT_PROJECT_ID);
+            $this->addIndex('parent_scope', array(self::PARENT_PROJECT_ID, self::SCOPE));
         }
 
         public function getByPrefix($prefix)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PREFIX, $prefix);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->selectOne($crit);
+            $query = $this->getQuery();
+            $query->where(self::PREFIX, $prefix);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            return $this->selectOne($query);
         }
 
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::DELETED, false);
-            $crit->indexBy(self::KEY);
-            $res = $this->select($crit, false);
+            $query = $this->getQuery();
+            $query->addOrderBy(self::NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::DELETED, false);
+            $query->indexBy(self::KEY);
+            $res = $this->select($query, false);
             return $res;
         }
 
         public function getAllIncludingDeleted()
         {
-            $crit = $this->getCriteria();
-            $crit->addOrderBy(self::NAME, Criteria::SORT_ASC);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->indexBy(self::KEY);
-            $res = $this->select($crit, false);
+            $query = $this->getQuery();
+            $query->addOrderBy(self::NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->indexBy(self::KEY);
+            $res = $this->select($query, false);
             return $res;
         }
 
@@ -116,103 +118,109 @@
         {
             if ($scoped)
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $row = $this->doSelectById($id, $crit, false);
+                $query = $this->getQuery();
+                $query->where(self::SCOPE, framework\Context::getScope()->getID());
+                $row = $this->rawSelectById($id, $query, false);
             }
             else
             {
-                $row = $this->doSelectById($id);
+                $row = $this->rawSelectById($id);
             }
             return $row;
         }
 
         public function getByClientID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::CLIENT, $id);
-            $row = $this->doSelect($crit, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::CLIENT, $id);
+            $row = $this->rawSelect($query, false);
             return $row;
         }
 
         public function getByParentID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::PARENT_PROJECT_ID, $id);
-            $crit->addWhere(self::DELETED, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::PARENT_PROJECT_ID, $id);
+            $query->where(self::DELETED, false);
 
-            $res = $this->select($crit, false);
+            $res = $this->select($query, false);
             return $res;
         }
 
         public function quickfind($projectname)
         {
-            $crit = $this->getCriteria();
-            $ctn = $crit->returnCriterion(self::NAME, "%{$projectname}%", Criteria::DB_LIKE);
-            $ctn->addOr(self::KEY, strtolower("%{$projectname}%"), Criteria::DB_LIKE);
-            $crit->addWhere($ctn);
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::DELETED, false);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            $criteria = new Criteria();
+            $criteria->where(self::NAME, "%{$projectname}%", \b2db\Criterion::LIKE);
+            $criteria->or(self::KEY, strtolower("%{$projectname}%"), \b2db\Criterion::LIKE);
+            $query->and($criteria);
+
+            return $this->select($query);
         }
 
         public function getByKey($key)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::KEY, $key);
-            $crit->addWhere(self::KEY, '', Criteria::DB_NOT_EQUALS);
-            $row = $this->doSelectOne($crit, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::KEY, $key);
+            $query->where(self::KEY, '', \b2db\Criterion::NOT_EQUALS);
+            $row = $this->rawSelectOne($query, false);
             return $row;
         }
 
         public function countByIssuetypeSchemeID($scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::ARCHIVED, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $query->where(self::DELETED, false);
+            $query->where(self::ARCHIVED, false);
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function countByWorkflowSchemeID($scheme_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::WORKFLOW_SCHEME_ID, $scheme_id);
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::ARCHIVED, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::WORKFLOW_SCHEME_ID, $scheme_id);
+            $query->where(self::DELETED, false);
+            $query->where(self::ARCHIVED, false);
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function countProjects($scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
-            $crit->addWhere(self::DELETED, false);
-            $crit->addWhere(self::ARCHIVED, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
+            $query->where(self::DELETED, false);
+            $query->where(self::ARCHIVED, false);
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function getByUserID($user_id)
         {
-            $crit = $this->getCriteria();
-            $ctn = $crit->returnCriterion(self::LEADER_USER, $user_id);
-            $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere($ctn);
-            $ctn = $crit->returnCriterion(self::OWNER_USER, $user_id);
-            $ctn->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOr($ctn);
+            $query = $this->getQuery();
 
-            return $this->select($crit);
+            $criteria = new Criteria();
+            $criteria->where(self::LEADER_USER, $user_id);
+            $criteria->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where($criteria);
+
+            $criteria = new Criteria();
+            $criteria->where(self::OWNER_USER, $user_id);
+            $criteria->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->or($criteria);
+
+            return $this->select($query);
         }
 
         public function updateByIssuetypeSchemeID($scheme_id)
@@ -223,33 +231,37 @@
                 break;
             }
 
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
+            $update = new Update();
 
-            $crit->addWhere(self::ISSUETYPE_SCHEME_ID, $scheme_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addUpdate(self::ISSUETYPE_SCHEME_ID, $default_scheme_id);
+            $update->add(self::ISSUETYPE_SCHEME_ID, $default_scheme_id);
 
-            $res = $this->doUpdate($crit);
+            $query->where(self::ISSUETYPE_SCHEME_ID, $scheme_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+
+            $res = $this->rawUpdate($update, $query);
         }
 
         public function getByFileID($file_id)
         {
-            $crit = $this->getCriteria();
-            $ctn = $crit->returnCriterion(self::SMALL_ICON, $file_id);
-            $ctn->addOr(self::LARGE_ICON, $file_id);
-            $crit->addWhere($ctn);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->select($crit);
+            $criteria = new Criteria();
+            $criteria->where(self::SMALL_ICON, $file_id);
+            $criteria->or(self::LARGE_ICON, $file_id);
+            $query->and($criteria);
+
+            return $this->select($query);
         }
 
         public function getFileIds()
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::SMALL_ICON, 'file_id_small');
-            $crit->addSelectionColumn(self::LARGE_ICON, 'file_id_large');
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::SMALL_ICON, 'file_id_small');
+            $query->addSelectionColumn(self::LARGE_ICON, 'file_id_large');
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $file_ids = [];
             if ($res) {
                 while ($row = $res->getNextRow()) {

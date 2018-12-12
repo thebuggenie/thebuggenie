@@ -31,13 +31,13 @@
     <div class="syntax_picker_container">
         <input type="hidden" id="<?php echo $base_id; ?>_syntax" name="<?php echo $area_name; ?>_syntax" value="<?php echo \thebuggenie\core\framework\Settings::getSyntaxValue($syntax); ?>">
         <a id="<?php echo $base_id; ?>_toggle_syntax_button" class="button button-silver syntax_picker dropper"><?php echo __('Selected syntax: %selected_syntax', array('%selected_syntax' => '<span id="'.$base_id.'_selected_syntax">'.$syntaxname.'</span>')); ?>&nbsp;&nbsp;<?= fa_image_tag('caret-down'); ?></a>
-        <ul id="<?php echo $base_id; ?>_syntax_picker" class="rounded_box white shadowed more_actions_dropdown popup_box" onclick="$(this).previous().toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();" style="display: none;">
+        <ul id="<?php echo $base_id; ?>_syntax_picker" class="rounded_box white shadowed more_actions_dropdown popup_box" onclick="$(this).previous().toggleClassName('button-pressed');TBG.Main.Profile.clearPopupsAndButtons();">
             <li class="mw <?php if ($syntax == 'mw') echo 'selected'; ?>" data-syntax-name="<?php echo __('Mediawiki'); ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'mw');"><?php echo __('Mediawiki syntax'); ?></a></li>
             <li class="md <?php if ($syntax == 'md') echo 'selected'; ?>" data-syntax-name="<?php echo __('Markdown'); ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'md');"><?php echo __('Markdown syntax'); ?></a></li>
             <li class="pt <?php if ($syntax == 'pt') echo 'selected'; ?>" data-syntax-name="<?php echo __('Plaintext'); ?>"><a href="javascript:void(0);" onclick="TBG.Main.Helpers.setSyntax('<?php echo $base_id; ?>', 'pt');"><?php echo __('Plain text'); ?></a></li>
         </ul>
     </div>
-    <textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" <?php if ($mentionable): ?> data-target-type="<?php echo $target_type; ?>" data-target-id="<?php echo $target_id; ?>" <?php endif; ?> class="syntax_<?php echo $syntax; ?> <?php if ($markuppable) echo ' markuppable'; ?> <?php if ($mentionable) echo ' mentionable'; ?>" style="<?php if (isset($height)) echo 'height: '.$height; ?>; width: <?php echo $width; ?>;"><?php echo $value; ?></textarea>
+    <textarea name="<?php echo $area_name; ?>" id="<?php echo $base_id; ?>" <?php if ($mentionable): ?> data-target-type="<?php echo $target_type; ?>" data-target-id="<?php echo $target_id; ?>" <?php endif; ?> class="syntax_<?php echo $syntax; ?> <?php if ($markuppable) echo ' markuppable'; ?> <?php if ($mentionable) echo ' mentionable'; ?>" style="<?php if (isset($height)) echo 'height: '.$height; ?>; width: <?php echo $width; ?>;" <?php if (isset($placeholder)): ?>placeholder="<?= $placeholder; ?>"<?php endif; ?>><?php echo $value; ?></textarea>
     <?php if (!isset($hide_hint) || $hide_hint == false): ?>
         <div class="textarea_hint">
             <p class="syntax_pt_hint hint_container">
@@ -71,7 +71,7 @@
                             echo __('To create a bulleted list, start one or more lines with a star ("* bulleted list item"). You can create a numbered list by using the hash/pund sign instead ("# numbered list item").');
                             break;
                         case 4:
-                            echo __('Code samples are best presented between two "~~~~"-lines.') . ' ' . __('The Bug Genie uses %geshi for syntax highlighting with support for over 100 languages!', array('%geshi' => link_tag('http://qbnz.com/highlighter/', 'GeSHi', array('tabindex' => '-1'))));
+                            echo __('Code samples are best presented between two "~~~~"-lines.') . ' ' . __('The Bug Genie can automatically apply syntax highlighting with support for over 100 languages!');
                             echo htmlspecialchars(" (<source lang=\"php\"><?php echo \"fu\"; ?></source>)");
                             break;
                         case 5:
@@ -103,7 +103,7 @@
                             echo __("If you have certain text you don't want to be formatted, enclose it in <nowiki></nowiki> tags: \"'''formatted''' text <nowiki>'''non-formatted''' text</nowiki>.");
                             break;
                         case 5:
-                            echo __('Code samples are best presented in <source></source> tags.') . ' ' . __('The Bug Genie uses %geshi for syntax highlighting with support for over 100 languages!', array('%geshi' => link_tag('http://qbnz.com/highlighter/', 'GeSHi', array('tabindex' => '-1'))));
+                            echo __('Code samples are best presented in <source></source> tags.') . ' ' . __('The Bug Genie can automatically apply syntax highlighting with support for over 100 languages!');
                             echo htmlspecialchars(" (<source lang=\"php\"><?php echo \"fu\"; ?></source>)");
                             break;
                         case 6:

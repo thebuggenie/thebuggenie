@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities;
 
+    use thebuggenie\core\entities\traits\Commentable;
     use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\common\Changeable,
@@ -35,6 +36,8 @@
      */
     class Issue extends Changeable implements MentionableProvider, Attachable
     {
+
+        use Commentable;
 
         /**
          * Open issue state
@@ -551,22 +554,12 @@
         protected $_workflow_step_id;
 
         /**
-         * An array of \thebuggenie\core\entities\Comments
-         *
-         * @var array
-         * @Relates(class="\thebuggenie\core\entities\Comment", collection=true, foreign_column="target_id")
-         */
-        protected $_comments;
-
-        /**
          * An array of \thebuggenie\core\entities\IssueSpentTimes
          *
          * @var array
          * @Relates(class="\thebuggenie\core\entities\IssueSpentTime", collection=true, foreign_column="issue_id")
          */
         protected $_spent_times;
-
-        protected $_num_comments;
 
         protected $_num_user_comments;
 
@@ -824,7 +817,7 @@
                 tables\Editions::getTable()->preloadEditions($edition_ids);
                 $component_ids = tables\IssueAffectsComponent::getTable()->preloadValuesByIssueIDs($ids);
                 tables\Components::getTable()->preloadComponents($component_ids);
-                tables\Comments::getTable()->preloadIssueCommentCounts($ids);
+                tables\Comments::getTable()->preloadCommentCounts(Comment::TYPE_ISSUE, $ids);
                 tables\IssueFiles::getTable()->preloadIssueFileCounts($ids);
                 tables\IssueRelations::getTable()->preloadIssueRelations($ids);
                 $user_ids = array();
@@ -855,7 +848,7 @@
                 tables\IssueAffectsBuild::getTable()->clearPreloadedValues();
                 tables\IssueAffectsEdition::getTable()->clearPreloadedValues();
                 tables\IssueAffectsComponent::getTable()->clearPreloadedValues();
-                tables\Comments::getTable()->clearPreloadedIssueCommentCounts();
+                tables\Comments::getTable()->clearPreloadedCommentCounts(Comment::TYPE_ISSUE);
                 tables\IssueFiles::getTable()->clearPreloadedIssueFileCounts();
             }
 
@@ -917,7 +910,7 @@
          *
          * @param string $text Text that should be parsed for issue numbers and transitions.
          *
-         * @return An array with two elements, one denoting the matched issues, one
+         * @return array An array with two elements, one denoting the matched issues, one
          * denoting the transitions for issues. These elements can be accessed using
          * keys 'issues', and 'transitions'. The key 'issues' can be used for
          * accessing an array made-up of \thebuggenie\core\entities\Issue instances. The key 'transitions'
@@ -929,15 +922,15 @@
         public static function getIssuesFromTextByRegex($text)
         {
             $issue_match_regexes = \thebuggenie\core\helpers\TextParser::getIssueRegex();
-            $issue_numbers = array(); // Issue numbers
-            $issues = array(); // Issue objects
-            $transitions = array(); // Transition information
+            $issue_numbers = []; // Issue numbers
+            $issues = []; // Issue objects
+            $transitions = []; // Transition information
 
             // Iterate over all regular expressions that should be used for
             // issue/transition matching in commit message.
             foreach ($issue_match_regexes as $issue_match_regex)
             {
-                $matched_issue_data = array(); // All data from regexp
+                $matched_issue_data = []; // All data from regexp
 
                 $lines = explode("\n", $text);
                 foreach ($lines as $line)
@@ -962,11 +955,11 @@
                             // overwrite it. Use issue number as key for transitions.
                             if (!array_key_exists($issue_number, $transitions))
                             {
-                                $transitions[$issue_number] = array();
+                                $transitions[$issue_number] = [];
                             }
 
                             // Add the transition information (if any) for an issue.
-                            if ($matched_issue_transitions )
+                            if ($matched_issue_transitions)
                             {
                                 // Parse the transition information. Each transition string is in
                                 // format:
@@ -977,7 +970,7 @@
                                     $transition_data = explode(": ", $transition);
                                     $transition_command = $transition_data[0];
                                     // Set-up array that will contain parameters
-                                    $transition_parameters = array();
+                                    $transition_parameters = [];
 
                                     // Process parameters if they were present.
                                     if (count($transition_data) == 2)
@@ -994,7 +987,7 @@
                                         }
                                     }
                                     // Append the transition information for the current issue number.
-                                    $transitions[$issue_number][] = array($transition_command, $transition_parameters);
+                                    $transitions[$issue_number][] = [$transition_command, $transition_parameters];
                                 }
                             }
 
@@ -1020,7 +1013,7 @@
             // Return array consisting out of two arrays - one with Issue
             // instances, and the second one with transition information for those
             // issues.
-            return array("issues" => $issues, "transitions" => $transitions);
+            return compact('issues', 'transitions');
         }
 
         /**
@@ -1032,7 +1025,7 @@
         {
             $this->_initializeCustomfields();
             $this->_mergeChangedProperties();
-            $this->_num_user_comments = tables\Comments::getTable()->getPreloadedIssueCommentCount($this->_id);
+            $this->_num_user_comments = tables\Comments::getTable()->getPreloadedCommentCount(Comment::TYPE_ISSUE, $this->_id);
             $this->_num_files = tables\IssueFiles::getTable()->getPreloadedIssueFileCount($this->_id);
 //            if ($this->isDeleted())
 //            {
@@ -1128,7 +1121,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project_id');
+            return $this->_b2dbLazyLoad('_project_id');
         }
 
         /**
@@ -1149,7 +1142,7 @@
          */
         public function getWorkflowStep()
         {
-            return $this->_b2dbLazyload('_workflow_step_id');
+            return $this->_b2dbLazyLoad('_workflow_step_id');
         }
 
         /**
@@ -1438,7 +1431,7 @@
          */
         public function getDuplicateOf()
         {
-            return $this->_b2dbLazyload('_duplicate_of');
+            return $this->_b2dbLazyLoad('_duplicate_of');
         }
 
         /**
@@ -2002,7 +1995,7 @@
          */
         public function getIssueType()
         {
-            return $this->_b2dbLazyload('_issuetype');
+            return $this->_b2dbLazyLoad('_issuetype');
         }
 
         public function hasIssueType()
@@ -2065,7 +2058,7 @@
          */
         public function getStatus()
         {
-            return $this->_b2dbLazyload('_status');
+            return $this->_b2dbLazyLoad('_status');
         }
 
         /**
@@ -2288,6 +2281,7 @@
             {
                 $comment = new Comment();
                 $comment->setPostedBy(framework\Context::getUser()->getID());
+                $comment->setSystemComment(true);
                 $comment->setTargetID($this->getID());
                 $comment->setTargetType(Comment::TYPE_ISSUE);
                 if ($file_comment)
@@ -2329,7 +2323,7 @@
         {
             if ($this->_duplicate_issues === null)
             {
-                $this->_b2dbLazyload('_duplicate_issues');
+                $this->_b2dbLazyLoad('_duplicate_issues');
                 foreach ($this->_duplicate_issues as $issue_id => $issue)
                 {
                     if (!$issue->hasAccess()) unset($this->_duplicate_issues[$issue_id]);
@@ -2726,7 +2720,7 @@
          */
         public function getCategory()
         {
-            return $this->_b2dbLazyload('_category');
+            return $this->_b2dbLazyLoad('_category');
         }
 
         /**
@@ -2742,7 +2736,7 @@
         /**
          * Set the status
          *
-         * @param integer $status_id The status ID to change to
+         * @param integer|Status $status_id The status ID to change to
          */
         public function setStatus($status_id)
         {
@@ -2760,7 +2754,7 @@
          */
         public function getReproducability()
         {
-            return $this->_b2dbLazyload('_reproducability');
+            return $this->_b2dbLazyLoad('_reproducability');
         }
 
         /**
@@ -2780,7 +2774,7 @@
          */
         public function getPriority()
         {
-            return $this->_b2dbLazyload('_priority');
+            return $this->_b2dbLazyLoad('_priority');
         }
 
         /**
@@ -3021,7 +3015,7 @@
          */
         public function getMilestone()
         {
-            return $this->_b2dbLazyload('_milestone');
+            return $this->_b2dbLazyLoad('_milestone');
         }
 
         /**
@@ -3063,7 +3057,7 @@
                 }
                 $this->touch();
                 $related_issue->touch();
-                tables\IssueRelations::getTable()->doDeleteById($relation_id);
+                tables\IssueRelations::getTable()->rawDeleteById($relation_id);
             }
         }
 
@@ -3077,8 +3071,8 @@
          */
         protected function _removeParentIssue($related_issue, $relation_id)
         {
-            $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('This issue no longer depends on the solution of issue %issue_no', array('%issue_no' => $related_issue->getFormattedIssueNo())), $related_issue->getID(), 0);
-            $related_issue->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('Issue %issue_no no longer depends on the solution of this issue', array('%issue_no' => $this->getFormattedIssueNo())), $this->getID(), 0);
+            $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RELATED_ISSUE, framework\Context::getI18n()->__('This issue no longer depends on the solution of issue %issue_no', array('%issue_no' => $related_issue->getFormattedIssueNo())), $related_issue->getID(), 0);
+            $related_issue->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RELATED_ISSUE, framework\Context::getI18n()->__('Issue %issue_no no longer depends on the solution of this issue', array('%issue_no' => $this->getFormattedIssueNo())), $this->getID(), 0);
             $related_issue->calculateTime();
 
             if ($this->_parent_issues !== null && array_key_exists($relation_id, $this->_parent_issues))
@@ -3097,8 +3091,8 @@
          */
         protected function _removeChildIssue($related_issue, $relation_id)
         {
-            $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('Issue %issue_no no longer depends on the solution of this issue', array('%issue_no' => $related_issue->getFormattedIssueNo())), $this->getID(), 0);
-            $related_issue->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('This issue no longer depends on the solution of issue %issue_no', array('%issue_no' => $this->getFormattedIssueNo())), $related_issue->getID(), 0);
+            $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RELATED_ISSUE, framework\Context::getI18n()->__('Issue %issue_no no longer depends on the solution of this issue', array('%issue_no' => $related_issue->getFormattedIssueNo())), $this->getID(), 0);
+            $related_issue->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RELATED_ISSUE, framework\Context::getI18n()->__('This issue no longer depends on the solution of issue %issue_no', array('%issue_no' => $this->getFormattedIssueNo())), $related_issue->getID(), 0);
             $this->calculateTime();
 
             if ($this->_child_issues !== null && array_key_exists($relation_id, $this->_child_issues))
@@ -3121,8 +3115,8 @@
                 tables\IssueRelations::getTable()->addParentIssue($this->getID(), $related_issue->getID());
                 $this->_parent_issues = null;
 
-                $related_issue->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $related_issue->getIssueType()->getName(), '%issuetype' => $this->getIssueType()->getName(), '%issue_no' => $this->getFormattedIssueNo())));
-                $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
+                $related_issue->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RELATED_ISSUE, framework\Context::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $related_issue->getIssueType()->getName(), '%issuetype' => $this->getIssueType()->getName(), '%issue_no' => $this->getFormattedIssueNo())));
+                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RELATED_ISSUE, framework\Context::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $related_issue->calculateTime();
                 $related_issue->save();
                 $this->touch();
@@ -3158,8 +3152,8 @@
                 $res = tables\IssueRelations::getTable()->addChildIssue($this->getID(), $related_issue->getID());
                 $this->_child_issues = null;
 
-                $related_issue->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $related_issue->getIssueType()->getName(), '%issuetype' => $this->getIssueType()->getName(), '%issue_no' => $this->getFormattedIssueNo())));
-                $this->addLogEntry(tables\Log::LOG_ISSUE_DEPENDS, framework\Context::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
+                $related_issue->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RELATED_ISSUE, framework\Context::getI18n()->__('%issuetype %issue_no now depends on the solution of this %this_issuetype', array('%this_issuetype' => $related_issue->getIssueType()->getName(), '%issuetype' => $this->getIssueType()->getName(), '%issue_no' => $this->getFormattedIssueNo())));
+                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RELATED_ISSUE, framework\Context::getI18n()->__('This %this_issuetype now depends on the solution of %issuetype %issue_no', array('%this_issuetype' => $this->getIssueType()->getName(), '%issuetype' => $related_issue->getIssueType()->getName(), '%issue_no' => $related_issue->getFormattedIssueNo())));
                 $this->calculateTime();
                 $this->save();
                 $this->touch();
@@ -3192,7 +3186,7 @@
          */
         public function getPostedBy()
         {
-            $this->_posted_by = $this->_b2dbLazyload('_posted_by');
+            $this->_posted_by = $this->_b2dbLazyLoad('_posted_by');
             return $this->_posted_by;
         }
 
@@ -3220,11 +3214,12 @@
         /**
          * Set issue poster
          *
-         * @param common\Identifiable $poster The user/team you want to have posted the issue
+         * @param common\Identifiable|integer $poster The user/team you want to have posted the issue
          */
-        public function setPostedBy(common\Identifiable $poster)
+        public function setPostedBy($poster)
         {
-            $this->_addChangedProperty('_posted_by', $poster->getID());
+            $posted_by_id = ($poster instanceof common\Identifiable) ? $poster->getID() : $poster;
+            $this->_addChangedProperty('_posted_by', $posted_by_id);
         }
 
         /**
@@ -3291,7 +3286,7 @@
          */
         public function getResolution()
         {
-            return $this->_b2dbLazyload('_resolution');
+            return $this->_b2dbLazyLoad('_resolution');
         }
 
         /**
@@ -3311,7 +3306,7 @@
          */
         public function getSeverity()
         {
-            return $this->_b2dbLazyload('_severity');
+            return $this->_b2dbLazyLoad('_severity');
         }
 
         /**
@@ -4101,7 +4096,7 @@
                 if ($retval !== false)
                 {
                     $this->touch();
-                    $this->addLogEntry(tables\Log::LOG_AFF_ADD, framework\Context::getI18n()->__("'%release_name' added", array('%release_name' => $build->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_ADD_AFFECTED_ITEM, framework\Context::getI18n()->__("'%release_name' added", array('%release_name' => $build->getName())));
                     return array('a_id' => $retval, 'build' => $build, 'confirmed' => 0, 'status' => null);
                 }
                 foreach ($this->getChildIssues() as $issue)
@@ -4127,7 +4122,7 @@
                 if ($retval !== false)
                 {
                     $this->touch();
-                    $this->addLogEntry(tables\Log::LOG_AFF_ADD, framework\Context::getI18n()->__("'%edition_name' added", array('%edition_name' => $edition->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_ADD_AFFECTED_ITEM, framework\Context::getI18n()->__("'%edition_name' added", array('%edition_name' => $edition->getName())));
                     return array('a_id' => $retval, 'edition' => $edition, 'confirmed' => 0, 'status' => null);
                 }
             }
@@ -4149,7 +4144,7 @@
                 if ($retval !== false)
                 {
                     $this->touch();
-                    $this->addLogEntry(tables\Log::LOG_AFF_ADD, framework\Context::getI18n()->__("'%component_name' added", array('%component_name' => $component->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_ADD_AFFECTED_ITEM, framework\Context::getI18n()->__("'%component_name' added", array('%component_name' => $component->getName())));
                     return array('a_id' => $retval, 'component' => $component, 'confirmed' => 0, 'status' => null);
                 }
             }
@@ -4172,7 +4167,7 @@
             if (tables\IssueAffectsEdition::getTable()->deleteByIssueIDandEditionID($this->getID(), $item->getID()))
             {
                 $this->touch();
-                $this->addLogEntry(tables\Log::LOG_AFF_DELETE, framework\Context::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
+                $this->addLogEntry(LogItem::ACTION_ISSUE_REMOVE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
                 return true;
             }
             return false;
@@ -4194,7 +4189,7 @@
             if (tables\IssueAffectsBuild::getTable()->deleteByIssueIDandBuildID($this->getID(), $item->getID()))
             {
                 $this->touch();
-                $this->addLogEntry(tables\Log::LOG_AFF_DELETE, framework\Context::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
+                $this->addLogEntry(LogItem::ACTION_ISSUE_REMOVE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
                 return true;
             }
             return false;
@@ -4216,7 +4211,7 @@
             if (tables\IssueAffectsComponent::getTable()->deleteByIssueIDandComponentID($this->getID(), $item->getID()))
             {
                 $this->touch();
-                $this->addLogEntry(tables\Log::LOG_AFF_DELETE, framework\Context::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
+                $this->addLogEntry(LogItem::ACTION_ISSUE_REMOVE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%item_name' removed", array('%item_name' => $item->getName())));
                 return true;
             }
             return false;
@@ -4241,11 +4236,11 @@
                 $this->touch();
                 if ($confirmed)
                 {
-                    $this->addLogEntry(tables\Log::LOG_AFF_UPDATE, framework\Context::getI18n()->__("'%edition' is now confirmed for this issue", array('%edition' => $item->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%edition' is now confirmed for this issue", array('%edition' => $item->getName())));
                 }
                 else
                 {
-                    $this->addLogEntry(tables\Log::LOG_AFF_UPDATE, framework\Context::getI18n()->__("'%edition' is now unconfirmed for this issue", array('%edition' => $item->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%edition' is now unconfirmed for this issue", array('%edition' => $item->getName())));
                 }
                 return true;
             }
@@ -4271,11 +4266,11 @@
                 $this->touch();
                 if ($confirmed)
                 {
-                    $this->addLogEntry(tables\Log::LOG_AFF_UPDATE, framework\Context::getI18n()->__("'%build' is now confirmed for this issue", array('%build' => $item->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%build' is now confirmed for this issue", array('%build' => $item->getName())));
                 }
                 else
                 {
-                    $this->addLogEntry(tables\Log::LOG_AFF_UPDATE, framework\Context::getI18n()->__("'%build' is now unconfirmed for this issue", array('%build' => $item->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%build' is now unconfirmed for this issue", array('%build' => $item->getName())));
                 }
                 return true;
             }
@@ -4301,11 +4296,11 @@
                 $this->touch();
                 if ($confirmed)
                 {
-                    $this->addLogEntry(tables\Log::LOG_AFF_UPDATE, framework\Context::getI18n()->__("'%component' is now confirmed for this issue", array('%component' => $item->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%component' is now confirmed for this issue", array('%component' => $item->getName())));
                 }
                 else
                 {
-                    $this->addLogEntry(tables\Log::LOG_AFF_UPDATE, framework\Context::getI18n()->__("'%component' is now unconfirmed for this issue", array('%component' => $item->getName())));
+                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%component' is now unconfirmed for this issue", array('%component' => $item->getName())));
                 }
                 return true;
             }
@@ -4329,7 +4324,7 @@
             if (tables\IssueAffectsEdition::getTable()->setStatusByIssueIDandEditionID($this->getID(), $item->getID(), $status->getID()))
             {
                 $this->touch();
-                $this->addLogEntry(tables\Log::LOG_AFF_DELETE, framework\Context::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
+                $this->addLogEntry(LogItem::ACTION_ISSUE_REMOVE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
                 return true;
             }
             return false;
@@ -4352,7 +4347,7 @@
             if (tables\IssueAffectsBuild::getTable()->setStatusByIssueIDandBuildID($this->getID(), $item->getID(), $status->getID()))
             {
                 $this->touch();
-                $this->addLogEntry(tables\Log::LOG_AFF_DELETE, framework\Context::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
+                $this->addLogEntry(LogItem::ACTION_ISSUE_REMOVE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
                 return true;
             }
             return false;
@@ -4375,7 +4370,7 @@
             if (tables\IssueAffectsComponent::getTable()->setStatusByIssueIDandComponentID($this->getID(), $item->getID(), $status->getID()))
             {
                 $this->touch();
-                $this->addLogEntry(tables\Log::LOG_AFF_DELETE, framework\Context::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
+                $this->addLogEntry(LogItem::ACTION_ISSUE_REMOVE_AFFECTED_ITEM, framework\Context::getI18n()->__("'%item_name' -> '%status_name", array('%item_name' => $item->getName(), '%status_name' => $status->getName())));
                 return true;
             }
             return false;
@@ -4406,20 +4401,31 @@
          * @param string $text The text to log
          * @param boolean $system Whether this is a user entry or a system entry
          */
-        public function addLogEntry($change_type, $text = null, $previous_value = null, $current_value = null, $system = false, $time = null)
+        public function addLogEntry($change_type, $text = null, $previous_value = null, $current_value = null, $system = false, $time = null, $uid = null)
         {
             if (!$this->should_log_entry) return;
-            $uid = ($system) ? 0 : framework\Context::getUser()->getID();
+            if ($uid === null) {
+                $uid = ($system) ? 0 : framework\Context::getUser()->getID();
+            }
             $log_item = new LogItem();
             $log_item->setChangeType($change_type);
             $log_item->setText($text);
-            if ($time !== null) $log_item->setTime($time);
-            if ($previous_value !== null) $log_item->setPreviousValue($previous_value);
-            if ($current_value !== null) $log_item->setCurrentValue($current_value);
-            $log_item->setTargetType(tables\Log::TYPE_ISSUE);
+            $log_item->setTargetType(LogItem::TYPE_ISSUE);
+            $log_item->setProject($this->getProject());
             $log_item->setTarget($this->getID());
             $log_item->setUser($uid);
+            if ($time !== null) {
+                $log_item->setTime($time);
+            }
+            if ($previous_value !== null) {
+                $log_item->setPreviousValue($previous_value);
+            }
+            if ($current_value !== null) {
+                $log_item->setCurrentValue($current_value);
+            }
+
             $log_item->save();
+
             $this->_log_items_added[$log_item->getID()] = $log_item;
 
             framework\Event::createNew('core', 'thebuggenie\core\entities\Issue::addLogEntry', $this)->trigger(['log_item' => $log_item]);
@@ -4589,7 +4595,7 @@
         {
             if ($this->_log_entries === null)
             {
-                $this->_log_entries = tables\Log::getTable()->getByIssueID($this->getID());
+                $this->_log_entries = tables\LogItems::getTable()->getByIssueID($this->getID());
             }
         }
 
@@ -4631,53 +4637,8 @@
         {
             if ($this->_spent_times === null)
             {
-                $this->_b2dbLazyload('_spent_times');
+                $this->_b2dbLazyLoad('_spent_times');
             }
-        }
-
-        /**
-         * Retrieve all comments for this issue
-         *
-         * @return Comment[]
-         */
-        public function getComments()
-        {
-            $this->_populateComments();
-            return $this->_comments;
-        }
-
-        /**
-         * Populate comments array
-         */
-        protected function _populateComments()
-        {
-            if ($this->_comments === null)
-            {
-                $this->_b2dbLazyload('_comments');
-            }
-        }
-
-        /**
-         * Return the number of comments
-         *
-         * @return integer
-         */
-        public function getCommentCount()
-        {
-            if ($this->_num_comments === null)
-            {
-                if ($this->_comments !== null)
-                    $this->_num_comments = count($this->_comments);
-                else
-                    $this->_num_comments = $this->_b2dbLazycount('_comments');
-            }
-
-            return $this->_num_comments;
-        }
-
-        public function countComments()
-        {
-            return $this->getCommentCount();
         }
 
         public function countUserComments()
@@ -4914,18 +4875,12 @@
         public function whenClosed()
         {
             if (!$this->isClosed()) return false;
-            $crit = new \b2db\Criteria();
-            $crit->addSelectionColumn(tables\Log::TIME);
-            $crit->addWhere(tables\Log::TARGET, $this->_id);
-            $crit->addWhere(tables\Log::TARGET_TYPE, 1);
-            $crit->addWhere(tables\Log::CHANGE_TYPE, 14);
-            $crit->addOrderBy(tables\Log::TIME, 'desc');
-            $res = tables\Log::getTable()->doSelect($crit);
 
-            $ret_arr = array();
+            $item = tables\LogItems::getTable()->getByTargetAndChangeAndType($this->_id, LogItem::ACTION_ISSUE_CLOSE, LogItem::TYPE_ISSUE);
 
-            $row = $res->getNextRow();
-            return($row->get(tables\Log::TIME));
+            if ($item instanceof LogItem) {
+                return $item->getTime();
+            }
         }
 
         /**
@@ -4936,23 +4891,11 @@
         public function whenReopened()
         {
             if ($this->isClosed()) return false;
-            $crit = new \b2db\Criteria();
-            $crit->addSelectionColumn(tables\Log::TIME);
-            $crit->addWhere(tables\Log::TARGET, $this->_id);
-            $crit->addWhere(tables\Log::TARGET_TYPE, 1);
-            $crit->addWhere(tables\Log::CHANGE_TYPE, 22);
-            $crit->addOrderBy(tables\Log::TIME, 'desc');
-            $res = tables\Log::getTable()->doSelect($crit);
+            $item = tables\LogItems::getTable()->getByTargetAndChangeAndType($this->_id, LogItem::ACTION_ISSUE_REOPEN, LogItem::TYPE_ISSUE);
 
-            $ret_arr = array();
-
-            if (count($res) == 0)
-            {
-                return false;
+            if ($item instanceof LogItem) {
+                return $item->getTime();
             }
-
-            $row = $res->getNextRow();
-            return($row->get(tables\Log::TIME));
         }
 
         protected function _saveCustomFieldValues()
@@ -5063,16 +5006,16 @@
                         switch ($property)
                         {
                             case '_title':
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_UPDATE_TITLE, framework\Context::getI18n()->__("Title updated"), $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_TITLE, framework\Context::getI18n()->__("Title updated"), $original_value, $compare_value);
                                 break;
                             case '_shortname':
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_UPDATE_SHORTNAME, framework\Context::getI18n()->__("Issue label updated"), $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_SHORT_LABEL, framework\Context::getI18n()->__("Issue label updated"), $original_value, $compare_value);
                                 break;
                             case '_description':
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_UPDATE_DESCRIPTION, framework\Context::getI18n()->__("Description updated"), $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_DESCRIPTION, framework\Context::getI18n()->__("Description updated"), $original_value, $compare_value);
                                 break;
                             case '_reproduction_steps':
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_UPDATE_REPRODUCTIONSTEPS, framework\Context::getI18n()->__("Reproduction steps updated"), $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_REPRODUCTION_STEPS, framework\Context::getI18n()->__("Reproduction steps updated"), $original_value, $compare_value);
                                 break;
                             case '_category':
                                 if ($original_value != 0)
@@ -5085,7 +5028,7 @@
                                 }
                                 $new_name = ($this->getCategory() instanceof Datatype) ? $this->getCategory()->getName() : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_CATEGORY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_CATEGORY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_pain_bug_type':
                                 if ($original_value != 0)
@@ -5098,7 +5041,7 @@
                                 }
                                 $new_name = ($new_item = self::getPainTypesOrLabel('pain_bug_type', $value['current_value'])) ? $new_item : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_PAIN_BUG_TYPE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_pain_effect':
                                 if ($original_value != 0)
@@ -5111,7 +5054,7 @@
                                 }
                                 $new_name = ($new_item = self::getPainTypesOrLabel('pain_effect', $value['current_value'])) ? $new_item : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_PAIN_EFFECT, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_pain_likelihood':
                                 if ($original_value != 0)
@@ -5124,10 +5067,10 @@
                                 }
                                 $new_name = ($new_item = self::getPainTypesOrLabel('pain_likelihood', $value['current_value'])) ? $new_item : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_PAIN_LIKELIHOOD, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_user_pain':
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_PAIN_CALCULATED, $original_value . ' &rArr; ' . $value['current_value']);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_PAIN_SCORE, $original_value . ' &rArr; ' . $value['current_value']);
                                 break;
                             case '_status':
                                 if ($original_value != 0)
@@ -5140,7 +5083,7 @@
                                 }
                                 $new_name = ($this->getStatus() instanceof Datatype) ? $this->getStatus()->getName() : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_STATUS, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_STATUS, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_reproducability':
                                 if ($original_value != 0)
@@ -5153,7 +5096,7 @@
                                 }
                                 $new_name = ($this->getReproducability() instanceof Datatype) ? $this->getReproducability()->getName() : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_REPRODUCABILITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_priority':
                                 if ($original_value != 0)
@@ -5166,7 +5109,7 @@
                                 }
                                 $new_name = ($this->getPriority() instanceof Datatype) ? $this->getPriority()->getName() : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_PRIORITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_PRIORITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_assignee_team':
                             case '_assignee_user':
@@ -5180,7 +5123,7 @@
                                         $new_name = $this->getAssignee()->getNameWithUsername();
                                     }
 
-                                    $this->addLogEntry(tables\Log::LOG_ISSUE_ASSIGNED, $new_name);
+                                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_ASSIGNEE, $new_name);
                                     $is_saved_assignee = true;
                                 }
                                 break;
@@ -5189,7 +5132,7 @@
                                 $old_name = ($old_identifiable instanceof User) ? $old_identifiable->getNameWithUsername() : framework\Context::getI18n()->__('Unknown');
                                 $new_name = $this->getPostedBy()->getNameWithUsername();
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_POSTED, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_POSTED_BY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_being_worked_on_by_user':
                                 if ($original_value != 0)
@@ -5203,7 +5146,7 @@
                                 }
                                 $new_name = ($this->getUserWorkingOnIssue() instanceof User) ? $this->getUserWorkingOnIssue()->getNameWithUsername() : framework\Context::getI18n()->__('Not being worked on');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_USERS, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_USER_WORKING_ON_ISSUE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_owner_team':
                             case '_owner_user':
@@ -5211,12 +5154,12 @@
                                 {
                                     $new_name = ($this->getOwner() instanceof common\Identifiable) ? $this->getOwner()->getNameWithUsername() : framework\Context::getI18n()->__('Not owned by anyone');
 
-                                    $this->addLogEntry(tables\Log::LOG_ISSUE_OWNED, $new_name);
+                                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_OWNER, $new_name);
                                     $is_saved_owner = true;
                                 }
                                 break;
                             case '_percent_complete':
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_PERCENT, $original_value . '% &rArr; ' . $this->getPercentCompleted() . '%', $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_PERCENT_COMPLETE, $original_value . '% &rArr; ' . $this->getPercentCompleted() . '%', $original_value, $compare_value);
                                 break;
                             case '_resolution':
                                 if ($original_value != 0)
@@ -5229,7 +5172,7 @@
                                 }
                                 $new_name = ($this->getResolution() instanceof Datatype) ? $this->getResolution()->getName() : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_RESOLUTION, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_RESOLUTION, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_severity':
                                 if ($original_value != 0)
@@ -5242,7 +5185,7 @@
                                 }
                                 $new_name = ($this->getSeverity() instanceof Datatype) ? $this->getSeverity()->getName() : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_SEVERITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_SEVERITY, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_milestone':
                                 if ($original_value != 0)
@@ -5258,7 +5201,7 @@
                                 }
                                 $new_name = ($this->getMilestone() instanceof Milestone) ? $this->getMilestone()->getName() : framework\Context::getI18n()->__('Not determined');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_MILESTONE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_MILESTONE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 $this->_milestone_order = 0;
                                 break;
                             case '_issuetype':
@@ -5272,7 +5215,7 @@
                                 }
                                 $new_name = ($this->getIssuetype() instanceof Issuetype) ? $this->getIssuetype()->getName() : framework\Context::getI18n()->__('Unknown');
 
-                                $this->addLogEntry(tables\Log::LOG_ISSUE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
+                                $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_ISSUETYPE, $old_name . ' &rArr; ' . $new_name, $original_value, $compare_value);
                                 break;
                             case '_estimated_months':
                             case '_estimated_weeks':
@@ -5297,7 +5240,7 @@
                                     }
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('Not estimated');
                                     $new_formatted_time = ($this->hasEstimatedTime()) ? Issue::getFormattedTime($this->getEstimatedTime()) : framework\Context::getI18n()->__('Not estimated');
-                                    $this->addLogEntry(tables\Log::LOG_ISSUE_TIME_ESTIMATED, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getEstimatedTime()));
+                                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_ESTIMATED_TIME, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getEstimatedTime()));
                                     $is_saved_estimated = true;
                                 }
                                 break;
@@ -5325,14 +5268,14 @@
                                     $old_time['hours'] = round($old_time['hours'] / 100, 2);
                                     $old_formatted_time = (array_sum($old_time) > 0) ? Issue::getFormattedTime($old_time) : framework\Context::getI18n()->__('No time spent');
                                     $new_formatted_time = ($this->hasSpentTime()) ? Issue::getFormattedTime($this->getSpentTime()) : framework\Context::getI18n()->__('No time spent');
-                                    $this->addLogEntry(tables\Log::LOG_ISSUE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getSpentTime()));
+                                    $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_TIME_SPENT, $old_formatted_time . ' &rArr; ' . $new_formatted_time, serialize($old_time), serialize($this->getSpentTime()));
                                     $is_saved_spent = true;
                                 }
                                 break;
                             case '_state':
                                 if ($this->isClosed())
                                 {
-                                    $this->addLogEntry(tables\Log::LOG_ISSUE_CLOSE);
+                                    $this->addLogEntry(LogItem::ACTION_ISSUE_CLOSE);
                                     if ($this->getMilestone() instanceof Milestone)
                                     {
                                         if ($this->getMilestone()->isSprint())
@@ -5366,17 +5309,17 @@
                                 }
                                 else
                                 {
-                                    $this->addLogEntry(tables\Log::LOG_ISSUE_REOPEN);
+                                    $this->addLogEntry(LogItem::ACTION_ISSUE_REOPEN);
                                 }
                                 break;
                             case '_blocking':
                                 if ($this->isBlocking())
                                 {
-                                    $this->addLogEntry(tables\Log::LOG_ISSUE_BLOCKED);
+                                    $this->addLogEntry(LogItem::ACTION_ISSUE_ADD_BLOCKING);
                                 }
                                 else
                                 {
-                                    $this->addLogEntry(tables\Log::LOG_ISSUE_UNBLOCKED);
+                                    $this->addLogEntry(LogItem::ACTION_ISSUE_REMOVE_BLOCKING);
                                 }
                                 break;
                             default:
@@ -5389,12 +5332,12 @@
                                     {
                                         case CustomDatatype::INPUT_TEXT:
                                             $new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : framework\Context::getI18n()->__('Unknown');
-                                            $this->addLogEntry(tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $new_value, $original_value, $compare_value);
+                                            $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_CUSTOMFIELD, $key . ': ' . $new_value, $original_value, $compare_value);
                                             break;
                                         case CustomDatatype::INPUT_TEXTAREA_SMALL:
                                         case CustomDatatype::INPUT_TEXTAREA_MAIN:
                                             $new_value = ($this->getCustomField($key) != '') ? $this->getCustomField($key) : framework\Context::getI18n()->__('Unknown');
-                                            $this->addLogEntry(tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $new_value, $original_value, $compare_value);
+                                            $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_CUSTOMFIELD, $key . ': ' . $new_value, $original_value, $compare_value);
                                             break;
                                         case CustomDatatype::EDITIONS_CHOICE:
                                         case CustomDatatype::COMPONENTS_CHOICE:
@@ -5456,7 +5399,7 @@
                                             catch (\Exception $e) {}
                                             $old_value = (is_object($old_object)) ? $old_object->getName() : framework\Context::getI18n()->__('Unknown');
                                             $new_value = (is_object($new_object)) ? $new_object->getName() : framework\Context::getI18n()->__('Unknown');
-                                            $this->addLogEntry(tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
+                                            $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_CUSTOMFIELD, $key . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
                                             break;
                                         default:
                                             $old_item = null;
@@ -5467,7 +5410,7 @@
                                             catch (\Exception $e) {}
                                             $old_value = ($old_item instanceof CustomDatatypeOption) ? $old_item->getName() : framework\Context::getI18n()->__('Unknown');
                                             $new_value = ($this->getCustomField($key) instanceof CustomDatatypeOption) ? $this->getCustomField($key)->getName() : framework\Context::getI18n()->__('Unknown');
-                                            $this->addLogEntry(tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED, $key . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
+                                            $this->addLogEntry(LogItem::ACTION_ISSUE_UPDATE_CUSTOMFIELD, $key . ': ' . $old_value . ' &rArr; ' . $new_value, $original_value, $compare_value);
                                             break;
                                     }
                                 }
@@ -5719,7 +5662,7 @@
                         if (($user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_MENTIONED, false)->isOn())) $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_MENTIONED, $user, $this->getPostedBy());
                     }
                 }
-                $this->addLogEntry(tables\Log::LOG_ISSUE_CREATED, null, false, $this->getPosted());
+                $this->addLogEntry(LogItem::ACTION_ISSUE_CREATED, null, null, null, false, $this->getPosted(), $this->getPostedByID());
 
                 if ($this->shouldAutomaticallySubscribeUser(framework\Context::getUser())) $this->addSubscriber(framework\Context::getUser()->getID());
 
@@ -5815,7 +5758,7 @@
          */
         public function getUserWorkingOnIssue()
         {
-            return $this->_b2dbLazyload('_being_worked_on_by_user');
+            return $this->_b2dbLazyLoad('_being_worked_on_by_user');
         }
 
         /**
@@ -6164,8 +6107,8 @@
          */
         public function getAssignee()
         {
-            $this->_b2dbLazyload('_assignee_team');
-            $this->_b2dbLazyload('_assignee_user');
+            $this->_b2dbLazyLoad('_assignee_team');
+            $this->_b2dbLazyLoad('_assignee_user');
 
             if ($this->_assignee_team instanceof Team) {
                 return $this->_assignee_team;
@@ -6210,8 +6153,8 @@
          */
         public function getOwner()
         {
-            $this->_b2dbLazyload('_owner_team');
-            $this->_b2dbLazyload('_owner_user');
+            $this->_b2dbLazyLoad('_owner_team');
+            $this->_b2dbLazyLoad('_owner_user');
 
             if ($this->_owner_team instanceof Team) {
                 return $this->_owner_team;
@@ -6256,7 +6199,7 @@
          */
         public function getSubscribers()
         {
-            $this->_b2dbLazyload('_subscribers');
+            $this->_b2dbLazyLoad('_subscribers');
             return $this->_subscribers;
         }
 

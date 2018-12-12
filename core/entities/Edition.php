@@ -99,7 +99,7 @@
         {
             if ($this->_components === null)
             {
-                $this->_b2dbLazyload('_components');
+                $this->_b2dbLazyLoad('_components');
             }
         }
 
@@ -206,7 +206,7 @@
         {
             if ($this->_builds === null)
             {
-                $this->_b2dbLazyload('_builds');
+                $this->_b2dbLazyLoad('_builds');
             }
         }
 
@@ -239,7 +239,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project');
+            return $this->_b2dbLazyLoad('_project');
         }
 
         public function setProject($project)

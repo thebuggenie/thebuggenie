@@ -20,7 +20,7 @@
                     <?php foreach ($project->getIssuetypeScheme()->getIssueTypes() as $issuetype): ?>
                         <div style="clear: both; font-size: 12px;">
                             <input type="checkbox" class="fancycheckbox" id="showissuetype_<?= $issuetype->getID(); ?>_issuetypes" name="showissuetype[<?php echo $issuetype->getID(); ?>]" onChange="$('checkboxes_issuelist').select('input#showissuetype_<?php echo $issuetype->getID(); ?>')[0].checked=this.checked;" value="<?php echo $issuetype->getID(); ?>"<?php if ($project->isIssuetypeVisible($issuetype->getID())): ?> checked<?php endif; ?> style="float: left;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                            <label for="showissuetype_<?php echo $issuetype->getID(); ?>_issuetypes"><?php echo fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Show %issuetype', array('%issuetype' => $issuetype->getName())); ?></label>
+                            <label for="showissuetype_<?php echo $issuetype->getID(); ?>_issuetypes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Show %issuetype', array('%issuetype' => $issuetype->getName())); ?></label>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -28,7 +28,7 @@
                     <?php foreach ($project->getIssuetypeScheme()->getIssueTypes() as $issuetype): ?>
                         <div style="clear: both; font-size: 12px;">
                             <input type="checkbox" class="fancycheckbox" id="showissuetype_<?php echo $issuetype->getID(); ?>_issuelist" name="showissuetype[<?php echo $issuetype->getID(); ?>]" onChange="$('checkboxes_issuetypes').select('input#showissuetype_<?php echo $issuetype->getID(); ?>')[0].checked=this.checked;" value="<?php echo $issuetype->getID(); ?>"<?php if ($project->isIssuetypeVisible($issuetype->getID())): ?> checked<?php endif; ?> style="float: left;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                            <label for="showissuetype_<?php echo $issuetype->getID(); ?>_issuelist"><?php echo fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Show %issuetype', array('%issuetype' => $issuetype->getName())); ?></label>
+                            <label for="showissuetype_<?php echo $issuetype->getID(); ?>_issuelist"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Show %issuetype', array('%issuetype' => $issuetype->getName())); ?></label>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -40,7 +40,7 @@
                             <?php if ($milestone->isVisibleIssues() || $milestone->isVisibleRoadmap() || $project->isMilestoneVisible($milestone->getID())): ?>
                                 <div style="clear: both; font-size: 12px;">
                                     <input type="checkbox" class="fancycheckbox" name="showmilestone[<?php echo $milestone->getID(); ?>]" value="<?php echo $milestone->getID(); ?>"<?php if ($project->isMilestoneVisible($milestone->getID())): ?> checked<?php endif; ?> id="showmilestone_<?php echo $milestone->getID(); ?>" style="float: left;"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>>
-                                    <label for="showmilestone_<?php echo $milestone->getID(); ?>"><?php echo fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . __('Show %milestone', array('%milestone' => $milestone->getName())); ?></label>
+                                    <label for="showmilestone_<?php echo $milestone->getID(); ?>"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Show %milestone', array('%milestone' => $milestone->getName())); ?></label>
                                 </div>
                             <?php endif; ?>
                         <?php endforeach; ?>

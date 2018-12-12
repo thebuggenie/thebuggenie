@@ -165,23 +165,6 @@
             tables\TeamMembers::getTable()->removeUsersFromTeam($this->getID());
         }
 
-        public static function findTeams($details)
-        {
-            $crit = new \b2db\Criteria();
-            $crit->addWhere(tables\Teams::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
-            $crit->addWhere(tables\Teams::ONDEMAND, false);
-
-            $teams = array();
-            if ($res = tables\Teams::getTable()->doSelect($crit))
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $teams[$row->get(tables\Teams::ID)] = new \thebuggenie\core\entities\Team($row->get(tables\Teams::ID), $row);
-                }
-            }
-            return $teams;
-        }
-
         public function getNumberOfMembers()
         {
             if ($this->_members !== null)
@@ -309,7 +292,7 @@
          */
         public function getDashboards()
         {
-            $this->_b2dbLazyload('_dashboards');
+            $this->_b2dbLazyLoad('_dashboards');
             return $this->_dashboards;
         }
 

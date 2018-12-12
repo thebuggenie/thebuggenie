@@ -6,7 +6,7 @@
             <?php echo link_tag(make_url('publish_article', array('article_name' => strip_tags($link['url']))), (($link['description'] != '') ? fa_image_tag('book') . tbg_parse_text($link['description'], false, null, array('embedded' => true)) : fa_image_tag('book') . strip_tags($link['url']))); ?>
         <?php endif; ?>
     <?php elseif (mb_substr($link['url'], 0, 1) == '@'): ?>
-        <?php echo link_tag(make_url($link['url']), (($link['description'] != '') ? fa_image_tag('envelope-o') . tbg_parse_text($link['description'], false, null, array('embedded' => true)) : fa_image_tag('envelope-o') . strip_tags($link['url']))); ?>
+        <?php echo link_tag(make_url($link['url']), (($link['description'] != '') ? fa_image_tag('envelope') . tbg_parse_text($link['description'], false, null, array('embedded' => true)) : fa_image_tag('envelope') . strip_tags($link['url']))); ?>
     <?php elseif ($link['url'] != ''): ?>
         <?php echo link_tag($link['url'], (($link['description'] != '') ? fa_image_tag('globe') . tbg_parse_text($link['description'], false, null, array('embedded' => true)) : fa_image_tag('globe') . strip_tags($link['url']))); ?>
     <?php elseif ($link['description'] != ''): ?>

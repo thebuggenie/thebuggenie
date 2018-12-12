@@ -112,7 +112,7 @@
                                             <dd>
                                                 <?php foreach ($teams as $team): ?>
                                                     <div class="teamlist_container">
-                                                        <input type="checkbox" class="fancycheckbox" id="adduser_teams_<?= $team->getID(); ?>" name="teams[<?= $team->getID(); ?>]" value="<?= $team->getID(); ?>">&nbsp;<label for="adduser_teams_<?= $team->getID(); ?>"><?= fa_image_tag('check-square-o', ['class' => 'checked']) . fa_image_tag('square-o', ['class' => 'unchecked']) . $team->getName(); ?></label>
+                                                        <input type="checkbox" class="fancycheckbox" id="adduser_teams_<?= $team->getID(); ?>" name="teams[<?= $team->getID(); ?>]" value="<?= $team->getID(); ?>">&nbsp;<label for="adduser_teams_<?= $team->getID(); ?>"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . $team->getName(); ?></label>
                                                     </div>
                                                 <?php endforeach; ?>
                                             </dd>

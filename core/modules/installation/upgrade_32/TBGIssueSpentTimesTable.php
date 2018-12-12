@@ -37,18 +37,18 @@
         const SPENT_HOURS = 'issue_spenttimes.spent_hours';
         const SPENT_POINTS = 'issue_spenttimes.spent_points';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addInteger(self::ISSUE_ID, 10);
-            parent::_addInteger(self::EDITED_BY, 10);
-            parent::_addInteger(self::EDITED_AT, 10);
-            parent::_addInteger(self::SPENT_MONTHS, 10);
-            parent::_addInteger(self::SPENT_WEEKS, 10);
-            parent::_addInteger(self::SPENT_DAYS, 10);
-            parent::_addInteger(self::SPENT_HOURS, 10);
-            parent::_addFloat(self::SPENT_POINTS);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addInteger(self::ISSUE_ID, 10);
+            parent::addInteger(self::EDITED_BY, 10);
+            parent::addInteger(self::EDITED_AT, 10);
+            parent::addInteger(self::SPENT_MONTHS, 10);
+            parent::addInteger(self::SPENT_WEEKS, 10);
+            parent::addInteger(self::SPENT_DAYS, 10);
+            parent::addInteger(self::SPENT_HOURS, 10);
+            parent::addFloat(self::SPENT_POINTS);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

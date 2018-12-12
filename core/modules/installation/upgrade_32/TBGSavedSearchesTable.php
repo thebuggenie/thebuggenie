@@ -24,20 +24,20 @@
         const IS_PUBLIC = 'savedsearches.is_public';
         const UID = 'savedsearches.uid';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::NAME, 200);
-            parent::_addText(self::DESCRIPTION, false);
-            parent::_addBoolean(self::IS_PUBLIC);
-            parent::_addVarchar(self::TEMPLATE_NAME, 200);
-            parent::_addVarchar(self::TEMPLATE_PARAMETER, 200);
-            parent::_addInteger(self::ISSUES_PER_PAGE, 10);
-            parent::_addVarchar(self::GROUPBY, 100);
-            parent::_addVarchar(self::GROUPORDER, 5);
-            parent::_addInteger(self::APPLIES_TO_PROJECT, 10);
-            parent::_addInteger(self::UID, 10);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::NAME, 200);
+            parent::addText(self::DESCRIPTION, false);
+            parent::addBoolean(self::IS_PUBLIC);
+            parent::addVarchar(self::TEMPLATE_NAME, 200);
+            parent::addVarchar(self::TEMPLATE_PARAMETER, 200);
+            parent::addInteger(self::ISSUES_PER_PAGE, 10);
+            parent::addVarchar(self::GROUPBY, 100);
+            parent::addVarchar(self::GROUPORDER, 5);
+            parent::addInteger(self::APPLIES_TO_PROJECT, 10);
+            parent::addInteger(self::UID, 10);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

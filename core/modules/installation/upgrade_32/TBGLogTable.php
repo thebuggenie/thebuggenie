@@ -37,18 +37,18 @@
         const TIME = 'log.time';
         const UID = 'log.uid';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addInteger(self::TARGET, 10);
-            parent::_addInteger(self::TARGET_TYPE, 3);
-            parent::_addInteger(self::CHANGE_TYPE, 3);
-            parent::_addText(self::TEXT, false);
-            parent::_addText(self::PREVIOUS_VALUE, false);
-            parent::_addText(self::CURRENT_VALUE, false);
-            parent::_addInteger(self::TIME, 10);
-            parent::_addInteger(self::UID, 10);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addInteger(self::TARGET, 10);
+            parent::addInteger(self::TARGET_TYPE, 3);
+            parent::addInteger(self::CHANGE_TYPE, 3);
+            parent::addText(self::TEXT, false);
+            parent::addText(self::PREVIOUS_VALUE, false);
+            parent::addText(self::CURRENT_VALUE, false);
+            parent::addInteger(self::TIME, 10);
+            parent::addInteger(self::UID, 10);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

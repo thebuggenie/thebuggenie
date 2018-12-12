@@ -611,7 +611,12 @@
 
         public function getFontAwesomeIcon()
         {
-            return 'newspaper-o';
+            return 'newspaper';
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            return 'fas';
         }
 
         public function getFontAwesomeColor()

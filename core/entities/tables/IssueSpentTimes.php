@@ -4,6 +4,7 @@
 
     use b2db\Criteria;
     use b2db\Row;
+    use b2db\Update;
 
     /**
      * Issue spent times table
@@ -61,21 +62,21 @@
 
             if (count($issue_ids))
             {
-                $crit = $this->getCriteria();
+                $query = $this->getQuery();
                 $points_retarr_keys = array_keys($points_retarr);
                 $hours_retarr_keys = array_keys($hours_retarr);
                 $minutes_retarr_keys = array_keys($minutes_retarr);
 
                 if ($startdate && $enddate)
                 {
-                    $crit->addWhere(self::EDITED_AT, $startdate, Criteria::DB_GREATER_THAN_EQUAL);
-                    $crit->addWhere(self::EDITED_AT, $enddate, Criteria::DB_LESS_THAN_EQUAL);
+                    $query->where(self::EDITED_AT, $startdate, \b2db\Criterion::GREATER_THAN_EQUAL);
+                    $query->where(self::EDITED_AT, $enddate, \b2db\Criterion::LESS_THAN_EQUAL);
                 }
 
-                $crit->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
-                $crit->addOrderBy(self::EDITED_AT, Criteria::SORT_ASC);
+                $query->where(self::ISSUE_ID, $issue_ids, \b2db\Criterion::IN);
+                $query->addOrderBy(self::EDITED_AT, \b2db\QueryColumnSort::SORT_ASC);
 
-                if ($res = $this->doSelect($crit))
+                if ($res = $this->rawSelect($query))
                 {
                     while ($row = $res->getNextRow())
                     {
@@ -153,15 +154,15 @@
 
             if ($startdate && $enddate)
             {
-                $crit2 = $this->getCriteria();
-                $crit2->addSelectionColumn(self::SPENT_POINTS, 'spent_points', Criteria::DB_SUM);
-                $crit2->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', Criteria::DB_SUM);
-                $crit2->addSelectionColumn(self::SPENT_MINUTES, 'spent_minutes', Criteria::DB_SUM);
-                $crit2->addWhere(self::EDITED_AT, $startdate, Criteria::DB_LESS_THAN);
+                $query2 = $this->getQuery();
+                $query2->addSelectionColumn(self::SPENT_POINTS, 'spent_points', \b2db\Query::DB_SUM);
+                $query2->addSelectionColumn(self::SPENT_HOURS, 'spent_hours', \b2db\Query::DB_SUM);
+                $query2->addSelectionColumn(self::SPENT_MINUTES, 'spent_minutes', \b2db\Query::DB_SUM);
+                $query2->where(self::EDITED_AT, $startdate, \b2db\Criterion::LESS_THAN);
 
-                if (count($issue_ids)) $crit2->addWhere(self::ISSUE_ID, $issue_ids, Criteria::DB_IN);
+                if (count($issue_ids)) $query2->where(self::ISSUE_ID, $issue_ids, \b2db\Criterion::IN);
 
-                if ($res2 = $this->doSelectOne($crit2))
+                if ($res2 = $this->rawSelectOne($query2))
                 {
                     $returnarr['points_spent_before'] = $res2->get('spent_points');
                     $returnarr['hours_spent_before'] = $res2->get('spent_hours');
@@ -174,11 +175,11 @@
 
         public function getAllSpentTimesForFixing()
         {
-            $crit = $this->getCriteria();
-            $crit->addOrderBy(self::ISSUE_ID, Criteria::SORT_ASC);
-            $crit->addOrderBy(self::ID, Criteria::SORT_ASC);
+            $query = $this->getQuery();
+            $query->addOrderBy(self::ISSUE_ID, \b2db\QueryColumnSort::SORT_ASC);
+            $query->addOrderBy(self::ID, \b2db\QueryColumnSort::SORT_ASC);
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $ret_arr = array();
 
             if ($res)
@@ -194,34 +195,34 @@
 
         public function fixRow($row, $prev_times)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::SPENT_POINTS, $row[self::SPENT_POINTS] - $prev_times['points']);
-            $crit->addUpdate(self::SPENT_MINUTES, $row[self::SPENT_MINUTES] - $prev_times['minutes']);
-            $crit->addUpdate(self::SPENT_HOURS, $row[self::SPENT_HOURS] - $prev_times['hours']);
-            $crit->addUpdate(self::SPENT_DAYS, $row[self::SPENT_DAYS] - $prev_times['days']);
-            $crit->addUpdate(self::SPENT_WEEKS, $row[self::SPENT_WEEKS] - $prev_times['weeks']);
-            $crit->addUpdate(self::SPENT_MONTHS, $row[self::SPENT_MONTHS] - $prev_times['months']);
+            $update = new Update();
+            $update->add(self::SPENT_POINTS, $row[self::SPENT_POINTS] - $prev_times['points']);
+            $update->add(self::SPENT_MINUTES, $row[self::SPENT_MINUTES] - $prev_times['minutes']);
+            $update->add(self::SPENT_HOURS, $row[self::SPENT_HOURS] - $prev_times['hours']);
+            $update->add(self::SPENT_DAYS, $row[self::SPENT_DAYS] - $prev_times['days']);
+            $update->add(self::SPENT_WEEKS, $row[self::SPENT_WEEKS] - $prev_times['weeks']);
+            $update->add(self::SPENT_MONTHS, $row[self::SPENT_MONTHS] - $prev_times['months']);
 
-            $this->doUpdateById($crit, $row[self::ID]);
+            $this->rawUpdateById($update, $row[self::ID]);
         }
 
         public function fixHours($row)
         {
             if ($row[self::SPENT_HOURS] == 0) return;
 
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::SPENT_HOURS, $row[self::SPENT_HOURS] * 100);
-            $this->doUpdateById($crit, $row[self::ID]);
+            $update = new Update();
+            $update->add(self::SPENT_HOURS, $row[self::SPENT_HOURS] * 100);
+            $this->rawUpdateById($update, $row[self::ID]);
         }
 
         public function fixScopes()
         {
             $issue_scopes = [];
-            $issue_crit = Issues::getTable()->getCriteria();
-            $issue_crit->addSelectionColumn(Issues::SCOPE);
-            $issue_crit->addSelectionColumn(Issues::ID);
+            $issue_query = Issues::getTable()->getQuery();
+            $issue_query->addSelectionColumn(Issues::SCOPE);
+            $issue_query->addSelectionColumn(Issues::ID);
 
-            $issues_res = Issues::getTable()->doSelect($issue_crit);
+            $issues_res = Issues::getTable()->rawSelect($issue_query);
 
             if (!$issues_res) {
                 return;
@@ -231,11 +232,11 @@
                 $issue_scopes[$row->getID()] = $row->get(Issues::SCOPE);
             }
 
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID);
-            $crit->addSelectionColumn(self::ISSUE_ID);
-            $crit->addWhere(self::SCOPE, 0);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID);
+            $query->addSelectionColumn(self::ISSUE_ID);
+            $query->where(self::SCOPE, 0);
+            $res = $this->rawSelect($query);
 
             $fixRow = function (Row $row) use ($issue_scopes) {
                 $issue_id = $row->get(self::ISSUE_ID);
@@ -243,9 +244,9 @@
                     return;
                 }
 
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::SCOPE, $issue_scopes[$issue_id]);
-                $this->doUpdateById($crit, $row->getID());
+                $update = new Update();
+                $update->add(self::SCOPE, $issue_scopes[$issue_id]);
+                $this->rawUpdateById($update, $row->getID());
             };
 
             if ($res) {
@@ -257,16 +258,16 @@
 
         public function getSpentTimeSumsByIssueId($issue_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUE_ID, $issue_id);
-            $crit->addSelectionColumn(self::SPENT_POINTS, 'points', Criteria::DB_SUM);
-            $crit->addSelectionColumn(self::SPENT_MINUTES, 'minutes', Criteria::DB_SUM);
-            $crit->addSelectionColumn(self::SPENT_HOURS, 'hours', Criteria::DB_SUM);
-            $crit->addSelectionColumn(self::SPENT_DAYS, 'days', Criteria::DB_SUM);
-            $crit->addSelectionColumn(self::SPENT_MONTHS, 'months', Criteria::DB_SUM);
-            $crit->addSelectionColumn(self::SPENT_WEEKS, 'weeks', Criteria::DB_SUM);
+            $query = $this->getQuery();
+            $query->where(self::ISSUE_ID, $issue_id);
+            $query->addSelectionColumn(self::SPENT_POINTS, 'points', \b2db\Query::DB_SUM);
+            $query->addSelectionColumn(self::SPENT_MINUTES, 'minutes', \b2db\Query::DB_SUM);
+            $query->addSelectionColumn(self::SPENT_HOURS, 'hours', \b2db\Query::DB_SUM);
+            $query->addSelectionColumn(self::SPENT_DAYS, 'days', \b2db\Query::DB_SUM);
+            $query->addSelectionColumn(self::SPENT_MONTHS, 'months', \b2db\Query::DB_SUM);
+            $query->addSelectionColumn(self::SPENT_WEEKS, 'weeks', \b2db\Query::DB_SUM);
 
-            return $this->doSelectOne($crit);
+            return $this->rawSelectOne($query);
         }
 
     }

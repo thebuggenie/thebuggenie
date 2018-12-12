@@ -2,7 +2,6 @@
 
     namespace thebuggenie\core\helpers;
 
-    use \Michelf\MarkdownExtra;
     use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\framework;
 
@@ -22,7 +21,7 @@
      * @package thebuggenie
      * @subpackage main
      */
-    class TextParserMarkdown extends MarkdownExtra implements ContentParser
+    class TextParserMarkdown extends \Parsedown implements ContentParser
     {
         use TextParserTodo;
 
@@ -35,8 +34,6 @@
 
         protected $options = [];
         
-        public $code_attr_on_pre = true;
-
         protected function _parse_line($text, $options = [])
         {
             return $text;
@@ -44,13 +41,10 @@
 
         public function transform($text)
         {
-            $this->no_markup = true;
-            $this->no_entities = true;
-
-            $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
-            $text = parent::transform($text);
+            $text = preg_replace_callback(TextParser::getIssueRegex(), array($this, '_parse_issuelink'), $text);
+            $text = parent::text($text);
             $text = preg_replace_callback('/^(?:\<(.*?)\>)?' . $this->todo_regex . '(?:\<(.*?)\>)?$/mi', [$this, '_parse_todo'], $text);
-            $text = preg_replace_callback(\thebuggenie\core\helpers\TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
+            $text = preg_replace_callback(TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
             $text = preg_replace_callback(self::getStrikethroughRegex(), array($this, '_parse_strikethrough'), $text);
 
             $parameters = array();
@@ -67,7 +61,7 @@
 
         protected function _parse_issuelink($matches)
         {
-            return \thebuggenie\core\helpers\TextParser::parseIssuelink($matches, true);
+            return TextParser::parseIssuelink($matches, true);
         }
 
         protected function doHardBreaks($text)

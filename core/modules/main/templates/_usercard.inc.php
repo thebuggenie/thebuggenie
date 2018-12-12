@@ -1,3 +1,8 @@
+<?php
+
+    /** @var \thebuggenie\core\entities\User $user */
+
+?>
 <div class="backdrop_box x-large usercard" id="user_details_popup">
     <div class="backdrop_detail_header">
         <span><?php echo (!$user->isScopeConfirmed()) ? $user->getUsername() : $user->getRealname() . '(' . $user->getUsername() . ')'; ?></span>
@@ -64,7 +69,7 @@
                     <i><?php echo __('There is no recent activity available for this user'); ?></i>
                 <?php else: ?>
                     <?php foreach ($user->getLatestActions(1) as $action): ?>
-                        <?php echo '<b>' . __('Last user activity was at %time', array('%time' => '</b>' . tbg_formatTime($action['timestamp'], 11))); ?>
+                        <?php echo '<b>' . __('Last user activity was at %time', array('%time' => '</b>' . tbg_formatTime($action->getTime(), 11))); ?>
                     <?php endforeach; ?>
                 <?php endif; ?>
                 <br>

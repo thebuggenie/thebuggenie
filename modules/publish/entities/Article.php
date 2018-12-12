@@ -595,7 +595,7 @@
          */
         public function getAuthor()
         {
-            return $this->_b2dbLazyload('_author');
+            return $this->_b2dbLazyLoad('_author');
         }
 
         /**
@@ -895,7 +895,7 @@
          */
         public function getParentArticle()
         {
-            return $this->_b2dbLazyload('_parent_article_id');
+            return $this->_b2dbLazyLoad('_parent_article_id');
         }
 
         public function getParentArticleName()
@@ -906,7 +906,7 @@
 
         public function getChildArticles()
         {
-            return $this->_b2dbLazyload('_child_articles');
+            return $this->_b2dbLazyLoad('_child_articles');
         }
 
         public function setArticleType($article_type)
@@ -930,7 +930,7 @@
 
         public function getSubscribers()
         {
-            $this->_b2dbLazyload('_subscribers');
+            $this->_b2dbLazyLoad('_subscribers');
             return $this->_subscribers;
         }
 

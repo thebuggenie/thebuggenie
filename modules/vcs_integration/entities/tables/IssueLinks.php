@@ -49,11 +49,11 @@
         public function getByCommitID($id, $scope = null)
         {
             $scope = ($scope === null) ? \thebuggenie\core\framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
-            $crit->addWhere(self::COMMIT_ID, $id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
+            $query->where(self::COMMIT_ID, $id);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -67,18 +67,18 @@
         public function getByIssueID($id, $scope = null, $limit = null, $offset = null)
         {
             $scope = ($scope === null) ? \thebuggenie\core\framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
-            $crit->addWhere(self::ISSUE_NO, $id);
-            $crit->addOrderBy(Commits::DATE, Criteria::SORT_DESC);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
+            $query->where(self::ISSUE_NO, $id);
+            $query->addOrderBy(Commits::DATE, \b2db\QueryColumnSort::SORT_DESC);
 
             if ($limit !== null)
-                $crit->setLimit($limit);
+                $query->setLimit($limit);
 
             if ($offset !== null)
-                $crit->setOffset($offset);
+                $query->setOffset($offset);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         /**
@@ -89,11 +89,11 @@
         public function countByIssueID($id, $scope = null)
         {
             $scope = ($scope === null) ? \thebuggenie\core\framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
-            $crit->addWhere(self::ISSUE_NO, $id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
+            $query->where(self::ISSUE_NO, $id);
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
     }

@@ -11,7 +11,7 @@
      * @subpackage tables
      *
      * @method Issues getTable() Retrieves an instance of this table
-     * @method \thebuggenie\core\entities\Issue selectById(integer $id, Criteria $crit = null, $join = 'all') Retrieves an issue
+     * @method \thebuggenie\core\entities\Issue selectById(integer $id, Criteria $query = null, $join = 'all') Retrieves an issue
      *
      * @Entity(class="\thebuggenie\core\modules\installation\upgrade_415\Issue")
      * @Table(name='issues')

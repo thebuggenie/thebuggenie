@@ -61,7 +61,7 @@
     <div class="issue_info">
         <?php if ($issue->countUserComments()): ?>
             <div class="comments-badge">
-                <?php echo fa_image_tag('comment-o') .'<span>'. $issue->countUserComments() .'</span>'; ?>
+                <?php echo fa_image_tag('comments') .'<span>'. $issue->countUserComments() .'</span>'; ?>
             </div>
         <?php endif; ?>
         <?php if ($issue->countFiles()): ?>

@@ -52,15 +52,21 @@
         <?php if ($module->getID()): ?>
             <?php if ($is_default_scope): ?>
                 <button class="button button-lightblue update-button dropper" id="module_<?php echo $module->getID(); ?>_update" data-key="<?php echo $module->getName(); ?>"><?php echo __('Update'); ?></button>
-                <ul id="module_<?php echo $module->getID(); ?>_update_dropdown" style="font-size: 1.1em;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
-                    <?php if ($module->isOutdated()): ?>
+                <ul id="module_<?php echo $module->getID(); ?>_update_dropdown" style="font-size: 1.1em; overflow: visible;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
+                    <?php if (!$license_ok): ?>
+                        <li class="disabled"><a href="javascript:void(0);"><?= __('Update to latest version'); ?></a><div class="tooltip rightie"><?php echo __('Automatic updates are available with a valid subscription'); ?></div></li>
+                        <li class="disabled"><a href="javascript:void(0);"><?= __('Install latest version'); ?></a><div class="tooltip rightie"><?php echo __('Automatic updates are available with a valid subscription'); ?></div></li>
+                    <?php else: ?>
+                        <?php if ($module->isOutdated()): ?>
+                            <li>
+                                <?php echo link_tag(make_url('configuration_module_update', array('module_key' => $module->getName())), __('Update to latest version')); ?>
+                            </li>
+                        <?php endif; ?>
                         <li>
-                            <?php echo link_tag(make_url('configuration_module_update', array('module_key' => $module->getName())), __('Update to latest version')); ?>
+                            <?php echo link_tag(make_url('configuration_download_module_update', array('module_key' => $module->getName())), __('Install latest version')); ?>
                         </li>
                     <?php endif; ?>
-                    <li>
-                        <?php echo link_tag(make_url('configuration_download_module_update', array('module_key' => $module->getName())), __('Install latest version')); ?>
-                    </li>
+                    <li class="separator"></li>
                     <li><a href="javascript:void(0);" class="update-module-menu-item"><?php echo __('Manual update'); ?></a></li>
                 </ul>
             <?php endif; ?>

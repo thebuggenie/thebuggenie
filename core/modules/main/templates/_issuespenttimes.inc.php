@@ -31,7 +31,7 @@
                         <td><?= include_component('main/userdropdown', array('user' => $spent_time->getUser())); ?></td>
                         <td style="text-align: right;"><?= \thebuggenie\core\entities\Issue::getFormattedTime($spent_time->getSpentTime(true, true)); ?></td>
                         <td style="text-align: right;" <?php if ($spent_time->getComment()): ?>rowspan="2"<?php endif; ?>>
-                            <a href="javascript:void(0);" class="icon-link" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', array('key' => 'issue_spenttime', 'entry_id' => $spent_time->getID())); ?>');"><?= fa_image_tag('pencil'); ?></a>
+                            <a href="javascript:void(0);" class="icon-link" onclick="TBG.Main.Helpers.Backdrop.show('<?= make_url('get_partial_for_backdrop', array('key' => 'issue_spenttime', 'entry_id' => $spent_time->getID())); ?>');"><?= fa_image_tag('edit'); ?></a>
                             <a href="javascript:void(0);" class="icon-link" onclick="TBG.Main.Helpers.Dialog.show('<?= __('Do you really want to remove this time entry?'); ?>', '<?= __('Removing this entry will change the number of points, minutes, hours, days, weeks or months spent on this issue.'); ?>', {yes: {click: function() {TBG.Issues.deleteTimeEntry('<?= make_url('issue_deletetimespent', array('project_key' => $spent_time->getIssue()->getProject()->getKey(), 'issue_id' => $spent_time->getIssueID(), 'entry_id' => $spent_time->getID())); ?>', <?= $spent_time->getID(); ?>); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});return false;"><?= fa_image_tag('times', ['class' => 'delete']); ?></a>
                         </td>
                     </tr>

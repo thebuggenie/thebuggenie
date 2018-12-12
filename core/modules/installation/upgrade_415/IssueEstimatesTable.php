@@ -30,17 +30,17 @@
         const ESTIMATED_HOURS = 'issue_estimates.estimated_hours';
         const ESTIMATED_POINTS = 'issue_estimates.estimated_points';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
-            parent::_addForeignKeyColumn(self::EDITED_BY, Users::getTable(), Users::ID);
-            parent::_addInteger(self::EDITED_AT, 10);
-            parent::_addInteger(self::ESTIMATED_MONTHS, 10);
-            parent::_addInteger(self::ESTIMATED_WEEKS, 10);
-            parent::_addInteger(self::ESTIMATED_DAYS, 10);
-            parent::_addInteger(self::ESTIMATED_HOURS, 10);
-            parent::_addFloat(self::ESTIMATED_POINTS);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::ISSUE_ID, Issues::getTable(), Issues::ID);
+            parent::addForeignKeyColumn(self::EDITED_BY, Users::getTable(), Users::ID);
+            parent::addInteger(self::EDITED_AT, 10);
+            parent::addInteger(self::ESTIMATED_MONTHS, 10);
+            parent::addInteger(self::ESTIMATED_WEEKS, 10);
+            parent::addInteger(self::ESTIMATED_DAYS, 10);
+            parent::addInteger(self::ESTIMATED_HOURS, 10);
+            parent::addFloat(self::ESTIMATED_POINTS);
         }
 
     }

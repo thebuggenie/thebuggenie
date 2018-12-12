@@ -70,36 +70,36 @@
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($issue->canAddRelatedIssues()): ?>
-                    <li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('sign-in').__('Add a relation for this issue'); ?></a></li>
+                    <li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('share-alt').__('Add a relation for this issue'); ?></a></li>
                 <?php endif; ?>
             <?php else: ?>
                 <?php if ($issue->canAddRelatedIssues() && $tbg_user->canReportIssues($issue->getProject())): ?>
                     <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('list-alt').__("Create a new related issue"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
                 <?php endif; ?>
                 <?php if ($issue->canAddRelatedIssues()): ?>
-                    <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('sign-in').__("Relate to an existing issue"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
+                    <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('sign-in-alt').__("Relate to an existing issue"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if (!isset($times) || $times): ?>
                 <li class="separator"></li>
                 <?php if ($issue->canEditEstimatedTime()): ?>
                     <?php if ($issue->isUpdateable()): ?>
-                        <li><a href="javascript:void(0);" onclick="TBG.Main.Profile.clearPopupsAndButtons();$('estimated_time_<?php echo $issue->getID(); ?>_change').toggle('block');" title="<?php echo ($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue'); ?>"><?php echo fa_image_tag('clock-o').(($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue')); ?></a></li>
+                        <li><a href="javascript:void(0);" onclick="TBG.Main.Profile.clearPopupsAndButtons();$('estimated_time_<?php echo $issue->getID(); ?>_change').toggle('block');" title="<?php echo ($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue'); ?>"><?php echo fa_image_tag('clock').(($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue')); ?></a></li>
                     <?php else: ?>
-                        <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('clock-o').__("Change estimate"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
+                        <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('clock').__("Change estimate"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
                     <?php endif; ?>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if ($issue->canEditSpentTime()): ?>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID(), 'initial_view' => 'entry')); ?>');"><?php echo fa_image_tag('clock-o').__('Log time spent'); ?></a></li>
+                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID(), 'initial_view' => 'entry')); ?>');"><?php echo fa_image_tag('clock').__('Log time spent'); ?></a></li>
             <?php endif; ?>
             <?php if ($issue->canEditAccessPolicy()): ?>
                 <li class="separator"></li>
                 <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_permissions', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('lock', ['class' => 'access_policy']).__("Update issue access policy"); ?></a></li>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('star-o', ['class' => 'subscriber_list']).__("Manage issue subscribers"); ?></a></li>
+                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('star', ['class' => 'subscriber_list']).__("Manage issue subscribers"); ?></a></li>
             <?php endif; ?>
             <?php if ($issue->canEditIssueDetails()): ?>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'move_issue', 'issue_id' => $issue->getID(), 'multi' => (int) (isset($multi) && $multi))); ?>');"><?php echo fa_image_tag('sign-out').__("Move issue to another project"); ?></a></li>
+                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'move_issue', 'issue_id' => $issue->getID(), 'multi' => (int) (isset($multi) && $multi))); ?>');"><?php echo fa_image_tag('exchange-alt').__("Move issue to another project"); ?></a></li>
             <?php endif; ?>
             <?php if ($issue->canDeleteIssue()): ?>
                 <li class="separator"></li>

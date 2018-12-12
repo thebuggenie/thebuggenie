@@ -200,7 +200,7 @@
             if ($this->_options === null)
             {
                 if ($this->hasCustomOptions()) {
-                    $this->_b2dbLazyload('_options');
+                    $this->_b2dbLazyLoad('_options');
                 } else {
                     switch ($this->getType()) {
                         case self::RELEASES_CHOICE:
@@ -396,6 +396,22 @@
         public function isBuiltin()
         {
             return false;
+        }
+
+        public function getFontAwesomeIcon()
+        {
+            switch ($this->_itemtype) {
+                default:
+                    return 'question-mark';
+            }
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            switch ($this->_itemtype) {
+                default:
+                    return 'fas';
+            }
         }
 
     }

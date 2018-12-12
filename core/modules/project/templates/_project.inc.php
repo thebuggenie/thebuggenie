@@ -35,7 +35,7 @@
         <?php endif; ?>
         <?php \thebuggenie\core\framework\Event::createNew('core', 'project_overview_item_links', $project)->trigger(); ?>
         <?php if ($tbg_user->canSearchForIssues() && $tbg_user->hasPageAccess('project_issues', $project->getID())): ?>
-            <?= link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), fa_image_tag('file-text') . '<span>'.__('Issues').'</span>', ['class' => 'nav-button button-issues']); ?>
+            <?= link_tag(make_url('project_open_issues', array('project_key' => $project->getKey())), fa_image_tag('file-alt') . '<span>'.__('Issues').'</span>', ['class' => 'nav-button button-issues']); ?>
         <?php endif; ?><?php if (!$project->isLocked() && $tbg_user->canReportIssues($project)): ?>
             <?= javascript_link_tag(fa_image_tag('plus-square') . '<span>'.__('New issue').'</span>', ['onclick' => "TBG.Issues.Add('" . make_url('get_partial_for_backdrop', ['key' => 'reportissue', 'project_id' => $project->getId()]) . "', this);", 'class' => 'nav-button button-report-issue']); ?>
         <?php endif; ?>

@@ -111,7 +111,7 @@
          */
         protected function _addChangedProperty($property, $value)
         {
-            if ($this->_id)
+            if ($this->_id && !defined('TBG_CLI'))
             {
                 if (property_exists($this, $property))
                 {

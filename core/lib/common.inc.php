@@ -565,7 +565,7 @@
                 return fa_image_tag('circle', array('class' => 'userstate absent', 'title' => __($user->getState()->getName())));
                 break;
             case $user->getState()->isUnavailable():
-                return fa_image_tag('circle-thin', array('class' => 'userstate unavailable', 'title' => __($user->getState()->getName())));
+                return fa_image_tag('circle', array('class' => 'userstate unavailable', 'title' => __($user->getState()->getName())), 'far');
                 break;
             default:
                 return fa_image_tag('check-circle', array('class' => 'userstate online', 'title' => __($user->getState()->getName())));

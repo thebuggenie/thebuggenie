@@ -17,7 +17,7 @@
         <?php if (!$tbg_user->isGuest()): ?>
             <li class="user_notifications_container" id="user_notifications_container">
                 <div id="user_notifications_count" class="notifications-indicator" data-callback-url=""><?= image_tag('spinning_16_white.gif'); ?></div>
-                <a href="javascript:void(0);" class="dropper"><?= fa_image_tag('bell-o'); ?></a>
+                <a href="javascript:void(0);" class="dropper"><?= fa_image_tag('bell'); ?></a>
                 <div class="popup_box tab_menu_dropdown notifications" id="user_notifications">
                     <div class="header with-link">
                         <span><?= __('Your notifications'); ?></span>
@@ -54,7 +54,7 @@
                             </li>
                             <li><?= link_tag(make_url('dashboard'), fa_image_tag('columns').__('Your dashboard')); ?></li>
                             <?php if ($tbg_response->getPage() == 'dashboard'): ?>
-                                <li><?= javascript_link_tag(fa_image_tag('pencil-square-o').__('Customize your dashboard'), array('title' => __('Customize your dashboard'), 'onclick' => "$$('.dashboard').each(function (elm) { elm.toggleClassName('editable');});")); ?></li>
+                                <li><?= javascript_link_tag(fa_image_tag('edit').__('Customize your dashboard'), array('title' => __('Customize your dashboard'), 'onclick' => "$$('.dashboard').each(function (elm) { elm.toggleClassName('editable');});")); ?></li>
                             <?php endif; ?>
                             <li><?= link_tag(make_url('account'), fa_image_tag('user-md').__('Your account')); ?></li>
                             <?php if ($tbg_request->hasCookie('original_username')): ?>
@@ -68,7 +68,7 @@
                             <li><?= link_tag(make_url('my_assigned_issues'), fa_image_tag('search') . __('Open issues assigned to me')); ?></li>
                             <li><?= link_tag(make_url('my_teams_assigned_issues'), fa_image_tag('search') . __('Open issues assigned to my teams')); ?></li>
                             <li class="separator"></li>
-                            <li class="delete"><a href="<?= make_url('logout'); ?>"><?= fa_image_tag('sign-out').__('Logout'); ?></a></li>
+                            <li class="delete"><a href="<?= make_url('logout'); ?>"><?= fa_image_tag('sign-out-alt').__('Logout'); ?></a></li>
                         </ul>
                     <?php endif; ?>
                 <?php endif; ?>

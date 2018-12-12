@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\publish\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\tables\ScopedTable,
         thebuggenie\core\entities\traits\FileLink;
@@ -38,40 +39,40 @@
         const FILE_ID = 'articlefiles.file_id';
         const ARTICLE_ID = 'articlefiles.article_id';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::UID, \thebuggenie\core\entities\tables\Users::getTable(), \thebuggenie\core\entities\tables\Users::ID);
-            parent::_addForeignKeyColumn(self::ARTICLE_ID, Articles::getTable(), Articles::ID);
-            parent::_addForeignKeyColumn(self::FILE_ID, \thebuggenie\core\entities\tables\Files::getTable(), \thebuggenie\core\entities\tables\Files::ID);
-            parent::_addInteger(self::ATTACHED_AT, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::UID, \thebuggenie\core\entities\tables\Users::getTable(), \thebuggenie\core\entities\tables\Users::ID);
+            parent::addForeignKeyColumn(self::ARTICLE_ID, Articles::getTable(), Articles::ID);
+            parent::addForeignKeyColumn(self::FILE_ID, \thebuggenie\core\entities\tables\Files::getTable(), \thebuggenie\core\entities\tables\Files::ID);
+            parent::addInteger(self::ATTACHED_AT, 10);
         }
 
         public function addByArticleIDandFileID($article_id, $file_id, $insert = true)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_ID, $article_id);
-            $crit->addWhere(self::FILE_ID, $file_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            if ($this->doCount($crit) == 0)
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_ID, $article_id);
+            $query->where(self::FILE_ID, $file_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            if ($this->count($query) == 0)
             {
                 if (! $insert) return true;
 
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $crit->addInsert(self::ATTACHED_AT, NOW);
-                $crit->addInsert(self::ARTICLE_ID, $article_id);
-                $crit->addInsert(self::FILE_ID, $file_id);
-                $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $insertion->add(self::ATTACHED_AT, NOW);
+                $insertion->add(self::ARTICLE_ID, $article_id);
+                $insertion->add(self::FILE_ID, $file_id);
+                $this->rawInsert($insertion);
             }
         }
 
         public function getByArticleID($article_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_ID, $article_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_ID, $article_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawSelect($query);
 
             $ret_arr = array();
 
@@ -87,7 +88,7 @@
                     }
                     catch (\Exception $e)
                     {
-                        $this->doDeleteById($row->get(self::ID));
+                        $this->rawDeleteById($row->get(self::ID));
                     }
                 }
             }
@@ -97,33 +98,33 @@
 
         public function removeByArticleIDandFileID($article_id, $file_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_ID, $article_id);
-            $crit->addWhere(self::FILE_ID, $file_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            if ($res = $this->doSelectOne($crit))
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_ID, $article_id);
+            $query->where(self::FILE_ID, $file_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            if ($res = $this->rawSelectOne($query))
             {
-                $this->doDelete($crit);
+                $this->rawDelete($query);
             }
             return $res;
         }
 
         public function deleteFilesByArticleID($article_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_ID, $article_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_ID, $article_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $this->rawDelete($query);
         }
 
         public function getArticlesByFileID($file_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::FILE_ID, $file_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::FILE_ID, $file_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
             $article_ids = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {

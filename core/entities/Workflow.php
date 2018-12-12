@@ -188,7 +188,7 @@
         {
             if ($this->_transitions === null)
             {
-                $this->_b2dbLazyload('_transitions');
+                $this->_b2dbLazyLoad('_transitions');
                 if (array_key_exists($this->getInitialTransition()->getID(), $this->_transitions)) unset($this->_transitions[$this->getInitialTransition()->getID()]);
             }
         }
@@ -208,7 +208,7 @@
         {
             if ($this->_steps === null)
             {
-                $this->_b2dbLazyload('_steps');
+                $this->_b2dbLazyLoad('_steps');
             }
         }
 
@@ -241,7 +241,7 @@
             }
             elseif ($this->_num_steps === null)
             {
-                $this->_num_steps = $this->_b2dbLazycount('_steps');
+                $this->_num_steps = $this->_b2dbLazyCount('_steps');
             }
             return (int) $this->_num_steps;
         }
@@ -259,7 +259,7 @@
             }
             elseif ($this->_num_schemes === null)
             {
-                $this->_num_schemes = $this->_b2dbLazycount('_schemes');
+                $this->_num_schemes = $this->_b2dbLazyCount('_schemes');
             }
             return $this->_num_schemes;
         }
@@ -363,7 +363,7 @@
          */
         public function getInitialTransition()
         {
-            return $this->_b2dbLazyload('_initial_transition_id');
+            return $this->_b2dbLazyLoad('_initial_transition_id');
         }
 
         public function setInitialTransition(\thebuggenie\core\entities\WorkflowTransition $transition)
