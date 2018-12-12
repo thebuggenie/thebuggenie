@@ -20,7 +20,6 @@
         "thebuggenie/b2db" : "dev-dev",
         "mrclay/minify" : "dev-master",
         "easybook/geshi" : "dev-master",
-        "michelf/php-markdown" : "1.3",
         "swiftmailer/swiftmailer" : "4.2.*",
         "webit/eval-math" : "dev-master",
         "mustangostang/spyc": "0.5.*",
@@ -40,7 +39,8 @@
         "net/http" : "dev-master",
         "guzzlehttp/guzzle": "^6.3",
         "scrivo/highlight.php": "v9.12.0.1",
-        "ramsey/uuid": "^3.7"
+        "ramsey/uuid": "^3.7",
+        "erusev/parsedown": "^1.7"
     },
     "require-dev" : {
         "symfony/finder" : "~2.7",
