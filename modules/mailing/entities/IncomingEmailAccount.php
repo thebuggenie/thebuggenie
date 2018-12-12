@@ -292,7 +292,7 @@
         {
             if (!$this->doesKeepEmails())
             {
-                imap_expunge($this->connection);
+                imap_expunge($this->_connection);
             }
             imap_close($this->_connection);
             $this->_connection = null;
