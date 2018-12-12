@@ -603,7 +603,7 @@ class Context
     protected static function setupI18n()
     {
         Logging::log('Initializing i18n');
-        if (!self::isCLI())
+        if (true || !self::isCLI())
         {
             $language = (self::$_user instanceof User) ? self::$_user->getLanguage() : Settings::getLanguage();
 
@@ -2562,7 +2562,7 @@ class Context
 
         self::initialize();
 
-        if (defined('TBG_CLI')) {
+        if (self::isCLI()) {
             self::setupI18n();
 
             // Available permissions cannot be cached during
