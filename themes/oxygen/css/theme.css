@@ -1143,6 +1143,13 @@ footer {
     text-shadow: 1px 1px 0 #FFF;
 }
 
+footer .message-box {
+    margin: 10px auto;
+    max-width: 650px;
+    text-align: left;
+    align-items: center;
+}
+
 footer img {
     margin: 0 3px -3px 0;
 }

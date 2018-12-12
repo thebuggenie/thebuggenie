@@ -1103,4 +1103,9 @@
             self::saveSetting(self::SETTING_LICENSE_ID, $license_id);
         }
 
+        public static function isStable(): bool
+        {
+            return false;
+        }
+
     }

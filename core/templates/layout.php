@@ -1,7 +1,11 @@
 <?php
 
-    $header_name = \thebuggenie\core\framework\Settings::getSiteHeaderName();
-    if ($header_name == '') $header_name = 'The Bug Genie';
+    /**
+     * @var \thebuggenie\core\framework\Response $tbg_response
+     * @var string $webroot
+     */
+
+    $header_name = \thebuggenie\core\framework\Settings::getSiteHeaderName() ?? 'The Bug Genie';
 
 ?>
 <!DOCTYPE html>
@@ -50,12 +54,12 @@
         <?php foreach ($tbg_response->getFeeds() as $feed_url => $feed_title): ?>
             <link rel="alternate" type="application/rss+xml" title="<?= str_replace('"', '\'', $feed_title); ?>" href="<?= $feed_url; ?>">
         <?php endforeach; ?>
-        <?php $rand = substr(md5(microtime()),rand(0,26),5); ?>
+        <?php $rand = \Ramsey\Uuid\Uuid::uuid4()->toString(); ?>
         <?php $minified = ! \thebuggenie\core\framework\Context::isDebugMode() && \thebuggenie\core\framework\Context::isMinifiedAssets() ? '.min' :''; ?>
         <?php $tbgVersion = \thebuggenie\core\framework\Settings::getVersion(); ?>
         <?php include THEBUGGENIE_PATH . 'themes' . DS . \thebuggenie\core\framework\Settings::getThemeName() . DS . 'theme.php'; ?>
 
-        <?php list ($localcss, $externalcss) = $tbg_response->getStylesheets(); ?>
+        <?php [$localcss, $externalcss] = $tbg_response->getStylesheets(); ?>
         <?php foreach ($localcss as $css): ?>
             <?php if ( ! empty($minified)) : $pathinfo = pathinfo($css); $css = $pathinfo['dirname'] . '/' . $pathinfo['filename'] . $minified . '.' . $pathinfo['extension']; endif; ?>
             <link rel="stylesheet" href="<?php print $css; ?>">
