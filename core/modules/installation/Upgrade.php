@@ -360,8 +360,7 @@ class Upgrade
             }
 
             switch ($this->current_version) {
-                case '4.1.13':
-                case '4.1.14':
+                default:
                     $this->_prepareUpgradeFrom4dot1dot13($request);
                     break;
             }

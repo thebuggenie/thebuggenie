@@ -348,8 +348,7 @@
          * Add a javascript
          *
          * @param string $javascript javascript name
-         * @param bool $minify Run through minify/content server
-         * @param bool $override Mark this script for being loaded before others
+         * @param bool $priority Mark this script for being loaded before others
          */
         public function addJavascript($javascript, $priority = false)
         {
@@ -364,8 +363,7 @@
          * Add a stylesheet
          *
          * @param string $stylesheet stylesheet name
-         * @param bool $minify Run through minify/content server
-         * @param bool $override Mark this stylesheet for being loaded before others
+         * @param bool $priority Mark this stylesheet for being loaded before others
          */
         public function addStylesheet($stylesheet, $priority = false)
         {
