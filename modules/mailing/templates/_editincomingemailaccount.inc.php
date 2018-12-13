@@ -25,6 +25,11 @@
         <div id="backdrop_detail_content" class="backdrop_detail_content">
             <?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.', array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
             <input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
+            <?php if (!\thebuggenie\core\framework\Settings::isUploadsEnabled()) { ?>
+                <div class="permissions_warning">
+                    File uploads are disabled, attachments will be silently discarded.
+                </div>
+            <?php } ?>
             <table style="clear: both; width: 780px;" class="padded_table" cellpadding=0 cellspacing=0>
                 <tr>
                     <td style="width: 200px;"><label for="account_name"><?php echo __('Account name:'); ?></label></td>

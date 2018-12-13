@@ -1324,7 +1324,7 @@ EOT;
 
                             // If there was at least a single affected issue, and mail
                             // contains attachments, add those attachments to related issues.
-                            if ($issues && $message->hasAttachments())
+                            if ($issues && $message->hasAttachments() && framework\Settings::isUploadsEnabled())
                             {
                                 foreach ($message->getAttachments() as $attachment_no => $attachment)
                                 {
