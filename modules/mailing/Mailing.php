@@ -14,6 +14,8 @@
         Swift_MailTransport,
         Swift_SmtpTransport,
         Swift_SendmailTransport,
+        League\HTMLToMarkdown\HtmlConverter,
+        thebuggenie\core\framework\Settings as FrameworkSettings,
         thebuggenie\core\framework,
         thebuggenie\core\entities\Comment,
         thebuggenie\core\entities\User,
@@ -1268,26 +1270,13 @@ EOT;
                                 framework\Context::switchUserContext($user);
 
                             $message = $account->getMessage($email);
-                            $data = ($message->getBodyPlain()) ? $message->getBodyPlain() : strip_tags($message->getBodyHTML());
-                            if ($data)
+
+                            if ($message->getBodyPlain() && !$account->prefersHtml())
                             {
-                                if (mb_detect_encoding($data, 'UTF-8', true) === false)
-                                    $data = utf8_encode($data);
-                                $new_data = '';
-                                foreach (explode("\n", $data) as $line)
-                                {
-                                    $line = trim($line);
-                                    if ($line)
-                                    {
-                                        $line = preg_replace('/^(_{2,}|-{2,})$/', "<hr>", $line);
-                                        $new_data .= $line . "\n";
-                                    }
-                                    else
-                                    {
-                                        $new_data .= "\n";
-                                    }
-                                }
-                                $data = nl2br($new_data, false);
+                                $data = $message->getBodyPlain();
+                            } else {
+                                $converter = new HtmlConverter(array('strip_tags' => true));
+                                $data = $converter->convert($message->getBodyHTML());
                             }
 
                             // Parse the subject, and obtain the issues.
@@ -1304,6 +1293,7 @@ EOT;
                                     if (!$this->processIncomingEmailCommand($text, $issue) && $user->canPostComments())
                                     {
                                         $comment = new Comment();
+                                        $comment->setSyntax(FrameworkSettings::SYNTAX_MD);
                                         $comment->setContent($text);
                                         $comment->setPostedBy($user);
                                         $comment->setTargetID($issue->getID());
@@ -1321,9 +1311,10 @@ EOT;
                                     $issue = new Issue();
                                     $issue->setProject($account->getProject());
                                     $issue->setTitle(mb_decode_mimeheader($email->subject));
+                                    $issue->setDescriptionSyntax(FrameworkSettings::SYNTAX_MD);
                                     $issue->setDescription($data);
                                     $issue->setPostedBy($user);
-                                    $issue->setIssuetype($account->getIssuetype());
+                                    $issue->setIssuetype($account->getIssuetype()->getID());
                                     $issue->save();
                                     // Append the new issue to the list of affected issues. This
                                     // is necessary in order to process the attachments properly.
@@ -1333,11 +1324,10 @@ EOT;
 
                             // If there was at least a single affected issue, and mail
                             // contains attachments, add those attachments to related issues.
-                            if ($issues && $message->hasAttachments())
+                            if ($issues && $message->hasAttachments() && framework\Settings::isUploadsEnabled())
                             {
                                 foreach ($message->getAttachments() as $attachment_no => $attachment)
                                 {
-                                    echo 'saving attachment ' . $attachment_no;
                                     $name = iconv_mime_decode($attachment['filename'], ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
                                     $new_filename = framework\Context::getUser()->getID() . '_' . NOW . '_' . basename($name);
                                     if (framework\Settings::getUploadStorage() == 'files')
@@ -1350,7 +1340,6 @@ EOT;
                                         $filename = $name;
                                     }
                                     framework\Logging::log('Creating issue attachment ' . $filename . ' from attachment ' . $attachment_no);
-                                    echo 'Creating issue attachment ' . $filename . ' from attachment ' . $attachment_no;
                                     $content_type = $attachment['type'] . '/' . $attachment['subtype'];
                                     $file = new File();
                                     $file->setRealFilename($new_filename);

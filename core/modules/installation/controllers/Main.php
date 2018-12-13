@@ -86,6 +86,7 @@ class Main extends framework\Action
         $this->mb_ok = true;
         $this->php_ok = true;
         $this->pcre_ok = true;
+        $this->dom_ok = true;
         $this->docblock_ok = false;
         $this->php_ver = PHP_VERSION;
         $this->pcre_ver = PCRE_VERSION;
@@ -131,6 +132,11 @@ class Main extends framework\Action
         if (!class_exists('PDO'))
         {
             $this->pdo_ok = false;
+            $this->all_well = false;
+        }
+        if (!class_exists('DOMDocument'))
+        {
+            $this->dom_ok = false;
             $this->all_well = false;
         }
         if (!extension_loaded('pdo_mysql'))

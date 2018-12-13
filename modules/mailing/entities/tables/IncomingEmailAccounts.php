@@ -22,6 +22,7 @@
         const FOLDER = 'mailing_incoming_email_account.folder';
         const SERVER_TYPE = 'mailing_incoming_email_account.server_type';
         const SSL = 'mailing_incoming_email_account.ssl';
+        const PREFER_HTML = 'mailing_incoming_email_account.prefer_html';
         const KEEP_EMAIL = 'mailing_incoming_email_account.keep_email';
         const PROJECT = 'mailing_incoming_email_account.project';
         const ISSUETYPE = 'mailing_incoming_email_account.issuetype';

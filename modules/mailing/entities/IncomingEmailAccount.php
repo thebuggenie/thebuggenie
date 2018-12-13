@@ -51,6 +51,11 @@
         /**
          * @Column(type="boolean")
          */
+        protected $_prefer_html = false;
+
+        /**
+         * @Column(type="boolean")
+         */
         protected $_plaintext_authentication = false;
 
         /**
@@ -223,6 +228,14 @@
             $this->_issuetype = $issuetype;
         }
 
+        public function setPreferHtml($preferHtml) {
+            $this->_prefer_html = $preferHtml;
+        }
+
+        public function prefersHtml() {
+            return (boolean)$this->_prefer_html;
+        }
+
         public function getNumberOfEmailsLastFetched()
         {
             return $this->_num_last_fetched;
@@ -292,7 +305,7 @@
         {
             if (!$this->doesKeepEmails())
             {
-                imap_expunge($this->connection);
+                imap_expunge($this->_connection);
             }
             imap_close($this->_connection);
             $this->_connection = null;
