@@ -374,6 +374,11 @@ class Upgrade
         $this->cliEchoUpgradeTable(IncomingEmailAccounts::getTable());
         IncomingEmailAccounts::getTable()->upgrade(upgrade_421\IncomingEmailAccount::getB2DBTable());
 
+        if (framework\Context::isCLI()) {
+            Command::cli_echo("Fixing issue spent times scopes.\n");
+        }
+        tables\Comments::getTable()->fixFileComments();
+
         $this->upgrade_complete = true;
         $this->current_version = '4.3.0';
 

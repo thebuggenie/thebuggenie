@@ -27,7 +27,7 @@
         "lib-pcre" : "8.*",
         "net/http" : "^1.1",
         "guzzlehttp/guzzle": "^6.3",
-        "scrivo/highlight.php": "v9.12.0.1",
+        "scrivo/highlight.php": "^9.0",
         "ramsey/uuid": "^3.7",
         "erusev/parsedown": "^1.7",
         "ext-apc" : "*",

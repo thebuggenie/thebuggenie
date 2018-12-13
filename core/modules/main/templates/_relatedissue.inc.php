@@ -16,5 +16,5 @@
         </div>
     <?php endif; ?>
     <span class="issue_state <?php echo $issue->isClosed() ? 'closed' : 'open'; ?>"><?php echo $issue->isClosed() ? __('Closed') : __('Open'); ?></span>
-    <div class="status_badge" style="background-color: <?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getColor() : '#FFF'; ?>;" title="<?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? __($issue->getStatus()->getName()) : __('Status not determined'); ?>"><?php echo ($issue->getStatus() instanceof \thebuggenie\core\entities\Datatype) ? $issue->getStatus()->getName() : __('Unknown'); ?></div>
+    <?php include_component('main/statusbadge', ['status' => $issue->getStatus()]); ?>
 </li>

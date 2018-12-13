@@ -1763,7 +1763,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         TBG.Main.Helpers.Dialog.dismiss();
                         if ($('comments_box').childElements().size() == 0) {
                             $('comments_none').show();
-                            $('.initial-placeholder').hide();
+                            $$('.initial-placeholder').each(Element.hide);
                         }
                         $(commentcount_span).update($('comments_box').childElements().size());
                     }
@@ -1805,13 +1805,13 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     clear: 'comment_bodybox',
                     callback: function (json) {
                         $('comments_box').insert({bottom: json.comment_data});
+                        $$('.initial-placeholder').each(Element.show);
                         if ($('comment_form').serialize(true).comment_save_changes == '1') {
                             window.location = json.continue_url;
                         } else {
                             window.location.hash = "#comment_" + json.comment_id;
                             if ($('comments_box').childElements().size() != 0) {
                                 $('comments_none').hide();
-                                $('.initial-placeholder').show();
                             }
                         }
                         $('comment_visibility').setValue(1);

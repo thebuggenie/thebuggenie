@@ -4,6 +4,7 @@
 
     use b2db\Criteria,
         thebuggenie\core\framework;
+    use b2db\Criterion;
     use b2db\Update;
     use thebuggenie\core\entities\Comment;
 
@@ -205,6 +206,17 @@
             $query->setLimit($limit);
 
             return $this->select($query);
+        }
+
+        public function fixFileComments()
+        {
+            $query = $this->getQuery();
+            $query->where(self::CONTENT, 'A file was uploaded%', Criterion::LIKE);
+
+            $update = new Update();
+            $update->add(self::SYSTEM_COMMENT, true);
+
+            $this->rawUpdate($update, $query);
         }
 
     }

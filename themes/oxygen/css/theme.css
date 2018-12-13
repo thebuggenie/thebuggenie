@@ -7547,6 +7547,7 @@ ul.workflow_actions .more_actions_dropdown li:hover {
     position: relative;
     vertical-align: top;
     line-height: 1.6em;
+    font-size: .9em;
 }
 #viewissue_log_items > ul > li.header-break:not(:first-child) {
     margin-top: 15px;
@@ -7596,29 +7597,31 @@ ul.workflow_actions .more_actions_dropdown li:hover {
 .far.log_issue_unblocked {
     color: rgb(200, 200, 200);
 }
-#viewissue_log_items ul li .fas.log_issue_status,
-#viewissue_log_items ul li .far.log_issue_status {
+.fas.log_issue_status,
+.far.log_issue_status {
     padding: 4px;
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 #viewissue_log_items ul li span.date {
-    font-size: 0.85em;
-    color: #AAA;
-    display: inline-block;
+    font-size: .95em;
+    color: rgba(100, 100, 100, .6);
+    display: block;
     min-width: 150px;
-    position: absolute;
-    left: 0;
-    top: 4px;
+    margin: 5px 0 5px -180px;
+    padding: 7px 175px 7px 7px;
+    border-bottom: 1px solid rgba(100, 100, 100, .2);
+    width: 100%;
+    background: rgba(225, 225, 225, .1);
 }
 #viewissue_log_items ul li div.userdropdown_container {
-    font-size: 0.85em;
+    font-size: .95em;
     display: inline-block;
     width: 150px;
     position: absolute;
-    left: 0;
-    top: 30px;
+    left: 10px;
+    top: 45px;
 }
 #viewissue_log_items ul li a.userlink {
     margin-left: 0;
@@ -8233,11 +8236,6 @@ table.issue_affects td img {
     text-align: right;
     display: block;
     padding-bottom: 6px;
-}
-
-.dashboard_view_content .button {
-    padding: 5px 8px;
-    font-size: 0.9em;
 }
 
 .dashboard.layout_standard .dashboard_view_content .project_list {
@@ -9661,26 +9659,26 @@ dl.info dt {
     border-radius: 3px;
 }
 
-.issue_container .priority.priority_1, .whiteboard-issue .priority.priority_1 {
+.priority.priority_1 {
     color: #BF0303;
     font-style: normal;
 }
 
-.issue_container .priority.priority_2, .whiteboard-issue .priority.priority_2, .issue_container .priority_3, .whiteboard-issue .priority.priority_3 {
+.priority.priority_2, .priority.priority_3 {
     color: #C39500;
 }
 
-.issue_container .priority.priority_4, .whiteboard-issue .priority.priority_4 {
+.priority.priority_4 {
     color: #00892C;
     font-weight: 300;
 }
 
-.issue_container .priority.priority_5, .whiteboard-issue .priority.priority_5, .issue_container .priority.priority_6, .whiteboard-issue .priority.priority_6 {
+.priority.priority_5, .priority.priority_6 {
     color: #888;
     font-weight: 300;
 }
 
-.issue_container .priority.priority_0, .whiteboard-issue .priority.priority_0 {
+.priority.priority_0 {
     color: #DDD;
     font-weight: 300;
 }
@@ -12459,6 +12457,25 @@ ul.files-list .action_D .filename {
     font-size: 1.1em;
     font-weight: 500;
     padding: 15px 0 0 0;
+}
+.recent_activities .log-item {
+    line-height: 1.4;
+    word-break: break-all;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    font-size: .9em;
+}
+.recent_activities .log-item.without-title {
+    margin-top: -7px;
+    margin-bottom: 10px;
+}
+.recent_activities .log-item .fab,
+.recent_activities .log-item .far,
+.recent_activities .log-item .fas {
+    margin-right: 5px;
+    box-sizing: border-box;
+    width: 20px;
+    text-align: center;
 }
 
 .project_information_main .recent_activities td {

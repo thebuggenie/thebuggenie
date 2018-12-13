@@ -1296,7 +1296,7 @@
             return "~~~CODE~~~";
         }
 
-        protected function _geshify($matches)
+        protected function _highlightCode($matches)
         {
             if (!(is_array($matches) && count($matches) > 1))
             {
@@ -1318,87 +1318,16 @@
                     $language = framework\Settings::get(framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE);
                 }
 
-                $numbering_startfrom = preg_match('/(?<=line start=")(.+?)(?=")/', $params, $matches);
-                if ($numbering_startfrom !== 0)
-                {
-                    $numbering_startfrom = (int) $matches[0];
-                }
-                else
-                {
-                    $numbering_startfrom = 1;
-                }
-
-//                $geshi = new \GeSHi($codeblock, $language);
                 $highlighter = new Highlighter();
 
                 if ($language == 'html4strict') $language = 'html';
 
                 if (!in_array($language, $highlighter->listLanguages())) {
-                    $language = 'html';
+                    $language = 'javascript';
                 }
 
                 $codeblock = $highlighter->highlight($language, $codeblock);
 
-//                $highlighting = preg_match('/(?<=line=")(.+?)(?=")/', $params, $matches);
-//                if ($highlighting !== 0)
-//                {
-//                    $highlighting = $matches[0];
-//                }
-//                else
-//                {
-//                    $highlighting = false;
-//                }
-//
-//                $interval = preg_match('/(?<=highlight=")(.+?)(?=")/', $params, $matches);
-//                if ($interval !== 0)
-//                {
-//                    $interval = $matches[0];
-//                }
-//                else
-//                {
-//                    $interval = \thebuggenie\core\framework\Settings::get('highlight_default_interval');
-//                }
-//
-//                if ($highlighting === false)
-//                {
-//                    switch (\thebuggenie\core\framework\Settings::get('highlight_default_numbering'))
-//                    {
-//                        case 1:
-//                            // Line numbering with a highloght every n rows
-//                            $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
-//                            $geshi->start_line_numbers_at($numbering_startfrom);
-//                            break;
-//                        case 2:
-//                            // Normal line numbering
-//                            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
-//                            $geshi->start_line_numbers_at($numbering_startfrom);
-//                            break;
-//                        case 3:
-//                            break; // No numbering
-//                    }
-//                }
-//                else
-//                {
-//                    switch($highlighting)
-//                    {
-//                        case 'highlighted':
-//                        case 'GESHI_FANCY_LINE_NUMBERS':
-//                            // Line numbering with a highloght every n rows
-//                            $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
-//                            $geshi->start_line_numbers_at($numbering_startfrom);
-//                            break;
-//                        case 'normal':
-//                        case 'GESHI_NORMAL_LINE_NUMBERS':
-//                            // Normal line numbering
-//                            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
-//                            $geshi->start_line_numbers_at($numbering_startfrom);
-//                            break;
-//                        case 3:
-//                            break; // No numbering
-//                    }
-//                }
-//
-//                $codeblock = $geshi->parse_code();
                 unset($highlighter);
             }
             framework\Context::getResponse()->addStylesheet('/css/highlight.php/github.css');
@@ -1407,7 +1336,7 @@
 
         protected function _parse_restore_code($matches)
         {
-            return $this->_geshify(array_pop($this->codeblocks));
+            return $this->_highlightCode(array_pop($this->codeblocks));
         }
 
         public function getInternalLinks()

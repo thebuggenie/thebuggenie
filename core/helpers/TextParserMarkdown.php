@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\helpers;
 
+    use Highlight\Highlighter;
     use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\framework;
 
@@ -46,6 +47,7 @@
             $text = preg_replace_callback('/^(?:\<(.*?)\>)?' . $this->todo_regex . '(?:\<(.*?)\>)?$/mi', [$this, '_parse_todo'], $text);
             $text = preg_replace_callback(TextParser::getMentionsRegex(), array($this, '_parse_mention'), $text);
             $text = preg_replace_callback(self::getStrikethroughRegex(), array($this, '_parse_strikethrough'), $text);
+            $text = preg_replace_callback('/(<pre><code class="language-(\w*)">)(.*)<\/code><\/pre>/misU', [$this, 'highlightCode'], $text);
 
             $parameters = array();
             if (isset($this->options['target'])) $parameters['target'] = $this->options['target'];
@@ -57,6 +59,34 @@
             }
 
             return $text;
+        }
+
+        protected function highlightCode($matches)
+        {
+            if (!(is_array($matches) && count($matches) > 1))
+            {
+                return '';
+            }
+
+            $codeblock = (count($matches) == 4) ? $matches[3] : $matches[2];
+
+            if (strlen(trim($codeblock)))
+            {
+                $language = (count($matches) == 4) ? $matches[2] : framework\Settings::getDefaultSyntaxHighlightingLanguage();
+                $highlighter = new Highlighter();
+                if ($language == 'html4strict') $language = 'html';
+
+                if (!in_array($language, $highlighter->listLanguages())) {
+                    $language = 'javascript';
+                }
+
+                $codeblock = $highlighter->highlight($language, $codeblock);
+
+                unset($highlighter);
+            }
+            framework\Context::getResponse()->addStylesheet('/css/highlight.php/github.css');
+            return '<pre class="hljs ' . strtolower($language) . '"><code>' . $codeblock->value . '</code></pre>';
+
         }
 
         protected function _parse_issuelink($matches)
