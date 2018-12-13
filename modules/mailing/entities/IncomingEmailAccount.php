@@ -180,7 +180,7 @@
 
         public function usesSSL()
         {
-            return (boolean) $this->_ssl;
+            return (bool) $this->_ssl;
         }
 
         public function setSSL($ssl)
@@ -190,7 +190,7 @@
 
         public function doesKeepEmails()
         {
-            return (boolean) $this->_keep_email;
+            return (bool) $this->_keep_email;
         }
 
         public function setKeepEmails($keep_emails)
@@ -228,12 +228,14 @@
             $this->_issuetype = $issuetype;
         }
 
-        public function setPreferHtml($preferHtml) {
+        public function setPreferHtml($preferHtml)
+        {
             $this->_prefer_html = $preferHtml;
         }
 
-        public function prefersHtml() {
-            return (boolean)$this->_prefer_html;
+        public function prefersHtml()
+        {
+            return (bool)$this->_prefer_html;
         }
 
         public function getNumberOfEmailsLastFetched()

@@ -11,7 +11,7 @@
         <?php else: ?>
             <div class="install_progress prereq_warn">
             <b>PHP interpreter version is too old</b><br>
-            The Bug Genie 3 requires PHP 5.3.0 or later. You have version <?php echo $php_ver; ?>.<br/>Grab the latest release from your usual sources or from <a href="http://php.net/downloads.php" target="_blank">php.net</a>
+            The Bug Genie requires PHP 7.1.0 or later. You have version <?php echo $php_ver; ?>.<br/>Grab the latest release from your usual sources or from <a href="http://php.net/downloads.php" target="_blank">php.net</a>
             </div>
         <?php endif; ?>
         <?php if ($pcre_ok): ?>
@@ -19,7 +19,7 @@
         <?php else: ?>
             <div class="install_progress prereq_warn">
             <b>PCRE libraries version is too old</b><br>
-            The Bug Genie 3 requires PCRE libraries 8.0 or later. You have version <?php echo $pcre_ver; ?>.<br/>Update your system to the latest release from your usual sources.
+            The Bug Genie requires PCRE libraries 8.0 or later. You have version <?php echo $pcre_ver; ?>.<br/>Update your system to the latest release from your usual sources.
             </div>
         <?php endif; ?>
         <?php if ($docblock_ok): ?>
@@ -27,7 +27,7 @@
         <?php else: ?>
             <div class="install_progress prereq_fail">
             <b>PHP docblocks are not readable</b><br>
-            The Bug Genie 3 requires that PHP docblocks are readable. You may be running a PHP accellerator that removes docblocks from PHP code files as an optimization technique. Please refer to the accelerator documentation for how to disable this feature, or disable the accellerator.</a>
+            The Bug Genie requires that PHP docblocks are readable. You may be running a PHP accellerator that removes docblocks from PHP code files as an optimization technique. Please refer to the accelerator documentation for how to disable this feature, or disable the accellerator.</a>
             </div>
         <?php endif; ?>
         <?php if ($base_folder_perm_ok): ?>
@@ -59,7 +59,7 @@
         <?php else: ?>
             <div class="install_progress prereq_warn">
             <b>PHP extension "mbstring" is not loaded</b><br>
-            The Bug Genie 3 requires the PHP extension "mbstring". This extension is used by the internationalization functionality in The Bug Genie and is required for The Bug Genie to operate.<br/>
+            The Bug Genie requires the PHP extension "mbstring". This extension is used by the internationalization functionality in The Bug Genie and is required for The Bug Genie to operate.<br/>
             More information is available at <a href="http://php.net/manual/en/book.mbstring.php" target="_blank">php.net</a>
             </div>
         <?php endif; ?>
@@ -68,7 +68,7 @@
         <?php else: ?>
             <div class="install_progress prereq_fail">
                 <b>PHP Class "DOMDocument" is not available</b><br>
-                The Bug Genie 3 requires the PHP Class "DOMDocument". For most distributions, the extension which contains this class is called "php-xml".<br/>
+                The Bug Genie requires the PHP Class "DOMDocument". For most distributions, the extension which contains this class is called "php-xml".<br/>
                 More information is available at <a href="http://php.net/manual/en/book.dom.php" target="_blank">php.net</a>
             </div>
         <?php endif; ?>

@@ -91,7 +91,7 @@ class Main extends framework\Action
         $this->php_ver = PHP_VERSION;
         $this->pcre_ver = PCRE_VERSION;
 
-        if (version_compare($this->php_ver, '5.3.0', 'lt'))
+        if (version_compare($this->php_ver, '7.1.0', 'lt'))
         {
             $this->php_ok = false;
             $this->all_well = false;

@@ -134,10 +134,10 @@
                     $account->setServer($request['servername']);
                     $account->setUsername($request['username']);
                     $account->setPassword($request['password']);
-                    $account->setSSL((boolean) $request['ssl']);
-                    $account->setPreferHtml((boolean) $request['prefer_html']);
-                    $account->setIgnoreCertificateValidation((boolean) $request['ignore_certificate_validation']);
-                    $account->setUsePlaintextAuthentication((boolean) $request['plaintext_authentication']);
+                    $account->setSSL((bool) $request['ssl']);
+                    $account->setPreferHtml((bool) $request['prefer_html']);
+                    $account->setIgnoreCertificateValidation((bool) $request['ignore_certificate_validation']);
+                    $account->setUsePlaintextAuthentication((bool) $request['plaintext_authentication']);
                     $account->setServerType((integer) $request['account_type']);
                     $account->save();
 

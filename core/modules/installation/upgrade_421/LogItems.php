@@ -20,17 +20,4 @@
 
         const B2DB_TABLE_VERSION = 2;
 
-        const B2DBNAME = 'log';
-        const ID = 'log.id';
-        const SCOPE = 'log.scope';
-        const TARGET = 'log.target';
-        const TARGET_TYPE = 'log.target_type';
-        const CHANGE_TYPE = 'log.change_type';
-        const PREVIOUS_VALUE = 'log.previous_value';
-        const CURRENT_VALUE = 'log.current_value';
-        const TEXT = 'log.text';
-        const TIME = 'log.time';
-        const UID = 'log.uid';
-        const COMMENT_ID = 'log.comment_id';
-
     }
