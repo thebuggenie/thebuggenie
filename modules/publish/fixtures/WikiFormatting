@@ -75,12 +75,12 @@ The Bug Genie wiki also lets you link directly to [http://www.wikipedia.org Wiki
 == Links ==
 In addition to linking between internal pages with double square brackets, you can link to external pages with single square brackets. Any URLs inside your text will also automatically be turned into clickable links, but you can also put a pair of square brackets around the link to make it clickable. In addition, you can add a title if you want to:
 
-  http://www.thebuggenie.com
-http://www.thebuggenie.com
-  [http://www.thebuggenie.com]
-[http://www.thebuggenie.com]
-  [http://www.thebuggenie.com The Bug Genie website]
-[http://www.thebuggenie.com The Bug Genie website]
+  https://thebuggenie.com
+https://thebuggenie.com
+  [https://thebuggenie.com]
+[https://thebuggenie.com]
+  [https://thebuggenie.com The Bug Genie website]
+[https://thebuggenie.com The Bug Genie website]
 
 == Horizontal line ==
 If you want to put a horizontal line in the document, use four dashes:

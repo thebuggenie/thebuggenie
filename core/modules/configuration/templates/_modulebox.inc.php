@@ -2,7 +2,7 @@
     <?php echo __('%module_name version %version by %author', array(
         '%module_name' => '<h1>'.$module->getLongName().'</h1>',
         '%version' => '<span class="version">'.$module->getVersion().'</span>',
-        '%author' => '<a href="http://www.thebuggenie.com" class="author-link">zegenie Studios</a>'
+        '%author' => '<a href="https://thebuggenie.com" class="author-link">zegenie Studios</a>'
     )); ?>
     <p class="description"><?php echo __($module->getDescription()); ?></p>
     <?php if ($module->getType() == \thebuggenie\core\entities\Module::MODULE_AUTH): ?>

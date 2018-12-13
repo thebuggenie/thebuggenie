@@ -23,7 +23,7 @@
     </div>
     <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" id="incoming_email_account_form" action="<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>" method="post" id="build_form" onsubmit="TBG.Modules.mailing.saveIncomingEmailAccount('<?php echo make_url('mailing_save_incoming_account', array('project_key' => $project->getKey())); ?>');return false;">
         <div id="backdrop_detail_content" class="backdrop_detail_content">
-            <?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.', array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
+            <?php echo __('The Bug Genie can check email accounts and create issues from incoming emails. Set up a new account here, and check the %online_documentation for more information.', array('%online_documentation' => link_tag('https://issues.thebuggenie.com/wiki/TheBugGenie:IncomingEmail', '<b>'.__('online documentation').'</b>'))); ?>
             <input type="hidden" name="account_id" value="<?php echo $account->getID(); ?>">
             <?php if (!\thebuggenie\core\framework\Settings::isUploadsEnabled()): ?>
                 <div class="permissions_warning">

@@ -526,7 +526,7 @@ class Main extends framework\Action
                         try
                         {
                             $client = new \Net_Http_Client();
-                            $client->get('https://www.thebuggenie.com/addons.json?'.join('&', $addons_param));
+                            $client->get('https://thebuggenie.com/addons.json?'.join('&', $addons_param));
                             $addons_json = json_decode($client->getBody(), true);
                         }
                         catch (\Exception $e) {}
@@ -555,7 +555,7 @@ class Main extends framework\Action
                         try
                         {
                             $client = new \Net_Http_Client();
-                            $client->get('http://www.thebuggenie.com/themes.json?'.join('&', $addons_param));
+                            $client->get('https://thebuggenie.com/themes.json?'.join('&', $addons_param));
                             $addons_json = json_decode($client->getBody(), true);
                         }
                         catch (\Exception $e) {}

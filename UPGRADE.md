@@ -2,7 +2,7 @@ UPGRADE
 =======
 
 NOTE: For the latest installation notes, troubleshooting and tips,
-visit the FAQ: http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
+visit the FAQ: https://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
 IMPORTANT INFORMATION ABOUT UPGRADING FROM THE BUG GENIE 3.2
 ----------------------------------------------------------

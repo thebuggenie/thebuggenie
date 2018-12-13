@@ -2,7 +2,7 @@
     <?php echo __('%theme_name version %version by %author', array(
         '%theme_name' => '<h1>'.$theme['name'].'</h1>',
         '%version' => '<span class="version">'.$theme['version'].'</span>',
-        '%author' => '<a href="http://www.thebuggenie.com/themes/'.$theme['key'].'" class="author-link">'.$theme['author'].'</a>'
+        '%author' => '<a href="https://thebuggenie.com/themes/'.$theme['key'].'" class="author-link">'.$theme['author'].'</a>'
     )); ?>
     <p class="description"><?php echo $theme['description']; ?></p>
     <div class="status_badge theme_status plugin_status<?php echo ($enabled) ? ' enabled' : ' disabled'; ?>">

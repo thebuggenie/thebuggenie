@@ -10,8 +10,8 @@
     <?php if ($tbg_user->canAccessConfigurationPage()): ?>
         | <b><?php echo link_tag(make_url('configure'), __('Configure %thebuggenie_name', array('%thebuggenie_name' => \thebuggenie\core\framework\Settings::getSiteHeaderName()))); ?></b>
     <?php endif; ?>
-    | <a href="http://www.thebuggenie.com/support">Support</a>
-    | <a href="http://www.thebuggenie.com/feedback">Feedback</a>
+    | <a href="https://thebuggenie.com/support">Support</a>
+    | <a href="https://thebuggenie.com/feedback">Feedback</a>
     <?php if (\thebuggenie\core\framework\Context::isDebugMode() && \thebuggenie\core\framework\Logging::isEnabled()): ?>
         <script>
             function tbg_debug_show_menu_tab(tab, clicked) {

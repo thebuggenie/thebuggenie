@@ -10,7 +10,7 @@
     // Default behaviour: define the public folder name to "public" (actually autodetect name of current folder)
     defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', substr($path, strrpos($path, DIRECTORY_SEPARATOR) + 1));
 
-    // Root installation: http://issues.thebuggenie.com/wiki/TheBugGenie:HowTo:RootDirectoryInstallation
+    // Root installation: https://issues.thebuggenie.com/wiki/TheBugGenie:HowTo:RootDirectoryInstallation
     // ----
     // Don't look one directory up to find the path to the bug genie
     // defined('THEBUGGENIE_PATH') || define('THEBUGGENIE_PATH', realpath(getcwd() . DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);

@@ -34,7 +34,7 @@
                     If you use The Bug Genie on a regular basis, please consider:
                     <ul>
                         <li>contributing patches, fixes and features <a href="http://github.com/thebuggenie/thebuggenie">via github</a></li>
-                        <li>writing and improving the <a href="http://issues.thebuggenie.com/wiki/TheBugGenie:MainPage">documentation</a></li>
+                        <li>writing and improving the <a href="https://issues.thebuggenie.com/wiki/TheBugGenie:MainPage">documentation</a></li>
                         <li>help out other users in our <a href="http://forum.thebuggenie.org/">user forums</a></li>
                         <li>improve or add <a href="https://www.transifex.com/projects/p/tbg/">translations</a></li>
                         <li>author public blog posts or news articles about The Bug Genie</li>
@@ -112,7 +112,7 @@
                         Please read the upgrade notes before you press "Perform upgrade" to continue.<br>
                         <input type="hidden" name="perform_upgrade" value="1">
                         <input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('upgrade_password_admin').getValue().length >= 8 && $('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();" min="8" required>
-                        <label for="confirm_backup" style="vertical-align: middle; font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="http://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
+                        <label for="confirm_backup" style="vertical-align: middle; font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="https://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
                         <input type="submit" value="Perform upgrade" id="start_upgrade" disabled="disabled" style="margin-top: 10px;"><br>
                         <br>
                         <a href="javascript:void(0);" onclick="tbg_upgrade_previous($(this).up('.installpage'));">&lt;&lt;&nbsp;or go back to change upgrade settings</a>
@@ -124,7 +124,7 @@
                         Please read the upgrade notes before you press "Perform upgrade" to continue.<br>
                         <input type="hidden" name="perform_upgrade" value="1">
                         <input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">
-                        <label for="confirm_backup" style="vertical-align: middle; font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="http://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
+                        <label for="confirm_backup" style="vertical-align: middle; font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="https://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
                         <input type="submit" value="Perform upgrade" id="start_upgrade" disabled="disabled" style="margin-top: 10px;"><br>
                         <br>
                         <a href="javascript:void(0);" onclick="tbg_upgrade_previous($(this).up('.installpage'));">&lt;&lt;&nbsp;or go back to change upgrade settings</a>

@@ -492,7 +492,7 @@
                 }
 
                 $client = new \Net_Http_Client();
-                $client->get('http://www.thebuggenie.com/'.$plugin_type.'s/'.$plugin_key . '.json');
+                $client->get('https://thebuggenie.com/'.$plugin_type.'s/'.$plugin_key . '.json');
                 $plugin_json = json_decode($client->getBody());
             }
             catch (\Exception $e) {}

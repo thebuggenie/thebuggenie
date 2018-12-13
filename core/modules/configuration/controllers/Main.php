@@ -82,7 +82,7 @@
                 {
                     $uptodate = false;
                     $title = framework\Context::getI18n()->__('The Bug Genie is out of date');
-                    $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', ['%ver' => $latest_version->nicever]);
+                    $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from thebuggenie.com.', ['%ver' => $latest_version->nicever]);
                 }
                 else
                 {
@@ -747,7 +747,7 @@
             if ($request->isPost()) {
                 $license_key = $request['license_key'];
 
-                $client = new GuzzleClient(['base_uri' => 'https://www.thebuggenie.com']);
+                $client = new GuzzleClient(['base_uri' => 'https://thebuggenie.com']);
                 $response = $client->get('/license/verify/' . $license_key);
 
                 $status = ($response->getStatusCode() == 200) ? json_decode($response->getBody(), true) : ['verified' => false];

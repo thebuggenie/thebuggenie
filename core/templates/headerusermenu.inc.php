@@ -62,7 +62,7 @@
                                 <li><?= link_tag(make_url('switch_back_user'), image_tag('switchuser.png').__('Switch back to original user')); ?></li>
                             <?php endif; ?>
                             <?php \thebuggenie\core\framework\Event::createNew('core', 'user_dropdown_reg')->trigger(); ?>
-                            <li class="help"><?= link_tag('http://www.thebuggenie.com/help/'.\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(), fa_image_tag('question-circle').__('Help for this page'), array('id' => 'global_help_link')); ?></li>
+                            <li class="help"><?= link_tag('https://thebuggenie.com/help/'.\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteName(), fa_image_tag('question-circle').__('Help for this page'), array('id' => 'global_help_link')); ?></li>
                             <li class="header"><?= __('Your issues'); ?></li>
                             <li><?= link_tag(make_url('my_reported_issues'), fa_image_tag('search') . __('Issues reported by me')); ?></li>
                             <li><?= link_tag(make_url('my_assigned_issues'), fa_image_tag('search') . __('Open issues assigned to me')); ?></li>

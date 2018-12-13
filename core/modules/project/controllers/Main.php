@@ -317,7 +317,7 @@ class Main extends helpers\ProjectActions
 
         if (!function_exists('imagecreatetruecolor'))
         {
-            return $this->return404(framework\Context::getI18n()->__('The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information'));
+            return $this->return404(framework\Context::getI18n()->__('The libraries to generate images are not installed. Please see https://thebuggenie.com for more information'));
         }
 
         $this->getResponse()->setContentType('image/png');
@@ -560,7 +560,7 @@ class Main extends helpers\ProjectActions
 
         if (!function_exists('imagecreatetruecolor'))
         {
-            return $this->return404(framework\Context::getI18n()->__('The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information'));
+            return $this->return404(framework\Context::getI18n()->__('The libraries to generate images are not installed. Please see https://thebuggenie.com for more information'));
         }
 
         $this->getResponse()->setContentType('image/png');

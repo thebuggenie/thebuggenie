@@ -1660,8 +1660,8 @@
                 <target>The Bug Genie est obsolète</target>
             </trans-unit>
             <trans-unit id="ddfff062a36b47d8bb6d81d1d25bf602">
-                <source>The latest version is %ver. Update now from www.thebuggenie.com.</source>
-                <target>La dernière version est %ver. Mettez à jour maintenant depuis www.thebuggenie.com.</target>
+                <source>The latest version is %ver. Update now from thebuggenie.com.</source>
+                <target>La dernière version est %ver. Mettez à jour maintenant depuis thebuggenie.com.</target>
             </trans-unit>
             <trans-unit id="fdc710799453874a6aac1ba5f0fbc591">
                 <source>Please provide a valid setting for highlighting interval</source>
@@ -10270,8 +10270,8 @@
                 <target>Spécifiez un nom de sprint</target>
             </trans-unit>
             <trans-unit id="15fcdeb0bfe7999726b0d7265f484abc">
-                <source>The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information</source>
-                <target>Les bibliothèque de génération d'image ne sont pas installées. Veuillez vous référer à http://www.thebuggenie.com pour plus d'informations</target>
+                <source>The libraries to generate images are not installed. Please see https://thebuggenie.com for more information</source>
+                <target>Les bibliothèque de génération d'image ne sont pas installées. Veuillez vous référer à https://thebuggenie.com pour plus d'informations</target>
             </trans-unit>
             <trans-unit id="03f4f2bb69a38628b3392f1dd51eff41">
                 <source>Open issues</source>

@@ -38,7 +38,7 @@
         <div class="error"><?php echo nl2br($error); ?></div>
         <h2>An error occured</h2>
         <div style="font-size: 13px;">An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click back, and try again.<br>
-        If you think this is a bug, please report it in our <a href="http://issues.thebuggenie.com" target="_new">online bug tracker</a>.</div>
+        If you think this is a bug, please report it in our <a href="https://issues.thebuggenie.com" target="_new">online bug tracker</a>.</div>
     <?php else: ?>
         <div class="ok">
             The database have been successfully set up<br>
@@ -49,7 +49,7 @@
         <br>
         <div class="feature">
             <b>Your web server must be correctly set up with URL rewriting enabled for The Bug Genie to work.</b><br>
-            For information on how to configure URL rewriting for your web server, see <a href="http://thebuggenie.com/support">www.thebuggenie.com &raquo; Support</a>
+            For information on how to configure URL rewriting for your web server, see <a href="https://thebuggenie.com/support">thebuggenie.com &raquo; Support</a>
         </div>
         <br>
         The Bug Genie must be configured so that it knows how to translate URLs correctly.<br>

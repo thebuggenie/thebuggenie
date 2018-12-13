@@ -72,10 +72,10 @@
                             Please reinstall The Bug Genie or file a bug report if you think this is an error.
                         <?php elseif ($exception->getCode() == \thebuggenie\core\framework\exceptions\ConfigurationException::UPGRADE_FILE_MISSING): ?>
                             To enable the upgrade mode, make sure the file <span class="command_box"><?= THEBUGGENIE_PATH; ?>upgrade</span> is present<br>
-                            Please see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.
+                            Please see the upgrade instructions here: <a href='https://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.
                         <?php elseif ($exception->getCode() == \thebuggenie\core\framework\exceptions\ConfigurationException::UPGRADE_REQUIRED): ?>
                             You need to upgrade to this version of The Bug Genie before you can continue.<br>
-                            Please see the upgrade instructions here: <a href='http://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.
+                            Please see the upgrade instructions here: <a href='https://issues.thebuggenie.com/wiki/TheBugGenie%3AFAQ'>thebuggenie.com &raquo; wiki &raquo; FAQ</a> for more information.
                         <?php elseif ($exception->getCode() == \thebuggenie\core\framework\exceptions\ConfigurationException::NO_B2DB_CONFIGURATION): ?>
                             The database configuration file <span class="command_box"><?= THEBUGGENIE_CONFIGURATION_PATH; ?>b2db.yml</span> could not be read.<br>
                             This file is generated during installation, so this error should not occur.<br>

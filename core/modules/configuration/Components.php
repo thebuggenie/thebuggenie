@@ -46,7 +46,7 @@
             try
             {
                 $client = new \Net_Http_Client();
-                $client->get('https://www.thebuggenie.com/addons.json?license_key=' . framework\Settings::getLicenseIdentifier());
+                $client->get('https://thebuggenie.com/addons.json?license_key=' . framework\Settings::getLicenseIdentifier());
                 $json_modules = json_decode($client->getBody());
             }
             catch (\Exception $e) {}
@@ -67,7 +67,7 @@
             try
             {
                 $client = new \Net_Http_Client();
-                $client->get('http://www.thebuggenie.com/themes.json?license_key=' . framework\Settings::getLicenseIdentifier());
+                $client->get('https://thebuggenie.com/themes.json?license_key=' . framework\Settings::getLicenseIdentifier());
                 $json_themes = json_decode($client->getBody());
             }
             catch (\Exception $e) {}

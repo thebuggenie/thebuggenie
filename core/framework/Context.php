@@ -2865,7 +2865,7 @@ class Context
 
         // Set-up client and retrieve version information.
         $client = new \GuzzleHttp\Client([
-            'base_uri' => 'http://www.thebuggenie.com/',
+            'base_uri' => 'https://thebuggenie.com/',
             'http_errors' => false]);
         $response = $client->request('GET', '/updatecheck.php');
 

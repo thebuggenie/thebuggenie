@@ -4,7 +4,7 @@
         <div class="error"><?php echo nl2br($error); ?></div>
         <h2>An error occured</h2>
         <div style="font-size: 13px;">An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click back, and try again.<br>
-        If you think this is a bug, please report it in our <a href="http://issues.thebuggenie.com" target="_new">online bug tracker</a>.</div>
+        If you think this is a bug, please report it in our <a href="https://issues.thebuggenie.com" target="_new">online bug tracker</a>.</div>
     <?php else: ?>
         <?php if ($htaccess_error !== false): ?>
             <div class="error">
@@ -69,7 +69,7 @@
         The Bug Genie is written using a flexible, module-based architecture, that lets you easily add extra functionality. Even core functionality such as version control integration, email communication and the agile sections are provided using modules, and can be enabled / disabled from the configuration panel.<br>
         <br>
         <div class="feature">
-            Find additional modules online, at <a href="http://thebuggenie.com/addons">www.thebuggenie.com &raquo; Addons</a><br>
+            Find additional modules online, at <a href="https://thebuggenie.com/addons">thebuggenie.com &raquo; Addons</a><br>
         </div>
             <div style="padding-top: 20px; clear: both; text-align: center;">
                 <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and set up the default user and default modules</label>

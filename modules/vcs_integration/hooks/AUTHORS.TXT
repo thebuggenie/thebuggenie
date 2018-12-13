@@ -20,7 +20,7 @@ Bazaar hook:
 
 Mercurial hook:
  - Alex Smith <alex@alex-smith.me.uk>
- Note: Due to licensing restrictions this hook can not be distributed with The Bug Genie and is available from www.thebuggenie.com
+ Note: Due to licensing restrictions this hook can not be distributed with The Bug Genie and is available from thebuggenie.com
  
 Git hook:
  - Ilmar Kruis ('SeaEagle1' on the forums)

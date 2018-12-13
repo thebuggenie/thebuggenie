@@ -9,7 +9,7 @@
     "support" : {
         "email" : "support@thebuggenie.com",
         "forum" : "http://forum.thebuggenie.org",
-        "issues" : "http://issues.thebuggenie.com",
+        "issues" : "https://issues.thebuggenie.com",
         "irc" : "irc://irc.freenode.org/thebuggenie"
     },
     "license" : [

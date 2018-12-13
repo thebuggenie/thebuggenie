@@ -155,9 +155,9 @@
         {
             $scope_id = $scope->getID();
             
-            $this->addMainMenuLink('http://www.thebuggenie.com', 'The Bug Genie homepage', 1, $scope_id);
+            $this->addMainMenuLink('https://thebuggenie.com', 'The Bug Genie homepage', 1, $scope_id);
             $this->addMainMenuLink(null, null, 2, $scope_id);
-            $this->addMainMenuLink('http://issues.thebuggenie.com', 'Online issue tracker', 4, $scope_id);
+            $this->addMainMenuLink('https://issues.thebuggenie.com', 'Online issue tracker', 4, $scope_id);
             $this->addMainMenuLink('', "''This is the issue tracker for The Bug Genie''", 5, $scope_id);
         }
 

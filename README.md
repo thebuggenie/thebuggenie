@@ -22,7 +22,7 @@ management system. Main features includes:
 ... and a lot more!
 
 For up-to-date installation and setup notes, visit the FAQ:
-http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
+https://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
 
 ## Installation
@@ -64,7 +64,7 @@ To install:
 ## REPORTING ISSUES
 
 If you find any issues, please report them in the issue tracker on our website:
-http://issues.thebuggenie.com
+https://issues.thebuggenie.com
 
 
 ## RUNNING PHPUNIT TESTS
@@ -81,4 +81,4 @@ If you are interested in contributing some code to The Bug Genie, you can get qu
 
 Take note that provided configuration and set-up should *not* be used in production.
 
-For more details and some introduction see [The Bug Genie wiki page](http://issues.thebuggenie.com/wiki/TheBugGenie%3ADevelopment%3AVagrant).
+For more details and some introduction see [The Bug Genie wiki page](https://issues.thebuggenie.com/wiki/TheBugGenie%3ADevelopment%3AVagrant).
