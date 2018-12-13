@@ -95,6 +95,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><label for="account_ssl"><?php echo __('Prefer HTML content'); ?></label></td>
+                    <td>
+                        <input type="radio" name="prefer_html" id="prefer_html_yes" value="1"<?php if ($account->prefersHtml()) echo ' checked'; ?>><label for="prefer_html_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>
+                        <input type="radio" name="prefer_html" id="prefer_html_no" value="0"<?php if (!$account->prefersHtml()) echo ' checked'; ?>><label for="prefer_html_no" style="font-weight: normal;"><?php echo __('No'); ?></label>
+                    </td>
+                </tr>
+                <tr>
                     <td><label for="account_ignore_certificate_validation_yes"><?php echo __('Ignore certificate errors'); ?></label></td>
                     <td>
                         <input type="radio" name="ignore_certificate_validation" id="account_ignore_certificate_validation_yes" value="1"<?php if ($account->doesIgnoreCertificateValidation()) echo ' checked'; ?>><label for="account_ignore_certificate_validation_yes" style="font-weight: normal;"><?php echo __('Yes'); ?></label>
