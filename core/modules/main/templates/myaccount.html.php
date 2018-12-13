@@ -276,10 +276,10 @@
                                 </td>
                             </tr>
                         </table>
-                        <div class="greybox" style="margin: 25px 0 0 0; height: 24px;">
-                            <div style="float: left; font-size: 13px; padding-top: 2px;"><?= __('Click "%save" to save your account information', array('%save' => __('Save'))); ?></div>
-                            <input type="submit" id="submit_information_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?= __('Save'); ?>">
-                            <span id="profile_save_indicator" style="display: none; float: right;"><?= image_tag('spinning_20.gif'); ?></span>
+                        <div class="save-button-container">
+                            <div class="message"><?= __('Click "%save" to save your account information', array('%save' => __('Save'))); ?></div>
+                            <span id="profile_save_indicator" style="display: none;"><?= image_tag('spinning_20.gif'); ?></span>
+                            <input type="submit" id="submit_information_button" value="<?= __('Save'); ?>">
                         </div>
                     </form>
                 <?php endif; ?>
@@ -340,10 +340,10 @@
                             </td>
                         </tr>
                     </table>
-                    <div class="greybox" style="margin: 25px 0 0 0; height: 24px;">
-                        <div style="float: left; font-size: 13px; padding-top: 2px;"><?= __('Click "%save" to update the settings on this tab', array('%save' => __('Save'))); ?></div>
-                        <input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?= __('Save'); ?>">
-                        <span id="profile_settings_save_indicator" style="display: none; float: right;"><?= image_tag('spinning_20.gif'); ?></span>
+                    <div class="save-button-container">
+                        <div class="message"><?= __('Click "%save" to update the settings on this tab', array('%save' => __('Save'))); ?></div>
+                        <span id="profile_settings_save_indicator"><?= image_tag('spinning_20.gif'); ?></span>
+                        <input type="submit" id="submit_settings_button" value="<?= __('Save'); ?>">
                     </div>
                 </form>
             </div>
@@ -541,10 +541,10 @@
                             </td>
                         </tr>
                     </table>
-                    <div class="greybox" style="margin: 25px 0 0 0; height: 24px;">
-                        <div style="float: left; font-size: 13px; padding-top: 2px;"><?= __('Click "%save" to update the settings on this tab', array('%save' => __('Save'))); ?></div>
-                        <input type="submit" id="submit_notificationsettings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?= __('Save'); ?>">
-                        <span id="profile_notificationsettings_save_indicator" style="display: none; float: right;"><?= image_tag('spinning_20.gif'); ?></span>
+                    <div class="save-button-container">
+                        <div class="message"><?= __('Click "%save" to update the settings on this tab', array('%save' => __('Save'))); ?></div>
+                        <span id="profile_notificationsettings_save_indicator"><?= image_tag('spinning_20.gif'); ?></span>
+                        <input type="submit" id="submit_notificationsettings_button" value="<?= __('Save'); ?>">
                     </div>
                 </form>
             </div>

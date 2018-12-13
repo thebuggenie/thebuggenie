@@ -27,10 +27,10 @@
                 </tr>
             </table>
             <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                <div class="greybox" style="margin: 5px 0px 5px 0px; height: 23px; padding: 5px 10px 5px 10px;">
-                    <div style="float: left; font-size: 13px; padding-top: 2px;"><?= __('Click "%save" to save your license key', array('%save' => __('Save'))); ?></div>
-                    <input type="submit" id="configure_license_form_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?= __('Save'); ?>">
-                    <span id="configure_license_form_indicator" style="display: none; float: right;"><?= image_tag('spinning_20.gif'); ?></span>
+                <div class="save-button-container">
+                    <div class="message"><?= __('Click "%save" to save your license key', array('%save' => __('Save'))); ?></div>
+                    <span id="configure_license_form_indicator" style="display: none;"><?= image_tag('spinning_20.gif'); ?></span>
+                    <input type="submit" id="configure_license_form_button" value="<?= __('Save'); ?>">
                 </div>
             <?php endif; ?>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>

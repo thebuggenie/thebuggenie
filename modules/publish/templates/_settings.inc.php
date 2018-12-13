@@ -71,9 +71,9 @@
                 </tr>
             </table>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-            <div class="bluebox" style="margin: 0 0 5px 0;">
-                <?= __('Click "%save" to save wiki notification settings', array('%save' => __('Save'))); ?>
-                <input type="submit" id="submit_settings_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?= __('Save'); ?>">
+            <div class="save-button-container">
+                <span class="message"><?= __('Click "%save" to save wiki notification settings', array('%save' => __('Save'))); ?></span>
+                <input type="submit" id="submit_settings_button" value="<?= __('Save'); ?>">
             </div>
         <?php endif; ?>
         </form>
@@ -109,9 +109,9 @@
             </ul>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
             <br style="clear: both;">
-            <div class="bluebox" style="margin: 0 0 5px 0;">
-                <?= __('Click "%import_articles" to import the selected articles', array('%import_articles' => __('Import articles'))); ?>
-                <input type="submit" id="submit_import_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?= __('Import articles'); ?>">
+            <div class="save-button-container">
+                <span class="message"><?= __('Click "%import_articles" to import the selected articles', array('%import_articles' => __('Import articles'))); ?></span>
+                <input type="submit" id="submit_import_button" value="<?= __('Import articles'); ?>">
             </div>
         <?php endif; ?>
         </form>

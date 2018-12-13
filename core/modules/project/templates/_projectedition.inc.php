@@ -180,8 +180,8 @@
                             <tr>
                                 <td colspan="2" style="padding: 10px 0 10px 10px; text-align: right;">
                                     <div style="float: left; font-size: 13px; padding-top: 2px; font-style: italic;" class="config_explanation"><?php echo __('When you are done, click "%save" to save your changes', array('%save' => __('Save'))); ?></div>
+                                    <span id="edition_save_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
                                     <input class="button button-green" type="submit" style="float: right;" id="edition_submit_settings_button" value="<?php echo __('Save'); ?>">
-                                    <span id="edition_save_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
                                 </td>
                             </tr>
                         <?php endif; ?>

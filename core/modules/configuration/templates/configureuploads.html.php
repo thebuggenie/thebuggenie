@@ -170,10 +170,10 @@
                     </div>
                 <?php endif; ?>
                 <?php if ($uploads_enabled && $access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                        <div class="greybox" style="margin: 5px 0px 5px 0px; height: 23px; padding: 5px 10px 5px 10px;">
-                            <div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save your changes in all categories', array('%save' => __('Save'))); ?></div>
-                            <input type="submit" id="config_uploads_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
-                            <span id="config_uploads_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+                        <div class="save-button-container">
+                            <div class="message"><?php echo __('Click "%save" to save your changes in all categories', array('%save' => __('Save'))); ?></div>
+                            <span id="config_uploads_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
+                            <input type="submit" id="config_uploads_button" value="<?php echo __('Save'); ?>">
                         </div>
                     </form>
                 <?php endif; ?>

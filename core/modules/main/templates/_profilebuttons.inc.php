@@ -13,7 +13,7 @@
                 <div class="smaller" style="text-align: right; margin: 10px 2px 5px 0; height: 23px;">
                     <div style="float: right; padding: 3px;"><?php echo __('%check_availability or %cancel', array('%check_availability' => '', '%cancel' => '<a href="javascript:void(0);" onclick="$(\'pick_username_div\').toggle();$(\'pick_username_button\').toggleClassName(\'button-pressed\');"><b>' . __('cancel') . '</b></a>')); ?></div>
                     <input type="submit" value="<?php echo __('Check availability'); ?>" style="font-weight: bold; float: right;">
-                    <span id="pick_username_indicator" style="display: none; float: right;"><?php echo image_tag('spinning_20.gif'); ?></span>
+                    <span id="pick_username_indicator"><?php echo image_tag('spinning_20.gif'); ?></span>
                 </div>
             </form>
         </div>

@@ -37,8 +37,8 @@
                 <td class="config_explanation" colspan="2"><?php echo __('All modules which provide authentication are shown here. Please ensure your chosen backend is configured first, and please read the warnings included with your chosen backend to ensure that you do not lose administrator access.'); ?></td>
             </tr>
             <tr>
-                <td style="vertical-align: top"><label for="register_message"><?php echo __('Registration message'); ?></label></td>
-                <td>
+                <td colspan="2" style="vertical-align: top">
+                    <label for="register_message"><?php echo __('Registration message'); ?></label>
                     <?php include_component('main/textarea', array('area_name' => 'register_message', 'area_id' => 'register_message', 'height' => '75px', 'width' => '100%', 'value' => \thebuggenie\core\framework\Settings::get('register_message'), 'hide_hint' => true)); ?>
                 </td>
             </tr>
@@ -46,28 +46,28 @@
                 <td class="config_explanation" colspan="2"><?php echo __('The Bug Genie\'s registration page is unavailable when using a different backend. Write a message here to be shown to users instead. WikiFormatting can be used in this box and similar ones on this page.'); ?></td>
             </tr>
             <tr>
-                <td style="vertical-align: top"><label for="forgot_message"><?php echo __('Forgot password message'); ?></label></td>
-                <td>
+                <td colspan="2" style="vertical-align: top">
+                    <label for="forgot_message"><?php echo __('Forgot password message'); ?></label>
                     <?php include_component('main/textarea', array('area_name' => 'forgot_message', 'area_id' => 'forgot_message', 'height' => '75px', 'width' => '100%', 'value' => \thebuggenie\core\framework\Settings::get('forgot_message'), 'hide_hint' => true)); ?>
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align: top"><label for="changepw_message"><?php echo __('Change password message'); ?></label></td>
-                <td>
+                <td colspan="2" style="vertical-align: top">
+                    <label for="changepw_message"><?php echo __('Change password message'); ?></label>
                     <?php include_component('main/textarea', array('area_name' => 'changepw_message', 'area_id' => 'changepw_message', 'height' => '75px', 'width' => '100%', 'value' => \thebuggenie\core\framework\Settings::get('changepw_message'), 'hide_hint' => true)); ?>
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align: top"><label for="changedetails_message"><?php echo __('Change account details message'); ?></label></td>
-                <td>
+                <td colspan="2" style="vertical-align: top">
+                    <label for="changedetails_message"><?php echo __('Change account details message'); ?></label>
                     <?php include_component('main/textarea', array('area_name' => 'changedetails_message', 'area_id' => 'changedetails_message', 'height' => '75px', 'width' => '100%', 'value' => \thebuggenie\core\framework\Settings::get('changedetails_message'), 'hide_hint' => true)); ?>
                 </td>
             </tr>
         </table>
 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-        <div class="greybox" style="margin: 5px 0px 5px 0px; height: 23px; padding: 5px 10px 5px 10px;">
-            <div style="float: left; font-size: 13px; padding-top: 2px;"><?php echo __('Click "%save" to save your changes in all categories', array('%save' => __('Save'))); ?></div>
-            <input type="submit" id="config_auth_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?php echo __('Save'); ?>">
+        <div class="save-button-container">
+            <div class="message"><?php echo __('Click "%save" to save your changes in all categories', array('%save' => __('Save'))); ?></div>
+            <input type="submit" id="config_auth_button" value="<?php echo __('Save'); ?>">
         </div>
     </form>
 <?php endif; ?>

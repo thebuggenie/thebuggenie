@@ -1094,8 +1094,7 @@
 
         public static function hasLicenseIdentifier()
         {
-            return false;
-            return (bool) (self::getLicenseIdentifier() !== '');
+            return (self::getLicenseIdentifier() !== '');
         }
 
         public static function getLicenseIdentifier()

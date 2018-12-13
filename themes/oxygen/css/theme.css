@@ -10487,7 +10487,8 @@ ul.milestone_issues_container li .actions label {
 h3 .button, h3 .button:hover {
     float: right;
     margin-top: 0;
-    padding: 3px 7px !important;
+    padding: 5px 8px !important;
+    font-size: .8em;
 }
 
 #configure_permissions_advanced h3 .button {
@@ -14026,6 +14027,7 @@ input[type=submit], input[type=submit]:hover, button, .button, .button:hover {
     vertical-align: middle;
     text-align: center;
     text-transform: none;
+    padding: .3em .7em;
 }
 
 .button:hover,
@@ -14848,6 +14850,9 @@ table.sortable tr th.nosort {
     align-items: baseline;
     border-radius: 3px;
 }
+.message-box.type-error {
+    background-color: rgba(205, 0, 0, 0.5);
+}
 .message-box.type-warning {
     background-color: rgba(249, 245, 178, 0.6);
 }
@@ -14864,6 +14869,9 @@ table.sortable tr th.nosort {
     font-size: 1.1em;
     color: rgba(0, 0, 0, .4);
 }
+.message-box.type-error .message {
+    color: rgba(255, 255, 255, 1);
+}
 .message-box .actions {
     flex: 0 0 auto;
 }
@@ -14875,22 +14883,44 @@ table.sortable tr th.nosort {
 }
 
 .greenbox {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
     background-color: rgba(177, 210, 143, 0.3);
-    padding: 10px;
-    border-radius: 3px;
 }
-
 .bluebox {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
     background-color: rgba(212, 229, 255, 0.5);
-    padding: 10px;
-    border-radius: 3px;
 }
 
 .redbox, .greybox, .lightyellowbox, .yellowbox, .greenbox, .bluebox {
+    padding: 10px;
+    border-radius: 3px;
     border: 1px solid rgba(50, 50, 50, 0.15);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
 }
+
+.save-button-container {
+    border: none;
+    border-top: 1px solid rgba(50, 50, 50, 0.15);
+    padding: 10px;
+    box-shadow: none;
+    margin: 25px 0 0 0;
+    display: flex;
+    background-color: rgba(200, 200, 200, 0.1);
+    align-items: center;
+}
+.save-button-container .message {
+    flex: 1 1 auto;
+    font-style: italic;
+}
+.save-button-container img {
+    flex: 0 0 auto;
+    margin-right: 5px;
+}
+.save-button-container input[type=submit] {
+    flex: 0 0 auto;
+    padding: 5px 15px;
+    font-size: 1.1em;
+    font-weight: 300;
+}
+
 
 .tutorial-message {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
@@ -15180,11 +15210,11 @@ ul#editions_menu li.selected:after {
     left: 0;
 }
 
-.configuration_page button,
-.configuration_page .button {
-    padding: 5px 8px;
-    font-size: 1em;
-}
+/*.configuration_page button,*/
+/*.configuration_page .button {*/
+    /*padding: 5px 8px;*/
+    /*font-size: 1em;*/
+/*}*/
 
 .config_badges > li > a > span {
     font-size: 13px;
@@ -15215,27 +15245,9 @@ span.config_explanation > span.tooltip.from-above.leftie {
     padding-left: 0;
 }
 
-#settings_menu_panes .greybox,
-#config_auth .greybox,
-#config_uploads .greybox {
-    line-height: 1.73;
-    height: 25px !important;
-}
-
-.greybox #config_settings_button,
-.greybox #config_auth_button,
-.greybox #config_uploads_button {
-    padding: 3px 23px !important;
-    margin-left: 5px;
-}
-
 .more_than_one_project_warning {
     margin-top: 5px;
     display: block;
-}
-
-#config_settings .greybox {
-    padding: 7px 7px 7px 10px !important;
 }
 
 #settings_menu_panes > div > table,
@@ -15381,14 +15393,14 @@ span.config_explanation > span.tooltip.from-above.leftie {
 
 #global_roles_list .greybox,
 .project_roles_list .greybox {
-    padding: 6px 10px !important;
-    margin-bottom: 12px !important;
+    padding: 6px 10px;
+    margin-bottom: 12px;
     line-height: 22px;
 }
 
 #global_roles_list .greybox .button-group,
 .project_roles_list .greybox .button-group {
-    margin-top: 0 !important;
+    margin-top: 0;
 }
 
 #global_roles_list .greybox .button-group a,
@@ -16106,17 +16118,6 @@ form > .config_header {
     margin-top: -2px;
 }
 
-#publish_tab_settings_pane #submit_settings_button,
-#publish_tab_import_pane #submit_import_button {
-    padding: 3px 23px !important;
-}
-
-#publish_tab_settings_pane .bluebox,
-#publish_tab_import_pane .bluebox {
-    height: 25px;
-    padding: 10px 10px 5px 10px !important;
-}
-
 #publish_tab_settings_pane > form > table {
     border-spacing: 0 5px;
 }
@@ -16126,26 +16127,6 @@ form > .config_header {
 }
 
 /* Email communication */
-
-#mailnotification_settings_container td {
-    padding: 2px !important;
-}
-
-#mailnotification_settings_container td > label {
-    padding: 0 !important;
-}
-
-#mailnotification_settings_container input[type=radio] {
-    margin-top: -2px;
-}
-
-#config_modules #submit_settings_button {
-    padding: 3px 23px !important;
-}
-
-#config_modules .bluebox {
-    padding: 10px;
-}
 
 #config_modules .bluebox .permission_list > ul {
     width: auto;

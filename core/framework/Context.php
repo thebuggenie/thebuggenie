@@ -913,6 +913,7 @@ class Context
     {
         $theme_path_handle = opendir(THEBUGGENIE_PATH . 'themes' . DS);
         $themes = array();
+        $parser = new TextParserMarkdown();
 
         while ($theme = readdir($theme_path_handle))
         {
@@ -923,7 +924,7 @@ class Context
                     'name' => ucfirst($theme),
                     'version' => file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'VERSION'),
                     'author' => file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'AUTHOR'),
-                    'description' => TextParserMarkdown::defaultTransform(file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'README.md'))
+                    'description' => $parser->transform(file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'README.md'))
                 );
             }
         }
