@@ -41,7 +41,8 @@
             <?php endif; ?>
         </td>
     </tr>
-<?php elseif ($item->getTargetType() == LogItem::TYPE_ISSUE && $item->getIssue() instanceof Issue && !($item->getIssue()->isDeleted()) && $item->getIssue()->hasAccess()): ?>
+<?php elseif ($item->getTargetType() == LogItem::TYPE_ISSUE && $item->getIssue() instanceof Issue): ?>
+    <?php if ($item->getIssue()->hasAccess() && !($item->getIssue()->isDeleted())): ?>
     <tr>
         <td class="imgtd"<?php if (!isset($include_issue_title) || $include_issue_title): ?> style="padding-top: <?php echo (isset($extra_padding) && $extra_padding) ? 10 : 3; ?>px;"<?php endif; ?>>
             <?php if (!isset($include_issue_title) || $include_issue_title): ?>
@@ -90,6 +91,7 @@
             </div>
         </td>
     </tr>
+    <?php endif; ?>
 <?php else: ?>
     <?php var_dump($item); ?>
 <?php endif; ?>
