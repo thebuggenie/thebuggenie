@@ -6517,12 +6517,12 @@
                 $mark_todo_index_nth = 0;
 
                 foreach ($this->getTodos()['issue'] as $todo_index => $todo) {
-                    if ($todo === $mark_todo && $todo_index != $mark_todo_index) {
+                    if ($todo['text'] === $mark_todo && $todo_index != $mark_todo_index) {
                         $mark_todo_index_nth++;
                         continue;
                     }
 
-                    if ($todo !== $mark_todo || $todo_index != $mark_todo_index) {
+                    if ($todo['text'] !== $mark_todo || $todo_index != $mark_todo_index) {
                         continue;
                     }
 
