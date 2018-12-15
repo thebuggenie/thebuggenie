@@ -22,7 +22,7 @@
                            '<?php echo $todo_key; ?>');"
                    class="image todo-mark-done"
                    title="<?php echo __('Click to mark todo item as not done'); ?>">
-                <?php echo fa_image_tag('square', [], 'far'); ?>
+                <?php echo fa_image_tag('check-square', [], 'far'); ?>
               </a>
             <?php else: ?>
                 <a href="javascript:void(0);"
