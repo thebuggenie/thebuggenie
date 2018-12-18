@@ -1090,6 +1090,14 @@
                 framework\Logging::log('done checking, allowed since this user is in same group as user that posted it');
                 return true;
             }
+            if ($user->hasPermission('canseeallissues', $this->getProjectID(), 'core') === true)
+            {
+
+                if ($this->getProject()->hasAccess($user)) {
+                    framework\Logging::log('done checking, allowed since this user may see all issues in this project');
+                    return true;
+                }
+            }
             if ($user->hasPermission('canseeallissues', 0, 'core') === false)
             {
                 framework\Logging::log('done checking, not allowed to access issues not posted by themselves');
