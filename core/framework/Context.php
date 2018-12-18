@@ -1628,7 +1628,6 @@ class Context
             $i18n = self::getI18n();
             self::$_available_permissions = array('user' => array(), 'general' => array(), 'project' => array());
 
-            self::$_available_permissions['user']['canseeallissues'] = array('description' => $i18n->__('Can see issues reported by other users'), 'mode' => 'permissive');
             self::$_available_permissions['user']['canseegroupissues'] = array('description' => $i18n->__('Can see issues reported by users in the same group'), 'mode' => 'permissive');
             self::$_available_permissions['configuration']['cansaveconfig'] = array('description' => $i18n->__('Can access the configuration page and edit all configuration'), 'details' => array());
             self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Settings" configuration page'), 'target_id' => 12));
@@ -1665,6 +1664,7 @@ class Context
             self::$_available_permissions['pages']['page_account_access']['details']['canchangepassword'] = array('description' => $i18n->__('Can change own password'), 'mode' => 'permissive');
             self::$_available_permissions['pages']['page_teamlist_access'] = array('description' => $i18n->__('Can see list of teams in header menu'));
             self::$_available_permissions['pages']['page_clientlist_access'] = array('description' => $i18n->__('Can access all clients'));
+            self::$_available_permissions['project']['canseeallissues'] = array('description' => $i18n->__('Can see issues reported by other users'), 'mode' => 'permissive');
             self::$_available_permissions['project']['canseeproject'] = array('description' => $i18n->__('Has access to the project'), 'details' => array());
             self::$_available_permissions['project']['canseeproject']['details']['canseeprojecthierarchy'] = array('description' => $i18n->__('Can see complete project hierarchy'));
             self::$_available_permissions['project']['canseeproject']['details']['canseeprojecthierarchy']['details']['canseeallprojecteditions'] = array('description' => $i18n->__('Can see all editions'));
