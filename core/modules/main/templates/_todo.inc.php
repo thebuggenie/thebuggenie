@@ -43,7 +43,7 @@
             <?php endif; ?>
         </span>
         <span id="<?php echo $todo_key; ?>_name"><?php echo tbg_parse_text($todo['text']); ?></span>
-        <?php if ((!$comment_id && $issue->canEditDescription()) || ($comment instanceof \thebuggenie\core\entities\Comment && $comment->canUserEditComment())): ?>
+        <?php if ((!$comment_id && $issue->canEditDescription()) || (isset($comment) && $comment instanceof \thebuggenie\core\entities\Comment && $comment->canUserEditComment())): ?>
             <?php echo javascript_link_tag(
                 image_tag('icon_delete.png'), [
                     'onclick' => "TBG.Main.Helpers.Dialog.show('"
