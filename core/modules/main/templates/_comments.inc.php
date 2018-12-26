@@ -34,7 +34,9 @@
     </div>
 <?php endif; ?>
 <div class="faded_out comments_none" id="comments_none" <?php if (\thebuggenie\core\entities\Comment::countComments($target_id, $target_type) != 0): ?>style="display: none;"<?php endif; ?>><?= __('There are no comments'); ?></div>
-<div class="initial-placeholder" <?php if (\thebuggenie\core\entities\Comment::countComments($target_id, $target_type) == 0): ?>style="display: none;"<?php endif; ?>><span><?= fa_image_tag('check-circle', ['class' => 'icon'], 'far'); ?><span><?= __('Issue created'); ?></span></span></div>
+<?php if ($target_type == \thebuggenie\core\entities\Comment::TYPE_ISSUE): ?>
+    <div class="initial-placeholder" <?php if (\thebuggenie\core\entities\Comment::countComments($target_id, $target_type) == 0): ?>style="display: none;"<?php endif; ?>><span><?= fa_image_tag('check-circle', ['class' => 'icon'], 'far'); ?><span><?= \thebuggenie\core\entities\Comment::getPlaceholderTextForType($target_type); ?></span></span></div>
+<?php endif; ?>
 <div id="comments_box">
     <?php include_component('main/commentlist', compact('comment_count_div', 'mentionable_target_type', 'target_type', 'target_id', 'issue')); ?>
 </div>

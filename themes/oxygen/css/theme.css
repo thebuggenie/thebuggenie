@@ -1636,6 +1636,7 @@ footer img {
 }
 
 .dropper_container .dropper {
+    text-transform: none;
     cursor: pointer;
     color: #555;
     margin-right: 7px;
@@ -5501,9 +5502,11 @@ input.padded {
 .viewissue_comments_header {
     line-height: 2em;
     padding: 5px 0;
-    position: relative;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(200, 200, 200, .3);
+    display: inline-block;
+    position: absolute;
+    right: 10px;
+    transform: translateY(-100%);
+    border-bottom: none;
     text-align: right;
 }
 #issue_main .viewissue_comments_header .button_container .button {

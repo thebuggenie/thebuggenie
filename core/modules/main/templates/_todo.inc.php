@@ -1,4 +1,13 @@
-<?php $comment_id = (isset($comment) && $comment instanceof \thebuggenie\core\entities\Comment) ? $comment->getId() : 0; ?>
+<?php
+
+/**
+ * @var \thebuggenie\core\entities\Comment $comment
+ * @var \thebuggenie\core\entities\Issue $issue
+ */
+
+    $comment_id = (isset($comment) && $comment instanceof \thebuggenie\core\entities\Comment) ? $comment->getId() : 0;
+
+?>
 <li class="todo" id="item_option_<?php echo $todo_key; ?>" style="clear: both;">
     <div id="item_option_<?php echo $todo_key; ?>_content">
         <span id="todo_<?php echo $todo_key; ?>_mark_wrapper">

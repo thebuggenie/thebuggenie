@@ -157,6 +157,20 @@
 
         protected $_parser = null;
 
+        public static function getPlaceholderTextForType($target_type)
+        {
+            $i18n = framework\Context::getI18n();
+
+            switch ($target_type) {
+                case self::TYPE_ISSUE:
+                    return $i18n->__('Issue created');
+                case self::TYPE_COMMIT:
+                    return $i18n->__('Commit pushed');
+                case self::TYPE_ARTICLE:
+                    return $i18n->__('Article created');
+            }
+        }
+
         /**
          * Returns all comments for a given item
          *
