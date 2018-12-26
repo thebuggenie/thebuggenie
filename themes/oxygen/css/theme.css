@@ -1090,6 +1090,10 @@ input[type=checkbox].semi-checked {
 .project-context.page-livelink_project_commit #content_container {
     flex-direction: column;
 }
+.project-context.page-agile_board .project_info_container .project_right_container,
+.project-context.page-agile_whiteboard .project_info_container .project_right_container {
+    max-width: none;
+}
 
 .side_bar {
     flex: 0 0 310px;
@@ -14901,6 +14905,9 @@ table.sortable tr th.nosort {
 .message-box .actions .button {
     padding: 4px 7px;
 }
+.message-box .command_box {
+    font-size: .85em;
+}
 
 .greenbox {
     background-color: rgba(177, 210, 143, 0.3);
@@ -16158,6 +16165,11 @@ form > .config_header {
 
 #mailnotification_settings_container > table {
     border-spacing: 0 5px;
+}
+
+#config_modules #modules_menu_panes .message-box.type-warning {
+    margin: 10px 0;
+    width: 100%;
 }
 
 /* Project settings */

@@ -2,11 +2,11 @@
 
     namespace thebuggenie\core\entities;
 
-    use b2db\Update;
-    use thebuggenie\core\entities\common\IdentifiableScoped;
-    use thebuggenie\core\entities\tables\Modules;
-    use thebuggenie\core\entities\tables\Settings;
-    use thebuggenie\core\framework;
+    use b2db\Update,
+        thebuggenie\core\entities\common\IdentifiableScoped,
+        thebuggenie\core\entities\tables\Modules,
+        GuzzleHttp\Client as GuzzleClient,
+        thebuggenie\core\framework;
 
     /**
      * Module class, extended by all thebuggenie modules
@@ -487,24 +487,27 @@
         {
             try
             {
-                if (!framework\Settings::getLicenseIdentifier()) {
+                if (!framework\Settings::hasLicenseIdentifier()) {
                     throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::MISSING_LICENSE);
                 }
 
-                $client = new \Net_Http_Client();
-                $client->get('https://thebuggenie.com/'.$plugin_type.'s/'.$plugin_key . '.json');
-                $plugin_json = json_decode($client->getBody());
+                $client = new GuzzleClient(['base_uri' => 'https://thebuggenie.com']);
+                $response = $client->get('/' . $plugin_type . 's/' . $plugin_key . '.json?license_key=' . framework\Settings::getLicenseIdentifier());
+
+                if ($response->getStatusCode() === 200) {
+                    $plugin_json = json_decode($response->getBody());
+                }
             }
             catch (\Exception $e) {}
 
             if (isset($plugin_json) && $plugin_json !== false) {
                 $filename = THEBUGGENIE_CACHE_PATH . $plugin_type . '_' . $plugin_json->key . '.zip';
-                $client->get($plugin_json->download);
-                if ($client->getResponse()->getStatus() != 200)
+                $response = $client->get($plugin_json->download);
+                if ($response->getStatusCode() != 200)
                 {
                     throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::JSON_NOT_FOUND);
                 }
-                file_put_contents($filename, $client->getBody());
+                file_put_contents($filename, $response->getBody());
                 $module_zip = new \ZipArchive();
                 $module_zip->open($filename);
                 switch ($plugin_type) {
@@ -515,9 +518,11 @@
                         $target_folder = THEBUGGENIE_PATH . 'themes';
                         break;
                 }
+                if (!is_writable($target_folder)) {
+                    throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::READONLY_TARGET);
+                }
                 $module_zip->extractTo(realpath($target_folder));
                 $module_zip->close();
-                unlink($filename);
             } else {
                 throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND);
             }

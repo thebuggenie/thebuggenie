@@ -453,6 +453,9 @@ class Main extends framework\Action
                                 case framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND:
                                     return $this->renderJSON(array('message' => $this->getI18n()->__('The module could not be downloaded')));
                                     break;
+                                case framework\exceptions\ModuleDownloadException::READONLY_TARGET:
+                                    return $this->renderJSON(array('title' => $this->getI18n()->__('Error extracting module zip'), 'message' => $this->getI18n()->__('Could not extract the module into the destination folder. Please check permissions.')));
+                                    break;
                             }
                         }
                         catch (\Exception $e)

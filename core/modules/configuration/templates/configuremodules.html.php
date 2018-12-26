@@ -63,7 +63,7 @@
                                 <p><?= __('This is a list of modules that are available in the modules folder, but not currently installed on this system.'); ?></p>
                                 <?php if (!$writable && $is_default_scope): ?>
                                     <div class="message-box type-warning" id="module_message_writable_failure">
-                                        <span class="message"><?= fa_image_tag('folder') . __('The modules folder (%modules_path) seems to not be writable. You may not be able to install new modules.', array('%modules_path' => THEBUGGENIE_MODULES_PATH)); ?></span>
+                                        <span class="message"><?= fa_image_tag('folder') . __('The modules folder %modules_path seems to not be writable. You may not be able to install new modules.', array('%modules_path' => '<span class="command_box">' . THEBUGGENIE_MODULES_PATH . '</span>')); ?></span>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -75,6 +75,11 @@
                         <?php endif; ?>
                     </div>
                     <div id="tab_install_pane" style="padding-top: 0; width: 100%; display: none;">
+                        <?php if (!$writable && $is_default_scope): ?>
+                            <div class="message-box type-warning" id="module_message_writable_failure">
+                                <span class="message"><?= fa_image_tag('folder') . __('The modules folder %modules_path seems to not be writable. You may not be able to install new modules.', array('%modules_path' => '<span class="command_box">' . THEBUGGENIE_MODULES_PATH . '</span>')); ?></span>
+                            </div>
+                        <?php endif; ?>
                         <div id="available_modules_loading_indicator"><?= image_tag('spinning_16.gif'); ?></div>
                         <div id="available_modules_container" class="available_plugins_container plugins-list">
 
