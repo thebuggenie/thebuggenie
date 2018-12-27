@@ -45,7 +45,7 @@
     <tr>
         <td class="imgtd"<?php if (!isset($include_issue_title) || $include_issue_title): ?> style="padding-top: <?php echo (isset($extra_padding) && $extra_padding) ? 10 : 3; ?>px;"<?php endif; ?>>
             <?php if (!isset($include_issue_title) || $include_issue_title): ?>
-                <?php echo fa_image_tag($item->getIssue()->getIssueType()->getFontAwesomeIcon()); ?>
+                <?php echo fa_image_tag($item->getIssue()->getIssueType()->getFontAwesomeIcon(), ['class' => 'issuetype-icon issuetype-' . $item->getIssue()->getIssueType()->getIcon(), 'title' => $item->getIssue()->getIssueType()->getName()]); ?>
             <?php endif; ?>
         </td>
         <td style="clear: both;<?php if (!isset($include_issue_title) || $include_issue_title): ?> padding-bottom: <?php echo (isset($extra_padding) && $extra_padding) ? 15 : 10; ?>px;<?php endif; ?>">

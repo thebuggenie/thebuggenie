@@ -49,10 +49,11 @@ if ($filter instanceof SearchFilter): ?>
                         <div class="interactive_values_container">
                             <ul class="interactive_menu_values">
                                 <?php foreach ($filter->getAvailableValues() as $issuetype): ?>
+                                    <?php /** @var \thebuggenie\core\entities\Issuetype $issuetype */ ?>
                                     <li data-value="<?= $issuetype->getID(); ?>" class="filtervalue<?php if ($filter->hasValue($issuetype->getID())) echo ' selected'; ?>">
                                         <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                                         <input type="checkbox" value="<?= $issuetype->getID(); ?>" name="filters_issuetype_value_<?= $issuetype->getID(); ?>" data-text="<?= __($issuetype->getName()); ?>" id="filters_issuetype_value_<?= $issuetype->getID(); ?>" <?php if ($filter->hasValue($issuetype->getID())) echo 'checked'; ?>>
-                                        <label for="filters_issuetype_value_<?= $issuetype->getID(); ?>"><?= __($issuetype->getName()); ?></label>
+                                        <label for="filters_issuetype_value_<?= $issuetype->getID(); ?>"><?= fa_image_tag($issuetype->getFontAwesomeIcon(), ['class' => 'issuetype-icon issuetype-' . $issuetype->getIcon()]) . __($issuetype->getName()); ?></label>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>

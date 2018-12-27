@@ -9710,6 +9710,47 @@ dl.info dt {
     background-color: rgba(221, 221, 221, 0.2);
 }
 
+.issuetype-icon,
+.interactive_menu .far.issuetype-icon,
+.interactive_menu .fas.issuetype-icon,
+.more_actions_dropdown .fas.issuetype-icon,
+#issue_details fieldset dd .fas.issuetype-icon {
+    color: #FFF;
+    border-radius: 3px;
+    padding: 4px;
+    font-size: .70rem;
+    border: none;
+    width: 15px;
+    text-align: center;
+    box-sizing: content-box;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.issuetype-icon.issuetype-bug_report {
+    background-color: rgba(96, 141, 0, .95);
+}
+.issuetype-icon.issuetype-developer_report {
+    background-color: rgba(126, 161, 0, .95);
+}
+.issuetype-icon.issuetype-feature_request {
+    background-color: rgba(191, 181, 0, .95);
+}
+.issuetype-icon.issuetype-idea {
+    background-color: rgba(220, 220, 100, .95);
+}
+.issuetype-icon.issuetype-enhancement {
+    background-color: #4E81AB;
+}
+.issuetype-icon.issuetype-documentation_request {
+    background-color: rgba(255, 185, 185, .6);
+}
+.issuetype-icon.issuetype-unknown {
+    background-color: rgba(255, 185, 185, .6);
+}
+.issuetype-icon.issuetype-task {
+    background-color: rgba(78, 129, 171, .5);
+}
+
 .milestone_box .milestone_issues li .issue_link, .milestone_box .milestone_issues li .issue_link:hover {
     display: block;
     float: none;
@@ -12412,11 +12453,11 @@ ul.files-list .action_D .filename {
 /* project timeline */
 .recent_activities td .time {
     font-size: 0.85em;
-    background-color: #E8F7DC;
+    background-color: rgba(200, 200, 200, .2);
     padding: 2px 4px;
     border-radius: 3px;
     margin-right: 3px;
-    color: #549024;
+    color: rgb(100, 100, 100);
 }
 
 #timeline {

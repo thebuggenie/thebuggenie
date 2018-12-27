@@ -30,7 +30,7 @@ foreach ($search_object->getIssues() as $issue):
 ?>
         <h5 class="<?php if ($search_object->getGroupby() == 'priority' && $issue->getPriority() instanceof \thebuggenie\core\entities\Priority) echo 'priority_' . $issue->getPriority()->getItemdata(); ?>">
             <?php if ($search_object->getGroupBy() == 'issuetype'): ?>
-                <?php echo fa_image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getFontAwesomeIcon() : 'file'), ['title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'))]); ?>
+                <?php echo fa_image_tag((($issue->hasIssueType()) ? $issue->getIssueType()->getFontAwesomeIcon() : 'question'), ['class' => (($issue->hasIssueType()) ? 'issuetype-icon issuetype-' . $issue->getIssueType()->getIcon() : 'issuetype-icon issuetype-unknown'),  'title' => (($issue->hasIssueType()) ? $issue->getIssueType()->getName() : __('Unknown issuetype'))]); ?>
             <?php elseif ($search_object->getGroupBy() == 'priority'): ?>
                 <?php echo fa_image_tag((($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getFontAwesomeIcon() : 'question'), ['title' => (($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getName() : __('Unknown priority'))], (($issue->getPriority() instanceof \thebuggenie\core\entities\Priority) ? $issue->getPriority()->getFontAwesomeIconStyle() : 'fas')); ?>
             <?php endif; ?>

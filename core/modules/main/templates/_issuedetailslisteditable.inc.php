@@ -24,7 +24,7 @@
                             <?php foreach ($issuetypes as $issuetype): ?>
                                 <li>
                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype', 'issuetype_id' => $issuetype->getID())); ?>', 'issuetype');">
-                                        <?php echo fa_image_tag($issuetype->getFontAwesomeIcon()); ?>
+                                        <?php echo fa_image_tag($issuetype->getFontAwesomeIcon(), ['class' => 'issuetype-icon issuetype-' . $issuetype->getIcon()]); ?>
                                         <?php echo __($issuetype->getName()); ?>
                                     </a>
                                 </li>
@@ -33,7 +33,7 @@
                             <li id="issuetype_change_error" class="error_message" style="display: none;"></li>
                         </ul>
                     <?php endif; ?>
-                    <span id="issuetype_content"><?php if ($issue->hasIssueType()) echo __($issue->getIssueType()->getName()); ?></span>
+                    <span id="issuetype_content"><?php if ($issue->hasIssueType()) echo fa_image_tag($issue->getIssueType()->getFontAwesomeIcon(), ['class' => (($issue->hasIssueType()) ? 'issuetype-icon issuetype-' . $issue->getIssueType()->getIcon() : 'issuetype-icon issuetype-unknown')]) . __($issue->getIssueType()->getName()); ?></span>
                     <span class="faded_out" id="no_issuetype"<?php if ($issue->getIssueType() instanceof \thebuggenie\core\entities\Issuetype): ?> style="display: none;"<?php endif; ?>><?php echo __('Unknown issue type'); ?></span>
                 </dd>
             </dl>

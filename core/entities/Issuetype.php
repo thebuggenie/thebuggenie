@@ -215,23 +215,23 @@
         {
             switch ($this->getType()) {
                 case self::TYPE_BUG:
-                    return 'file-medical-alt';
+                    return 'bug';
                 case self::TYPE_DOCUMENTATION:
-                    return 'file-signature';
+                    return 'pen-alt';
                 case self::TYPE_ENHANCEMENT:
-                    return 'file-upload';
+                    return 'arrow-up';
                 case self::TYPE_EPIC:
-                    return 'file-invoice';
+                    return 'bookmark';
                 case self::TYPE_FEATURE:
-                    return 'file-medical';
+                    return 'certificate';
                 case self::TYPE_IDEA:
                     return 'lightbulb';
                 case self::TYPE_SUPPORT:
                     return 'headset';
                 case self::TYPE_TASK:
-                    return 'file-code';
+                    return 'check';
                 case self::TYPE_USER_STORY:
-                    return 'file-alt';
+                    return 'user-edit';
             }
         }
 
