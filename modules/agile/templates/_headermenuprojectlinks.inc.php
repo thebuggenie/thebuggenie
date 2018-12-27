@@ -1,6 +1,6 @@
 <?php if ($tbg_user->hasProjectPageAccess('project_planning', $project) || $tbg_user->hasProjectPageAccess('project_only_planning', $project)): ?>
     <li class="with-dropdown <?php if (in_array($tbg_response->getPage(), array('project_planning', 'agile_board', 'agile_whiteboard'))): ?> selected<?php endif; ?>">
-        <?php echo link_tag(make_url('agile_index', array('project_key' => $project->getKey())), fa_image_tag('trophy') . __('Agile') . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
+        <?php echo link_tag(make_url('agile_index', array('project_key' => $project->getKey())), fa_image_tag('calendar-check') . __('Planning & boards') . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
         <ul class="tab_menu_dropdown popup_box">
             <li><?php echo link_tag(make_url('agile_index', array('project_key' => $project->getKey())), fa_image_tag('cog') . __('Manage boards'), ((in_array($tbg_response->getPage(), array('project_planning'))) ? array('class' => 'selected') : array())); ?></li>
             <li class="header"><?php echo __('Project boards'); ?></li>

@@ -47,7 +47,7 @@ if ($item instanceof \thebuggenie\core\entities\LogItem) {
                 if ($item->hasChangeDetails()) {
                     $previous_value = ($item->getPreviousValue()) ? (($old_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getPreviousValue())) ? __($old_item->getName()) : __('Unknown')) : __('Not determined');
                     $new_value = ($item->getCurrentValue()) ? (($new_item = \thebuggenie\core\entities\Status::getB2DBTable()->selectById($item->getCurrentValue())) ? __($new_item->getName()) : __('Unknown')) : __('Not determined');
-                    echo __("Status changed from %previous_value to %new_value by  %who_value", ['%previous_value' => get_component_html('main/statusbadge', ['status' => $old_item]), '%new_value' => get_component_html('main/statusbadge', ['status' => $new_item]), '%who_value' => '<strong>' . $item->getUser() . '</strong>']);
+                    echo __("Status changed from %previous_value to %new_value by  %who_value", ['%previous_value' => get_component_html('main/statusbadge', ['status' => $old_item ?? null]), '%new_value' => get_component_html('main/statusbadge', ['status' => $new_item]), '%who_value' => '<strong>' . $item->getUser() . '</strong>']);
                 }
                 break;
             case LogItem::ACTION_ISSUE_UPDATE_RESOLUTION:
