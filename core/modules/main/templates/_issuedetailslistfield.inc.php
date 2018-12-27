@@ -24,7 +24,7 @@
                         <?php foreach ($info['choices'] as $choice): ?>
                             <?php if ($choice instanceof \thebuggenie\core\entities\DatatypeBase && !$choice->canUserSet($tbg_user)) continue; ?>
                             <li>
-                                <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');">
+                                <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_id' => $choice->getID())); ?>', '<?php echo $field; ?>');" <?php if ($choice instanceof \thebuggenie\core\entities\Priority): ?>class="priority priority_<?= $choice->getValue(); ?>"<?php endif; ?>>
                                     <?php if ($choice->getFontAwesomeIcon()): ?>
                                         <?php echo fa_image_tag($choice->getFontAwesomeIcon(), [], $choice->getFontAwesomeIconStyle()).__($choice->getName()); ?>
                                     <?php elseif (isset($info['fa_icon'])): ?>

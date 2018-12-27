@@ -364,8 +364,6 @@ class Upgrade
         tables\CommitFileDiffs::getTable()->create();
         $this->cliEchoCreateTable(tables\IssueCommits::getTable());
         tables\IssueCommits::getTable()->create();
-        $this->cliEchoCreateTable(tables\IssueFiles::getTable());
-        tables\IssueFiles::getTable()->create();
         $this->cliEchoCreateTable(tables\LivelinkImports::getTable());
         tables\LivelinkImports::getTable()->create();
 
