@@ -254,7 +254,7 @@
          */
         public static function saveSetting($name, $value, $module = 'core', $scope = 0, $uid = 0)
         {
-            if ($scope == 0 && $name != 'defaultscope' && $module == 'core')
+            if ($scope == 0 && $name != 'defaultscope' && $module == 'core' && $uid == 0)
             {
                 if (($scope = Context::getScope()) instanceof Scope)
                 {
