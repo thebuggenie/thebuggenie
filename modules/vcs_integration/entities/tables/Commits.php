@@ -54,7 +54,7 @@
          */
         public function getCommitsByProject($id, $limit = 40, $offset = null, $branch = null, $gitlab_repos_nss = null)
         {
-            $query = new Criteria();
+            $query = $this->getQuery();
 
             $query->where(self::PROJECT_ID, $id);
             $query->addOrderBy(self::DATE, \b2db\QueryColumnSort::SORT_DESC);
@@ -98,7 +98,7 @@
          */
         public function getCommitByCommitId($id, $project)
         {
-            $query = new Criteria();
+            $query = $this->getQuery();
 
             $query->where(self::NEW_REV, $id);
             $query->where(self::PROJECT_ID, $project);
@@ -113,7 +113,7 @@
          */
         public function isProjectCommitProcessed($id, $project)
         {
-            $query = new Criteria();
+            $query = $this->getQuery();
 
             $query->where(self::NEW_REV, $id);
             $query->where(self::PROJECT_ID, $project);
