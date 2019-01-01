@@ -54,7 +54,7 @@
                     }
 
                 ?><br>
-                <?php echo __('See more formatting tips in %markdown_formatting.', array('%markdown_formatting' => '<a href="issues.thebuggenie.com/wiki/MarkdownFormatting" target="_new" tabindex="-1">MarkdownFormatting</a>')); ?>
+                <?php echo __('See more formatting tips in %markdown_formatting.', array('%markdown_formatting' => '<a href="https://issues.thebuggenie.com/wiki/MarkdownFormatting" target="_new" tabindex="-1">MarkdownFormatting</a>')); ?>
             </p>
             <p class="syntax_md_hint hint_container">
                 <?php
@@ -83,7 +83,7 @@
                     }
 
                 ?><br>
-                <?php echo __('See more formatting tips in %markdown_formatting.', array('%markdown_formatting' => '<a href="issues.thebuggenie.com/wiki/MarkdownFormatting" target="_new" tabindex="-1">MarkdownFormatting</a>')); ?>
+                <?php echo __('See more formatting tips in %markdown_formatting.', array('%markdown_formatting' => '<a href="https://issues.thebuggenie.com/wiki/MarkdownFormatting" target="_new" tabindex="-1">MarkdownFormatting</a>')); ?>
             </p>
             <p class="syntax_mw_hint hint_container">
                 <?php
