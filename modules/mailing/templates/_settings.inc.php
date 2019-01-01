@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <td style="padding: 5px;"><label for="from_address"><?php echo __('Issue tracker URL'); ?></label></td>
-                <td><input type="text" name="cli_mailing_url" id="cli_mailing_url" value="<?php echo $module->getMailingUrl(); ?>" placeholder="<?php echo \thebuggenie\core\framework\Context::getScope()->getCurrentHostname(); ?>" style="width: 100%;"<?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
+                <td><input type="text" name="cli_mailing_url" id="cli_mailing_url" value="<?php echo $module->getMailingUrl(); ?>" placeholder="<?php echo __('e.g.: %example', ['%example' => \thebuggenie\core\framework\Context::getScope()->getCurrentHostname()]); ?>" style="width: 100%;"<?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
             </tr>
             <tr>
                 <td class="config_explanation" colspan="2">
