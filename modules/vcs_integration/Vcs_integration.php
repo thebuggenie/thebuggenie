@@ -148,7 +148,7 @@
 
         protected function _getCommitLink($commit)
         {
-            return '<a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show(\''.make_url('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $commit->getID())).'\');">'.$commit->getRevisionString().'</a>';
+            return '<a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show(\''.framework\Context::getRouting()->generate('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $commit->getID())).'\');">'.$commit->getRevisionString().'</a>';
         }
 
         public function _parse_commit($matches)
@@ -234,7 +234,7 @@
 
             switch ($event->getSubject()->getNotificationType()) {
                 case self::NOTIFICATION_COMMIT_MENTIONED:
-                    $event->setReturnValue(make_url('get_partial_for_backdrop', array(
+                    $event->setReturnValue(framework\Context::getRouting()->generate('get_partial_for_backdrop', array(
                         'key' => 'vcs_integration_getcommit', 'commit_id' => $event->getSubject()
                           ->getTargetID()
                       )));
