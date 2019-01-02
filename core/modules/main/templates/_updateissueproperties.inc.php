@@ -19,7 +19,7 @@
 <?php endif; ?>
         <div id="backdrop_detail_content" class="backdrop_detail_content">
             <?php if (!$issue instanceof \thebuggenie\core\entities\Issue): ?>
-            <div class="rounded_box yellow borderless"><?= __('This transition will be applied to %count selected issues', array('%count' => count($issues))); ?></div>
+                <div class="message-box type-info"><?= fa_image_tag('info-circle') . __('This transition will be applied to %count selected issues', array('%count' => count($issues))); ?></div>
             <?php endif; ?>
             <ul class="simple_list">
                 <?php if ((($issue instanceof \thebuggenie\core\entities\Issue && $issue->isUpdateable() && $issue->canEditAssignee()) || isset($issues)) && $transition->hasAction(\thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE) && !$transition->getAction(\thebuggenie\core\entities\WorkflowTransitionAction::ACTION_ASSIGN_ISSUE)->hasTargetValue()): ?>
@@ -45,26 +45,30 @@
                 <?php endif; ?>
                 <?php if (($issue instanceof \thebuggenie\core\entities\Issue && ($issue->isUpdateable() && !$issue->isDuplicate()) || isset($issues)) && $transition->hasAction(\thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_DUPLICATE)): ?>
                     <li class="duplicate_search">
-                        <label for="viewissue_find_issue_<?= $transition->getID(); ?>_input"><?= __('Find issue(s)'); ?>&nbsp;</label>
-                        <input type="text" name="searchfor" id="viewissue_find_issue_<?= $transition->getID(); ?>_input">
-                        <input class="button button-blue" type="button" onclick="TBG.Issues.findDuplicate($('duplicate_finder_transition_<?= $transition->getID(); ?>').getValue(), <?= $transition->getID(); ?>);return false;" value="<?= __('Find'); ?>" id="viewissue_find_issue_<?= $transition->getID(); ?>_submit">
-                        <?= image_tag('spinning_20.gif', array('id' => 'viewissue_find_issue_'.$transition->getID().'_indicator', 'style' => 'display: none;')); ?><br>
-                        <div id="viewissue_<?= $transition->getID(); ?>_duplicate_results"></div>
-                        <input type="hidden" name="transition_duplicate_ulr[<?= $transition->getID(); ?>]" id="duplicate_finder_transition_<?= $transition->getID(); ?>" value="<?= make_url('viewissue_find_duplicated_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID())); ?>">
-                        <?php if (!$issue instanceof \thebuggenie\core\entities\Issue): ?>
-                        <script type="text/javascript">
-                            var transition_id = <?= $transition->getID(); ?>;
-                            $('viewissue_find_issue_' + transition_id + '_input').observe('keypress', function(event) {
-                                if (event.keyCode == Event.KEY_RETURN) {
-                                    TBG.Issues.findDuplicate($('duplicate_finder_transition_' + transition_id).getValue(), transition_id);
-                                    event.stop();
-                                }
-                            });
-                        </script>
+                        <?php if ($issue instanceof \thebuggenie\core\entities\Issue): ?>
+                            <label for="viewissue_find_issue_<?= $transition->getID(); ?>_input"><?= __('Find issue(s)'); ?>&nbsp;</label>
+                            <input type="text" name="searchfor" id="viewissue_find_issue_<?= $transition->getID(); ?>_input">
+                            <input class="button button-blue" type="button" onclick="TBG.Issues.findDuplicate($('duplicate_finder_transition_<?= $transition->getID(); ?>').getValue(), <?= $transition->getID(); ?>);return false;" value="<?= __('Find'); ?>" id="viewissue_find_issue_<?= $transition->getID(); ?>_submit">
+                            <?= image_tag('spinning_20.gif', array('id' => 'viewissue_find_issue_'.$transition->getID().'_indicator', 'style' => 'display: none;')); ?><br>
+                            <div id="viewissue_<?= $transition->getID(); ?>_duplicate_results"></div>
+                            <input type="hidden" name="transition_duplicate_ulr[<?= $transition->getID(); ?>]" id="duplicate_finder_transition_<?= $transition->getID(); ?>" value="<?= make_url('viewissue_find_duplicated_issue', array('project_key' => $project->getKey(), 'issue_id' => $issue->getID())); ?>">
+                            <?php if (!$issue instanceof \thebuggenie\core\entities\Issue): ?>
+                                <script type="text/javascript">
+                                    var transition_id = <?= $transition->getID(); ?>;
+                                    $('viewissue_find_issue_' + transition_id + '_input').observe('keypress', function(event) {
+                                        if (event.keyCode == Event.KEY_RETURN) {
+                                            TBG.Issues.findDuplicate($('duplicate_finder_transition_' + transition_id).getValue(), transition_id);
+                                            event.stop();
+                                        }
+                                    });
+                                </script>
+                            <?php endif; ?>
+                            <div class="faded_out">
+                                <?= __('If you want to mark this issue as duplicate of another, existing issue, find the issue by entering details to search for, in the box above.'); ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="message-box type-warning"><?= fa_image_tag('info-circle') . __('Duplicate search is not available when applying a transition to multiple issues'); ?></div>
                         <?php endif; ?>
-                        <div class="faded_out">
-                            <?= __('If you want to mark this issue as duplicate of another, existing issue, find the issue by entering details to search for, in the box above.'); ?>
-                        </div>
                     </li>
                 <?php endif; ?>
                 <?php if (($issue instanceof \thebuggenie\core\entities\Issue && ($issue->isUpdateable() && $issue->canEditStatus()) || isset($issues)) && $transition->hasAction(\thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS) && !$transition->getAction(\thebuggenie\core\entities\WorkflowTransitionAction::ACTION_SET_STATUS)->hasTargetValue()): ?>
