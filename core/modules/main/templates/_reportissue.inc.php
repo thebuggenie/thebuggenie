@@ -232,8 +232,8 @@
             <?php foreach ($issuetypes as $issuetype): ?>
                 <?php if (!$selected_project->getIssuetypeScheme()->isIssuetypeReportable($issuetype)) continue; ?>
                 <?php if (isset($board) && $issuetype->getID() == $board->getEpicIssuetypeID()) continue; ?>
-                <a class="button button-silver" data-key="<?= $issuetype->getKey(); ?>" data-id="<?= $issuetype->getID(); ?>" href="javascript:void(0);">
-                    <?= fa_image_tag($issuetype->getFontAwesomeIcon()); ?>
+                <a class="button button-silver button-report-issue" data-key="<?= $issuetype->getKey(); ?>" data-id="<?= $issuetype->getID(); ?>" href="javascript:void(0);">
+                    <?= fa_image_tag($issuetype->getFontAwesomeIcon(), ['class' => 'issuetype-icon issuetype-' . $issuetype->getType()]); ?>
                     <span><?= __('Choose %issuetype_name', array('%issuetype_name' => '<br>'.$issuetype->getName())); ?></span>
                 </a>
             <?php endforeach; ?>

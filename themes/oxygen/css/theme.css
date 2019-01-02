@@ -5025,18 +5025,12 @@ a.friend {
     margin: 10px;
     font-size: 1.5em;
     font-weight: 500;
-    padding: 15px !important;
-    text-align: center;
-    min-width: 320px;
+    padding: 15px 15px 15px 75px;
+    text-align: left;
+    min-width: 275px;
 }
 
-.issuetype_list .button img {
-    float: left;
-    clear: none;
-    margin: 0 10px 0 0;
-}
-
-.issuetype_list .button span, .issuetype_list .button:hover span {
+.issuetype_list .button a > span:not(.issuetype-icon), .issuetype_list .button:hover a > span :not(.issuetype-icon) {
     padding: 5px 0;
     text-align: left;
     width: auto;
@@ -9725,6 +9719,7 @@ dl.info dt {
     box-sizing: content-box;
     margin-right: 5px;
     vertical-align: middle;
+    text-shadow: none;
 }
 .issuetype-icon.issuetype-bug_report {
     background-color: rgba(96, 141, 0, .95);
@@ -17944,6 +17939,9 @@ li.header div.user_avatar {
 /* Your account */
 
 #account_info_container #user_name_span {
+    font-weight: 300;
+}
+#account_info_container #user_name_span::first-line {
     font-weight: 500;
 }
 

@@ -139,7 +139,7 @@
         <span id="user_name_span">
             <?= $tbg_user->getRealname(); ?><br>
             <?php if (!$tbg_user->isOpenIdLocked()): ?>
-                <?= $tbg_user->getUsername(); ?>
+                @<?= $tbg_user->getUsername(); ?>
             <?php endif; ?>
         </span>
     </div>
