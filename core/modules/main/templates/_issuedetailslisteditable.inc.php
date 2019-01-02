@@ -686,7 +686,7 @@
         <div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($issue->getFiles()) + count($issue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
         <ul class="attached_items" id="viewissue_uploaded_links">
             <?php foreach ($issue->getLinks() as $link_id => $link): ?>
-                <?php include_component('attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link['id'])); ?>
+                <?php include_component('main/attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link['id'])); ?>
             <?php endforeach; ?>
         </ul>
         <ul class="attached_items" id="viewissue_uploaded_files">
