@@ -73,7 +73,7 @@
         /**
          * Return all issuetypes in the system
          *
-         * @return array An array of Issuetype objects
+         * @return IssueTypeScheme[] An array of Issuetype objects
          */
         public static function getAll()
         {
@@ -235,7 +235,7 @@
         /**
          * Get all steps in this issuetype
          *
-         * @return array An array of Issuetype objects
+         * @return IssueType[] An array of Issuetype objects
          */
         public function getIssuetypes()
         {

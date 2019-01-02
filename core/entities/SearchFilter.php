@@ -108,22 +108,31 @@
             switch ($type)
             {
                 case SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
-                    $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
-                    $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
-                    break;
                 case SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
-                    $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
+                    $types = array();
+                    foreach (framework\Context::getCurrentProject()->getIssuetypeScheme()->getIssuetypes() as $issuetype)
+                    {
+                        if (in_array($issuetype->getType(), [Issuetype::TYPE_BUG, Issuetype::TYPE_TASK])) {
+                            $types[] = $issuetype->getID();
+                        }
+                    }
+                    if (count($types))
+                    {
+                        $filters['issuetype'] = self::createFilter('issuetype', array('operator' => '=', 'value' => join(',', $types)));
+                    }
+                    if ($type == SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS) {
+                        $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
+                    }
                     break;
                 case SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
-                    $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
-                    $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
-                    break;
                 case SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
-                    $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
+                    if ($type == SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS) {
+                        $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
+                    }
                     break;
                 case SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
@@ -136,7 +145,7 @@
                     }
                     if (count($types))
                     {
-                        $filters['issuetype'] = self::createFilter('issuetype', array('operator' => '=', 'value' => join(',', $types)));
+                        $filters['issuetype'] = self::createFilter('issuetype', array('operator' => '=', 'value' => implode(',', $types)));
                     }
                     break;
                 case SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_TIMEUNITS:

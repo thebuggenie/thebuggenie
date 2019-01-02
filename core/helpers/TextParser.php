@@ -470,6 +470,7 @@
 
             if (in_array(mb_strtolower($namespace), array('image', 'file')))
             {
+                framework\Context::loadLibrary('ui');
                 $retval = $namespace . ':' . $href;
                 if (!framework\Context::isCLI())
                 {
