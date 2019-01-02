@@ -133,7 +133,7 @@
                     $account->setKeepEmails($request['keepemail']);
                     $account->setServer($request['servername']);
                     $account->setUsername($request['username']);
-                    $account->setPassword($request['password']);
+                    $account->setPassword($request->getRawParameter('password'));
                     $account->setSSL((bool) $request['ssl']);
                     $account->setPreferHtml((bool) $request['prefer_html']);
                     $account->setIgnoreCertificateValidation((bool) $request['ignore_certificate_validation']);
