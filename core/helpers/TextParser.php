@@ -714,9 +714,14 @@
             if ($theIssue instanceof \thebuggenie\core\entities\Issue)
             {
                 $theIssueUrl = make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey()));
+                $urlPrefix = framework\Event::createNew('core', 'thebuggenie\core\framework\helpers\TextParser::_parseIssuelink::urlPrefix')->triggerUntilProcessed()->getReturnValue();
+
+                if ($urlPrefix) {
+                    $theIssueUrl = $urlPrefix . $theIssueUrl;
+                }
 
                 if ($markdown_format) {
-                    if ($classname != '') $classname = ' {.'.$classname.'}';
+                    if ($classname == 'closed') $classname = ' (' . __('Closed') . ')';
 
                     $output = "{$matches[1]}[{$matches[2]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\")$classname";
                 }

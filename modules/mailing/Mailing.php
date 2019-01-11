@@ -142,6 +142,7 @@
             framework\Event::listen('core', 'config.createuser.email', array($this, 'listen_configCreateuserEmail'));
             framework\Event::listen('core', 'config.createuser.save', array($this, 'listen_configCreateuserSave'));
             framework\Event::listen('core', 'mainActions::myAccount::saveNotificationSettings', array($this, 'listen_accountSaveNotificationSettings'));
+            framework\Event::listen('core', 'thebuggenie\core\framework\helpers\TextParser::_parseIssuelink::urlPrefix', array($this, 'listen_getMailingUrl'));
         }
 
         protected function _install($scope)
@@ -249,6 +250,12 @@
         {
             $url = framework\Context::getRouting()->generate($route, $parameters);
             return $this->getMailingUrl() . $url;
+        }
+
+        public function listen_getMailingUrl(framework\Event $event)
+        {
+            $event->setProcessed(true);
+            $event->setReturnValue($this->getMailingUrl());
         }
 
         public function getEmailTemplates($template, $parameters = array())
