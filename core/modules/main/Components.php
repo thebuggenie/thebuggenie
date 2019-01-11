@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\modules\main;
 
+    use thebuggenie\core\entities\Comment;
     use thebuggenie\core\entities\LogItem;
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
@@ -419,6 +420,11 @@
 
         public function componentLogitem()
         {
+        }
+
+        public function componentComments()
+        {
+            $this->comment_count = Comment::countComments($this->target_id, $this->target_type);
         }
 
         public function componentCommentitem()

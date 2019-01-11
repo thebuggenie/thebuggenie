@@ -259,7 +259,7 @@
 
         public function hasContent()
         {
-            return ($this->_content != '') ? true : false;
+            return (trim($this->_content) != '') ? true : false;
         }
 
         public function getContent()

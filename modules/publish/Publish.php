@@ -318,7 +318,7 @@
         public function listen_frontpageArticle(framework\Event $event)
         {
             $article = $this->getFrontpageArticle('main');
-            if ($article instanceof Article)
+            if ($article instanceof Article && $article->hasContent())
             {
                 framework\ActionComponent::includeComponent('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
             }
@@ -327,7 +327,7 @@
         public function listen_frontpageLeftmenu(framework\Event $event)
         {
             $article = $this->getFrontpageArticle('menu');
-            if ($article instanceof Article)
+            if ($article instanceof Article && $article->hasContent())
             {
                 framework\ActionComponent::includeComponent('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
             }

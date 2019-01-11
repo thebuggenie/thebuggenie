@@ -660,7 +660,11 @@
                                     case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
                                     case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
                                         $tbg_response->addJavascript('calendarview');
-                                        $value = ($info['name']) ? date('Y-m-d' . ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), $info['name']) : __('Not set');
+                                        if (is_numeric($info['name'])) {
+                                            $value = ($info['name']) ? date('Y-m-d' . ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), $info['name']) : __('Not set');
+                                        } else {
+                                            $value = $info['name'];
+                                        }
                                         ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span id="<?php echo $field; ?>_new_name" style="display: none;"><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
                                         break;
                                     default:
