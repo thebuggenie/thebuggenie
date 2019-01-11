@@ -194,7 +194,7 @@ foreach ($search_object->getIssues() as $issue):
                                 echo ($value instanceof \thebuggenie\core\entities\common\Identifiable) ? $value->getName() : '';
                                 break;
                             case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
-                                echo tbg_formatTime($value, 25);
+                                echo (is_numeric($value)) ? tbg_formatTime($value, 25) : $value;
                                 break;
                         }
                     ?></td>
