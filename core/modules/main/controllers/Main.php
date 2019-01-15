@@ -671,7 +671,7 @@ class Main extends framework\Action
      */
     public function runDashboard(framework\Request $request)
     {
-        $this->forward403unless(!$this->getUser()->isThisGuest() && $this->getUser()->hasPageAccess('dashboard'));
+        $this->forward403unless(!$this->getUser()->isGuest() && $this->getUser()->hasPageAccess('dashboard'));
         if (framework\Settings::isSingleProjectTracker())
         {
             if (($projects = entities\Project::getAll()) && $project = array_shift($projects))

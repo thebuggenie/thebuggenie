@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\SavedSearch;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -29,6 +30,11 @@
         const IS_PUBLIC = 'savedsearches.is_public';
         const UID = 'savedsearches.uid';
 
+        /**
+         * @param $user_id
+         * @param int $project_id
+         * @return SavedSearch[][]
+         */
         public function getAllSavedSearchesByUserIDAndPossiblyProjectID($user_id, $project_id = 0)
         {
             $query = $this->getQuery();
@@ -39,9 +45,10 @@
             $criteria->or(self::UID, 0);
             $query->and($criteria);
 
-            if ($project_id !== 0 )
-            {
+            if ($project_id !== 0) {
                 $query->where(self::APPLIES_TO_PROJECT, $project_id);
+            } else {
+                $query->where(self::APPLIES_TO_PROJECT, 0);
             }
 
             $retarr = array('user' => array(), 'public' => array());

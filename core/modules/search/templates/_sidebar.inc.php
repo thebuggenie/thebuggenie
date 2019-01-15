@@ -56,32 +56,24 @@
                             <?= link_tag(make_url('project_my_teams_assigned_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Open issues assigned to my teams')); ?><span class="num_results_badge">-</span>
                         </li>
                     <?php endif; ?>
-                <?php elseif (\thebuggenie\core\framework\Context::isProjectContext() || !$tbg_user->isGuest()): ?>
-                    <?php if (\thebuggenie\core\framework\Context::isProjectContext()): ?>
-                        <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH; ?>" style="clear: both;">
-                            <?= link_tag(make_url('project_month_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
-                            <?= link_tag(make_url('project_month_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey())), __('Issues reported this month')); ?><span class="num_results_badge">-</span>
+                <?php elseif (!$tbg_user->isGuest()): ?>
+                    <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES; ?>" style="clear: both;">
+                        <?= link_tag(make_url('my_reported_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
+                        <?= link_tag(make_url('my_reported_issues'), __('Issues reported by me')); ?><span class="num_results_badge">-</span>
+                    </li>
+                    <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES; ?>" style="clear: both;">
+                        <?= link_tag(make_url('my_assigned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
+                        <?= link_tag(make_url('my_assigned_issues'), __('Open issues assigned to me')); ?><span class="num_results_badge">-</span>
+                    </li>
+                    <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES; ?>" style="clear: both;">
+                        <?= link_tag(make_url('my_owned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
+                        <?= link_tag(make_url('my_owned_issues'), __('Open issues owned by me')); ?><span class="num_results_badge">-</span>
+                    </li>
+                    <?php if ($tbg_user->hasTeams()): ?>
+                        <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES; ?>" style="clear: both;">
+                            <?= link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
+                            <?= link_tag(make_url('my_teams_assigned_issues'), __('Open issues assigned to my teams')); ?><span class="num_results_badge">-</span>
                         </li>
-                    <?php endif; ?>
-                    <?php if (!$tbg_user->isGuest()): ?>
-                        <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES; ?>" style="clear: both;">
-                            <?= link_tag(make_url('my_reported_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
-                            <?= link_tag(make_url('my_reported_issues'), __('Issues reported by me')); ?><span class="num_results_badge">-</span>
-                        </li>
-                        <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES; ?>" style="clear: both;">
-                            <?= link_tag(make_url('my_assigned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
-                            <?= link_tag(make_url('my_assigned_issues'), __('Open issues assigned to me')); ?><span class="num_results_badge">-</span>
-                        </li>
-                        <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES; ?>" style="clear: both;">
-                            <?= link_tag(make_url('my_owned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
-                            <?= link_tag(make_url('my_owned_issues'), __('Open issues owned by me')); ?><span class="num_results_badge">-</span>
-                        </li>
-                        <?php if ($tbg_user->hasTeams()): ?>
-                            <li class="savedsearch-item" data-search-id="predefined_<?= \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES; ?>" style="clear: both;">
-                                <?= link_tag(make_url('my_teams_assigned_issues', array('format' => 'rss')), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'))); ?>
-                                <?= link_tag(make_url('my_teams_assigned_issues'), __('Open issues assigned to my teams')); ?><span class="num_results_badge">-</span>
-                            </li>
-                        <?php endif; ?>
                     <?php endif; ?>
                 <?php endif; ?>
             </ul>

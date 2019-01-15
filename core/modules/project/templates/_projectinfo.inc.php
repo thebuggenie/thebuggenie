@@ -86,7 +86,7 @@
         <td><label for="prefix"><?php echo __('Issue prefix'); ?></label></td>
         <td>
             <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                <input type="text" name="prefix" id="prefix" maxlength="5" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
+                <input type="text" name="prefix" id="prefix" maxlength="10" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
             <?php elseif ($project->hasPrefix()): ?>
                 <?php echo $project->getPrefix(); ?>
             <?php else: ?>

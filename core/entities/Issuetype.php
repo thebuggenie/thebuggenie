@@ -232,6 +232,8 @@
                     return 'check';
                 case self::TYPE_USER_STORY:
                     return 'user-edit';
+                default:
+                    return 'question';
             }
         }
 

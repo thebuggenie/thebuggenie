@@ -2173,7 +2173,6 @@ a.not_clickable:hover {
     width: 100%;
     box-sizing: border-box;
 }
-
 .header_menu .tab_menu_dropdown#issues_menu a {
     width: calc(100% - 10px);
     box-sizing: border-box;

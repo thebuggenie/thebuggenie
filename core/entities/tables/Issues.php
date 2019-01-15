@@ -1128,4 +1128,26 @@
             }
         }
 
+        /**
+         * @return Issue[]
+         */
+        public static function getSessionIssues()
+        {
+            static $issues;
+
+            if ($issues === null) {
+                $issues = [];
+                foreach ($_SESSION['viewissue_list'] as $issue_id) {
+                    try {
+                        $issue = \thebuggenie\core\entities\tables\Issues::getTable()->getIssueByID($issue_id);
+                        if ($issue instanceof \thebuggenie\core\entities\Issue) {
+                            $issues[$issue->getID()] = $issue;
+                        }
+                    } catch (\Exception $e) {}
+                }
+            }
+
+            return $issues;
+        }
+
     }

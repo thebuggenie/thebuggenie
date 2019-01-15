@@ -2,6 +2,15 @@
 
     use thebuggenie\core\framework;
 
+    /**
+     * @var \thebuggenie\core\entities\SavedSearch[][] $saved_searches
+     * @var framework\Response $tbg_response
+     * @var \thebuggenie\core\entities\User $tbg_user
+     */
+
+    $saved_searches = \thebuggenie\core\entities\tables\SavedSearches::getTable()->getAllSavedSearchesByUserIDAndPossiblyProjectID(framework\Context::getUser()->getID(), framework\Context::getCurrentProject()->getID());
+    $recent_issues = \thebuggenie\core\entities\tables\Issues::getSessionIssues();
+
 ?>
 <nav class="header_menu project_context" id="project_menu">
     <ul>
@@ -25,30 +34,29 @@
                         <li><?= link_tag(make_url('project_most_voted_issues', array('project_key' => framework\Context::getCurrentProject()->getKey())), fa_image_tag('search') . __('Most voted for issues')); ?></li>
                         <li><?= link_tag(make_url('project_month_issues', array('project_key' => framework\Context::getCurrentProject()->getKey())), fa_image_tag('search') . __('Issues reported this month')); ?></li>
                         <li><?= link_tag(make_url('project_last_issues', array('project_key' => framework\Context::getCurrentProject()->getKey(), 'units' => 30, 'time_unit' => 'days')), fa_image_tag('search') . __('Issues reported last 30 days')); ?></li>
+                        <li class="header"><?= __('Saved searches'); ?></li>
+                        <?php if (count($saved_searches['user']) + count($saved_searches['public'])): ?>
+                            <?php if (!$tbg_user->isGuest()): ?>
+                                <?php foreach ($saved_searches['user'] as $savedsearch): ?>
+                                    <li><?= link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->getID(), 'search' => true)), fa_image_tag('user', ['title' => __('This is a saved search only visible to you')], 'far') . __($savedsearch->getName())); ?></li>
+                                <?php endforeach; ?>
+                                <?php if (count($saved_searches['user']) && count($saved_searches['public'])): ?>
+                                    <li class="separator"></li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                            <?php foreach ($saved_searches['public'] as $savedsearch): ?>
+                                <li><?= link_tag(make_url('project_issues', array('project_key' => \thebuggenie\core\framework\Context::getCurrentProject()->getKey(), 'saved_search' => $savedsearch->getID(), 'search' => true)), fa_image_tag('search') . __($savedsearch->getName())); ?></li>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <li class="disabled"><?= __('No saved searches for this project'); ?></li>
+                        <?php endif; ?>
                     </ul>
                     <ul>
                         <li class="header"><?= __('Recently watched issues'); ?></li>
-                        <?php if (array_key_exists('viewissue_list', $_SESSION) && is_array($_SESSION['viewissue_list'])): ?>
-                            <?php foreach ($_SESSION['viewissue_list'] as $k => $i_id): ?>
-                                <?php
-                                try
-                                {
-                                    $an_issue = \thebuggenie\core\entities\tables\Issues::getTable()->getIssueById($i_id);
-                                    if (!$an_issue instanceof \thebuggenie\core\entities\Issue)
-                                    {
-                                        //unset($_SESSION['viewissue_list'][$k]);
-                                        continue;
-                                    }
-                                }
-                                catch (\Exception $e)
-                                {
-                                    //unset($_SESSION['viewissue_list'][$k]);
-                                }
-                                echo '<li>'.link_tag(make_url('viewissue', array('project_key' => $an_issue->getProject()->getKey(), 'issue_no' => $an_issue->getFormattedIssueNo())), $an_issue->getFormattedTitle(true, false), array('title' => $an_issue->getFormattedTitle(true, true))).'</li>';
-                                ?>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                        <?php if (!isset($an_issue)): ?>
+                        <?php foreach ($recent_issues as $issue): ?>
+                            <?php include_component('search/sessionissue', ['issue' => $issue]); ?>
+                        <?php endforeach; ?>
+                        <?php if (!count($recent_issues)): ?>
                             <li class="disabled" href="javascript:void(0);"><?= __('No recent issues'); ?></li>
                         <?php endif; ?>
                     </ul>

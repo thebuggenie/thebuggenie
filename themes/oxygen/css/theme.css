@@ -862,6 +862,23 @@ img.avatar {
 .header_menu > ul > li > a > .fas.dropdown-indicator, .header_menu > ul > li > a > .far.dropdown-indicator {
     margin: 0 0 0 .5em;
 }
+.header_menu > ul > li > div > ul > li > a > .additional_information {
+    display: block;
+    font-size: .9em;
+    padding-bottom: 3px;
+}
+.header_menu > ul > li > div > ul > li:hover > a > .additional_information .status_badge {
+    color: #4E81AB !important;
+    background-color: #FFF !important;
+    border-color: #FFF !important;
+}
+.header_menu > ul > li > div > ul > li:hover > a > .additional_information .priority {
+    color: #FFF !important;
+    background-color: transparent !important;
+}
+.header_menu > ul > li > div > ul > li > a span + span {
+    margin-left: .6em;
+}
 
 .reportissue_button_container {
     flex: 0 0 auto;
@@ -2309,6 +2326,13 @@ ul.tab_menu_dropdown, .tab_menu_dropdown ul {
 }
 .tab_menu_dropdown.two-columns.wide-right ul:last-child {
     min-width: 350px;
+}
+.tab_menu_dropdown.two-columns li {
+    padding: 0 3px;
+}
+.tab_menu_dropdown.two-columns li a {
+    padding: 3px 7px;
+    border-radius: 5px;
 }
 
 .tab_menu_dropdown li {
@@ -9663,10 +9687,12 @@ dl.info dt {
 .priority.priority_1 {
     color: #BF0303;
     font-style: normal;
+    font-weight: 500;
 }
 
 .priority.priority_2, .priority.priority_3 {
     color: #C39500;
+    font-weight: 500;
 }
 
 .priority.priority_4 {
@@ -9731,15 +9757,19 @@ dl.info dt {
     background-color: rgba(191, 181, 0, .95);
 }
 .issuetype-icon.issuetype-idea {
-    background-color: rgba(220, 220, 100, .95);
+    background-color: rgba(205, 218, 138, .6);
 }
 .issuetype-icon.issuetype-enhancement {
     background-color: #4E81AB;
 }
+.issuetype-icon.issuetype-epic {
+    background-color: rgba(16, 160, 238, .8);
+}
 .issuetype-icon.issuetype-documentation_request {
     background-color: rgba(255, 185, 185, .6);
 }
-.issuetype-icon.issuetype-unknown {
+.issuetype-icon.issuetype-unknown,
+.issuetype-icon.issuetype- {
     background-color: rgba(255, 185, 185, .6);
 }
 .issuetype-icon.issuetype-task {
