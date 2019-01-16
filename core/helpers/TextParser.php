@@ -547,7 +547,7 @@
                         {
                             $retval .= '<br>'.$caption;
                         }
-                        $retval .= link_tag($file_link, fa_image_tag('external-link-alt'), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open image in new window')));
+                        $retval .= link_tag($file_link, fa_image_tag('external-link-alt'), array('target' => 'new_window_'.rand(0, 10000), 'title' => framework\Context::getI18n()->__('Open image in new window')));
                         $retval .= '</div>';
                     }
                     else
@@ -556,10 +556,10 @@
                             $retval = $this->_parse_image($file_link, $caption, $options);
                         }
                         else if ($file_link == $filename) {
-                            $retval = $caption . fa_image_tag('calendar-times', ['title' => __('File no longer exists.')], 'far');
+                            $retval = $caption . fa_image_tag('calendar-times', ['title' => framework\Context::getI18n()->__('File no longer exists.')], 'far');
                         }
                         else {
-                            $retval = link_tag($file_link, $caption . fa_image_tag('external-link-alt'), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open file in new window')));
+                            $retval = link_tag($file_link, $caption . fa_image_tag('external-link-alt'), array('target' => 'new_window_'.rand(0, 10000), 'title' => framework\Context::getI18n()->__('Open file in new window')));
                         }
                     }
                 }
@@ -721,7 +721,7 @@
                 }
 
                 if ($markdown_format) {
-                    if ($classname == 'closed') $classname = ' (' . __('Closed') . ')';
+                    if ($classname == 'closed') $classname = ' (' . framework\Context::getI18n()->__('Closed') . ')';
 
                     $output = "{$matches[1]}[{$matches[2]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\")$classname";
                 }
