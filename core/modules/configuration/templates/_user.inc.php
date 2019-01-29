@@ -47,9 +47,7 @@
         <td>
             <textarea name="<?= \thebuggenie\core\framework\Settings::SETTING_REGISTRATION_DOMAIN_WHITELIST; ?>"
                    id="limit_registration"<?php if ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL): ?> disabled<?php endif; ?>
-                   style="width: 394px; height: 50px;">
-                   <?= \thebuggenie\core\framework\Settings::getRegistrationDomainWhitelist(); ?>
-            </textarea>
+                   style="width: 394px; height: 50px;"><?= \thebuggenie\core\framework\Settings::getRegistrationDomainWhitelist(); ?></textarea>
             <?= config_explanation(
                 __('Comma-separated list of allowed domains (ex: %example). Leave empty to allow all domains.', array('%example' => 'thebuggenie.com, zegeniestudios.net'))
             ); ?>

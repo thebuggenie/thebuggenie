@@ -1075,10 +1075,10 @@ class Main extends framework\Action
                     $email_ok = true;
                 }
 
-                if ($email_ok && framework\Settings::get('limit_registration') != '')
+                if ($email_ok && framework\Settings::hasRegistrationDomainWhitelist())
                 {
 
-                    $allowed_domains = preg_replace('/[[:space:]]*,[[:space:]]*/', '|', framework\Settings::get('limit_registration'));
+                    $allowed_domains = preg_replace('/[[:space:]]*,[[:space:]]*/', '|', framework\Settings::getRegistrationDomainWhitelist());
                     if (preg_match('/@(' . $allowed_domains . ')$/i', $email) == false)
                     {
                         array_push($fields, 'email_address', 'email_confirm');
