@@ -635,7 +635,7 @@
 
         public static function hasRegistrationDomainWhitelist()
         {
-            return (bool) trim(self::get(self::SETTING_REGISTRATION_DOMAIN_WHITELIST)) !== '';
+            return (trim(self::get(self::SETTING_REGISTRATION_DOMAIN_WHITELIST)) !== '');
         }
 
         public static function getDefaultGroupIDs()
