@@ -1,18 +1,31 @@
 <?php include_component('installation/header'); ?>
 <div class="installation_box">
+    <h2 style="margin-top: 0;">Database information</h2>
     <?php if (isset($error)): ?>
-        <div class="error">
-            An error occured when trying to validate the connection details:<br>
-            <?php echo $error; ?>
+        <div class="message-box type-error">
+            <?= fa_image_tag('exclamation-triangle'); ?>
+            <span class="message">
+                An error occured when trying to validate the connection details:<br>
+                <?php echo $error; ?>
+            </span>
         </div>
     <?php endif; ?>
     <?php if ($preloaded): ?>
-        <div class="ok">
-            It looks like you've already completed this step<br>
-            Please review the details and the click "Continue" to go the next step
+        <div class="message-box type-info">
+            <?= fa_image_tag('exclamation-circle'); ?>
+            <span class="message">
+                It looks like you've already completed this step<br>
+                Please review the details and the click "Continue" to go the next step
+            </span>
         </div>
     <?php endif; ?>
-    <h2 style="margin-top: 0;">Database information</h2>
+    <div class="message-box type-warning">
+        <?= fa_image_tag('exclamation-triangle'); ?>
+        <span class="message">
+            The installation routine will overwrite any pre-existing tables from previous installations, if pointed to an existing TBG database<br>
+            Pressing <b>Continue</b> on this page will write to your database.
+        </span>
+    </div>
     <p>The Bug Genie uses a database to store information. To be able to connect to - and store information in - your database, we need some connection information.<br>
     <form accept-charset="utf-8" action="index.php" method="post" id="database_connection">
         <input type="hidden" name="step" value="3">
@@ -73,11 +86,7 @@
                 <span class="helptext">The database used to store the bug genie tables <i>(must already exist!)</i></span>
             </dd>
         </dl>
-        <div class="message-box type-warning">
-            <span class="message"><?= fa_image_tag('exclamation-triangle'); ?>The installation routine will overwrite any pre-existing tables from previous installations, if pointed to an existing TBG database</span>
-        </div>
-        <div style="padding-top: 20px; clear: both; text-align: center;">
-            <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to test the database connection details</label>
+        <div style="clear: both; padding: 30px 0 15px 0; text-align: right;">
             <img src="images/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;">
             <input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
         </div>

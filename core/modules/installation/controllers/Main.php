@@ -376,7 +376,7 @@ class Main extends framework\Action
             {
                 if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') && !is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess')))
                 {
-                    $this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess';
+                    $this->htaccess_error = 'Permission denied when trying to save the file <span class="command_box">[main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess</span>';
                 }
                 else
                 {

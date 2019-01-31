@@ -30,8 +30,8 @@
         <style type="text/css">
             @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,700,700i|Fira+Mono:400,500,700&subset=cyrillic,cyrillic-ext,latin-ext');
 
-            body { font-size: 14px; }
-            body, html, div, p, td, input { font-family: "Source Sans Pro", arial; color: #555; }
+            body { overflow: hidden; }
+
             h1, h2, h3, h4, h5 { text-shadow: none; border-bottom: 1px dotted #CCC; text-transform: uppercase; font-weight: 400; color: #888; }
             h1 { font-size: 1.6em; }
             h2 { font-size: 1.4em; margin-bottom: 8px; }
@@ -42,20 +42,21 @@
             h2 .smaller { font-size: 0.9em; text-shadow: none; }
             label { vertical-align: middle; font-weight: 300; font-size: 1em; }
             label[for=agree_license] { font-size: 1.05em; display: inline-block; vertical-align: middle; font-weight: 400; }
-            .install_progress { font-weight: 300; border: 1px solid #DDD; padding: 3px; font-size: 1em; margin-bottom: 2px; width: 930px; background-color: #FDFDFD; }
-            .install_progress.prereq_fail:first-line { font-weight: 600; }
-            .install_progress img { float: right; vertical-align: middle; }
-            .progress_bar { display: block; width: 500px; position: relative; height: 20px; background-color: #F5F5F5; box-shadow: inset 0 0 3px rgba(100, 100, 100, 0.3); padding: 0; margin: 5px auto; border-radius: 0; }
-            .progress_bar .filler { background-color: rgba(133, 185, 0, 0.7); position: absolute; left: 0; top: 0; height: 19px; min-width: 20px; border-bottom: 1px solid rgba(165, 202, 72, 1); border-radius: 0; box-shadow: inset 3px 0 4px rgba(100, 100, 100, 0.3); }
-            .prereq_ok { border: 1px solid #aaC6aa; background-color: #CFE8CF; }
-            .prereq_fail { border: 1px solid #B76B6B; color: #FFF; font-size: 1em; background-color: #F38888; margin-top: 10px; }
-            .prereq_warn { border: 1px solid #FF9900; background-color: #FFFF99; font-size: 12px; }
-            .installation_box { padding: 3px 10px 10px 10px; width: 950px; margin-left: auto; margin-right: auto; margin-top: 15px; position: relative; font-size: 1em; line-height: 1.6; }
+            .installation_progress { display: block; margin: 0; }
+            .installation_progress h4 {
+                border: none;
+                text-align: center;
+                margin: 0;
+            }
+            .progress_bar { display: block; width: calc(100% - 30px); margin: 5px 15px; box-sizing: border-box; position: relative; height: 4px; background-color: rgba(78, 129, 171, .3); border-radius: 0; }
+            .progress_bar .filler { background-color: rgb(78, 129, 171); position: absolute; left: 0; top: 0; height: 4px; min-width: 5px; border-radius: 0; }
+            .installation_box { padding: 15px; position: relative; font-size: 1em; line-height: 1.6; }
             .installation_box dl { font-size: 1em; }
             .installation_box dl dd, .installation_box dl dt { vertical-align: middle; font-weight: 300; margin-left: 0; }
             .donate { border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 0; }
             .grey_box { border: 1px solid #DDD; background-color: #F5F5F5; }
             .command_box { border: 1px dashed #DDD; background-color: #F5F5F5; padding: 4px; font-family: 'Fira Mono', monospace; margin-top: 5px; margin-bottom: 15px; font-size: 0.9em; }
+            span.command_box { margin-top: 0; margin-bottom: 0; }
             .features { width: 400px; float: right; margin-left: 10px; }
             .feature { border: 1px solid #DDD; background-color: #F5F5F5; padding: 10px; margin-bottom: 5px; }
             .feature .description { background-color: #FFF; padding: 10px; }
@@ -84,26 +85,16 @@
             input[type=text].dsn { width: 400px; margin-top: -5px; }
             input[type=text].smallest { width: 50px; }
 
-            .footer_container { background-color: #F5F5F5; width: 100%; border-top: 1px solid #DDD; padding: 5px; text-shadow: 1px 1px 0px #FFF; }
-            .footer_container img { margin-right: 10px; }
             .padded_box { padding: 3px 10px 10px 10px; }
             .error { padding: 4px; border: 1px solid #B77; background-color: #FEE; color: #955; margin: 10px 0 10px 0; }
             .ok { padding: 4px; border: 1px solid #aaC6aa; background-color: #CFE8CF; margin: 10px 0 10px 0; }
             .error:first-line, .ok:first-line { font-weight: 600; }
-
-            .logo_small { font-size: 1.1em; color: white; white-space: nowrap; margin-top: 5px; display: inline-block; }
 
             fieldset { border: 1px solid #DDD; margin: 10px 0 10px 0; background-color: #F5F5F5; padding: 0 0 0 8px; }
             legend { font-weight: 300; font-size: 1.1em; color: #555; text-transform: uppercase; padding: 5px 10px; }
 
             ul.outlined { margin-top: 5px; }
             ul.outlined li { font-weight: 600; }
-
-            #logo_container { line-height: 1em; display: flex; padding: 10px; margin: 0; }
-            #logo_container .logo_image_container { flex: 0 0 55px; text-align: left;}
-            #logo_container .logo_name_container { flex: 1 1 auto; line-height: 1.1em; }
-            #logo_container .logo_name { font-size: 1.5em; display: block; color: #ECF0F4; margin: 0; }
-            #logo_container .logo_small { display: block; }
 
             .scope_upgrade { margin: 5px; padding: 0; font-size: 0.9em; }
             .scope_upgrade li { margin: 0; padding: 2px 0; list-style: none; display: inline-block; width: 450px; }
@@ -148,30 +139,86 @@
                 border: 1px solid #BEBEBE;
             }
 
-            .message-box {
+            .message-box,
+            .prereq {
                 display: flex;
-                width: calc(100% - 20px);
+                width: calc(100%);
+                flex-direction: row;
                 box-sizing: border-box;
-                margin: 10px;
+                margin: 0 0 10px 0;
                 padding: 10px;
                 border: 1px solid rgba(200, 200, 200, 0.7);
-                align-items: baseline;
+                align-items: center;
                 border-radius: 3px;
             }
-            .message-box.type-warning {
+            .message-box.with-solution {
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                margin-bottom: 0;
+                border-collapse: collapse;
+            }
+            .prereq {
+                margin: 2px;
+                padding: 5px 10px;
+            }
+            .message-box.type-error,
+            .prereq.type-fail {
+                background-color: rgba(205, 0, 0, 0.5);
+                color: #FFF;
+            }
+            .message-box.type-warning,
+            .prereq.type-warn {
                 background-color: rgba(249, 245, 178, 0.6);
             }
-            .message-box.type-info {
+            .message-box.type-info,
+            .prereq.type-ok {
                 background-color: rgba(177, 210, 143, 0.3);
+            }
+            .prereq + .message-box.type-solution {
+                margin: 0 2px 15px 2px;
+            }
+            .message-box.with-solution + .message-box.type-solution {
+                border-top: 0;
+                margin-top: 0;
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+            .message-box.type-solution {
+                background-color: #FFF;
+                display: block;
+                text-align: left;
+                padding: 10px;
+                vertical-align: middle;
+            }
+            .message-box ul {
+                margin: 0;
+                padding: 0;
+                display: block;
+            }
+            .message-box li {
+                margin: 0 0 0 15px;
+                padding: 0;
+                display: list-item;
             }
             .message-box .fas,
             .message-box .fab,
             .message-box .far {
-                margin-right: 5px;
+                margin-right: .5em;
+                font-size: 1.5em;
+                color: rgba(0, 0, 0, .4);
             }
-            .message-box .message {
+            .prereq .fas,
+            .prereq .fab,
+            .prereq .far {
+                margin-right: .5em;
+                font-size: 1em;
+                color: rgba(0, 0, 0, .4);
+            }
+            .message-box .message,
+            .prereq .message {
                 flex: 1 1 auto;
                 font-size: 1.1em;
+                line-height: 1.3em;
                 color: rgba(0, 0, 0, .4);
             }
             .message-box .actions {
@@ -184,34 +231,77 @@
                 padding: 4px 7px;
             }
 
+            .installation_container {
+                border-radius: 4px;
+                overflow: hidden;
+                margin: 100px auto;
+                box-sizing: border-box;
+                width: 50%;
+                max-width: 1024px;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid rgba(100, 100, 100, .2);
+                box-shadow: 0 3px 6px rgba(0,0,0,0.23);
+            }
+            .header_container {
+                flex: 0 0 auto;
+                padding: 15px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                background-color: #FFF;
+            }
+            .logo_name_container {
+                color: #555;
+                margin-left: 15px;
+                line-height: 1.4em;
+            }
+            .logo_name {
+                font-size: 1.6em;
+            }
+            .logo_small {
+                font-size: .9em;
+            }
+            .installation_main_container {
+                flex: 1 1 auto;
+                max-height: calc(100vh - 300px);
+                overflow: auto;
+            }
+            .footer_container {
+                box-shadow: inset 0 5px 5px -5px rgba(0,0,0,0.25);
+                flex: 0 0 auto;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-items: center;
+                text-align: left;
+                background-color: #F5F5F5;
+                border-top: 1px solid #DDD;
+                padding: 15px;
+            }
+
         </style>
     </head>
     <body>
-        <table style="width: 1000px; height: 100%; table-layout: fixed;" cellpadding=0 cellspacing=0 align="center">
-            <tr style="height: 80px;">
-                <td valign="top" id="maintd" class="main_header_print">
-                    <div id="logo_container" width="100%">
-                        <div class="logo_image_container"><img src="images/logo_48.png" alt="The Bug Genie - Installation"></div>
-                        <div class="logo_name_container">
-                            <div class="logo_name">The Bug Genie</div>
-                            <div class="logo_small"><b>Friendly</b> issue tracking and project management</div>
+        <div class="installation_container">
+            <div class="header_container">
+                <div class="logo_image_container"><img src="images/logo_48.png" alt="The Bug Genie - Installation"></div>
+                <div class="logo_name_container">
+                    <div class="logo_name">The Bug Genie</div>
+                    <div class="logo_small"><b>Friendly</b> issue tracking and project management</div>
+                </div>
+            </div>
+            <div class="installation_main_container">
+                <?php if ($mode == 'upgrade'): ?>
+                    <div class="print_header_strip" style="text-align: left; padding: 5px;">
+                        <b style="font-size: 1.2em;">The Bug Genie upgrade</b>
+                    </div>
+                <?php endif; ?>
+                <?php if ($mode == 'install' && $step > 0): ?>
+                    <div class="installation_progress">
+                        <h4>Installation progress</h4>
+                        <div class="progress_bar">
+                            <div class="filler" style="width: <?php echo ($step == 6) ? 100 : $step * 15; ?>%;"></div>
                         </div>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <td style="height: auto; overflow: auto;" valign="top" id="maintd">
-                    <div class="print_header_strip" style="text-align: left; padding: 5px;">
-                        <?php if ($mode == 'upgrade'): ?>
-                            <b style="font-size: 1.2em;">The Bug Genie upgrade</b>
-                        <?php endif; ?>
-                    </div>
-                    <div style="text-align: left; padding: 0px;">
-                        <?php if ($mode == 'install'): ?>
-                            <div style="text-align: center; width: 100%; margin-top: 5px; font-size: 14px;">
-                                <b>Installation progress</b><br>
-                                <div class="progress_bar">
-                                    <div class="filler" style="width: <?php echo ($step == 6) ? 100 : $step * 15; ?>%;"></div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
+                <?php endif; ?>

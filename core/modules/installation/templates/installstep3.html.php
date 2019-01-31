@@ -35,22 +35,27 @@
 </script>
 <div class="installation_box">
     <?php if (isset($error)): ?>
-        <div class="error"><?php echo nl2br($error); ?></div>
-        <h2>An error occured</h2>
-        <div style="font-size: 13px;">An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click back, and try again.<br>
-        If you think this is a bug, please report it in our <a href="https://issues.thebuggenie.com" target="_new">online bug tracker</a>.</div>
+        <div class="message-box type-error">
+            <?= fa_image_tag('times'); ?>
+            <span class="message">
+                <b>An error occured</b><br>
+                <?php echo nl2br($error); ?>
+            </span>
+        </div>
+        <div style="font-size: 13px;">
+            An error occured and the installation has been stopped. Please try to fix the error based on the information above, then click start the installation over.<br>
+            If you think this is a bug, please report it in our <a href="https://issues.thebuggenie.com" target="_new">online bug tracker</a>.
+        </div>
     <?php else: ?>
-        <div class="ok">
-            The database have been successfully set up<br>
-            If you need to restart the installation, you won't have to enter the database details again
-        </div>
         <h2 style="margin-top: 10px;">Server / URL information</h2>
-        The Bug Genie uses URL rewriting to make URLs look more readable. URL rewriting is what makes it possible to use pretty URLs such as <u><i>/projectname/issue/123</i></u> instead of longer, unreadable URLs like <u><i>viewissue.php?project_key=projectname&amp;issue_id=123</i></u>.<br>
-        <br>
-        <div class="feature">
-            <b>Your web server must be correctly set up with URL rewriting enabled for The Bug Genie to work.</b><br>
-            For information on how to configure URL rewriting for your web server, see <a href="https://thebuggenie.com/support">thebuggenie.com &raquo; Support</a>
+        <div class="message-box type-info">
+            <?= fa_image_tag('wrench', [], 'fas'); ?>
+            <span class="message">
+                <b>Your web server must be correctly set up with URL rewriting enabled for The Bug Genie to work.</b><br>
+                For information on how to configure URL rewriting for your web server, see <a href="https://thebuggenie.com/support">thebuggenie.com &raquo; Support</a>
+            </span>
         </div>
+        The Bug Genie uses URL rewriting to make URLs look more readable. URL rewriting is what makes it possible to use pretty URLs such as <u><i>/projectname/issue/123</i></u> instead of longer, unreadable URLs like <u><i>viewissue.php?project_key=projectname&amp;issue_id=123</i></u>.<br>
         <br>
         The Bug Genie must be configured so that it knows how to translate URLs correctly.<br>
         If you are installing The Bug Genie on an Apache web server, the installation setup can auto-configure the required rewrite file for you.<br>
@@ -77,15 +82,12 @@
                     </dd>
                 </dl>
                 <div style="margin-top: 25px;">
-                    <b>According to the information above,</b> The Bug Genie will be accessible at</b><br>
+                    <b>According to the information above,</b> The Bug Genie will be accessible at</b>&nbsp;<span class="command_box" id="url_preview"><?php echo (array_key_exists('HTTPS', $_SERVER)) ? 'https' : 'http'; ?>://&lt;hostname&gt;<?php echo $dirname; ?></span>
                 </div>
-                <br>
-                <span class="command_box" id="url_preview"><?php echo (array_key_exists('HTTPS', $_SERVER)) ? 'https' : 'http'; ?>://&lt;hostname&gt;<?php echo $dirname; ?></span>
             </div>
             <div class="error" id="continue_error" style="display: none;"> </div>
             <br style="clear: both;">
-            <div style="padding-top: 20px; clear: both; text-align: center;">
-                <label for="continue_button" style="font-size: 13px; margin-right: 10px;">Click this button to continue and load the necessary default settings</label>
+            <div style="clear: both; padding: 30px 0 15px 0; text-align: right;">
                 <img src="images/spinning_30.gif" id="next_indicator" style="display: none; vertical-align: middle; margin-left: 10px;">
                 <input type="submit" id="continue_button" onclick="$('continue_button').hide();$('next_indicator').show();" value="Continue">
             </div>
