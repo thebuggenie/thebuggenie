@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post" onsubmit="if (!$('confirm_backup').checked) { return false; } else { $('upgrading_popup').show(); }">
+            <form accept-charset="utf-8" action="<?php echo make_url('upgrade'); ?>" method="post" onsubmit="$('upgrading_popup').show();">
                 <?php if (isset($error)): ?>
                     <div class="padded_box installpage backup" id="install_page_error">
                         <div class="rounded_box shadowed padded_box installation_prerequisites prereq_fail" style="padding: 10px; margin-bottom: 10px;">
@@ -28,8 +28,11 @@
                         </div>
                     </div>
                 <?php endif; ?>
-                <div class="donate padded_box rounded_box shadowed installpage" id="install_page_1" style="margin-bottom: 15px;">
-                    <h2>Get involved with The Bug Genie</h2>
+                <div class="installpage" id="install_page_1">
+                    <div class="installation_progress">
+                        <h5>Upgrade progress</h5>
+                        <div class="progress_bar"><div class="filler" style="width: <?= ($requires_password_reset) ? 20 : 25; ?>%;"></div></div>
+                    </div>
                     The Bug Genie is open source software provided <b>free of charge</b> by zegenie studios - however, none of this would be possible without our great community of dedicated users.<br>
                     If you use The Bug Genie on a regular basis, please consider:
                     <ul>
@@ -47,14 +50,16 @@
                         <a href="javascript:void(0);" class="button button-silver button-next" onclick="tbg_upgrade_next($(this).up('.installpage'));">Next</a>
                     </div>
                 </div>
-                <div class="padded_box installpage backup" id="install_page_2">
-                    <?php include_component('main/percentbar', array('percent' => 5, 'height' => 5)); ?>
-                    <h2 style="margin-bottom: 15px; padding-bottom: 0;">
-                        <span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x => <?php echo \thebuggenie\core\framework\Settings::getVersion(false, true); ?><br>
-                    </h2>
-                    Although this upgrade process has been thoroughly tested before the release, errors may still occur. You are strongly encouraged to take a backup of your installation before you continue!<br>
-                    <br>
-                    Before continuing, please make sure you have backed up the following:
+                <div class="installpage backup" id="install_page_2">
+                    <div class="installation_progress">
+                        <h5>Upgrade progress</h5>
+                        <div class="progress_bar"><div class="filler" style="width: <?= ($requires_password_reset) ? 40 : 50; ?>%;"></div></div>
+                    </div>
+                    <h4 style="margin-bottom: 15px; padding-bottom: 0;">
+                        <span style="font-weight: normal;">You are performing the following upgrade: </span><?php echo $current_version; ?>.x <?= fa_image_tag('long-arrow-alt-right'); ?> <?php echo \thebuggenie\core\framework\Settings::getVersion(false, true); ?><br>
+                    </h4>
+                    Although this upgrade process has been thoroughly tested before the release, errors may still occur.<br>
+                    Before continuing, you are strongly encouraged to <strong>make sure you have backed up</strong> the following:
                     <ul class="backuplist">
                         <li style="background-image: url('images/backup_database.png');">
                             The Bug Genie database<br>
@@ -73,7 +78,7 @@
                             There are a number of configuration files used by The Bug Genie for its initialization and configuration. You should keep a copy of these files:
                             <ul>
                                 <li class="command_box" style="display: block; margin: 0;"><?php echo THEBUGGENIE_PATH . 'installed'; ?></li>
-                                <li class="command_box" style="display: block; margin: 0;"><?php echo THEBUGGENIE_CORE_PATH . 'b2db_bootstrap.inc.php'; ?></li>
+                                <li class="command_box" style="display: block; margin: 0;"><?php echo THEBUGGENIE_CORE_PATH . 'config/b2db.yml'; ?></li>
                                 <li class="command_box" style="display: block; margin: 0;"><?php echo THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess'; ?></li>
                             </ul>
                         </li>
@@ -84,8 +89,11 @@
                     </div>
                 </div>
                 <?php if ($requires_password_reset): ?>
-                    <div class="padded_box installpage" id="install_page_4">
-                        <?php include_component('main/percentbar', array('percent' => 50, 'height' => 5)); ?>
+                    <div class="installpage" id="install_page_4">
+                        <div class="installation_progress">
+                            <h5>Upgrade progress</h5>
+                            <div class="progress_bar"><div class="filler" style="width: 60%;"></div></div>
+                        </div>
                         <h2>Improved security</h2>
                         We're continuously adjusting and improving user security. As a result, this version <u>changes the way passwords are handled and stored</u>.<br>
                         All users will require password resets after the upgrade is completed, and application-specific passwords must be regenerated.<br>
@@ -100,8 +108,11 @@
                             <a href="javascript:void(0);" class="button button-silver button-next" id="upgrade_password_continue" disabled onclick="tbg_upgrade_next($(this).up('.installpage'));">Next</a>
                         </div>
                     </div>
-                    <div class="padded_box installpage" id="install_page_5">
-                        <?php include_component('main/percentbar', array('percent' => 90, 'height' => 5)); ?>
+                    <div class="installpage" id="install_page_5">
+                        <div class="installation_progress">
+                            <h5>Upgrade progress</h5>
+                            <div class="progress_bar"><div class="filler" style="width: 80%;"></div></div>
+                        </div>
                         <h2>Almost done</h2>
                         As mentioned on the previous page, this new version of The Bug Genie will make <strong>all current user passwords stop working.</strong><br>
                         Because of this, we need to set a password for the admin account <span class="command_box"><?php echo strtolower($adminusername); ?></span>.<br>
@@ -109,60 +120,72 @@
                         <h5><label for="upgrade_password_admin">Please specify a password for the admin account <u>only</u></label></h5>
                         New password for user with username <span class="command_box"><?php echo strtolower($adminusername); ?></span> <input id="upgrade_password_admin" name="admin_password" class="adminpassword" placeholder="Enter a new admin password here" onkeyup="if ($(this).getValue().length >= 5 && $('confirm_backup').checked) { $('start_upgrade').enable(); } else { $('start_upgrade').disable(); }"><br>
                         <br>
-                        Please read the upgrade notes before you press "Perform upgrade" to continue.<br>
-                        <input type="hidden" name="perform_upgrade" value="1">
-                        <input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('upgrade_password_admin').getValue().length >= 8 && $('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();" min="8" required>
-                        <label for="confirm_backup" style="vertical-align: middle; font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="https://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
-                        <input type="submit" value="Perform upgrade" id="start_upgrade" disabled="disabled" style="margin-top: 10px;"><br>
-                        <br>
-                        <a href="javascript:void(0);" onclick="tbg_upgrade_previous($(this).up('.installpage'));">&lt;&lt;&nbsp;or go back to change upgrade settings</a>
+                        Please read the <a href="https://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> before you press "Perform upgrade" to continue.<br>
+                        <div style="clear: both; padding: 30px 0 15px 0; text-align: right;">
+                            <input type="hidden" name="perform_upgrade" value="1">
+                            <input type="hidden" name="confirm_backup" value="1" id="confirm_backup">
+                            <input type="submit" value="Perform upgrade" id="start_upgrade">
+                            <br>
+                            <a href="javascript:void(0);" onclick="tbg_upgrade_previous($(this).up('.installpage'));">&lt;&lt;&nbsp;or go back to change upgrade settings</a>
+                        </div>
                     </div>
                 <?php else: ?>
-                    <div class="padded_box installpage" id="install_page_5">
-                        <?php include_component('main/percentbar', array('percent' => 90, 'height' => 5)); ?>
-                        <h2>Almost done</h2>
-                        Please read the upgrade notes before you press "Perform upgrade" to continue.<br>
-                        <input type="hidden" name="perform_upgrade" value="1">
-                        <input type="checkbox" name="confirm_backup" id="confirm_backup" onclick="($('confirm_backup').checked) ? $('start_upgrade').enable() : $('start_upgrade').disable();">
-                        <label for="confirm_backup" style="vertical-align: middle; font-weight: bold; font-size: 1.1em;">I have read and understand the <a href="https://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> - and I've taken steps to make sure my data is backed up</label><br>
-                        <input type="submit" value="Perform upgrade" id="start_upgrade" disabled="disabled" style="margin-top: 10px;"><br>
-                        <br>
-                        <a href="javascript:void(0);" onclick="tbg_upgrade_previous($(this).up('.installpage'));">&lt;&lt;&nbsp;or go back to change upgrade settings</a>
+                    <div class="installpage" id="install_page_5">
+                        <div class="installation_progress">
+                            <h5>Upgrade progress</h5>
+                            <div class="progress_bar"><div class="filler" style="width: 75%;"></div></div>
+                        </div>
+                        <h4>Ready to upgrade</h4>
+                        <div class="message-box type-warning">
+                            <?= fa_image_tag('exclamation-triangle'); ?>
+                            <span class="message">
+                                Pressing <b>Perform upgrade</b> on this page will start the upgrade process.
+                            </span>
+                        </div>
+                        Please read the <a href="https://thebuggenie.com/release/3_2#upgrade">upgrade notes</a> before you press "Perform upgrade" to continue.<br>
+                        <div class="progress_buttons">
+                            <input type="hidden" name="perform_upgrade" value="1">
+                            <input type="hidden" name="confirm_backup" value="1" id="confirm_backup">
+                            <input type="submit" value="Perform upgrade" id="start_upgrade">
+                            <br>
+                            <a href="javascript:void(0);" onclick="tbg_upgrade_previous($(this).up('.installpage'));">&lt;&lt;&nbsp;or go back to change upgrade settings</a>
+                        </div>
                     </div>
                 <?php endif; ?>
             </form>
         <?php else: ?>
-            <div class="rounded_box shadowed padded_box installation_prerequisites prereq_fail" style="padding: 10px; margin-bottom: 10px;">
-                <b>The version information files are not writable</b>
+            <div class="message-box type-warning with-solution">
+                <?= fa_image_tag('exclamation-triangle'); ?>
+                <span class="message">
+                    The upgrade routine needs the following two files to be writable: <span class="command_box"><?php echo THEBUGGENIE_PATH . 'installed'; ?></span> and <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span>
+                </span>
             </div>
-            <p style="font-size: 1.2em;">
-                The upgrade routine needs the following two files to be writable:<br>
-                <div style="font-size: 1.2em; margin-top: 10px; padding-left: 0;">
-                    <span class="command_box"><?php echo THEBUGGENIE_PATH . 'installed'; ?></span> and <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span>.
-                    <b>Please fix this error and try again.</b>
-                </div>
-                <div style="font-size: 1.2em; margin-top: 10px; padding-left: 0;">
+            <div class="message-box type-solution">
+                <div class="message">
                     On Linux or Unix systems, you can fix this by running the following command in a console: <br>
                     <div class="command_box" style="font-size: 1em;">chmod a+w <?php echo THEBUGGENIE_PATH . 'installed'; ?> <?php echo THEBUGGENIE_PATH . 'upgrade'; ?></div>
                 </div>
-            </p>
+            </div>
         <?php endif; ?>
     <?php elseif ($upgrade_complete): ?>
-        <?php include_component('main/percentbar', array('percent' => 100, 'height' => 5)); ?>
-        <h2>Upgrade successfully completed!</h2>
-        <p style="font-size: 1.2em;">
+        <div class="installation_progress">
+            <h5>Upgrade progress</h5>
+            <div class="progress_bar"><div class="filler" style="width: 100%;"></div></div>
+        </div>
+        <h4>Upgrade successfully completed!</h4>
+        <p>
             Remember to remove the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> before you click the "Finish" button below.
         </p>
-        <div style="margin-top: 15px;">
-            <a href="<?php echo make_url('logout'); ?>" class="button button-silver" style="font-size: 1.2em !important; padding: 3px 10px !important;">Finish</a>
+        <div class="progress_buttons">
+            <a href="<?php echo make_url('logout'); ?>" class="button button-silver button-next">Finish</a>
         </div>
     <?php else: ?>
-        <h2>No upgrade necessary!</h2>
-        <p style="font-size: 1.2em;">
+        <h4>No upgrade necessary!</h4>
+        <p>
             Make sure that the file <span class="command_box"><?php echo THEBUGGENIE_PATH . 'upgrade'; ?></span> is removed before you click the "Finish" button below.
         </p>
-        <div style="margin-top: 15px;">
-            <a href="<?php echo make_url('home'); ?>" class="button button-silver" style="font-size: 1.2em !important; padding: 3px 10px !important;">Finish</a>
+        <div class="progress_buttons">
+            <a href="<?php echo make_url('home'); ?>" class="button button-silver button-next">Finish</a>
         </div>
     <?php endif; ?>
 </div>

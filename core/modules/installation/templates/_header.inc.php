@@ -43,10 +43,14 @@
             label { vertical-align: middle; font-weight: 300; font-size: 1em; }
             label[for=agree_license] { font-size: 1.05em; display: inline-block; vertical-align: middle; font-weight: 400; }
             .installation_progress { display: block; margin: 0; }
-            .installation_progress h4 {
+            .installation_progress h4,
+            .installation_progress h5 {
                 border: none;
                 text-align: center;
                 margin: 0;
+            }
+            .installpage .installation_progress {
+                margin-bottom: 15px;
             }
             .progress_bar { display: block; width: calc(100% - 30px); margin: 5px 15px; box-sizing: border-box; position: relative; height: 4px; background-color: rgba(78, 129, 171, .3); border-radius: 0; }
             .progress_bar .filler { background-color: rgb(78, 129, 171); position: absolute; left: 0; top: 0; height: 4px; min-width: 5px; border-radius: 0; }
@@ -102,12 +106,11 @@
             .scope_upgrade li label { display: inline-block; width: 180px; vertical-align: middle; text-align: right; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
             .scope_upgrade li select { width: 250px; }
 
-            .progress_buttons { padding: 25px 0 0; height: 30px; }
+            .progress_buttons { padding: 30px 15px 15px 15px; text-align: right; display: block; height: 30px; }
             .progress_buttons .button, .installation_box input[type="submit"] { font-size: 1.2em; padding: 4px 10px !important; }
             .progress_buttons .button-next { float: right; }
             .progress_buttons .button-previous { float: left; }
 
-            .installpage { font-size: 1.1em; }
             ul.backuplist { margin: 15px 0; padding: 0; }
             ul.backuplist > li { background-position: 0 13px; background-repeat: no-repeat; list-style: none; padding: 10px 0 10px 40px; }
             ul.backuplist > li:first-line { font-weight: 600; font-size: 1.1em; }
@@ -234,7 +237,7 @@
             .installation_container {
                 border-radius: 4px;
                 overflow: hidden;
-                margin: 100px auto;
+                margin: 50px auto;
                 box-sizing: border-box;
                 width: 50%;
                 max-width: 1024px;
@@ -264,7 +267,7 @@
             }
             .installation_main_container {
                 flex: 1 1 auto;
-                max-height: calc(100vh - 300px);
+                max-height: calc(100vh - 200px);
                 overflow: auto;
             }
             .footer_container {
@@ -292,16 +295,9 @@
                 </div>
             </div>
             <div class="installation_main_container">
-                <?php if ($mode == 'upgrade'): ?>
-                    <div class="print_header_strip" style="text-align: left; padding: 5px;">
-                        <b style="font-size: 1.2em;">The Bug Genie upgrade</b>
-                    </div>
-                <?php endif; ?>
                 <?php if ($mode == 'install' && $step > 0): ?>
                     <div class="installation_progress">
                         <h4>Installation progress</h4>
-                        <div class="progress_bar">
-                            <div class="filler" style="width: <?php echo ($step == 6) ? 100 : $step * 15; ?>%;"></div>
-                        </div>
+                        <div class="progress_bar"><div class="filler" style="width: <?php echo ($step == 6) ? 100 : $step * 15; ?>%;"></div></div>
                     </div>
                 <?php endif; ?>
