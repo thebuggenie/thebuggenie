@@ -481,34 +481,34 @@
                                                             dateField: '<?php echo $field; ?>_new_name',
                                                             parentElement: 'customfield_<?php echo $field; ?>_calendar_container',
                                                             valueCallback: function(element, date) {
-                                                                <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER) { ?>
-                                                                    var value = date.setHours(parseInt($('customfield_<?php echo $field; ?>_hour').value));
+                                                                <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
+                                                                    var value = date.setUTCHours(parseInt($('customfield_<?php echo $field; ?>_hour').value));
                                                                     var date  = new Date(value);
-                                                                    var value = Math.floor(date.setMinutes(parseInt($('customfield_<?php echo $field; ?>_minute').value)) / 1000);
-                                                                <?php } else { ?>
+                                                                    var value = Math.floor(date.setUTCMinutes(parseInt($('customfield_<?php echo $field; ?>_minute').value)) / 1000);
+                                                                <?php else: ?>
                                                                     var value = Math.floor(date.getTime() / 1000);
                                                                     TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>?<?php echo $field; ?>_value='+value, '<?php echo $field; ?>');
-                                                                <?php } ?>
+                                                                <?php endif; ?>
                                                                 $('<?php echo $field; ?>_value').value = value;
                                                             }
                                                         });
                                                         <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
                                                             var date = new Date(parseInt($('<?php echo $field; ?>_value').value) * 1000);
-                                                            $('customfield_<?php echo $field; ?>_hour').value = date.getHours();
-                                                            $('customfield_<?php echo $field; ?>_minute').value = date.getMinutes();
+                                                            $('customfield_<?php echo $field; ?>_hour').value = date.getUTCHours();
+                                                            $('customfield_<?php echo $field; ?>_minute').value = date.getUTCMinutes();
                                                             Event.observe($('customfield_<?php echo $field; ?>_hour'), 'change', function (event) {
                                                                 var value = parseInt($('<?php echo $field; ?>_value').value);
                                                                 var hours = parseInt(this.value);
                                                                 if (value <= 0 || hours < 0 || hours > 24) return;
                                                                 var date = new Date(value * 1000);
-                                                                $('<?php echo $field; ?>_value').value = date.setHours(parseInt(this.value)) / 1000;
+                                                                $('<?php echo $field; ?>_value').value = date.setUTCHours(parseInt(this.value)) / 1000;
                                                             });
                                                             Event.observe($('customfield_<?php echo $field; ?>_minute'), 'change', function (event) {
                                                                 var value = parseInt($('<?php echo $field; ?>_value').value);
                                                                 var minutes = parseInt(this.value);
                                                                 if (value <= 0 || minutes < 0 || minutes > 60) return;
                                                                 var date = new Date(value * 1000);
-                                                                $('<?php echo $field; ?>_value').value = date.setMinutes(parseInt(this.value)) / 1000;
+                                                                $('<?php echo $field; ?>_value').value = date.setUTCMinutes(parseInt(this.value)) / 1000;
                                                             });
                                                         <?php endif; ?>
                                                     });
@@ -665,7 +665,7 @@
                                         } else {
                                             $value = $info['name'];
                                         }
-                                        ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span id="<?php echo $field; ?>_new_name" style="display: none;"><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
+                                        ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span id="<?php echo $field; ?>_new_name" style="display: none;"><?php echo (int) $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
                                         break;
                                     default:
                                         ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo (filter_var($info['name'], FILTER_VALIDATE_URL) !== false) ? link_tag($info['name'], $info['name']) : $info['name']; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
