@@ -240,7 +240,6 @@
 INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { display: inline; text-decoration: line-through; background-color: #D88; color: white; }
 
 .article .more_actions_dropdown { position: absolute; margin-top: 9px; width: auto; white-space: nowrap; top: 12px; right: 0; z-index: 1000; font-size: 1.1em; }
-.article .more_actions_dropdown li { padding: 2px; }
 .article .more_actions_dropdown li.separator { padding: 0 7px; }
 .article .content ul.simple_list li { padding: 5px 0; margin-bottom: 15px; }
 .article ul.simple_list li div.namespace_header { font-size: 1.15em; font-weight: 500; margin-bottom: 5px; }
