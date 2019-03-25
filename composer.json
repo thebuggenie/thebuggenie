@@ -30,7 +30,7 @@
         "scrivo/highlight.php": "^9.0",
         "ramsey/uuid": "^3.7",
         "erusev/parsedown": "^1.7",
-        "ext-apc" : "*",
+        "ext-apcu" : "*",
         "ext-gd" : "*",
         "ext-curl" : "*",
         "ext-PDO" : "*",
