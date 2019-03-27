@@ -3,7 +3,7 @@
     namespace thebuggenie\modules\auth_ldap;
 
     use thebuggenie\core\entities\UserSession;
-    use thebuggenie\core\framework\interfaces\AuthenticationProvider;
+    use thebuggenie\core\framework\AuthenticationBackend;
     use thebuggenie\core\entities\Module;
     use thebuggenie\core\entities\User;
     use thebuggenie\core\framework;
@@ -27,7 +27,7 @@
      *
      * @Table(name="\thebuggenie\core\entities\tables\Modules")
      */
-    class LdapAuthenticationBackend implements AuthenticationProvider
+    class LdapAuthenticationBackend extends AuthenticationBackend
     {
 
         /**
@@ -51,11 +51,6 @@
             $this->_module = $module;
         }
 
-        public function getAuthenticationMethod()
-        {
-            return AuthenticationProvider::AUTHENTICATION_TYPE_PASSWORD;
-        }
-
         /**
          * Log-in the user with provided credentials.
          *
@@ -73,49 +68,6 @@
         public function doLogin($username, $password)
         {
             return $this->_loginUser($username, $password, true);
-        }
-
-
-        /**
-         * Verify log-in credentials for previously logged-in user.
-         *
-         * @param string $username
-         *   Username  to log-in with.
-         *
-         * @param string $password
-         *   Password to log-in with.
-         *
-         * @param bool $is_elevated
-         *
-         * @return User|null
-         * @throws \Exception
-         * @retval thebuggenie\core\entities\User | null
-         *   User object associated with the login. If login verification has
-         *   failed, returns null.
-         */
-        public function verifyLogin($username, $password, $is_elevated = false)
-        {
-            return $this->_loginUser($username, $password, false);
-        }
-
-
-        /**
-         * Logs out the user. No module-specific steps are taken for this
-         * module.
-         *
-         */
-        public function logout()
-        {
-            self::getResponse()->deleteCookie('username');
-            self::getResponse()->deleteCookie('password');
-            self::getResponse()->deleteCookie('elevated_password');
-        }
-
-        /**
-         * Token verification (unused)
-         */
-        public function verifyToken($username, $token, $is_elevated = false)
-        {
         }
 
 
@@ -259,35 +211,16 @@
             // Create or update the existing user with up-to-date information.
             list($user, $created) = $this->getModule()->createOrUpdateUser($ldap_user);
 
-            framework\Context::getResponse()->setCookie('username', $username);
-            framework\Context::getResponse()->setCookie('password', $user->getHashPassword());
-
             return $user;
         }
 
-        function autoVerifyLogin($username, $password, $is_elevated = false)
-        {
-            // TODO: Implement autoVerifyLogin() method.
-        }
-
-        function autoVerifyToken($username, $token, $is_elevated = false)
-        {
-            // TODO: Implement autoVerifyToken() method.
-        }
 
         function doExplicitLogin(Request $request)
         {
-            // TODO: Implement doExplicitLogin() method.
-        }
+            $username = $request['username'];
+            $password = $request['password'];
 
-        function persistTokenSession(User $user, UserSession $token, $session_only)
-        {
-            // TODO: Implement persistTokenSession() method.
-        }
-
-        function persistPasswordSession(User $user, $password, $session_only)
-        {
-            // TODO: Implement persistPasswordSession() method.
+            return $this->_loginUser($username, $password, true);
         }
 
 

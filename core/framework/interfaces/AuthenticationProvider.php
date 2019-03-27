@@ -54,6 +54,8 @@
          */
         function doExplicitLogin(Request $request);
 
+        function doAutoLogin(Request $request);
+
         /**
          * @param User $user
          * @param UserSession $token

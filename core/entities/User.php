@@ -527,6 +527,10 @@
                                 $user = $authentication_backend->autoVerifyLogin($request->getCookie('username'), $request->getCookie('elevated_password'), true);
                             }
                         }
+                        // Try autologin if we did not do an auto login using cookies
+                        if(!$request->getCookie('username') && !$user) {
+                            $user = $authentication_backend->doAutoLogin($request);
+                        }
                     }
                     else
                     {

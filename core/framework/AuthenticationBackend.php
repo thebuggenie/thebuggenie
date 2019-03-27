@@ -72,6 +72,9 @@
         function doLogin($username, $token)
         {
         }
+        function doAutoLogin(Request $request)
+        {
+        }
 
         function logout()
         {
