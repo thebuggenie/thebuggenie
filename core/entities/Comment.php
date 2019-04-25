@@ -406,7 +406,9 @@
                     }
                     $this->_addTargetNotifications();
                 }
-
+            }
+            else
+            {
                 switch ($this->getTargetType())
                 {
                     case self::TYPE_ISSUE:
