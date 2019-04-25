@@ -5590,9 +5590,17 @@
             {
                 if ($this->shouldAutomaticallySubscribeUser($user)) $this->addSubscriber($user->getID());
 
-                if ($this->getCategory() instanceof Category && $user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY . '_' . $this->getCategory()->getID(), false)->isOn())
+                if ($this->shouldAddNotification($user))
                     $this->_addNotificationIfNotNotified(Notification::TYPE_ISSUE_CREATED, $user, $updated_by);
             }
+        }
+
+        protected function shouldAddNotification($related_user)
+        {
+            if ($this->getCategory() instanceof Category && $related_user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS_CATEGORY . '_' . $this->getCategory()->getID(), false)->isOn())
+                return true;
+
+            return $related_user->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_NEW_ISSUES_MY_PROJECTS, false)->isOn();
         }
 
         public function triggerSaveEvent($comment, $updated_by)
