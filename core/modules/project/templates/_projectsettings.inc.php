@@ -121,8 +121,8 @@
             <td style="width: 300px;"><label for="locked_no"><?php echo __('Allow issues to be reported'); ?></label></td>
             <td style="width: 580px;">
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <input type="radio" name="locked" value="1" class="fancycheckbox" id="locked_yes"<?php if (!$project->isLocked()): ?> checked<?php endif; ?>><label for="locked_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
-                    <input type="radio" name="locked" value="0" class="fancycheckbox" id="locked_no"<?php if ($project->isLocked()): ?> checked<?php endif; ?>><label for="locked_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
+                    <input type="radio" name="locked" value="0" class="fancycheckbox" id="locked_no"<?php if (!$project->isLocked()): ?> checked<?php endif; ?>><label for="locked_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" name="locked" value="1" class="fancycheckbox" id="locked_yes"<?php if ($project->isLocked()): ?> checked<?php endif; ?>><label for="locked_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                 <?php else: ?>
                     <?php echo (!$project->isLocked()) ? __('Yes') : __('No'); ?>
                 <?php endif; ?>
