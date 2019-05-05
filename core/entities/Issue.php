@@ -5636,7 +5636,7 @@
                     return true;
             }
 
-            return ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, false)->isOn() || $user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS . '_' . $this->getProject()->getId(), false)->isOn());
+            return ($user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS, false)->isOn() || $user->getNotificationSetting(framework\Settings::SETTINGS_USER_SUBSCRIBE_NEW_ISSUES_MY_PROJECTS . '_' . $this->getProject()->getKey(), false)->isOn());
         }
 
         protected function _postSave($is_new)
