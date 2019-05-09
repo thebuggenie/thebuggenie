@@ -217,8 +217,8 @@
 
         function doExplicitLogin(Request $request)
         {
-            $username = $request['username'];
-            $password = $request['password'];
+            $username = $request->getRawParameter('username');
+            $password = $request->getRawParameter('password');
 
             return $this->_loginUser($username, $password, true);
         }
