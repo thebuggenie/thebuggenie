@@ -70,9 +70,14 @@ class Asset extends framework\Action
 
                 $asset .= DS.$request->getParameter('image');
             }
-            $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
-            $mimetype = finfo_file($fileinfo, $asset);
-            finfo_close($fileinfo);
+            $mimetype = null;
+            if (function_exists('finfo_open')) {
+                $fileinfo = finfo_open(FILEINFO_MIME_TYPE);
+                $mimetype = finfo_file($fileinfo, $asset);
+                finfo_close($fileinfo);
+            } elseif (function_exists('mime_content_type')) {
+                $mimetype = mime_content_type($asset);
+            }
             $this->getResponse()->setContentType($mimetype);
         } else {
             throw new \Exception('The expected theme Asset type is not supported.');
