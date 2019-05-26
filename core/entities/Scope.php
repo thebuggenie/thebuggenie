@@ -124,7 +124,7 @@
         /**
          * Return all available scopes
          *
-         * @return array|\thebuggenie\core\entities\Scope
+         * @return \thebuggenie\core\entities\Scope[]
          */
         static function getAll()
         {
@@ -289,6 +289,11 @@
             else
             {
                 $hostprefix = (!array_key_exists('HTTPS', $_SERVER) || $_SERVER['HTTPS'] == '' || $_SERVER['HTTPS'] == 'off') ? 'http' : 'https';
+
+                if (array_key_exists('HTTP_X_FORWARDED_PROTO', $_SERVER)) {
+                    $hostprefix = $_SERVER["HTTP_X_FORWARDED_PROTO"];
+                }
+
                 $this->_is_secure = (bool) ($hostprefix == 'https');
                 if(isset($_SERVER["HTTP_X_FORWARDED_HOST"]) && $_SERVER["HTTP_X_FORWARDED_HOST"]!="")
                 {
@@ -346,15 +351,18 @@
             Userstate::loadFixtures($this);
 
             // Set up data types
-            list($b_id, $f_id, $e_id, $t_id, $u_id, $i_id, $ep_id) = Issuetype::loadFixtures($this);
-            $scheme = IssuetypeScheme::loadFixtures($this);
-            tables\IssueFields::getTable()->loadFixtures($this, $scheme, $b_id, $f_id, $e_id, $t_id, $u_id, $i_id, $ep_id);
+            list($bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id) = Issuetype::loadFixtures($this);
+            list($full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme) = IssuetypeScheme::loadFixtures($this, [$bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id]);
+            tables\IssueFields::getTable()->loadFixtures($this, $full_range_scheme, $balanced_scheme, $balanced_agile_scheme, $simple_scheme, $bug_report_id, $feature_req_id, $enhancement_id, $task_id, $user_story_id, $idea_id, $epic_id);
             Datatype::loadFixtures($this);
 
             // Set up workflows
-            Workflow::loadFixtures($this);
-            WorkflowScheme::loadFixtures($this);
-            tables\WorkflowIssuetype::getTable()->loadFixtures($this);
+            list ($multi_team_workflow, $balanced_workflow, $simple_workflow) = Workflow::loadFixtures($this);
+            list ($multi_team_workflow_scheme, $balanced_workflow_scheme, $simple_workflow_scheme) = WorkflowScheme::loadFixtures($this);
+
+            tables\WorkflowIssuetype::getTable()->loadFixtures($this, $multi_team_workflow, $multi_team_workflow_scheme);
+            tables\WorkflowIssuetype::getTable()->loadFixtures($this, $balanced_workflow, $balanced_workflow_scheme);
+            tables\WorkflowIssuetype::getTable()->loadFixtures($this, $simple_workflow, $simple_workflow_scheme);
 
             // Set up left menu links
             tables\Links::getTable()->loadFixtures($this);
@@ -477,12 +485,12 @@
 
         public function getNumberOfProjects()
         {
-            return (int) $this->_b2dbLazycount('_projects');
+            return (int) $this->_b2dbLazyCount('_projects');
         }
 
         public function getNumberOfIssues()
         {
-            return (int) $this->_b2dbLazycount('_issues');
+            return (int) $this->_b2dbLazyCount('_issues');
         }
 
     }

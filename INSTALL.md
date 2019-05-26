@@ -2,7 +2,7 @@ INSTALLATION
 ============
 
 NOTE: For the latest installation notes, troubleshooting and tips,
-visit the FAQ: http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
+visit the FAQ: https://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
 GENERAL INSTALLATION NOTES
 --------------------------
@@ -46,7 +46,7 @@ main thebuggenie/ directory.
 If you are using Apache, enable url rewriting (the installation routine will 
 help you complete the url rewriting setup), and if you're using IIS, Nginx or
 others, look at the examples included in the online documentation at
-http://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
+https://issues.thebuggenie.com/wiki/TheBugGenie:FAQ
 
 
 ### 5: Install via web

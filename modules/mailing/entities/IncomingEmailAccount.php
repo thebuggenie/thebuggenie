@@ -51,6 +51,11 @@
         /**
          * @Column(type="boolean")
          */
+        protected $_prefer_html = false;
+
+        /**
+         * @Column(type="boolean")
+         */
         protected $_plaintext_authentication = false;
 
         /**
@@ -175,7 +180,7 @@
 
         public function usesSSL()
         {
-            return (boolean) $this->_ssl;
+            return (bool) $this->_ssl;
         }
 
         public function setSSL($ssl)
@@ -185,7 +190,7 @@
 
         public function doesKeepEmails()
         {
-            return (boolean) $this->_keep_email;
+            return (bool) $this->_keep_email;
         }
 
         public function setKeepEmails($keep_emails)
@@ -221,6 +226,16 @@
         public function setIssuetype($issuetype)
         {
             $this->_issuetype = $issuetype;
+        }
+
+        public function setPreferHtml($preferHtml)
+        {
+            $this->_prefer_html = $preferHtml;
+        }
+
+        public function prefersHtml()
+        {
+            return (bool)$this->_prefer_html;
         }
 
         public function getNumberOfEmailsLastFetched()
@@ -292,7 +307,7 @@
         {
             if (!$this->doesKeepEmails())
             {
-                imap_expunge($this->connection);
+                imap_expunge($this->_connection);
             }
             imap_close($this->_connection);
             $this->_connection = null;
@@ -365,7 +380,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project');
+            return $this->_b2dbLazyLoad('_project');
         }
 
         /**
@@ -375,7 +390,7 @@
          */
         public function getIssuetype()
         {
-            return $this->_b2dbLazyload('_issuetype');
+            return $this->_b2dbLazyLoad('_issuetype');
         }
 
         public function getIssuetypeID()

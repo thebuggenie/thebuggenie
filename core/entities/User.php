@@ -2,9 +2,11 @@
 
     namespace thebuggenie\core\entities;
 
+    use Ramsey\Uuid\Uuid;
     use thebuggenie\core\entities\common\IdentifiableEventContainer;
     use thebuggenie\core\entities\tables\Notifications;
     use thebuggenie\core\entities\tables\UserIssues;
+    use thebuggenie\core\entities\tables\Users;
     use thebuggenie\core\framework;
 
     /**
@@ -52,14 +54,6 @@
          * @Column(type="string", length=100)
          */
         protected $_password = '';
-
-        /**
-         * Password salt
-         *
-         * @var string
-         * @Column(type="string", length=100)
-         */
-        protected $_salt = '';
 
         /**
          * User real name
@@ -133,6 +127,8 @@
          * @Relates(class="\thebuggenie\core\entities\Team", collection=true, manytomany=true, joinclass="\thebuggenie\core\entities\tables\TeamMembers")
          */
         protected $teams = null;
+
+        protected $_teams = null;
 
         /**
          * Array of client ids where the current user is a member
@@ -326,12 +322,10 @@
          */
         protected $_prefer_wiki_markdown = false;
 
-        protected $_openid_accounts;
-
         /**
          * List of user's notification settings
          *
-         * @var array|\thebuggenie\core\entities\NotificationSetting
+         * @var \thebuggenie\core\entities\NotificationSetting[]
          * @Relates(class="\thebuggenie\core\entities\NotificationSetting", collection=true, foreign_column="user_id")
          */
         protected $_notification_settings = [];
@@ -339,7 +333,7 @@
         /**
          * List of user's notifications
          *
-         * @var array|\thebuggenie\core\entities\Notification
+         * @var \thebuggenie\core\entities\Notification[]
          * @Relates(class="\thebuggenie\core\entities\Notification", collection=true, foreign_column="user_id", orderby="created_at")
          */
         protected $_notifications = null;
@@ -347,7 +341,7 @@
         /**
          * List of user's dashboards
          *
-         * @var array|\thebuggenie\core\entities\Dashboard
+         * @var \thebuggenie\core\entities\Dashboard[]
          * @Relates(class="\thebuggenie\core\entities\Dashboard", collection=true, foreign_column="user_id", orderby="name")
          */
         protected $_dashboards = null;
@@ -355,10 +349,18 @@
         /**
          * List of user's application-specific passwords
          *
-         * @var array|\thebuggenie\core\entities\ApplicationPassword
+         * @var \thebuggenie\core\entities\ApplicationPassword[]
          * @Relates(class="\thebuggenie\core\entities\ApplicationPassword", collection=true, foreign_column="user_id", orderby="created_at")
          */
         protected $_application_passwords = null;
+
+        /**
+         * List of user's session tokens
+         *
+         * @var \thebuggenie\core\entities\UserSession[]
+         * @Relates(class="\thebuggenie\core\entities\UserSession", collection=true, foreign_column="user_id", orderby="created_at")
+         */
+        protected $_user_sessions = null;
 
         protected $_unread_notifications_count = null;
 
@@ -401,39 +403,6 @@
                 $user->setPassword(self::createPassword());
                 $user->setUsername($email);
                 $user->setEmail($email);
-                $user->setActivated();
-                $user->setEnabled();
-                $user->setValidated();
-                $user->save();
-            }
-
-            return $user;
-        }
-
-        /**
-         * Return (or create, assuming no external auth backend) a user based on
-         * a provided openid identity
-         *
-         * @param string $identity
-         *
-         * @return \thebuggenie\core\entities\User
-         */
-        public static function getByOpenID($identity)
-        {
-            $user = null;
-            if ($user_id = tables\OpenIdAccounts::getTable()->getUserIDfromIdentity($identity))
-            {
-                $user = \thebuggenie\core\entities\User::getB2DBTable()->selectById($user_id);
-            }
-            elseif (!framework\Settings::isUsingExternalAuthenticationBackend() && framework\Settings::getOpenIDStatus() == 'all')
-            {
-                $user = new self();
-                $user->setPassword(self::createPassword());
-                $username = explode('/', rtrim($identity, '/'));
-                $username = end($username);
-                $username = urldecode($username);
-                $user->setUsername($username);
-                $user->setOpenIdLocked();
                 $user->setActivated();
                 $user->setEnabled();
                 $user->setValidated();
@@ -520,246 +489,138 @@
          * Returns the logged in user, or default user if not logged in
          *
          * @param \thebuggenie\core\framework\Request $request
-         * @param \thebuggenie\core\framework\Action  $action
+         * @param \thebuggenie\core\framework\Action $action
+         * @param bool $auto
          *
          * @return \thebuggenie\core\entities\User
+         * @throws framework\exceptions\ElevatedLoginException
          */
-        public static function loginCheck(framework\Request $request, framework\Action $action)
+        public static function identify(framework\Request $request, framework\Action $action, $auto = false)
         {
-            try
+            $authentication_method = framework\Context::getRouting()->getCurrentRouteAuthenticationMethod($action);
+            $authentication_backend = framework\Settings::getAuthenticationBackend();
+            $user = null;
+            framework\Logging::log("Using auth method {$authentication_method}", 'auth', framework\Logging::LEVEL_INFO);
+
+            switch ($authentication_method)
             {
-                $authentication_method = $action->getAuthenticationMethodForAction(framework\Context::getRouting()->getCurrentRouteAction());
-                $user = null;
-                $external = false;
+                case framework\Action::AUTHENTICATION_METHOD_ELEVATED:
+                case framework\Action::AUTHENTICATION_METHOD_CORE:
+                    framework\Logging::log('Authenticating with backend: '.framework\Settings::getAuthenticationBackendIdentifier(), 'auth', framework\Logging::LEVEL_INFO);
 
-                switch ($authentication_method)
+                    // If automatic, check if we have a session that exists already
+                    if ($auto)
+                    {
+                        if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
+                        {
+                            $user = $authentication_backend->autoVerifyToken($request->getCookie('username'), $request->getCookie('session_token'));
+                            if ($user instanceof User && $authentication_method == framework\Action::AUTHENTICATION_METHOD_ELEVATED)
+                            {
+                                $user = $authentication_backend->autoVerifyToken($request->getCookie('username'), $request->getCookie('elevated_session_token'), true);
+                            }
+                        }
+                        else
+                        {
+                            $user = $authentication_backend->autoVerifyLogin($request->getCookie('username'), $request->getCookie('password'));
+                            if ($user instanceof User && $authentication_method == framework\Action::AUTHENTICATION_METHOD_ELEVATED)
+                            {
+                                $user = $authentication_backend->autoVerifyLogin($request->getCookie('username'), $request->getCookie('elevated_password'), true);
+                            }
+                        }
+                        // Try autologin if we did not do an auto login using cookies
+                        if(!$request->getCookie('username') && !$user) {
+                            $user = $authentication_backend->doAutoLogin($request);
+                        }
+                    }
+                    else
+                    {
+                        // If we don't have login details, try logging in with provided parameters
+                        $user = $authentication_backend->doExplicitLogin($request);
+                    }
+
+                    break;
+                case framework\Action::AUTHENTICATION_METHOD_DUMMY:
+                    $user = self::getB2DBTable()->getByUserID(framework\Settings::getDefaultUserID());
+                    break;
+                case framework\Action::AUTHENTICATION_METHOD_CLI:
+                    $user = self::getB2DBTable()->getByUsername(framework\Context::getCurrentCLIusername());
+                    break;
+                case framework\Action::AUTHENTICATION_METHOD_RSS_KEY:
+                    $user = self::getB2DBTable()->getByRssKey($request['rsskey']);
+                    break;
+                case framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD:
+
+                    $authorization_header = $request->getAuthorizationHeader();
+                    if (!$authorization_header || strlen($authorization_header) < 7) {
+                        throw new \Exception('Cannot read authorization headers');
+                    }
+
+                    $authorization_header = substr($authorization_header, 7);
+                    $header_details = explode('.', $authorization_header);
+
+                    if (count($header_details) != 2) {
+                        throw new \Exception('Incorrect data in authorization header');
+                    }
+
+                    $username = $header_details[0];
+                    $token = $header_details[1];
+
+                    framework\Logging::log('Fetching user by username', 'auth', framework\Logging::LEVEL_INFO);
+                    $user = self::getB2DBTable()->getByUsername($username);
+
+                    if ($user instanceof User)
+                    {
+                        if (!$user->authenticateApplicationPassword($token)) $user = null;
+                    }
+
+                    break;
+                case framework\Action::AUTHENTICATION_METHOD_BASIC:
+
+                    $username = $_SERVER['PHP_AUTH_USER'];
+                    framework\Logging::log("Fetching user by username", 'auth', framework\Logging::LEVEL_INFO);
+                    $user = self::getB2DBTable()->getByUsername($username);
+
+                    if ($user instanceof User)
+                    {
+                        if (!$user->hasPassword($_SERVER['PHP_AUTH_PW'])) $user = null;
+                    }
+
+                    break;
+            }
+
+            if (!$user instanceof User && !framework\Settings::isLoginRequired())
+            {
+                $user = framework\Settings::getDefaultUser();
+            }
+
+            if ($user instanceof User)
+            {
+                if (!$user->isActivated())
                 {
-                    case framework\Action::AUTHENTICATION_METHOD_ELEVATED:
-                    case framework\Action::AUTHENTICATION_METHOD_CORE:
-                        $username = $request['tbg3_username'];
-                        $password = $request['tbg3_password'];
-                        if ($authentication_method == framework\Action::AUTHENTICATION_METHOD_ELEVATED)
-                        {
-                            $elevated_password = $request['tbg3_elevated_password'];
-                        }
-
-                        $raw = true;
-
-                        // If no username and password specified, check if we have a session that exists already
-                        if ($username === null && $password === null)
-                        {
-                            if (framework\Context::getRequest()->hasCookie('tbg3_username') && framework\Context::getRequest()->hasCookie('tbg3_password'))
-                            {
-                                $username = framework\Context::getRequest()->getCookie('tbg3_username');
-                                $password = framework\Context::getRequest()->getCookie('tbg3_password');
-                                $user = self::getB2DBTable()->getByUsername($username);
-                                if ($authentication_method == framework\Action::AUTHENTICATION_METHOD_ELEVATED)
-                                {
-                                    $elevated_password = framework\Context::getRequest()->getCookie('tbg3_elevated_password');
-                                    if ($user instanceof User && !$user->hasPasswordHash($password))
-                                    {
-                                        $user = null;
-                                    }
-                                    else
-                                    {
-                                        if ($user instanceof User && !$user->hasPasswordHash($elevated_password))
-                                        {
-                                            framework\Context::setUser($user);
-                                            framework\Context::getRouting()->setCurrentRouteName('elevated_login_page');
-                                            throw new framework\exceptions\ElevatedLoginException('reenter');
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if ($user instanceof User && !$user->hasPasswordHash($password)) $user = null;
-                                }
-
-                                if (!$user instanceof User)
-                                {
-                                    framework\Context::logout();
-                                    throw new \Exception('No such login');
-                                }
-                            }
-                        }
-
-                        // If we have authentication details, validate them
-                        if (framework\Settings::isUsingExternalAuthenticationBackend() && $username !== null && $password !== null)
-                        {
-                            $external = true;
-                            framework\Logging::log('Authenticating with backend: '.framework\Settings::getAuthenticationBackend(), 'auth', framework\Logging::LEVEL_INFO);
-                            try
-                            {
-                                $mod = framework\Context::getModule(framework\Settings::getAuthenticationBackend());
-                                if ($mod->getType() !== Module::MODULE_AUTH)
-                                {
-                                    framework\Logging::log('Auth module is not the right type', 'auth', framework\Logging::LEVEL_FATAL);
-                                }
-                                if (framework\Context::getRequest()->hasCookie('tbg3_username') && framework\Context::getRequest()->hasCookie('tbg3_password'))
-                                {
-                                    $user = $mod->verifyLogin($username, $password);
-                                }
-                                else
-                                {
-                                    $user = $mod->doLogin($username, $password);
-                                }
-                                if (!$user instanceof User)
-                                {
-                                    // Invalid
-                                    framework\Context::logout();
-                                    throw new \Exception('No such login');
-                                    //framework\Context::getResponse()->headerRedirect(framework\Context::getRouting()->generate('login'));
-                                }
-                            }
-                            catch (\Exception $e)
-                            {
-                                throw $e;
-                            }
-                        }
-                        // If we don't have login details, the backend may autologin from cookies or something
-                        elseif (framework\Settings::isUsingExternalAuthenticationBackend())
-                        {
-                            $external = true;
-                            framework\Logging::log('Authenticating without credentials with backend: '.framework\Settings::getAuthenticationBackend(), 'auth', framework\Logging::LEVEL_INFO);
-                            $mod = framework\Context::getModule(framework\Settings::getAuthenticationBackend());
-
-                            if ($mod->getType() !== Module::MODULE_AUTH)
-                            {
-                                framework\Logging::log('Auth module is not the right type', 'auth', framework\Logging::LEVEL_FATAL);
-                            }
-
-                            $user = $mod->doAutoLogin();
-                        }
-                        elseif ($username !== null && $password !== null && !$user instanceof User)
-                        {
-                            $external = false;
-                            framework\Logging::log('Using internal authentication', 'auth', framework\Logging::LEVEL_INFO);
-
-                            $user = self::getB2DBTable()->getByUsername($username);
-                            if ($user instanceof User && !$user->hasPassword($password)) $user = null;
-
-                            if (!$user instanceof User)
-                            {
-                                framework\Context::logout();
-                            }
-                        }
-                        break;
-                    case framework\Action::AUTHENTICATION_METHOD_DUMMY:
-                        $user = self::getB2DBTable()->getByUserID(framework\Settings::getDefaultUserID());
-                        break;
-                    case framework\Action::AUTHENTICATION_METHOD_CLI:
-                        $user = self::getB2DBTable()->getByUsername(framework\Context::getCurrentCLIusername());
-                        break;
-                    case framework\Action::AUTHENTICATION_METHOD_RSS_KEY:
-                        $user = self::getB2DBTable()->getByRssKey($request['rsskey']);
-                        break;
-                    case framework\Action::AUTHENTICATION_METHOD_APPLICATION_PASSWORD:
-                        framework\Logging::log('Using application password authentication (token)', 'auth', framework\Logging::LEVEL_INFO);
-                        
-                        // If we have HTTP basic auth, use that. Else, fall back to parameters.
-                        
-                        if(isset($_SERVER['PHP_AUTH_USER'])) {
-                            $username = $_SERVER['PHP_AUTH_USER'];
-                        } else {
-                            $username = $request['api_username'];
-                        }
-                        
-                        if(isset($_SERVER['PHP_AUTH_PW'])) {
-                            $token = $_SERVER['PHP_AUTH_PW'];
-                        } else {
-                            $token = $request['api_token'];
-                        }
-
-                        framework\Logging::log('Fetching user by username', 'auth', framework\Logging::LEVEL_INFO);
-                        
-                        $user = self::getB2DBTable()->getByUsername($username);
-
-                        if ($user instanceof User && !$user->authenticateApplicationPassword($token)) $user = null;
-                        break;
-                    case framework\Action::AUTHENTICATION_METHOD_BASIC:
-                        framework\Logging::log('Using HTTP basic auth', 'auth', framework\Logging::LEVEL_INFO);
-                        
-                        // If we have HTTP basic auth, use that. Else, fall back to parameters.
-                        
-                        if(isset($_SERVER['PHP_AUTH_USER'])) {
-                            $username = $_SERVER['PHP_AUTH_USER'];
-                        } else {
-                            $username = $request['api_username'];
-                        }
-                        
-                        if(isset($_SERVER['PHP_AUTH_PW'])) {
-                            $token = $_SERVER['PHP_AUTH_PW'];
-                        } else {
-                            $token = $request['api_password'];
-                        }
-
-                        framework\Logging::log('Fetching user by username', 'auth', framework\Logging::LEVEL_INFO);
-                        
-                        $user = self::getB2DBTable()->getByUsername($username);
-
-                        if ( ! $user instanceof User || $user->getPassword() != self::hashPassword($token, $user->getSalt())) {
-                            $user = null;
-                        }
-                        break;
+                    throw new \Exception('This account has not been activated yet');
                 }
-
-                if ($user === null && !framework\Settings::isLoginRequired())
-                    {
-                        $user = self::getB2DBTable()->getByUserID(framework\Settings::getDefaultUserID());
-                    }
-
-                if ($user instanceof User)
+                elseif (!$user->isEnabled())
                 {
-                    if (!$user->isActivated())
-                    {
-                        throw new \Exception('This account has not been activated yet');
-                    }
-                    elseif (!$user->isEnabled())
-                    {
-                        throw new \Exception('This account has been suspended');
-                    }
-                    elseif(!$user->isConfirmedMemberOfScope(framework\Context::getScope()))
-                    {
-                        if (!framework\Settings::isRegistrationAllowed())
-                        {
-                            throw new \Exception('This account does not have access to this scope');
-                        }
-                    }
-
-                    if ($external == false && $authentication_method == framework\Action::AUTHENTICATION_METHOD_CORE)
-                    {
-                        $password = $user->getHashPassword();
-
-                        if (!$request->hasCookie('tbg3_username') && !$user->isGuest())
-                        {
-                            if ($request->getParameter('tbg3_rememberme'))
-                            {
-                                framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
-                                framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
-                            }
-                            else
-                            {
-                                framework\Context::getResponse()->setSessionCookie('tbg3_username', $user->getUsername());
-                                framework\Context::getResponse()->setSessionCookie('tbg3_password', $user->getPassword());
-                            }
-                        }
-                    }
+                    throw new \Exception('This account has been suspended');
                 }
-                elseif (framework\Settings::isLoginRequired())
+                elseif(!$user->isConfirmedMemberOfScope(framework\Context::getScope()))
                 {
-                    throw new \Exception('Login required');
-                }
-                else
-                {
-                    throw new \Exception('No such login');
+                    if (!framework\Settings::isRegistrationAllowed())
+                    {
+                        throw new \Exception('This account does not have access to this scope');
+                    }
                 }
             }
-            catch (\Exception $e)
+            elseif (framework\Settings::isLoginRequired())
             {
-                throw $e;
+                throw new \Exception('Login required');
             }
+            else
+            {
+                throw new \Exception('No such login');
+            }
+
             return $user;
-
         }
 
         /**
@@ -930,17 +791,6 @@
         }
 
         /**
-         * Post initialization override
-         */
-        public function _postInitialize()
-        {
-            if (!$this->_salt)
-            {
-                $this->regenerateSalt();
-            }
-        }
-
-        /**
          * Retrieve the users real name
          *
          * @return string
@@ -990,11 +840,11 @@
             switch (framework\Settings::getUserDisplaynameFormat())
             {
                 case framework\Settings::USER_DISPLAYNAME_FORMAT_REALNAME:
-                    return ($this->_realname) ? $this->_realname . ' (' . $this->_username . ')' : $this->_username;
+                    return ($this->_realname) ? $this->_realname . ' (@' . $this->_username . ')' : '@' . $this->_username;
 
                 case framework\Settings::USER_DISPLAYNAME_FORMAT_BUDDY:
                 default:
-                    return ($this->_buddyname) ? $this->_buddyname . ' (' . $this->_username . ')' : (($this->_realname) ? $this->_realname . ' (' . $this->_username . ')' : $this->_username);
+                    return ($this->_buddyname) ? $this->_buddyname . ' (@' . $this->_username . ')' : (($this->_realname) ? $this->_realname . ' (@' . $this->_username . ')' : '@' . $this->_username);
             }
         }
 
@@ -1010,7 +860,7 @@
          */
         public function isAuthenticated()
         {
-            return (bool) ($this->getID() == framework\Context::getUser()->getID());
+            return (bool) ($this->getID() == framework\Context::getUser()->getID() && ($this->getID() != framework\Settings::getDefaultUserID() || !framework\Settings::isDefaultUserGuest()));
         }
 
         /**
@@ -1068,7 +918,7 @@
             if ($this->teams === null)
             {
                 $this->_teams = array('assigned' => array(), 'ondemand' => array());
-                $this->_b2dbLazyload('teams');
+                $this->_b2dbLazyLoad('teams');
                 framework\Logging::log('Populating user teams');
                 if (count($this->teams))
                 {
@@ -1104,7 +954,7 @@
         {
             if ($this->clients === null)
             {
-                $this->_b2dbLazyload('clients');
+                $this->_b2dbLazyLoad('clients');
             }
         }
 
@@ -1124,7 +974,7 @@
         /**
          * Return all this user's clients
          *
-         * @return array|Client
+         * @return Client[]
          */
         public function getClients()
         {
@@ -1155,7 +1005,7 @@
         /**
          * Returns an array of issue ids which are directly assigned to the current user
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getUserAssignedIssues()
         {
@@ -1179,7 +1029,7 @@
          *
          * @param integer $team_id The team id
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getUserTeamAssignedIssues($team_id)
         {
@@ -1315,7 +1165,7 @@
         /**
          * Get all this users friends
          *
-         * @return array|User An array of users
+         * @return User An array of users[]
          */
         public function getFriends()
         {
@@ -1364,7 +1214,7 @@
             {
                 throw new \Exception("Cannot set empty password");
             }
-            $this->_password = self::hashPassword($newpassword, $this->getSalt());
+            $this->_password = password_hash($newpassword, PASSWORD_DEFAULT);
         }
 
         /**
@@ -1431,7 +1281,7 @@
             $away = $this->isAway();
             if (($active || $away) && $this->_customstate)
             {
-                $this->_b2dbLazyload('_userstate');
+                $this->_b2dbLazyLoad('_userstate');
                 if ($this->_userstate instanceof Userstate)
                 {
                     return $this->_userstate;
@@ -1497,7 +1347,7 @@
         /**
          * Returns an array of teams which the current user is a member of
          *
-         * @return array|Team
+         * @return Team[]
          */
         public function getTeams()
         {
@@ -1537,7 +1387,7 @@
         /**
          * Returns an array of teams which the current user is a member of
          *
-         * @return array|Team
+         * @return Team[]
          */
         public function getOndemandTeams()
         {
@@ -1726,46 +1576,12 @@
          * Returns a hash of the user password
          *
          * @see self::getHashPassword
+         * @deprecated
          * @return string
          */
         public function getPassword()
         {
             return $this->getHashPassword();
-        }
-
-        /**
-         * Returns the salt used for password hashing
-         *
-         * @return string
-         */
-        public function getSalt()
-        {
-            if (!$this->_salt)
-            {
-                $this->regenerateSalt();
-            }
-            return $this->_salt;
-        }
-
-        /**
-         * Sets the salt used for password hashing
-         *
-         * @param string $salt
-         */
-        public function setSalt($salt)
-        {
-            $this->_salt = $salt;
-        }
-
-        /**
-         * Set (or reset) the users salt
-         *
-         * @return string
-         */
-        public function regenerateSalt()
-        {
-            $this->_salt = sha1((time()+mt_rand(100, 100000)).mt_rand(1000, 10000));
-            return $this->_salt;
         }
 
         /**
@@ -1777,7 +1593,7 @@
          */
         public function hasPassword($password)
         {
-            return $this->hasPasswordHash(self::hashPassword($password, $this->getSalt()));
+            return password_verify($password, $this->_password);
         }
 
         /**
@@ -1789,7 +1605,7 @@
          */
         public function hasPasswordHash($password_hash)
         {
-            return (bool) ($password_hash == $this->getHashPassword());
+            return hash_equals($password_hash, $this->_password);
         }
 
         /**
@@ -2002,7 +1818,7 @@
         public function getCommentSortOrder()
         {
             $val = framework\Settings::get(framework\Settings::SETTING_USER_COMMENT_ORDER, 'core', framework\Context::getScope(), $this->getID());
-            return ($val !== null) ? $val : 'desc';
+            return ($val !== null) ? $val : 'asc';
         }
 
         public function getActivationKey()
@@ -2407,7 +2223,7 @@
          */
         public function canViewComments()
         {
-            return $this->_dualPermissionsCheck('canviewcomments', 0, 'canpostandeditcomments', 0, framework\Settings::isPermissive());
+            return $this->_dualPermissionsCheck('canviewcomments', 0, 'canpostseeandeditallcomments', 0, framework\Settings::isPermissive());
         }
 
         /**
@@ -2417,7 +2233,7 @@
          */
         public function canPostComments()
         {
-            return $this->_dualPermissionsCheck('canpostcomments', 0, 'canpostandeditcomments', 0, framework\Settings::isPermissive());
+            return $this->_dualPermissionsCheck('canpostcomments', 0, 'canpostseeandeditallcomments', 0, framework\Settings::isPermissive());
         }
 
         /**
@@ -2578,11 +2394,11 @@
          *
          * @param integer $number Limit to a number of changes
          *
-         * @return array
+         * @return LogItem[]
          */
         public function getLatestActions($number = 10)
         {
-            $items = tables\Log::getTable()->getByUserID($this->getID(), $number);
+            $items = tables\LogItems::getTable()->getByUserID($this->getID(), $number);
             return $items;
         }
 
@@ -2599,7 +2415,7 @@
         /**
          * Get all the projects a user is associated with
          *
-         * @return array|Project
+         * @return Project[]
          */
         public function getAssociatedProjects()
         {
@@ -2675,43 +2491,13 @@
         }
 
         /**
-         * Populates openid accounts array when needed
-         */
-        protected function _populateOpenIDAccounts()
-        {
-            if ($this->_openid_accounts === null)
-            {
-                framework\Logging::log('Populating openid accounts');
-                $this->_openid_accounts = tables\OpenIdAccounts::getTable()->getIdentitiesForUserID($this->getID());
-                framework\Logging::log('...done (Populating user clients)');
-            }
-        }
-
-        /**
-         * Get associated openid accounts
-         *
-         * @return array
-         */
-        public function getOpenIDAccounts()
-        {
-            $this->_populateOpenIDAccounts();
-            return $this->_openid_accounts;
-        }
-
-        public function hasOpenIDIdentity($identity)
-        {
-            $this->_populateOpenIDAccounts();
-            return array_key_exists($identity, $this->_openid_accounts);
-        }
-
-        /**
          * Return the users associated scopes
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getScopes()
         {
-            $this->_b2dbLazyload('_scopes');
+            $this->_b2dbLazyLoad('_scopes');
             return $this->_scopes;
         }
 
@@ -2746,7 +2532,7 @@
         /**
          * Get users unconfirmed scope memberships
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getUnconfirmedScopes()
         {
@@ -2757,7 +2543,7 @@
         /**
          * Get users confirmed scope memberships
          *
-         * @return array|Scope
+         * @return Scope[]
          */
         public function getConfirmedScopes()
         {
@@ -2860,7 +2646,7 @@
         /**
          * Returns an array of notifications for this user
          *
-         * @return array|\thebuggenie\core\entities\Notification
+         * @return \thebuggenie\core\entities\Notification[]
          */
         public function getNotifications($first_notification_id = null, $last_notification_id = null)
         {
@@ -2871,7 +2657,7 @@
         /**
          * Returns an array of unread notifications for this user
          *
-         * @return array|\thebuggenie\core\entities\Notification
+         * @return \thebuggenie\core\entities\Notification[]
          */
         public function getUnreadNotifications()
         {
@@ -2921,7 +2707,7 @@
             $grouped_notifications_minutes = $this->getNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_GROUPED_NOTIFICATIONS, false, 'core')->getValue();
             if ($type == 'issue')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ISSUE_CREATED, Notification::TYPE_ISSUE_UPDATED, Notification::TYPE_ISSUE_MENTIONED), $id, $this->getID(), $grouped_notifications_minutes);
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ISSUE);
                 if (count($comment_ids))
                 {
@@ -2930,7 +2716,7 @@
             }
             if ($type == 'article')
             {
-                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_CREATED, Notification::TYPE_ARTICLE_UPDATED), $id, $this->getID(), $grouped_notifications_minutes);
+                tables\Notifications::getTable()->markUserNotificationsReadByTypesAndIdAndGroupableMinutes(array(Notification::TYPE_ARTICLE_CREATED, Notification::TYPE_ARTICLE_UPDATED, Notification::TYPE_ARTICLE_MENTIONED), $id, $this->getID(), $grouped_notifications_minutes);
                 $comment_ids = tables\Comments::getTable()->getCommentIDs($id, Comment::TYPE_ARTICLE);
                 if (count($comment_ids))
                 {
@@ -2944,7 +2730,7 @@
 
         public function regenerateRssKey()
         {
-            $key = md5(time().rand(1, 10000).$this->getSalt());
+            $key = Uuid::uuid4()->toString();
             framework\Settings::saveUserSetting($this->getID(), framework\Settings::USER_RSS_KEY, $key);
 
             return $key;
@@ -2972,11 +2758,11 @@
         /**
          * Returns an array of user dashboards
          *
-         * @return array|\thebuggenie\core\entities\Dashboard
+         * @return \thebuggenie\core\entities\Dashboard[]
          */
         public function getDashboards()
         {
-            $this->_b2dbLazyload('_dashboards');
+            $this->_b2dbLazyLoad('_dashboards');
             return $this->_dashboards;
         }
 
@@ -3002,13 +2788,64 @@
         }
 
         /**
+         * Returns an array of user sessions
+         *
+         * @return \thebuggenie\core\entities\UserSession[]
+         */
+        public function getUserSessions()
+        {
+            $this->_b2dbLazyLoad('_user_sessions');
+            return $this->_user_sessions;
+        }
+
+        /**
+         * @return UserSession
+         *
+         * @throws \Exception
+         */
+        public function createUserSession()
+        {
+            $userSession = new UserSession();
+            $userSession->setUser($this);
+            $userSession->save();
+
+            $this->_user_sessions = null;
+
+            return $userSession;
+        }
+
+        public function verifyUserSession($token, $is_elevated = false)
+        {
+            $userSessions = $this->getUserSessions();
+            framework\Logging::log('Cycling user sessions for given user. Count: '.count($userSessions), 'auth', framework\Logging::LEVEL_INFO);
+
+            foreach ($userSessions as $userSession)
+            {
+                if ($userSession->getExpiresAt() < time())
+                {
+                    $userSession->delete();
+                    continue;
+                }
+
+                if ($userSession->getToken() == $token && $is_elevated == $userSession->isElevated())
+                {
+                    framework\Logging::log('Verified user session', 'auth', framework\Logging::LEVEL_INFO);
+                    return true;
+                }
+            }
+
+            framework\Logging::log('Could not verify user session', 'auth', framework\Logging::LEVEL_INFO);
+            return false;
+        }
+
+        /**
          * Returns an array of application passwords
          *
-         * @return array|\thebuggenie\core\entities\ApplicationPassword
+         * @return \thebuggenie\core\entities\ApplicationPassword[]
          */
         public function getApplicationPasswords()
         {
-            $this->_b2dbLazyload('_application_passwords');
+            $this->_b2dbLazyLoad('_application_passwords');
             return $this->_application_passwords;
         }
 
@@ -3016,7 +2853,7 @@
          * Authenticates a request via application password.
          * The given token is created by requesting authentication via an API endpoint,
          * which also marks the password as "used" and thus usable here.
-         * 
+         *
          * @param string $token
          * @return boolean
          */
@@ -3024,12 +2861,10 @@
         {
             $applicationPasswords = $this->getApplicationPasswords();
             framework\Logging::log('Cycling application passwords for given user. Count: '.count($applicationPasswords), 'auth', framework\Logging::LEVEL_INFO);
-            
-            // Create hash for comparison with db value
-            $hashed_token = self::hashPassword($token, $this->getSalt());
+
             foreach ($applicationPasswords as $password)
             {
-                if ($password->getHashPassword() == $hashed_token)
+                if (password_verify($token, $password->getHashPassword()))
                 {
                     framework\Logging::log('Token hash matches.', 'auth', framework\Logging::LEVEL_INFO);
                     $password->useOnce();

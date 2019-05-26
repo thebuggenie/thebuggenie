@@ -72,13 +72,11 @@
         </td>
     </tr>
     <tr>
-        <td><label for="use_prefix"><?php echo __('Use prefix'); ?></label></td>
+        <td><label for="use_prefix_yes"><?php echo __('Use prefix'); ?></label></td>
         <td>
             <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                <select name="use_prefix" id="use_prefix" style="width: 70px;" onchange="if ($('use_prefix').getValue() == 1) { $('prefix').enable(); } else { $('prefix').disable(); }">
-                    <option value=1<?php if ($project->usePrefix()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                    <option value=0<?php if (!$project->usePrefix()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                </select>
+                <input type="radio" name="use_prefix" value="1" class="fancycheckbox" id="use_prefix_yes"<?php if ($project->usePrefix()): ?> checked<?php endif; ?> onchange="if ($(this).checked) { $('prefix').enable(); }"><label for="use_prefix_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                <input type="radio" name="use_prefix" value="0" class="fancycheckbox" id="use_prefix_no"<?php if (!$project->usePrefix()): ?> checked<?php endif; ?> onchange="if ($(this).checked) { $('prefix').disable(); }"><label for="use_prefix_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
             <?php else: ?>
                 <?php echo ($project->usePrefix()) ? __('Yes') : __('No'); ?>
             <?php endif; ?>
@@ -88,7 +86,7 @@
         <td><label for="prefix"><?php echo __('Issue prefix'); ?></label></td>
         <td>
             <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                <input type="text" name="prefix" id="prefix" maxlength="5" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
+                <input type="text" name="prefix" id="prefix" maxlength="10" value="<?php print $project->getPrefix(); ?>" style="width: 70px;"<?php if (!$project->usePrefix()): ?> disabled<?php endif; ?>>
             <?php elseif ($project->hasPrefix()): ?>
                 <?php echo $project->getPrefix(); ?>
             <?php else: ?>

@@ -1,49 +1,48 @@
-<li class="with-dropdown <?php if (strpos($selected_tab, 'publish_') === 0): ?>selected<?php endif; ?>">
-    <div class="menuitem_container">
-        <?php if (!isset($wiki_url)): ?>
-            <?php echo link_tag(((isset($project_url)) ? $project_url : $url), fa_image_tag('newspaper-o', array(), false, 'publish') . \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project)); ?>
-        <?php else: ?>
-            <?php echo link_tag($wiki_url, \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project), array('target' => 'blank')) ?>
-        <?php endif; ?>
-        <?php if (count(\thebuggenie\core\entities\Project::getAll())): ?>
-            <?php echo javascript_link_tag(image_tag('tabmenu_dropdown.png', array('class' => 'menu_dropdown'))); ?>
-        <?php endif; ?>
-    </div>
-    <?php if (count(\thebuggenie\core\entities\Project::getAll())): ?>
-        <div id="wiki_dropdown_menu" class="tab_menu_dropdown">
+<li class="with-dropdown <?php if (\thebuggenie\core\framework\Context::getRouting()->getCurrentRouteModule() == 'publish'): ?>selected<?php endif; ?>">
+    <?php if (!isset($wiki_url)): ?>
+        <?= link_tag(((isset($project_url)) ? $project_url : $url), fa_image_tag('newspaper') . \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project) . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
+    <?php else: ?>
+        <?= link_tag($wiki_url, \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project) . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['target' => 'blank', 'class' => 'dropper']) ?>
+    <?php endif; ?>
+    <div id="wiki_dropdown_menu" class="tab_menu_dropdown popup_box two-columns wide-right">
+        <?= $selected_tab; ?>
+        <ul>
+            <li class="header"><?= __('Quick links'); ?></li>
+            <li><?php echo link_tag(make_url('publish_article', ['article_name' => 'MainPage']), \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(false)) ?></li>
             <?php if ($project instanceof \thebuggenie\core\entities\Project): ?>
-            <div class="header"><?php echo $project->getName(); ?></div>
-                <?php if (!isset($wiki_url)): ?>
-                    <?php echo link_tag($project_url, __('Project wiki frontpage')); ?>
-                    <?php $quicksearch_title = __('Find project article (press enter to search)'); ?>
-                    <div style="font-weight: normal; margin: 0 0 15px 5px; padding: 0 10px 0 0;">
-                        <form action="<?php echo make_url('publish_find_project_articles', array('project_key' => $project->getName())); ?>" method="get" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
-                            <input type="search" name="articlename" placeholder="<?php echo $quicksearch_title; ?>">
-                        </form>
-                    </div>
-                <?php else: ?>
-                    <?php echo link_tag($wiki_url, __('Project wiki frontpage'), array('target' => 'blank')) ?>
-                <?php endif; ?>
+                <li><?php echo link_tag(make_url('publish_article', ['article_name' => $project->getKey().':MainPage']), \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle($project instanceof \thebuggenie\core\entities\Project)) ?></li>
             <?php endif; ?>
-            <div class="header"><?php echo __('Global content'); ?></div>
-            <?php echo link_tag($url, \thebuggenie\core\framework\Context::getModule('publish')->getMenuTitle(false)); ?>
-            <?php $quicksearch_title = __('Find any article (press enter to search)'); ?>
-            <div style="font-weight: normal; margin: 0 0 15px 5px;">
-                <form action="<?php echo make_url('publish_find_articles'); ?>" method="get" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
-                    <input type="search" name="articlename" placeholder="<?php echo $quicksearch_title; ?>">
-                </form>
-            </div>
-            <?php if (count(\thebuggenie\core\entities\Project::getAll()) > (int) ($project instanceof \thebuggenie\core\entities\Project)): ?>
-                <div class="header"><?php echo __('Project wikis'); ?></div>
-                <?php foreach (\thebuggenie\core\entities\Project::getAll() as $project): ?>
-                    <?php if (!$project->hasAccess() || (isset($project_url) && $project->getID() == $project->getID())) continue; ?>
-                    <?php if (!$project->hasWikiURL()): ?>
-                        <?php echo link_tag(make_url('publish_article', array('article_name' => $project->getName().':MainPage')), $project->getName()); ?>
+            <?php if (count(\thebuggenie\core\entities\Project::getAllRootProjects(false)) > (int) ($project instanceof \thebuggenie\core\entities\Project)): ?>
+                <li class="header"><?= __('Project wikis'); ?></li>
+                <?php foreach (\thebuggenie\core\entities\Project::getAllRootProjects(false) as $root_project): ?>
+                    <?php if (!$root_project->hasAccess() || $root_project->isArchived() || (isset($project_url) && $root_project->getID() == $project->getID())) continue; ?>
+                    <?php if (!$root_project->hasWikiURL()): ?>
+                        <li><?= link_tag(make_url('publish_article', ['article_name' => $root_project->getKey().':MainPage']), image_tag($root_project->getSmallIconName(), ['class' => 'icon'], $root_project->hasSmallIcon()) . $root_project->getName()); ?></li>
                     <?php else: ?>
-                        <?php echo link_tag($project->getWikiURL(), $project->getName(), array('target' => 'blank')) ?>
+                        <li><?= link_tag($root_project->getWikiURL(), image_tag($root_project->getSmallIconName(), ['class' => 'icon'], $root_project->hasSmallIcon()) . $root_project->getName(), ['target' => 'blank']) ?></li>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
-        </div>
-    <?php endif; ?>
+        </ul>
+        <ul>
+            <?php $quicksearch_title = __('Find any article (press enter to search)'); ?>
+            <?php if (!$project instanceof \thebuggenie\core\entities\Project || $wiki_url): ?>
+                <li class="header"><?= __('Global content'); ?></li>
+                <li class="form-container">
+                    <form action="<?= make_url('publish_find_articles'); ?>" method="get" accept-charset="<?= \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
+                        <input type="search" name="articlename" placeholder="<?= $quicksearch_title; ?>">
+                    </form>
+                </li>
+            <?php elseif (!isset($wiki_url)): ?>
+                <li class="header"><?= __('Project content'); ?></li>
+                <li class="form-container">
+                    <form action="<?php echo make_url('publish_find_project_articles', ['project_key' => $project->getName()]); ?>" method="get" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>">
+                        <input type="search" name="articlename" placeholder="<?php echo $quicksearch_title; ?>">
+                    </form>
+                </li>
+            <?php else: ?>
+                <li class="disabled"><?= __('Search disabled on external wiki'); ?></li>
+            <?php endif; ?>
+        </ul>
+    </div>
 </li>

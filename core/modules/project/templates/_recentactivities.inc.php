@@ -1,3 +1,10 @@
+<?php
+
+/**
+ * @var \thebuggenie\core\entities\Issue[] $issues
+ */
+
+?>
 <div id="tab_<?php echo $id ?>_pane"<?php if ($default_displayed !== true): ?> style="display: none;"<?php endif;?>>
     <?php if (isset($link)): echo $link; endif; ?>
     <?php if (count($issues) > 0): ?>
@@ -5,7 +12,7 @@
         <?php foreach ($issues as $issue): ?>
             <?php if ($issue->isDeleted()): continue; endif; ?>
             <tr>
-                <td class="imgtd"><?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png'); ?></td>
+                <td class="imgtd"><?php echo fa_image_tag($issue->getIssueType()->getFontAwesomeIcon(), ['title' => $issue->getIssueType()->getName()]); ?></td>
                 <td>
                     <?php echo link_tag(make_url('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), '<b>' . $issue->getFormattedIssueNo(true) . ' - ' . $issue->getTitle() . '</b>', array('class' => (($issue->isClosed()) ? 'issue_closed' : 'issue_open'))); ?><br>
                     <span class="faded_out dark recent_activities_details">
@@ -20,6 +27,9 @@
         <?php endforeach; ?>
         </table>
     <?php else: ?>
-        <div class="faded_out dark" style="padding: 5px; font-size: 12px;"><?php echo __($empty); ?></div>
+        <div class="no-items">
+            <?= fa_image_tag('copy'); ?>
+            <span><?php echo __($empty); ?></span>
+        </div>
     <?php endif; ?>
 </div>

@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\helpers;
 
+    use thebuggenie\core\entities\traits\TextParserTodo;
+    use Highlight\Highlighter;
     use thebuggenie\core\framework,
         thebuggenie\modules\publish\entities\tables\Articles,
         thebuggenie\modules\publish\entities\Article;
@@ -24,6 +26,7 @@
      */
     class TextParser implements ContentParser
     {
+        use TextParserTodo;
 
         protected static $additional_regexes = null;
 
@@ -210,6 +213,7 @@
             $listtypes = array('*' => 'ul', '#' => 'ol');
             $output = "";
 
+            $matches[1] = trim($matches[1]);
             $newlevel = ($close) ? 0 : mb_strlen($matches[1]);
 
             while ($this->list_level != $newlevel)
@@ -466,6 +470,7 @@
 
             if (in_array(mb_strtolower($namespace), array('image', 'file')))
             {
+                framework\Context::loadLibrary('ui');
                 $retval = $namespace . ':' . $href;
                 if (!framework\Context::isCLI())
                 {
@@ -498,7 +503,7 @@
                         $caption = (!empty($options)) ? array_pop($options) : false;
                     }
 
-                    if ((($file instanceof \thebuggenie\core\entities\File && $file->isImage()) || $articlemode) && (mb_strtolower($namespace) == 'image' || $issuemode) && \thebuggenie\core\framework\Settings::isCommentImagePreviewEnabled())
+                    if ((($file instanceof \thebuggenie\core\entities\File && $file->isImage()) || $articlemode) && (mb_strtolower($namespace) == 'image' || $issuemode) && framework\Settings::isCommentImagePreviewEnabled())
                     {
                         $divclasses = array('image_container');
                         $style_dimensions = '';
@@ -542,7 +547,7 @@
                         {
                             $retval .= '<br>'.$caption;
                         }
-                        $retval .= link_tag($file_link, image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open image in new window')));
+                        $retval .= link_tag($file_link, fa_image_tag('external-link-alt'), array('target' => 'new_window_'.rand(0, 10000), 'title' => framework\Context::getI18n()->__('Open image in new window')));
                         $retval .= '</div>';
                     }
                     else
@@ -551,10 +556,10 @@
                             $retval = $this->_parse_image($file_link, $caption, $options);
                         }
                         else if ($file_link == $filename) {
-                            $retval = $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;', 'title' => __('File no longer exists.')));
+                            $retval = $caption . fa_image_tag('calendar-times', ['title' => framework\Context::getI18n()->__('File no longer exists.')], 'far');
                         }
                         else {
-                            $retval = link_tag($file_link, $caption . image_tag('icon_open_new.png', array('style' => 'margin-left: 5px;')), array('target' => 'new_window_'.rand(0, 10000), 'title' => __('Open file in new window')));
+                            $retval = link_tag($file_link, $caption . fa_image_tag('external-link-alt'), array('target' => 'new_window_'.rand(0, 10000), 'title' => framework\Context::getI18n()->__('Open file in new window')));
                         }
                     }
                 }
@@ -709,9 +714,14 @@
             if ($theIssue instanceof \thebuggenie\core\entities\Issue)
             {
                 $theIssueUrl = make_url('viewissue', array('issue_no' => $theIssue->getFormattedIssueNo(false), 'project_key' => $theIssue->getProject()->getKey()));
+                $urlPrefix = framework\Event::createNew('core', 'thebuggenie\core\framework\helpers\TextParser::_parseIssuelink::urlPrefix')->triggerUntilProcessed()->getReturnValue();
+
+                if ($urlPrefix) {
+                    $theIssueUrl = $urlPrefix . $theIssueUrl;
+                }
 
                 if ($markdown_format) {
-                    if ($classname != '') $classname = ' {.'.$classname.'}';
+                    if ($classname == 'closed') $classname = ' (' . framework\Context::getI18n()->__('Closed') . ')';
 
                     $output = "{$matches[1]}[{$matches[2]}]($theIssueUrl \"{$theIssue->getFormattedTitle()}\")$classname";
                 }
@@ -822,7 +832,7 @@
                     return (isset($this->options['included'])) ? '' : '{{TOC}}';
                 case 'SITENAME':
                 case 'SITETAGLINE':
-                    return \thebuggenie\core\framework\Settings::getSiteHeaderName();
+                    return framework\Settings::getSiteHeaderName();
                 default:
                     $details = explode('|', $matches[1]);
                     $template_name = array_shift($details);
@@ -1037,18 +1047,19 @@
         {
             $line_regexes = array();
 
-            $line_regexes['preformat'] = '^\s{1}(.*?)$';
-            $line_regexes['quote'] = '^(\&gt\;)(.*?)$';
-            $line_regexes['definitionlist'] = '^([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)$';
-            $line_regexes['newline'] = '^$';
-            $line_regexes['list'] = '^([\*\#]+)(.*?)$';
-            $line_regexes['tableopener'] = '^\{\|(.*?)$';
-            $line_regexes['tablecloser'] = '^\|\}$';
-            $line_regexes['tablerow'] = '^\|-(.*?)$';
-            $line_regexes['tableheader'] = '^\!\ (.*?)$';
-            $line_regexes['tablerowcontent'] = '^\|{1,2}\s?(.*?)$';
-            $line_regexes['headers'] = '^(={1,6})(.*?)(={1,6})$';
-            $line_regexes['horizontalrule'] = '^----$';
+            $line_regexes['preformat'] = '\s{1}(.*?)';
+            $line_regexes['quote'] = '(\&gt\;)(.*?)';
+            $line_regexes['definitionlist'] = '([\;\:])(?!\-?[\(\)\D\/P])\s*(.*?)';
+            $line_regexes['newline'] = '';
+            $line_regexes['list'] = '([\*\#]+ )(.*?)';
+            $line_regexes['tableopener'] = '\{\|(.*?)';
+            $line_regexes['tablecloser'] = '\|\}';
+            $line_regexes['tablerow'] = '\|-(.*?)';
+            $line_regexes['tableheader'] = '\!\ (.*?)';
+            $line_regexes['tablerowcontent'] = '\|{1,2}\s?(.*?)';
+            $line_regexes['headers'] = '(={1,6})(.*?)(={1,6})';
+            $line_regexes['horizontalrule'] = '----';
+            $line_regexes['todo'] = $this->todo_regex;
 
             $char_regexes = array();
             $char_regexes[] = array('/(\'{2,5})/i', array($this, '_parse_emphasize'));
@@ -1075,7 +1086,7 @@
 
             foreach ($line_regexes as $func => $regex)
             {
-                if (preg_match("/$regex/i", $line, $matches))
+                if (preg_match('/^' . $regex . '$/i', $line, $matches))
                 {
                     $called[$func] = true;
                     $func = "_parse_".$func;
@@ -1135,6 +1146,7 @@
                 $this->deflist = false;
                 $this->ignore_newline = false;
 
+                $text = preg_replace_callback('/<source((?:\s+[^\s]+=.*)*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
                 $text = preg_replace_callback('/<(nowiki|pre)>(.*)<\/(\\1)>(?!<\/(\\1)>)/ismU', array($this, "_parse_save_nowiki"), $text);
                 $text = preg_replace_callback('/[\{]{3,3}([\d|\w|\|]*)[\}]{3,3}/ismU', array($this, "_parse_insert_variables"), $text);
                 $text = preg_replace_callback('/(?<!\{)[\{]{2,2}([^{^}.]*)[\}]{2,2}(?!\})/ismU', array($this, "_parse_insert_template"), $text);
@@ -1150,7 +1162,6 @@
                     $text = preg_replace_callback('/<includeonly>(.+?)<\/includeonly>(?!<\/includeonly>)/ism', array($this, "_parse_remove_includeonly"), $text);
                     $text = preg_replace_callback('/<noinclude>(.+?)<\/noinclude>(?!<\/noinclude>)/ism', array($this, "_parse_preserve_noinclude"), $text);
                 }
-                $text = preg_replace_callback('/<source((?:\s+[^\s]+=".*")*)>\s*?(.+)\s*?<\/source>/ismU', array($this, "_parse_save_code"), $text);
                 // Thanks to Mike Smith (scgtrp) for the above regexp
 
                 $text = tbg_decodeUTF8($text, true);
@@ -1291,7 +1302,7 @@
             return "~~~CODE~~~";
         }
 
-        protected function _geshify($matches)
+        protected function _highlightCode($matches)
         {
             if (!(is_array($matches) && count($matches) > 1))
             {
@@ -1310,89 +1321,28 @@
                 }
                 else
                 {
-                    $language = \thebuggenie\core\framework\Settings::get('highlight_default_lang');
+                    $language = framework\Settings::get(framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE);
                 }
 
-                $numbering_startfrom = preg_match('/(?<=line start=")(.+?)(?=")/', $params, $matches);
-                if ($numbering_startfrom !== 0)
-                {
-                    $numbering_startfrom = (int) $matches[0];
-                }
-                else
-                {
-                    $numbering_startfrom = 1;
+                $highlighter = new Highlighter();
+
+                if ($language == 'html4strict') $language = 'html';
+
+                if (!in_array($language, $highlighter->listLanguages())) {
+                    $language = 'javascript';
                 }
 
-                $geshi = new \GeSHi($codeblock, $language);
+                $codeblock = $highlighter->highlight($language, $codeblock);
 
-                $highlighting = preg_match('/(?<=line=")(.+?)(?=")/', $params, $matches);
-                if ($highlighting !== 0)
-                {
-                    $highlighting = $matches[0];
-                }
-                else
-                {
-                    $highlighting = false;
-                }
-
-                $interval = preg_match('/(?<=highlight=")(.+?)(?=")/', $params, $matches);
-                if ($interval !== 0)
-                {
-                    $interval = $matches[0];
-                }
-                else
-                {
-                    $interval = \thebuggenie\core\framework\Settings::get('highlight_default_interval');
-                }
-
-                if ($highlighting === false)
-                {
-                    switch (\thebuggenie\core\framework\Settings::get('highlight_default_numbering'))
-                    {
-                        case 1:
-                            // Line numbering with a highloght every n rows
-                            $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
-                            $geshi->start_line_numbers_at($numbering_startfrom);
-                            break;
-                        case 2:
-                            // Normal line numbering
-                            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
-                            $geshi->start_line_numbers_at($numbering_startfrom);
-                            break;
-                        case 3:
-                            break; // No numbering
-                    }
-                }
-                else
-                {
-                    switch($highlighting)
-                    {
-                        case 'highlighted':
-                        case 'GESHI_FANCY_LINE_NUMBERS':
-                            // Line numbering with a highloght every n rows
-                            $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, $interval);
-                            $geshi->start_line_numbers_at($numbering_startfrom);
-                            break;
-                        case 'normal':
-                        case 'GESHI_NORMAL_LINE_NUMBERS':
-                            // Normal line numbering
-                            $geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS, 10);
-                            $geshi->start_line_numbers_at($numbering_startfrom);
-                            break;
-                        case 3:
-                            break; // No numbering
-                    }
-                }
-
-                $codeblock = $geshi->parse_code();
-                unset($geshi);
+                unset($highlighter);
             }
-            return '<code>' . $codeblock . '</code>';
+            framework\Context::getResponse()->addStylesheet('/css/highlight.php/github.css');
+            return '<pre class="hljs ' . strtolower($language) . '"><code>' . $codeblock->value . '</code></pre>';
         }
 
         protected function _parse_restore_code($matches)
         {
-            return $this->_geshify(array_pop($this->codeblocks));
+            return $this->_highlightCode(array_pop($this->codeblocks));
         }
 
         public function getInternalLinks()
@@ -1408,6 +1358,16 @@
         public function setOption($option, $value)
         {
             $this->options[$option] = $value;
+        }
+
+        public static function replaceNth($search, $replace, $subject, $nth) {
+            $found = preg_match_all('/' . preg_quote($search) . '/', $subject, $matches, PREG_OFFSET_CAPTURE);
+
+            if (false !== $found && $found > $nth) {
+                return substr_replace($subject, $replace, $matches[0][ $nth ][1], strlen($search));
+            }
+
+            return $subject;
         }
 
     }

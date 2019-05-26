@@ -22,7 +22,7 @@
         font-size: 1.5em;
     }
 
-    #tbg3_username, #forgot_password_username, .login_popup input[type="password"], #fieldusername, #register input[type="text"], #register input[type="email"], #register input#fieldusername[type="text"] {
+    #tbg_username, #forgot_password_username, .login_popup input[type="password"], #fieldusername, #register input[type="text"], #register input[type="email"], #register input#fieldusername[type="text"] {
         width: 100%;
         box-sizing: border-box;
     }

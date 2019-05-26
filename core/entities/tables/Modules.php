@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework;
 
 /**
@@ -20,7 +22,7 @@
      * @package thebuggenie
      * @subpackage tables
      *
-     * @static @method Modules getTable() Retrieves an instance of this table
+     * @method static Modules getTable() Retrieves an instance of this table
      * @method \thebuggenie\core\entities\Module selectById(integer $id) Retrieves a module
      *
      * @Table(name="modules")
@@ -41,11 +43,11 @@
 
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
             $modules = array();
 
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -62,12 +64,12 @@
 
         public function getAllNames()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addSelectionColumn(self::MODULE_NAME);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addSelectionColumn(self::MODULE_NAME);
             $names = array();
 
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -80,31 +82,37 @@
 
         public function disableModuleByID($module_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::ENABLED, 0);
-            return $this->doUpdateById($crit, $module_id);
+            $update = new Update();
+            $update->add(self::ENABLED, 0);
+            return $this->rawUpdateById($update, $module_id);
         }
 
         public function setModuleVersion($module_key, $version)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::MODULE_NAME, $module_key);
-            $crit->addUpdate(self::VERSION, $version);
-            return $this->doUpdate($crit);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add(self::VERSION, $version);
+            $query->where(self::MODULE_NAME, $module_key);
+
+            return $this->rawUpdate($update, $query);
         }
 
         public function removeModuleByID($module_id)
         {
-            return $this->doDeleteById($module_id);
+            return $this->rawDeleteById($module_id);
         }
 
         public function disableModuleByName($module_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addUpdate(self::ENABLED, 0);
-            $crit->addWhere(self::MODULE_NAME, $module_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            return $this->doUpdate($crit);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add(self::ENABLED, 0);
+            $query->where(self::MODULE_NAME, $module_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+
+            return $this->rawUpdate($update, $query);
         }
 
         public function installModule($identifier, $scope)
@@ -115,17 +123,17 @@
                 throw new \Exception('Can not load new instance of type \\thebuggenie\\modules\\'.$identifier."\\".ucfirst($identifier) . ', is not loaded');
             }
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::MODULE_NAME, $identifier);
-            $crit->addWhere(self::SCOPE, $scope);
-            if (!$res = $this->doSelectOne($crit))
+            $query = $this->getQuery();
+            $query->where(self::MODULE_NAME, $identifier);
+            $query->where(self::SCOPE, $scope);
+            if (!$res = $this->rawSelectOne($query))
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::ENABLED, true);
-                $crit->addInsert(self::MODULE_NAME, $identifier);
-                $crit->addInsert(self::VERSION, $classname::VERSION);
-                $crit->addInsert(self::SCOPE, $scope);
-                $module_id = $this->doInsert($crit)->getInsertID();
+                $insertion = new Insertion();
+                $insertion->add(self::ENABLED, true);
+                $insertion->add(self::MODULE_NAME, $identifier);
+                $insertion->add(self::VERSION, $classname::VERSION);
+                $insertion->add(self::SCOPE, $scope);
+                $module_id = $this->rawInsert($insertion)->getInsertID();
             }
             else
             {
@@ -138,11 +146,11 @@
 
         public function getModulesForScope($scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope_id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope_id);
 
             $return_array = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -155,12 +163,12 @@
 
         public function getModuleForScope($module_name, $scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::MODULE_NAME, $module_name);
-            $crit->addWhere(self::SCOPE, $scope_id);
+            $query = $this->getQuery();
+            $query->where(self::MODULE_NAME, $module_name);
+            $query->where(self::SCOPE, $scope_id);
 
             $module = null;
-            if ($row = $this->doSelectOne($crit))
+            if ($row = $this->rawSelectOne($query))
             {
                 $classname = $row->get(self::CLASSNAME);
                 $module = new $classname($row->get(self::ID), $row);

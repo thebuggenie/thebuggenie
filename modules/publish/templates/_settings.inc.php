@@ -1,7 +1,7 @@
 <div style="margin-top: 5px;" class="tab_menu inset">
     <ul id="publish_settings_menu">
         <li class="selected" id="publish_tab_settings"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_settings', 'publish_settings_menu');" href="javascript:void(0);"><?= fa_image_tag('cog'); ?><span><?= __('General wiki settings'); ?></span></a></li>
-        <li id="publish_tab_import"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?= fa_image_tag('sign-in'); ?><span><?= __('Import wiki articles'); ?></span></a></li>
+        <li id="publish_tab_import"><a onclick="TBG.Main.Helpers.tabSwitcher('publish_tab_import', 'publish_settings_menu');" href="javascript:void(0);"><?= fa_image_tag('sign-in-alt'); ?><span><?= __('Import wiki articles'); ?></span></a></li>
     </ul>
 </div>
 <div id="publish_settings_menu_panes">
@@ -11,8 +11,8 @@
                 <tr>
                     <td style="padding: 5px;"><label for="hide_wiki_links_no"><?= __('Enable wiki'); ?></label></td>
                     <td>
-                        <input type="radio" name="hide_wiki_links" value="0" id="hide_wiki_links_no"<?php if ($module->getSetting('hide_wiki_links') != 1): ?> checked<?php endif; ?>>&nbsp;<label for="hide_wiki_links_no"><?= __('Yes'); ?></label>&nbsp;
-                        <input type="radio" name="hide_wiki_links" value="1" id="hide_wiki_links_yes"<?php if ($module->getSetting('hide_wiki_links') == 1): ?> checked<?php endif; ?>>&nbsp;<label for="hide_wiki_links_yes"><?= __('No'); ?></label>
+                        <input type="radio" class="fancycheckbox" name="hide_wiki_links" value="0" id="hide_wiki_links_no"<?php if ($module->getSetting('hide_wiki_links') != 1): ?> checked<?php endif; ?>><label for="hide_wiki_links_no"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                        <input type="radio" class="fancycheckbox" name="hide_wiki_links" value="1" id="hide_wiki_links_yes"<?php if ($module->getSetting('hide_wiki_links') == 1): ?> checked<?php endif; ?>><label for="hide_wiki_links_yes"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                     </td>
                 </tr>
                 <tr>
@@ -36,8 +36,8 @@
                 <tr>
                     <td style="padding: 5px;"><label for="allow_camelcase_links_yes"><?= __('Allow "CamelCased" links'); ?></label></td>
                     <td>
-                        <input type="radio" name="allow_camelcase_links" value="1" id="allow_camelcase_links_yes"<?php if ($module->getSetting('allow_camelcase_links') == 1): ?> checked<?php endif; ?>>&nbsp;<label for="allow_camelcase_links_yes"><?= __('Yes'); ?></label>&nbsp;
-                        <input type="radio" name="allow_camelcase_links" value="0" id="allow_camelcase_links_no"<?php if ($module->getSetting('allow_camelcase_links') == 0): ?> checked<?php endif; ?>>&nbsp;<label for="allow_camelcase_links_no"><?= __('No'); ?></label>
+                        <input type="radio" class="fancycheckbox" name="allow_camelcase_links" value="1" id="allow_camelcase_links_yes"<?php if ($module->getSetting('allow_camelcase_links') == 1): ?> checked<?php endif; ?>><label for="allow_camelcase_links_yes"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                        <input type="radio" class="fancycheckbox" name="allow_camelcase_links" value="0" id="allow_camelcase_links_no"<?php if ($module->getSetting('allow_camelcase_links') == 0): ?> checked<?php endif; ?>><label for="allow_camelcase_links_no"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                     </td>
                 </tr>
                 <tr>
@@ -46,8 +46,8 @@
                 <tr>
                     <td style="padding: 5px;"><label for="require_change_reason_yes"><?= __('Require change reason'); ?></label></td>
                     <td>
-                        <input type="radio" name="require_change_reason" value="1" id="require_change_reason_yes"<?php if ($module->getSetting('require_change_reason') == 1): ?> checked<?php endif; ?>>&nbsp;<label for="require_change_reason_yes"><?= __('Yes'); ?></label>&nbsp;
-                        <input type="radio" name="require_change_reason" value="0" id="require_change_reason_no"<?php if ($module->getSetting('require_change_reason') != 1): ?> checked<?php endif; ?>>&nbsp;<label for="require_change_reason_no"><?= __('No'); ?></label>
+                        <input type="radio" class="fancycheckbox" name="require_change_reason" value="1" id="require_change_reason_yes"<?php if ($module->getSetting('require_change_reason') == 1): ?> checked<?php endif; ?>><label for="require_change_reason_yes"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                        <input type="radio" class="fancycheckbox" name="require_change_reason" value="0" id="require_change_reason_no"<?php if ($module->getSetting('require_change_reason') != 1): ?> checked<?php endif; ?>><label for="require_change_reason_no"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                     </td>
                 </tr>
                 <tr>
@@ -71,9 +71,9 @@
                 </tr>
             </table>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-            <div class="bluebox" style="margin: 0 0 5px 0;">
-                <?= __('Click "%save" to save wiki notification settings', array('%save' => __('Save'))); ?>
-                <input type="submit" id="submit_settings_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?= __('Save'); ?>">
+            <div class="save-button-container">
+                <span class="message"><?= __('Click "%save" to save wiki notification settings', array('%save' => __('Save'))); ?></span>
+                <input type="submit" id="submit_settings_button" value="<?= __('Save'); ?>">
             </div>
         <?php endif; ?>
         </form>
@@ -98,8 +98,8 @@
             <ul class="simple_list" id="import_articles_list">
             <?php foreach ($articles as $article_name => $details): ?>
                 <li class="article_category_<?= $details['category']; ?>" style="<?php if ($details['category'] != '') echo 'display: none;'; ?>">
-                    <input type="checkbox" value="1" name="import_article[<?= $article_name; ?>]" id="import_article_<?= mb_strtolower($article_name); ?>"<?php if (!$details['exists']) echo ' selected'; ?>>&nbsp;
-                    <label for="import_article_<?= mb_strtolower($article_name); ?>"><?= urldecode($article_name); ?></label>
+                    <input type="checkbox" class="fancycheckbox" value="1" name="import_article[<?= $article_name; ?>]" id="import_article_<?= mb_strtolower($article_name); ?>"<?php if (!$details['exists']) echo ' selected'; ?>>&nbsp;
+                    <label for="import_article_<?= mb_strtolower($article_name); ?>"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . urldecode($article_name); ?></label>
                     <?php if ($details['exists']): ?>
                         &nbsp;<?= link_tag(make_url('publish_article', array('article_name' => $article_name)), __('Open existing article in new window'), array('style' => 'font-size: 0.8em;', 'target' => "_{$article_name}")); ?>
                         <div class="faded_out"><?= __('Importing this article will overwrite an existing article in the database'); ?></div>
@@ -109,9 +109,9 @@
             </ul>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
             <br style="clear: both;">
-            <div class="bluebox" style="margin: 0 0 5px 0;">
-                <?= __('Click "%import_articles" to import the selected articles', array('%import_articles' => __('Import articles'))); ?>
-                <input type="submit" id="submit_import_button" style="margin: -3px -3px 0 0; float: right; font-size: 14px; font-weight: bold;" value="<?= __('Import articles'); ?>">
+            <div class="save-button-container">
+                <span class="message"><?= __('Click "%import_articles" to import the selected articles', array('%import_articles' => __('Import articles'))); ?></span>
+                <input type="submit" id="submit_import_button" value="<?= __('Import articles'); ?>">
             </div>
         <?php endif; ?>
         </form>

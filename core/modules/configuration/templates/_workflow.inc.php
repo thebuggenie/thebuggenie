@@ -15,12 +15,10 @@
                     <?php if (\thebuggenie\core\framework\Context::getScope()->hasCustomWorkflowsAvailable()): ?>
                         <a href="javascript:void(0);" onclick="$('copy_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="button button-silver copy_workflow_link"><?php echo fa_image_tag('clone', array('title' => __('Create a copy of this workflow'))); ?></a>
                     <?php endif; ?>
-                    <?php if (!$workflow->isCore()): ?>
-                        <?php if ($workflow->isInUse()): ?>
-                            <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow'); ?>', '<?php echo __('This workflow can not be deleted as it is being used by %number_of_schemes workflow scheme(s)', array('%number_of_schemes' => $workflow->getNumberOfSchemes())); ?>');" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this workflow'))); ?></a>
-                        <?php else: ?>
-                            <a href="javascript:void(0);" onclick="$('delete_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this workflow'))); ?></a>
-                        <?php endif; ?>
+                    <?php if ($workflow->isInUse()): ?>
+                        <a href="javascript:void(0);" onclick="TBG.Main.Helpers.Message.error('<?php echo __('Cannot delete workflow'); ?>', '<?php echo __('This workflow can not be deleted as it is being used by %number_of_schemes workflow scheme(s)', array('%number_of_schemes' => $workflow->getNumberOfSchemes())); ?>');" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this workflow'))); ?></a>
+                    <?php else: ?>
+                        <a href="javascript:void(0);" onclick="$('delete_workflow_<?php echo $workflow->getID(); ?>_popup').toggle();" class="button destroy-link button-silver"><?php echo fa_image_tag('times', array('title' => __('Delete this workflow'))); ?></a>
                     <?php endif; ?>
                 </div>
             </td>
@@ -43,7 +41,7 @@
         </div>
     </li>
 <?php endif; ?>
-<?php if (!$workflow->isCore() && !$workflow->isInUse()): ?>
+<?php if (!$workflow->isInUse()): ?>
     <li class="rounded_box white shadowed" id="delete_workflow_<?php echo $workflow->getID(); ?>_popup" style="margin-bottom: 5px; padding: 10px; display: none;">
         <div class="header"><?php echo __('Are you sure?'); ?></div>
         <div class="content">

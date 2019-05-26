@@ -3,6 +3,7 @@
     namespace thebuggenie\modules\vcs_integration;
 
     use b2db\Criteria;
+    use b2db\Update;
     use thebuggenie\core\entities\tables\Settings;
     use thebuggenie\core\framework,
         thebuggenie\modules\vcs_integration\entities\File,
@@ -60,20 +61,21 @@
             switch ($this->_version) {
                 case '2.0':
                     $table = Settings::getTable();
-                    $crit = $table->getCriteria();
-                    $ctn = $crit->returnCriterion(Settings::NAME, 'diff_url_%', Criteria::DB_LIKE);
-                    $ctn->addOr(Settings::NAME, 'log_url_%', Criteria::DB_LIKE);
-                    $ctn->addOr(Settings::NAME, 'blob_url_%', Criteria::DB_LIKE);
-                    $ctn->addOr(Settings::NAME, 'commit_url_%', Criteria::DB_LIKE);
-                    $crit->addWhere($ctn);
-                    $crit->addWhere(Settings::MODULE, 'vcs_integration');
-                    $urls = $table->doSelect($crit);
+                    $query = $table->getQuery();
+                    $criteria = new Criteria();
+                    $criteria->where(Settings::NAME, 'diff_url_%', \b2db\Criterion::LIKE);
+                    $criteria->or(Settings::NAME, 'log_url_%', \b2db\Criterion::LIKE);
+                    $criteria->or(Settings::NAME, 'blob_url_%', \b2db\Criterion::LIKE);
+                    $criteria->or(Settings::NAME, 'commit_url_%', \b2db\Criterion::LIKE);
+                    $query->where($criteria);
+                    $query->where(Settings::MODULE, 'vcs_integration');
+                    $urls = $table->rawSelect($query);
                     if ($urls) {
                         while ($url = $urls->getNextRow()) {
                             $value = str_replace(array('%revno%', '%oldrev%', '%file%'), array('%revno', '%oldrev', '%file'), $url[Settings::VALUE]);
-                            $crit = $table->getCriteria();
-                            $crit->addUpdate(Settings::VALUE, $value);
-                            $table->doUpdateById($crit, $url[Settings::ID]);
+                            $update = new Update();
+                            $update->add(Settings::VALUE, $value);
+                            $table->rawUpdateById($update, $url[Settings::ID]);
                         }
                     }
             }
@@ -146,7 +148,7 @@
 
         protected function _getCommitLink($commit)
         {
-            return '<a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show(\''.make_url('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $commit->getID())).'\');">'.$commit->getRevisionString().'</a>';
+            return '<a href="javascript:void(0)" onclick="TBG.Main.Helpers.Backdrop.show(\''.framework\Context::getRouting()->generate('get_partial_for_backdrop', array('key' => 'vcs_integration_getcommit', 'commit_id' => $commit->getID())).'\');">'.$commit->getRevisionString().'</a>';
         }
 
         public function _parse_commit($matches)
@@ -232,7 +234,7 @@
 
             switch ($event->getSubject()->getNotificationType()) {
                 case self::NOTIFICATION_COMMIT_MENTIONED:
-                    $event->setReturnValue(make_url('get_partial_for_backdrop', array(
+                    $event->setReturnValue(framework\Context::getRouting()->generate('get_partial_for_backdrop', array(
                         'key' => 'vcs_integration_getcommit', 'commit_id' => $event->getSubject()
                           ->getTargetID()
                       )));

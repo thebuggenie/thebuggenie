@@ -76,13 +76,13 @@
         }
 
         /**
-         * @return \thebuggenie\core\entities\CustomDatatype
+         * @return CustomDatatype
          */
-        public function getCustomdatatype()
+        public function getCustomdatatype(): CustomDatatype
         {
-            if (!$this->_customfield_id instanceof \thebuggenie\core\entities\CustomDatatype)
+            if (!$this->_customfield_id instanceof CustomDatatype)
             {
-                $this->_b2dbLazyload('_customfield_id');
+                $this->_b2dbLazyLoad('_customfield_id');
             }
             return $this->_customfield_id;
         }
@@ -92,4 +92,13 @@
             return parent::getItemtype();
         }
 
+        public function getFontAwesomeIcon()
+        {
+            return $this->getCustomdatatype()->getFontAwesomeIcon();
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            return $this->getCustomdatatype()->getFontAwesomeIconStyle();
+        }
     }

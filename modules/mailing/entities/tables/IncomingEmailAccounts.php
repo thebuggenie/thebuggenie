@@ -22,6 +22,7 @@
         const FOLDER = 'mailing_incoming_email_account.folder';
         const SERVER_TYPE = 'mailing_incoming_email_account.server_type';
         const SSL = 'mailing_incoming_email_account.ssl';
+        const PREFER_HTML = 'mailing_incoming_email_account.prefer_html';
         const KEEP_EMAIL = 'mailing_incoming_email_account.keep_email';
         const PROJECT = 'mailing_incoming_email_account.project';
         const ISSUETYPE = 'mailing_incoming_email_account.issuetype';
@@ -31,17 +32,17 @@
 
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addOrderBy('mailing_incoming_email_account.project', Criteria::SORT_ASC);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->addOrderBy('mailing_incoming_email_account.project', \b2db\QueryColumnSort::SORT_ASC);
+            return $this->select($query);
         }
 
         public function getAllByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT, $project_id);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT, $project_id);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
     }

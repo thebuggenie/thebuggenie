@@ -37,22 +37,32 @@
     </div>
 <?php endif; ?>
 <div class="fullpage_backdrop" id="dialog_backdrop" style="display: none;">
-    <div id="dialog_backdrop_content" class="backdrop_box backdrop_detail_content">
-        <h3 id="dialog_title"></h3>
-        <p id="dialog_content"></p>
-        <div style="text-align: right; padding: 20px;">
-            <?php echo image_tag('spinning_20.gif', array('style' => 'display: none;', 'id' => 'dialog_indicator')); ?>
-            <a href="javascript:void(0)" id="dialog_yes" class="button button-silver"><?php echo __('Yes'); ?></a>
-            <a href="javascript:void(0)" id="dialog_no" class="button button-silver"><?php echo __('No'); ?></a>
+    <div id="dialog_backdrop_content" class="backdrop_box">
+        <div class="backdrop_detail_header"><span id="dialog_title"></span></div>
+        <div class="backdrop_detail_content">
+            <p id="dialog_content"></p>
+        </div>
+        <div class="backdrop_details_submit">
+            <span class="explanation"></span>
+            <div class="submit_container">
+                <?php echo image_tag('spinning_20.gif', array('style' => 'display: none;', 'id' => 'dialog_indicator')); ?>
+                <a href="javascript:void(0)" id="dialog_yes" class="button button-silver"><?php echo __('Yes'); ?></a>
+                <a href="javascript:void(0)" id="dialog_no" class="button button-silver"><?php echo __('No'); ?></a>
+            </div>
         </div>
     </div>
 </div>
 <div class="fullpage_backdrop" id="dialog_backdrop_modal" style="display: none;">
-    <div id="dialog_backdrop_modal_content" class="backdrop_box backdrop_detail_content">
-        <h3 id="dialog_modal_title"></h3>
-        <p id="dialog_modal_content"></p>
-        <div style="text-align: right; padding: 20px;">
-            <a href="javascript:void(0)" id="dialog_okay" onclick="TBG.Main.Helpers.Dialog.dismissModal();" class="button button-silver"><?php echo __('Okay'); ?></a>
+    <div id="dialog_backdrop_modal_content" class="backdrop_box">
+        <div class="backdrop_detail_header"><span id="dialog_modal_title"></span></div>
+        <div class="backdrop_detail_content">
+            <p id="dialog_modal_content"></p>
+        </div>
+        <div class="backdrop_details_submit">
+            <span class="explanation"></span>
+            <div class="submit_container">
+                <a href="javascript:void(0)" id="dialog_okay" onclick="TBG.Main.Helpers.Dialog.dismissModal();" class="button button-silver"><?php echo __('Okay'); ?></a>
+            </div>
         </div>
     </div>
 </div>

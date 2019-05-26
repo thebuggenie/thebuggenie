@@ -3,7 +3,10 @@
     namespace thebuggenie\core\entities\tables;
 
     use b2db\Criteria;
+    use b2db\Insertion;
+    use b2db\Row;
     use b2db\Table;
+    use b2db\Update;
     use thebuggenie\core\framework;
 
     /**
@@ -21,6 +24,8 @@
      *
      * @package thebuggenie
      * @subpackage tables
+     *
+     * @method static Files getTable()
      *
      * @Table(name="files")
      * @Entity(class="\thebuggenie\core\entities\File")
@@ -42,27 +47,27 @@
 
         public function saveFile($real_filename, $original_filename, $content_type, $description = null, $content = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::UID, framework\Context::getUser()->getID());
-            $crit->addInsert(self::REAL_FILENAME, $real_filename);
-            $crit->addInsert(self::UPLOADED_AT, NOW);
-            $crit->addInsert(self::ORIGINAL_FILENAME, $original_filename);
-            $crit->addInsert(self::CONTENT_TYPE, $content_type);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion = new Insertion();
+            $insertion->add(self::UID, framework\Context::getUser()->getID());
+            $insertion->add(self::REAL_FILENAME, $real_filename);
+            $insertion->add(self::UPLOADED_AT, NOW);
+            $insertion->add(self::ORIGINAL_FILENAME, $original_filename);
+            $insertion->add(self::CONTENT_TYPE, $content_type);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
             if ($description !== null)
             {
-                $crit->addInsert(self::DESCRIPTION, $description);
+                $insertion->add(self::DESCRIPTION, $description);
             }
             if ($content !== null)
             {
-                $crit->addInsert(self::CONTENT, $content);
+                $insertion->add(self::CONTENT, $content);
             }
-            $res = $this->doInsert($crit);
+            $res = $this->rawInsert($insertion);
 
             return $res->getInsertID();
         }
 
-        public function _migrateData(Table $old_table)
+        protected function migrateData(Table $old_table)
         {
             switch ($old_table::B2DB_TABLE_VERSION) {
                 case 1:
@@ -74,19 +79,19 @@
 
         public function getAllContentFiles()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::CONTENT, null, Criteria::DB_IS_NOT_NULL);
-            $crit->addWhere(self::CONTENT, '', Criteria::DB_NOT_EQUALS);
+            $query = $this->getQuery();
+            $query->where(self::CONTENT, null, Criteria::DB_IS_NOT_NULL);
+            $query->where(self::CONTENT, '', \b2db\Criterion::NOT_EQUALS);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getUnattachedFiles()
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID, 'id');
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID, 'id');
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $file_ids = [];
             if ($res) {
                 while ($row = $res->getNextRow()) {
@@ -114,28 +119,67 @@
 
         public function getByID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $row = $this->doSelectById($id, $crit, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $row = $this->rawSelectById($id, $query, false);
             return $row;
         }
 
         public function getByScopeID($scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope_id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope_id);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getSizeByScopeID($scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $crit->addSelectionColumn('files.size', 'totalsize', Criteria::DB_SUM);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope_id);
+            $query->addSelectionColumn('files.size', 'totalsize', \b2db\Query::DB_SUM);
 
-            $result = $this->doSelectOne($crit);
+            $result = $this->rawSelectOne($query);
             return $result['totalsize'];
+        }
+
+        public function fixScopes()
+        {
+            $issue_file_scopes = [];
+            $issue_files_query = IssueFiles::getTable()->getQuery();
+            $issue_files_query->addSelectionColumn(IssueFiles::SCOPE);
+            $issue_files_query->addSelectionColumn(IssueFiles::FILE_ID);
+
+            $issue_files_res = IssueFiles::getTable()->rawSelect($issue_files_query);
+
+            if (!$issue_files_res) {
+                return;
+            }
+
+            while ($row = $issue_files_res->getNextRow()) {
+                $issue_file_scopes[$row->get(IssueFiles::FILE_ID)] = $row->get(IssueFiles::SCOPE);
+            }
+
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID);
+            $query->where(self::SCOPE, 0);
+            $res = $this->rawSelect($query);
+
+            $fixRow = function (Row $row) use ($issue_file_scopes) {
+                if (!isset($issue_file_scopes[$row->getID()])) {
+                    return;
+                }
+
+                $update = new Update();
+                $update->add(self::SCOPE, $issue_file_scopes[$row->getID()]);
+                $this->rawUpdateById($update, $row->getID());
+            };
+
+            if ($res) {
+                while ($row = $res->getNextRow()) {
+                    $fixRow($row);
+                }
+            }
         }
 
     }

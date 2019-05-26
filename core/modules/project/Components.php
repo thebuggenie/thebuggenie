@@ -126,7 +126,7 @@
                     break;
                 case entities\DashboardView::VIEW_PROJECT_STATISTICS_STATUS:
                     $counts = framework\Context::getCurrentProject()->getStatusCount();
-                    $items = entities\Status::getAll();
+                    $items = framework\Context::getCurrentProject()->getAvailableStatuses();
                     $key = 'status';
                     break;
                 case entities\DashboardView::VIEW_PROJECT_STATISTICS_WORKFLOW_STEP:
@@ -147,25 +147,30 @@
 
         public function componentDashboardViewProjectUpcoming()
         {
-
+            $this->project = framework\Context::getCurrentProject();
+            $this->upcoming_milestones = $this->project->getUpcomingMilestones(21);
+            $this->starting_milestones = $this->project->getStartingMilestones(21);
         }
 
         public function componentDashboardViewProjectRecentIssues()
         {
-            $this->issues = framework\Context::getCurrentProject()->getRecentIssues($this->view->getDetail());
+            $this->project = framework\Context::getCurrentProject();
+            $this->issues = $this->project->getRecentIssues($this->view->getDetail());
         }
 
         public function componentDashboardViewProjectRecentActivities()
         {
-            $this->recent_activities = framework\Context::getCurrentProject()->getRecentActivities(10, false, null, true);
+            $this->project = framework\Context::getCurrentProject();
+            $this->recent_activities = $this->project->getRecentActivities(30, false);
         }
 
         public function componentDashboardViewProjectDownloads()
         {
-            $builds = framework\Context::getCurrentProject()->getBuilds();
+            $this->project = framework\Context::getCurrentProject();
+            $builds = $this->project->getBuilds();
             $active_builds = array();
 
-            foreach (framework\Context::getCurrentProject()->getEditions() as $edition_id => $edition)
+            foreach ($this->project->getEditions() as $edition_id => $edition)
             {
                 $active_builds[$edition_id] = array();
             }
@@ -179,10 +184,21 @@
             $this->editions = $active_builds;
         }
 
-        public function componentProjectConfig_Container()
+        public function componentEditProject()
         {
             $this->access_level = ($this->getUser()->canEditProjectDetails(framework\Context::getCurrentProject())) ? framework\Settings::ACCESS_FULL : framework\Settings::ACCESS_READ;
             $this->section = isset($this->section) ? $this->section : 'info';
+            $this->roles = entities\Role::getAll();
+            $assignee = $this->getUser();
+            $this->assignee_name = $assignee->getRealname();
+            if ($this->assignee_type && $this->assignee_id) {
+                if ($this->assignee_type == 'team') {
+                    $assignee = tables\Teams::getTable()->selectById($this->assignee_id);
+                    $this->assignee_name = $assignee->getName();
+                }
+            }
+            $this->assignee_type = ($assignee instanceof entities\User) ? 'user' : 'team';
+            $this->assignee_id = $assignee->getID();
         }
 
         public function componentProjectConfig()

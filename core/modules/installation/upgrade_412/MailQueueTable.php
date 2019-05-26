@@ -17,11 +17,11 @@
         const DATE = 'mailing_queue.date';
         const SCOPE = 'mailing_queue.scope';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addText(self::MESSAGE);
-            parent::_addInteger(self::DATE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addText(self::MESSAGE);
+            parent::addInteger(self::DATE, 10);
         }
 
     }

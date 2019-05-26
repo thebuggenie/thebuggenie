@@ -6,13 +6,6 @@
 
 ?>
 <div id="project_settings" class="project_info_container">
-    <div class="project_right_container">
-        <div class="project_right" id="project_settings_container">
-            <div style="width: 100%; box-sizing: border-box; -moz-box-sizing: border-box;">
-                <?php include_component('project/projectconfig', array('project' => $selected_project)); ?>
-            </div>
-        </div>
-    </div>
     <div class="project_left_container">
         <div class="project_left">
             <h3><?php echo __('Project settings'); ?></h3>
@@ -39,5 +32,11 @@
             <?php endif; ?>
         </div>
     </div>
-    <br style="clear: both;">
+    <div class="project_right_container">
+        <div class="project_right" id="project_settings_container">
+            <div style="width: 100%; box-sizing: border-box; -moz-box-sizing: border-box;">
+                <?php include_component('project/projectconfig', array('project' => $selected_project)); ?>
+            </div>
+        </div>
+    </div>
 </div>

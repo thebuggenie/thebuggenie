@@ -27,7 +27,7 @@
             <ul class="interactive_menu_values filter_existing_values">
                 <?php foreach ($filter->getAvailableValues() as $team): ?>
                     <li data-value="<?php echo $team->getID(); ?>" class="filtervalue<?php if ($filter->hasValue($team->getID())) echo ' selected'; ?>">
-                        <?php echo image_tag('icon-mono-checked.png', array('class' => 'checked')); ?>
+                        <?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?>
                         <input type="checkbox" value="<?php echo $team->getID(); ?>" name="filters_<?php echo $filter->getFilterKey(); ?>_value_<?php echo $team->getID(); ?>" data-text="<?php echo $team->getName(); ?>" id="filters_<?php echo $filter->getFilterKey(); ?>_value_<?php echo $team->getID(); ?>" <?php if ($filter->hasValue($team->getID())) echo 'checked'; ?>>
                         <label for="filters_<?php echo $filter->getFilterKey(); ?>_value_<?php echo $team->getID(); ?>"><?php echo $team->getName(); ?></label>
                     </li>

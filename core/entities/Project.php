@@ -5,6 +5,8 @@
     use thebuggenie\core\entities\common\QaLeadable,
         thebuggenie\core\helpers\MentionableProvider,
         thebuggenie\core\framework;
+    use thebuggenie\core\entities\tables\Projects;
+    use thebuggenie\core\framework\Settings;
 
     /**
      * Project class
@@ -21,6 +23,8 @@
      *
      * @package thebuggenie
      * @subpackage main
+     *
+     * @method static tables\Projects getB2DBTable()
      *
      * @Table(name="\thebuggenie\core\entities\tables\Projects")
      */
@@ -47,10 +51,14 @@
          */
         const ISSUES_LOCK_TYPE_RESTRICTED = 2;
 
+        const SUMMARY_TYPE_MILESTONES = 'milestones';
+        const SUMMARY_TYPE_ISSUELIST = 'issuelist';
+        const SUMMARY_TYPE_ISSUETYPES = 'issuetypes';
+
         /**
          * Project list cache
          *
-         * @var array
+         * @var Project[]
          */
         protected static $_projects = null;
 
@@ -445,9 +453,9 @@
         /**
          * Recent activities
          *
-         * @var Array
+         * @var LogItem[][]
          */
-        protected $_recentactivities = null;
+        protected $_recent_activities = null;
 
         /**
          * Whether to show a "Download" link and corresponding section
@@ -530,14 +538,19 @@
         {
             if (self::$_projects === null)
             {
-                self::$_projects = self::getB2DBTable()->getAll();
+                self::$_projects = Projects::getTable()->getAll();
+                foreach (self::$_projects as $key => $project) {
+                    if (!$project->hasAccess()) {
+                        unset(self::$_projects[$key]);
+                    }
+                }
             }
         }
 
         /**
          * Retrieve all projects
          *
-         * @return array|Project
+         * @return Project[]
          */
         public static function getAll()
         {
@@ -548,7 +561,7 @@
         /**
          * Retrieve all projects by id
          *
-         * @return array|Project
+         * @return Project[]
          */
         public static function getAllByIDs($ids)
         {
@@ -568,7 +581,7 @@
         /**
          * Retrieve all projects by parent ID
          *
-         * @return array
+         * @return Project[]
          */
         public static function getAllByParentID($id)
         {
@@ -589,7 +602,7 @@
          *
          * @param bool $archived [optional] Show archived projects instead
          *
-         * @return array
+         * @return Project[]
          */
         public static function getAllRootProjects($archived = null)
         {
@@ -637,7 +650,7 @@
         /**
          * Retrieve all projects by client ID
          *
-         * @return array
+         * @return Project[]
          */
         public static function getAllByClientID($id)
         {
@@ -657,7 +670,7 @@
          * Retrieve all projects by leader
          *
          * @param \thebuggenie\core\entities\User or \thebuggenie\core\entities\Team
-         * @return array
+         * @return Project[]
          */
         public static function getAllByLeader($leader)
         {
@@ -681,7 +694,7 @@
          * Retrieve all projects by owner
          *
          * @param \thebuggenie\core\entities\User or \thebuggenie\core\entities\Team
-         * @return array
+         * @return Project[]
          */
         public static function getAllByOwner($owner)
         {
@@ -705,7 +718,7 @@
          * Retrieve all projects by qa
          *
          * @param \thebuggenie\core\entities\User or \thebuggenie\core\entities\Team
-         * @return array
+         * @return Project[]
          */
         public static function getAllByQaResponsible($qa)
         {
@@ -750,15 +763,11 @@
         protected function _preSave($is_new)
         {
             parent::_preSave($is_new);
-            $project = self::getByKey($this->getKey());
+            $key = $this->getKey();
+            $project = self::getByKey($key);
             if ($project instanceof Project && $project->getID() != $this->getID())
             {
-                throw new \InvalidArgumentException("A project with this key already exists");
-            }
-            if ($is_new)
-            {
-                if (!$this->_issuetype_scheme_id) $this->setIssuetypeScheme(framework\Settings::getCoreIssuetypeScheme());
-                if (!$this->_workflow_scheme_id) $this->setWorkflowScheme(framework\Settings::getCoreWorkflowScheme());
+                throw new \InvalidArgumentException("A project with this key ({$key}, {$this->getID()}) already exists ({$project->getID()})");
             }
         }
 
@@ -769,9 +778,9 @@
                 self::$_num_projects = null;
                 self::$_projects = null;
 
-                                $dashboard = new \thebuggenie\core\entities\Dashboard();
-                                $dashboard->setProject($this);
-                                $dashboard->save();
+                $dashboard = new \thebuggenie\core\entities\Dashboard();
+                $dashboard->setProject($this);
+                $dashboard->save();
 
                 framework\Context::setPermission("canseeproject", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
                 framework\Context::setPermission("canseeprojecthierarchy", $this->getID(), "core", framework\Context::getUser()->getID(), 0, 0, true);
@@ -1129,7 +1138,7 @@
         {
             if ($this->_editions === null)
             {
-                $this->_b2dbLazyload('_editions');
+                $this->_b2dbLazyLoad('_editions');
                 foreach ($this->_editions as $key => $component)
                 {
                     if (!$component->hasAccess()) unset($this->_editions[$key]);
@@ -1195,7 +1204,7 @@
         /**
          * Returns an array of all the projects editions
          *
-         * @return array
+         * @return Edition[]
          */
         public function getEditions()
         {
@@ -1209,7 +1218,7 @@
             {
                 return count($this->_editions);
             }
-            return $this->_b2dbLazycount('_editions');
+            return $this->_b2dbLazyCount('_editions');
         }
 
         /**
@@ -1239,7 +1248,7 @@
         {
             if ($this->_components === null)
             {
-                $this->_b2dbLazyload('_components');
+                $this->_b2dbLazyLoad('_components');
                 foreach ($this->_components as $key => $component)
                 {
                     if (!$component->hasAccess()) unset($this->_components[$key]);
@@ -1250,7 +1259,7 @@
         /**
          * Returns an array with all components
          *
-         * @return array
+         * @return Component[]
          */
         public function getComponents()
         {
@@ -1264,7 +1273,7 @@
             {
                 return count($this->_components);
             }
-            return $this->_b2dbLazycount('_components');
+            return $this->_b2dbLazyCount('_components');
         }
 
         /**
@@ -1293,14 +1302,14 @@
         {
             if ($this->_milestones === null)
             {
-                $this->_b2dbLazyload('_milestones');
+                $this->_b2dbLazyLoad('_milestones');
             }
         }
 
         /**
          * Returns an array with all the milestones
          *
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getMilestones()
         {
@@ -1311,7 +1320,7 @@
         /**
          * Returns an array with all open milestones
          * 
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getOpenMilestones()
         {
@@ -1327,7 +1336,7 @@
         /**
          * Returns an array with all milestones visible for the roadmap
          * 
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getMilestonesForRoadmap()
         {
@@ -1345,7 +1354,7 @@
         /**
          * Returns an array with all milestones visible for issues
          * 
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getMilestonesForIssues()
         {
@@ -1363,7 +1372,7 @@
         /**
          * Returns an array with all milestones visible for issues or the roadmap
          * 
-         * @return array|\thebuggenie\core\entities\Milestone
+         * @return \thebuggenie\core\entities\Milestone[]
          */
         public function getAvailableMilestones()
         {
@@ -1383,7 +1392,7 @@
          *
          * @param integer $days [optional] Number of days, default 21
          *
-         * @return array
+         * @return Milestone[]
          */
         public function getUpcomingMilestones($days = 21)
         {
@@ -1407,7 +1416,7 @@
          *
          * @param integer $days [optional] Number of days, default 21
          *
-         * @return array
+         * @return Mielstone[]
          */
         public function getStartingMilestones($days = 21)
         {
@@ -1497,7 +1506,7 @@
         protected function _populateAssignedUsers()
         {
             if ($this->_assigned_users === null) {
-                $this->_b2dbLazyload('_assigned_users');
+                $this->_b2dbLazyLoad('_assigned_users');
             }
         }
 
@@ -1510,7 +1519,7 @@
         protected function _populateAssignedTeams()
         {
             if ($this->_assigned_teams === null) {
-                $this->_b2dbLazyload('_assigned_teams');
+                $this->_b2dbLazyLoad('_assigned_teams');
             }
         }
 
@@ -1574,7 +1583,7 @@
         /**
          * Returns an array with all builds
          *
-         * @return array
+         * @return Build[]
          */
         public function getBuilds()
         {
@@ -1665,7 +1674,7 @@
 
                 foreach (Issuetype::getAll() as $issuetype)
                 {
-                    if ($issuetype->getIcon() == 'developer_report')
+                    if ($issuetype->getType() == Issuetype::TYPE_USER_STORY)
                     {
                         $issuetypes[] = $issuetype->getID();
                     }
@@ -1687,7 +1696,7 @@
         /**
          * Returns an array with issues
          *
-         * @return array
+         * @return Issue[]
          */
         public function getIssuesWithoutMilestone()
         {
@@ -1698,7 +1707,7 @@
         /**
          * Returns an array with unassigned user stories
          *
-         * @return array
+         * @return Issue[]
          */
         public function getUnassignedStories()
         {
@@ -1737,7 +1746,7 @@
         /**
          * Returns all milestones visible in the project summary block
          *
-         * @return array
+         * @return Milestone[]
          */
         public function getVisibleMilestones()
         {
@@ -1806,7 +1815,7 @@
             }
             if (empty($this->_issuecounts['last15']))
             {
-                list ($closed, $open) = tables\Log::getTable()->getLast15IssueCountsByProjectID($this->getID());
+                list ($closed, $open) = tables\LogItems::getTable()->getLast15IssueCountsByProjectID($this->getID());
                 $this->_issuecounts['last15']['open'] = $open;
                 $this->_issuecounts['last15']['closed'] = $closed;
             }
@@ -1873,7 +1882,7 @@
         /**
          * Returns all issue types visible in the project summary block
          *
-         * @return array|\thebuggenie\core\entities\Issuetype
+         * @return \thebuggenie\core\entities\Issuetype[]
          */
         public function getVisibleIssuetypes()
         {
@@ -2440,55 +2449,19 @@
             return framework\Context::getUser()->hasPermission('canseeproject', $this->getID());
         }
 
-        protected function _populateLogItems($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        protected function _populateLogItems($limit = null, $important = true, $offset = null)
         {
             $varname = ($important) ? '_recentimportantlogitems' : '_recentlogitems';
             if ($this->$varname === null)
             {
-                $this->$varname = array();
+                $this->$varname = [];
                 if ($important)
                 {
-                    list($res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $offset, $limit_to_target);
-
-                    if (is_array($limit_to_target) && count($limit_to_target) != $limit)
-                    {
-                        $i = 0;
-                        while (true)
-                        {
-                            list($more_res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $limit * $i + $limit, $limit_to_target);
-                            $i++;
-
-                            if (!count($more_res)) break;
-
-                            $res = array_merge($res, $more_res);
-
-                            if (count($limit_to_target) >= $limit) break;
-                        }
-                    }
+                    $this->$varname = tables\LogItems::getTable()->getImportantByProjectID($this->getID(), $limit, $offset);
                 }
                 else
                 {
-                    list($res, $limit_to_target) = tables\Log::getTable()->getByProjectID($this->getID(), $limit, $offset, $limit_to_target);
-
-                    if (is_array($limit_to_target) && count($limit_to_target) != $limit)
-                    {
-                        $i = 0;
-                        while (true)
-                        {
-                            list($more_res, $limit_to_target) = tables\Log::getTable()->getImportantByProjectID($this->getID(), $limit, $limit * $i + $limit, $limit_to_target);
-                            $i++;
-
-                            if (!count($more_res)) break;
-
-                            $res = array_merge($res, $more_res);
-
-                            if (count($limit_to_target) >= $limit) break;
-                        }
-                    }
-                }
-                if ($res)
-                {
-                    $this->$varname = $res;
+                    $this->$varname = tables\LogItems::getTable()->getByProjectID($this->getID(), $limit, $offset);
                 }
             }
         }
@@ -2496,11 +2469,14 @@
         /**
          * Return this projects most recent log items
          *
-         * @return array A list of log items
+         * @param null $limit
+         * @param bool $important
+         * @param null $offset
+         * @return LogItem[]
          */
-        public function getRecentLogItems($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        public function getRecentLogItems($limit = null, $important = true, $offset = null)
         {
-            $this->_populateLogItems($limit, $important, $offset, $limit_to_target);
+            $this->_populateLogItems($limit, $important, $offset);
             return ($important) ? $this->_recentimportantlogitems : $this->_recentlogitems;
         }
 
@@ -2685,7 +2661,7 @@
         /**
          * Return this projects 10 most recent issues
          *
-         * @return array A list of \thebuggenie\core\entities\Issues
+         * @return Issue[] A list of \thebuggenie\core\entities\Issues
          */
         public function getRecentIssues($issuetype)
         {
@@ -2694,60 +2670,19 @@
             return $this->_recentissues[$issuetype_id];
         }
 
-        protected function _populateRecentActivities($limit = null, $important = true, $offset = null, $limit_to_target = false)
+        protected function _populateRecentActivities($limit = null, $important = true, $offset = null)
         {
-            if ($this->_recentactivities === null)
+            if ($this->_recent_activities === null)
             {
-                $this->_recentactivities = array();
-                foreach ($this->getRecentLogItems($limit, $important, $offset, $limit_to_target) as $log_item)
+                $this->_recent_activities = [];
+                foreach ($this->getRecentLogItems($limit, $important, $offset) as $log_item)
                 {
-                    if (!array_key_exists($log_item['timestamp'], $this->_recentactivities))
+                    if (!array_key_exists($log_item->getTime(), $this->_recent_activities))
                     {
-                        $this->_recentactivities[$log_item['timestamp']] = array();
+                        $this->_recent_activities[$log_item->getTime()] = [];
                     }
-                    $this->_recentactivities[$log_item['timestamp']][] = $log_item;
+                    $this->_recent_activities[$log_item->getTime()][] = $log_item;
                 }
-
-                ksort($this->_recentactivities, SORT_NUMERIC);
-                end($this->_recentactivities);
-                $max_timestamp = key($this->_recentactivities);
-                reset($this->_recentactivities);
-                $min_timestamp = key($this->_recentactivities);
-
-                foreach ($this->getBuilds() as $build)
-                {
-                    if ($build->isReleased() && $build->getReleaseDate() <= NOW && $build->getReleaseDate() >= $min_timestamp && $build->getReleaseDate() <= $max_timestamp)
-                    {
-                        if (!array_key_exists($build->getReleaseDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$build->getReleaseDate()] = array();
-                        }
-                        $this->_recentactivities[$build->getReleaseDate()][] = array('change_type' => 'build_release', 'info' => $build->getName());
-                    }
-                }
-                foreach ($this->getMilestones() as $milestone)
-                {
-                    if ($milestone->isStarting() && $milestone->isSprint())
-                    {
-                        if ($milestone->getStartingDate() > NOW || $milestone->getStartingDate() < $min_timestamp || $milestone->getStartingDate() > $max_timestamp) continue;
-                        if (!array_key_exists($milestone->getStartingDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$milestone->getStartingDate()] = array();
-                        }
-                        $this->_recentactivities[$milestone->getStartingDate()][] = array('change_type' => 'sprint_start', 'info' => $milestone->getName());
-                    }
-                    if ($milestone->isScheduled() && $milestone->isReached())
-                    {
-                        if ($milestone->getReachedDate() > NOW || $milestone->getReachedDate() < $min_timestamp || $milestone->getReachedDate() > $max_timestamp) continue;
-                        if (!array_key_exists($milestone->getReachedDate(), $this->_recentactivities))
-                        {
-                            $this->_recentactivities[$milestone->getReachedDate()] = array();
-                        }
-                        $this->_recentactivities[$milestone->getReachedDate()][] = array('change_type' => (($milestone->isSprint()) ? 'sprint_end' : 'milestone_release'), 'info' => $milestone->getName());
-                    }
-                }
-
-                krsort($this->_recentactivities, SORT_NUMERIC);
             }
         }
 
@@ -2755,31 +2690,28 @@
          * Return a list of recent activity for the project
          *
          * @param integer $limit Limit number of activities
+         * @param bool $important
+         * @param null $offset
          * @return array
          */
-        public function getRecentActivities($limit = null, $important = false, $offset = null, $limit_to_target = false)
+        public function getRecentActivities($limit = null, $important = false, $offset = null)
         {
-            $this->_populateRecentActivities($limit, $important, $offset, $limit_to_target);
+            $this->_populateRecentActivities($limit, $important, $offset);
             if ($limit !== null)
             {
-                $recent_activities = array_slice($this->_recentactivities, 0, $limit, true);
+                $recent_activities = array_slice($this->_recent_activities, 0, $limit, true);
             }
             else
             {
-                $recent_activities = $this->_recentactivities;
+                $recent_activities = $this->_recent_activities;
             }
 
             return $recent_activities;
         }
 
-        public function getRecentImportantActivities($limit = null, $offset = null, $limit_to_target = false)
-        {
-            return $this->getRecentActivities($limit, true, $offset, $limit_to_target);
-        }
-
         public function clearRecentActivities()
         {
-            $this->_recentactivities = null;
+            $this->_recent_activities = null;
             $this->_recentissues = null;
             $this->_recentlogitems = null;
         }
@@ -2792,7 +2724,7 @@
         public function getWorkflowScheme()
         {
             if (!$this->_workflow_scheme_id instanceof \thebuggenie\core\entities\WorkflowScheme)
-                $this->_b2dbLazyload('_workflow_scheme_id');
+                $this->_b2dbLazyLoad('_workflow_scheme_id');
 
             return $this->_workflow_scheme_id;
         }
@@ -2820,7 +2752,7 @@
         public function getIssuetypeScheme()
         {
             if (!$this->_issuetype_scheme_id instanceof \thebuggenie\core\entities\IssuetypeScheme)
-                $this->_b2dbLazyload('_issuetype_scheme_id');
+                $this->_b2dbLazyLoad('_issuetype_scheme_id');
 
             return $this->_issuetype_scheme_id;
         }
@@ -2904,7 +2836,7 @@
          */
         public function getClient()
         {
-            return $this->_b2dbLazyload('_client');
+            return $this->_b2dbLazyLoad('_client');
         }
 
         /**
@@ -2953,7 +2885,7 @@
         {
             if ($custom)
             {
-                return (bool) ($this->permissionCheck('caneditcustomfields'.$field) || $this->permissionCheck('caneditissuecustomfields'));
+                return (bool) ($this->permissionCheck('caneditissuecustomfields'.$field) || $this->permissionCheck('caneditissuecustomfields'));
             }
             elseif (in_array($field, array('title', 'shortname', 'description', 'reproduction_steps')))
             {
@@ -3035,7 +2967,7 @@
 
         public function getParent()
         {
-            return $this->_b2dbLazyload('_parent');
+            return $this->_b2dbLazyLoad('_parent');
         }
 
         public function getParentID()
@@ -3129,7 +3061,7 @@
          */
         public function getSmallIcon()
         {
-            return $this->_b2dbLazyload('_small_icon');
+            return $this->_b2dbLazyLoad('_small_icon');
         }
 
         public function getSmallIconName()
@@ -3157,7 +3089,7 @@
          */
         public function getLargeIcon()
         {
-            return $this->_b2dbLazyload('_large_icon');
+            return $this->_b2dbLazyLoad('_large_icon');
         }
 
         public function getLargeIconName()
@@ -3320,11 +3252,11 @@
         /**
          * Returns an array of project dashboards
          *
-         * @return array|\thebuggenie\core\entities\Dashboard
+         * @return \thebuggenie\core\entities\Dashboard[]
          */
         public function getDashboards()
         {
-            $this->_b2dbLazyload('_dashboards');
+            $this->_b2dbLazyLoad('_dashboards');
             return $this->_dashboards;
         }
 
@@ -3362,54 +3294,49 @@
         
         public function toJSON($detailed = true)
         {
-        	$jsonArray = array(
-        			'id' => $this->getID(),
-        			'key' => $this->getKey(),
-        			'name' => $this->getName(),
-        			'href' => framework\Context::getRouting()->generate('project_dashboard', array('project_key' => $this->getKey())),
-        			'deleted' => $this->isDeleted(),
-        			'archived' => $this->isArchived()
-        	);
-        	if($detailed) {
-        		$jsonArray['icon_large'] = $this->getLargeIconName();
-        		$jsonArray['icon_small'] = $this->getSmallIconName();
-        		$jsonArray['description'] = $this->getDescription();
-        		$jsonArray['url_documentation'] = $this->getDocumentationURL();
-        		$jsonArray['url_homepage'] = $this->getHomepage();
-        		$jsonArray['url_wiki'] = $this->getWikiURL();
-        		
-        		$jsonArray['prefix_used'] = $this->doesUsePrefix();
-        		$jsonArray['prefix'] = $this->getPrefix();
+        	$jsonArray = [
+                'id' => $this->getID(),
+                'key' => $this->getKey(),
+                'name' => $this->getName(),
+                'href' => framework\Context::getRouting()->generate('project_dashboard', ['project_key' => $this->getKey()]),
+                'deleted' => $this->isDeleted(),
+                'archived' => $this->isArchived(),
+                'icon_large' => $this->getLargeIconName(),
+                'icon_small' => $this->getSmallIconName(),
+                'description' => $this->getDescription(),
+                'url_documentation' => $this->getDocumentationURL(),
+                'url_homepage' => $this->getHomepage(),
+                'url_wiki' => $this->getWikiURL(),
+                'prefix_used' => $this->doesUsePrefix(),
+                'prefix' => $this->getPrefix(),
+                'parent_id' => $this->hasParent() ? $this->getParent()->getID() : null,
+                'leader' => $this->hasLeader() ? $this->getLeader()->toJSON(false) : null,
+                'owner' => $this->hasOwner() ? $this->getOwner()->toJSON(false) : null,
+                'qa_responsible' => $this->hasQaResponsible() ? $this->getQaResponsible()->toJSON(false) : null,
+                'client' => $this->hasClient() ? $this->getClient()->toJSON(false) : null,
+                'released' => $this->isReleased(),
+                'release_date' => $this->getReleaseDate(),
+                'settings' => [
+                    'workflow_scheme' => $this->hasWorkflowScheme() ? $this->getWorkflowScheme()->toJSON() : null,
+                    'issuetype_scheme' => $this->getIssuetypeScheme()->toJSON(),
+                    'builds_enabled' => $this->isBuildsEnabled(),
+                    'editions_enabled' => $this->isEditionsEnabled(),
+                    'components_enabled' => $this->isComponentsEnabled(),
+                    'allow_freelancing' => $this->canChangeIssuesWithoutWorkingOnThem(),
+                    'frontpage_shown' => $this->isShownInFrontpageSummary(),
+                    'frontpage_summary_type' => $this->getFrontpageSummaryType(),
+                    'frontpage_milestones_visible' => $this->isMilestonesVisibleInFrontpageSummary(),
+                    'frontpage_issuetypes_visible' => $this->isIssuetypesVisibleInFrontpageSummary(),
+                    'frontpage_issuelist_visible' => $this->isIssuelistVisibleInFrontpageSummary(),
+                ]
+            ];
 
-        		$jsonArray['workflow_scheme'] = $this->hasWorkflowScheme() ? $this->getWorkflowScheme()->toJSON() : null;
-        		$jsonArray['issuetype_scheme'] = $this->getIssuetypeScheme()->toJSON();
-
-        		$jsonArray['builds_enabled'] = $this->isBuildsEnabled();
-        		$jsonArray['editions_enabled'] = $this->isEditionsEnabled();
-        		$jsonArray['components_enabled'] = $this->isComponentsEnabled();
-        		$jsonArray['allow_freelancing'] = $this->canChangeIssuesWithoutWorkingOnThem();
-        		
-        		$jsonArray['released'] = $this->isReleased();
-        		$jsonArray['release_date'] = $this->getReleaseDate();
-        		
-        		$jsonArray['frontpage_shown'] = $this->isShownInFrontpageSummary();
-        		$jsonArray['frontpage_summary_type'] = $this->getFrontpageSummaryType();
-        		$jsonArray['frontpage_milestones_visible'] = $this->isMilestonesVisibleInFrontpageSummary();
-        		$jsonArray['frontpage_issuetypes_visible'] = $this->isIssuetypesVisibleInFrontpageSummary();
-        		$jsonArray['frontpage_issuelist_visible'] = $this->isIssuelistVisibleInFrontpageSummary();
-        		
-        		$jsonArray['parent'] = $this->hasParent() ? $this->getParent()->toJSON() : null;
-        		$jsonArray['leader'] = $this->hasLeader() ? $this->getLeader()->toJSON() : null;
-        		$jsonArray['owner'] = $this->hasOwner() ? $this->getOwner()->toJSON() : null;
-        		$jsonArray['qa_responsible'] = $this->hasQaResponsible() ? $this->getQaResponsible()->toJSON() : null;
-        		$jsonArray['client'] = $this->hasClient() ? $this->getClient()->toJSON() : null;
-
+        	if ($detailed) {
         		$jsonArray['issues_count'] = $this->countAllIssues();
         		$jsonArray['issues_count_open'] = $this->countAllOpenIssues();
         		$jsonArray['issues_count_closed'] = $this->countAllClosedIssues();
-        		$jsonArray['issues_percent_closed'] = $this->getClosedPercentageForAllIssues();
-        		
         	}
+
         	return $jsonArray;
         }
 
@@ -3435,7 +3362,7 @@
         /**
          * Get reportable time units
          *
-         * @return array|null
+         * @return array
          */
         public function getTimeUnits()
         {
@@ -3458,6 +3385,138 @@
         public function hasTimeUnit($time_unit)
         {
             return in_array($time_unit, $this->getTimeUnits());
+        }
+
+        public function applyTemplate($template)
+        {
+            $dashboard_views = [];
+            switch ($template) {
+                case 'team':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_MULTI_TEAM_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_FULL_RANGE_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(true);
+                    $this->setComponentsEnabled(true);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
+                    break;
+                case 'open-source':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_BALANCED_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_BALANCED_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 3, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_FEATURE_REQUEST)];
+                    break;
+                case 'classic':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_BALANCED_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_BALANCED_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
+                    break;
+                case 'agile':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_BALANCED_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_BALANCED_AGILE_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_DOWNLOADS] = ['column' => 1, 'order' => 3];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 4];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_UPCOMING] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 2, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_FEATURE_REQUEST)];
+                    break;
+                case 'service-desk':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_SIMPLE_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_BALANCED_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(true);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+                    $this->setFrontpageSummaryType(Project::SUMMARY_TYPE_ISSUELIST);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_TEAM] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 1, 'order' => 3, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_BUG_REPORT)];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_STATISTICS_PRIORITY] = ['column' => 2, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_STATISTICS_STATUS] = ['column' => 2, 'order' => 2];
+                    break;
+                case 'personal':
+                    $this->setWorkflowSchemeID(Settings::get(Settings::SETTING_SIMPLE_WORKFLOW_SCHEME));
+                    $this->setIssuetypeSchemeID(Settings::get(Settings::SETTING_SIMPLE_ISSUETYPE_SCHEME));
+                    $this->setBuildsEnabled(false);
+                    $this->setEditionsEnabled(false);
+                    $this->setComponentsEnabled(true);
+                    $this->setChangeIssuesWithoutWorkingOnThem(true);
+                    $this->setFrontpageSummaryType(Project::SUMMARY_TYPE_ISSUELIST);
+
+                    $dashboard_views[DashboardView::VIEW_PROJECT_INFO] = ['column' => 1, 'order' => 1];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES] = ['column' => 1, 'order' => 2];
+                    $dashboard_views[DashboardView::VIEW_PROJECT_RECENT_ISSUES] = ['column' => 2, 'order' => 1, 'subtype' => Settings::get(Settings::SETTING_ISSUETYPE_TASK)];
+                    break;
+            }
+
+            $dashboard = $this->getDefaultDashboard();
+
+            foreach ($dashboard_views as $view_type => $details) {
+                $view = new DashboardView();
+                $view->setDashboard($dashboard);
+                $view->setType($view_type);
+                if (isset($details['subtype'])) {
+                    $view->setDetail($details['subtype']);
+                }
+                $view->setColumn($details['column']);
+                $view->setSortOrder($details['order']);
+                $view->save();
+            }
+        }
+
+        /**
+         * Get current available statuses
+         *
+         * @return Status[]
+         */
+        public function getAvailableStatuses()
+        {
+            $statuses = array();
+
+            $available_statuses = Status::getAll();
+            $workflow_scheme = $this->getWorkflowScheme();
+            $issue_types = $this->getIssuetypeScheme()->getIssuetypes();
+
+            foreach ($issue_types as $issue_type)
+            {
+                $workflow = $workflow_scheme->getWorkflowForIssuetype($issue_type);
+                foreach ($workflow->getSteps() as $step) {
+                    if (array_key_exists($step->getLinkedStatusID(), $available_statuses))
+                    {
+                        $statuses[$step->getLinkedStatusID()] = $available_statuses[$step->getLinkedStatusID()];
+                    }
+                }
+            }
+
+            return $statuses;
         }
 
     }

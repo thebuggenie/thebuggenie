@@ -118,7 +118,7 @@
          */
         public function getWorkflow()
         {
-            return $this->_b2dbLazyload('_workflow_id');
+            return $this->_b2dbLazyLoad('_workflow_id');
         }
 
         public function setWorkflow(\thebuggenie\core\entities\Workflow $workflow)
@@ -133,7 +133,7 @@
 
         public function getTransition()
         {
-            return $this->_b2dbLazyload('_transition_id');
+            return $this->_b2dbLazyLoad('_transition_id');
         }
 
         public function setPost()
@@ -167,6 +167,11 @@
         }
 
         public function getRule()
+        {
+            return $this->_name;
+        }
+
+        public function getName()
         {
             return $this->_name;
         }
@@ -523,6 +528,14 @@
                         return $event->getReturnValue();
                     }
             }
+        }
+
+        public function toJSON($detailed = true)
+        {
+            return [
+                'name' => $this->getRule(),
+                'values' => $this->getRuleValueAsJoinedString()
+            ];
         }
 
     }

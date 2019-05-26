@@ -1,3 +1,8 @@
+<?php
+
+/** @var \thebuggenie\core\entities\Project $project */
+
+?>
 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
 <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>" method="post" onsubmit="TBG.Project.submitAdvancedSettings('<?php echo make_url('configure_project_settings', array('project_id' => $project->getID())); ?>'); return false;" id="project_settings">
     <div class="project_save_container">
@@ -8,13 +13,11 @@
 <?php endif; ?>
     <table class="padded_table" cellpadding=0 cellspacing=0>
         <tr>
-            <td><label for="released"><?php echo __('Released'); ?></label></td>
+            <td><label for="released_yes"><?php echo __('Released'); ?></label></td>
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <select name="released" id="released" style="width: 70px;">
-                        <option value=1<?php if ($project->isReleased()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                        <option value=0<?php if (!$project->isReleased()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                    </select>
+                    <input type="radio" name="released" value="1" class="fancycheckbox" id="released_yes"<?php if ($project->isReleased()): ?> checked<?php endif; ?>><label for="released_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" name="released" value="0" class="fancycheckbox" id="released_no"<?php if (!$project->isReleased()): ?> checked<?php endif; ?>><label for="released_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                 <?php else: ?>
                     <?php echo ($project->isReleased()) ? __('Yes') : __('No'); ?>
                 <?php endif; ?>
@@ -64,13 +67,11 @@
             </td>
         </tr>
         <tr>
-            <td><label for="enable_builds"><?php echo __('Enable releases'); ?></label></td>
+            <td><label for="enable_builds_yes"><?php echo __('Enable releases'); ?></label></td>
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <select name="enable_builds" id="enable_builds" style="width: 70px;">
-                        <option value=1<?php if ($project->isBuildsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                        <option value=0<?php if (!$project->isBuildsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                    </select>
+                    <input type="radio" name="enable_builds" value="1" class="fancycheckbox" id="enable_builds_yes"<?php if ($project->isBuildsEnabled()): ?> checked<?php endif; ?>><label for="enable_builds_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" name="enable_builds" value="0" class="fancycheckbox" id="enable_builds_no"<?php if (!$project->isBuildsEnabled()): ?> checked<?php endif; ?>><label for="enable_builds_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                 <?php else: ?>
                     <?php echo ($project->isBuildsEnabled()) ? __('Yes') : __('No'); ?>
                 <?php endif; ?>
@@ -80,13 +81,11 @@
             <td class="config_explanation" colspan="2"><?php echo __('If this project has regular new main- or test-releases, you should enable releases'); ?></td>
         </tr>
         <tr>
-            <td><label for="enable_editions"><?php echo __('Use editions'); ?></label></td>
+            <td><label for="enable_editions_yes"><?php echo __('Use editions'); ?></label></td>
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <select name="enable_editions" id="enable_editions" style="width: 70px;">
-                        <option value=1<?php if ($project->isEditionsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                        <option value=0<?php if (!$project->isEditionsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                    </select>
+                    <input type="radio" name="enable_editions" value="1" class="fancycheckbox" id="enable_editions_yes"<?php if ($project->isEditionsEnabled()): ?> checked<?php endif; ?>><label for="enable_editions_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" name="enable_editions" value="0" class="fancycheckbox" id="enable_editions_no"<?php if (!$project->isEditionsEnabled()): ?> checked<?php endif; ?>><label for="enable_editions_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                 <?php else: ?>
                     <?php echo ($project->isEditionsEnabled()) ? __('Yes') : __('No'); ?>
                 <?php endif; ?>
@@ -96,13 +95,11 @@
             <td class="config_explanation" colspan="2"><?php echo __('If the project has more than one edition which differ in features or capabilities, you should enable editions'); ?></td>
         </tr>
         <tr>
-            <td><label for="enable_components"><?php echo __('Use components'); ?></label></td>
+            <td><label for="enable_components_yes"><?php echo __('Use components'); ?></label></td>
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <select name="enable_components" id="enable_components" style="width: 70px;">
-                        <option value=1<?php if ($project->isComponentsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                        <option value=0<?php if (!$project->isComponentsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                    </select>
+                    <input type="radio" name="enable_components" value="1" class="fancycheckbox" id="enable_components_yes"<?php if ($project->isComponentsEnabled()): ?> checked<?php endif; ?>><label for="enable_components_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" name="enable_components" value="0" class="fancycheckbox" id="enable_components_no"<?php if (!$project->isComponentsEnabled()): ?> checked<?php endif; ?>><label for="enable_components_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                 <?php else: ?>
                     <?php echo ($project->isComponentsEnabled()) ? __('Yes') : __('No'); ?>
                 <?php endif; ?>
@@ -121,13 +118,11 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 300px;"><label for="locked"><?php echo __('Allow issues to be reported'); ?></label></td>
+            <td style="width: 300px;"><label for="locked_no"><?php echo __('Allow issues to be reported'); ?></label></td>
             <td style="width: 580px;">
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <select name="locked" id="locked" style="width: 70px;">
-                        <option value=0<?php if (!$project->isLocked()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                        <option value=1<?php if ($project->isLocked()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                    </select>
+                    <input type="radio" name="locked" value="0" class="fancycheckbox" id="locked_no"<?php if (!$project->isLocked()): ?> checked<?php endif; ?>><label for="locked_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" name="locked" value="1" class="fancycheckbox" id="locked_yes"<?php if ($project->isLocked()): ?> checked<?php endif; ?>><label for="locked_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                 <?php else: ?>
                     <?php echo (!$project->isLocked()) ? __('Yes') : __('No'); ?>
                 <?php endif; ?>
@@ -174,13 +169,11 @@
             </td>
         </tr>
         <tr>
-            <td><label for="allow_changing_without_working"><?php echo __('Allow freelancing'); ?></label></td>
+            <td><label for="allow_changing_without_working_yes"><?php echo __('Allow freelancing'); ?></label></td>
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <select name="allow_changing_without_working" id="allow_changing_without_working" style="width: 70px;">
-                        <option value=1<?php if ($project->canChangeIssuesWithoutWorkingOnThem()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                        <option value=0<?php if (!$project->canChangeIssuesWithoutWorkingOnThem()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                    </select>
+                    <input type="radio" name="allow_changing_without_working" value="1" class="fancycheckbox" id="allow_changing_without_working_yes"<?php if ($project->canChangeIssuesWithoutWorkingOnThem()): ?> checked<?php endif; ?>><label for="allow_changing_without_working_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" name="allow_changing_without_working" value="0" class="fancycheckbox" id="allow_changing_without_working_no"<?php if (!$project->canChangeIssuesWithoutWorkingOnThem()): ?> checked<?php endif; ?>><label for="allow_changing_without_working_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
                 <?php else: ?>
                     <?php echo ($project->canChangeIssuesWithoutWorkingOnThem()) ? __('Yes') : __('No'); ?>
                 <?php endif; ?>
@@ -190,13 +183,10 @@
             <td class="config_explanation" colspan="2"><?php echo __('Whether or not developers can change issue status without following the workflow'); ?></td>
         </tr>
         <tr>
-            <td><label for="allow_autoassignment"><?php echo __('Enable autoassignment'); ?></label></td>
+            <td><label for="allow_autoassignment_yes"><?php echo __('Enable autoassignment'); ?></label></td>
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <select name="allow_autoassignment" id="allow_autoassignment" style="width: 70px;">
-                        <option value=1<?php if ($project->canAutoassign()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                        <option value=0<?php if (!$project->canAutoassign()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                    </select>
+                    <input type="radio" name="allow_autoassignment" value="1" class="fancycheckbox" id="allow_autoassignment_yes"<?php if ($project->canAutoassign()): ?> checked<?php endif; ?>><label for="allow_autoassignment_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
                 <?php else: ?>
                     <?php echo ($project->canAutoassign()) ? __('Yes') : __('No'); ?>
                 <?php endif; ?>
@@ -209,10 +199,9 @@
             <td><label for="allow_autoassignment"><?php echo __('Reportable time units'); ?></label></td>
             <td>
                 <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-                    <?php foreach (\thebuggenie\core\entities\common\Timeable::$units as $time_unit): ?>
-                        <label>
-                            <input type="checkbox" name="time_units[]" value="<?php echo $time_unit; ?>"<?php if ($project->hasTimeUnit($time_unit)): ?> checked<?php endif; ?>> <?php echo __($time_unit); ?>
-                        </label>
+                    <?php foreach (\thebuggenie\core\entities\common\Timeable::getUnits() as $time_unit): ?>
+                        <input type="checkbox" name="time_units[]" value="<?php echo $time_unit; ?>"<?php if ($project->hasTimeUnit($time_unit)): ?> checked<?php endif; ?> class="fancycheckbox" id="time_unit_<?= $time_unit; ?>">
+                        <label for="time_unit_<?= $time_unit; ?>"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __($time_unit); ?></label>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <?php echo implode(', ', $project->getTimeUnits()); ?>

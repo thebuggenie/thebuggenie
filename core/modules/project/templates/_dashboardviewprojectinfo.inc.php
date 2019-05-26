@@ -1,13 +1,8 @@
 <?php
     $projectHasDescription = $view->getProject()->hasDescription();
 ?>
-<div id="project_description"<?php if(!$projectHasDescription) echo ' class="none"'; ?>>
-    <?php
-        if ($projectHasDescription)
-            echo tbg_parse_text($view->getProject()->getDescription());
-        else
-            echo __('This project has no description');
-    ?>
+<div id="project_description"<?php if (!$projectHasDescription) echo ' class="none"'; ?>>
+    <?php echo ($projectHasDescription) ? tbg_parse_text($view->getProject()->getDescription()) : __('This project has no description'); ?>
 </div>
 <?php if ($view->getProject()->hasOwner()): ?>
     <div class="project_role">
@@ -45,10 +40,11 @@
         </div>
     </div>
 <?php endif; ?>
-<?php if ($view->getProject()->hasHomepage()): ?>
-    <a class="button button-silver dash" href="<?php echo $view->getProject()->getHomepage(); ?>" target="_blank"><?php echo __('Visit homepage'); ?></a>
-<?php endif; ?>
-<?php if ($view->getProject()->hasDocumentationURL()): ?>
-    <a class="button button-silver dash" href="<?php echo $view->getProject()->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
-<?php endif; ?>
-<br style="clear: both;">
+<div class="button-container">
+    <?php if ($view->getProject()->hasHomepage()): ?>
+        <a class="button button-silver dash" href="<?php echo $view->getProject()->getHomepage(); ?>" target="_blank"><?php echo __('Visit homepage'); ?></a>
+    <?php endif; ?>
+    <?php if ($view->getProject()->hasDocumentationURL()): ?>
+        <a class="button button-silver dash" href="<?php echo $view->getProject()->getDocumentationURL(); ?>" target="_blank"><?php echo __('Open documentation'); ?></a>
+    <?php endif; ?>
+</div>

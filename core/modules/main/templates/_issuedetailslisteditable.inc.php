@@ -1,3 +1,10 @@
+<?php
+    /**
+     * @var \thebuggenie\core\entities\Issue $issue
+     * @var \thebuggenie\core\entities\Status[] $statuses
+     * @var \thebuggenie\core\entities\Issuetype[] $issuetypes
+     */
+?>
 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_left_top', $issue)->trigger(); ?>
 <fieldset>
     <legend onclick="$('issue_details_fieldslist_basics').toggle();"><?php echo __('Issue basics'); ?></legend>
@@ -9,15 +16,15 @@
                 </dt>
                 <dd class="hoverable">
                     <?php if ($issue->isEditable() && $issue->canEditIssuetype()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype')); ?>', 'issuetype');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype')); ?>', 'issuetype');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'issuetype_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change issue type'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul id="issuetype_change" class="popup_box more_actions_dropdown">
+                        <ul id="issuetype_change" class="popup_box more_actions_dropdown with-header">
                             <li class="header"><?php echo __('Set issue type'); ?></li>
                             <?php foreach ($issuetypes as $issuetype): ?>
                                 <li>
                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'issuetype', 'issuetype_id' => $issuetype->getID())); ?>', 'issuetype');">
-                                        <?php echo image_tag($issuetype->getIcon() . '_tiny.png'); ?>
+                                        <?php echo fa_image_tag($issuetype->getFontAwesomeIcon(), ['class' => 'issuetype-icon issuetype-' . $issuetype->getIcon()]); ?>
                                         <?php echo __($issuetype->getName()); ?>
                                     </a>
                                 </li>
@@ -26,7 +33,7 @@
                             <li id="issuetype_change_error" class="error_message" style="display: none;"></li>
                         </ul>
                     <?php endif; ?>
-                    <span id="issuetype_content"><?php if ($issue->hasIssueType()) echo __($issue->getIssueType()->getName()); ?></span>
+                    <span id="issuetype_content"><?php if ($issue->hasIssueType()) echo fa_image_tag($issue->getIssueType()->getFontAwesomeIcon(), ['class' => (($issue->hasIssueType()) ? 'issuetype-icon issuetype-' . $issue->getIssueType()->getIcon() : 'issuetype-icon issuetype-unknown')]) . __($issue->getIssueType()->getName()); ?></span>
                     <span class="faded_out" id="no_issuetype"<?php if ($issue->getIssueType() instanceof \thebuggenie\core\entities\Issuetype): ?> style="display: none;"<?php endif; ?>><?php echo __('Unknown issue type'); ?></span>
                 </dd>
             </dl>
@@ -38,10 +45,10 @@
                 </dt>
                 <dd class="hoverable">
                     <?php if ($issue->isEditable() && $issue->canEditShortname()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')); ?>', 'shortname');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')); ?>', 'shortname');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin: 5px 5px 0 0;', 'id' => 'shortname_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to edit issue label'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul id="shortname_change" class="popup_box more_actions_dropdown">
+                        <ul id="shortname_change" class="popup_box more_actions_dropdown with-header">
                             <li class="header"><?php echo __('Set issue label'); ?></li>
                             <li class="nohover">
                                 <form id="shortname_form" action="<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')); ?>" method="post" onSubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'shortname')) ?>', 'shortname', 'shortname'); return false;">
@@ -68,19 +75,17 @@
                 </dt>
                 <dd class="hoverable">
                     <?php if ($issue->canEditStatus()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status')); ?>', 'status');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status')); ?>', 'status');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'status_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change status'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                         <ul class="popup_box more_actions_dropdown" id="status_change">
-                            <li class="header"><?php echo __('Set status'); ?></li>
                             <?php foreach ($statuses as $status): ?>
                                 <?php if (!$status->canUserSet($tbg_user)) continue; ?>
                                 <li>
                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'status', 'status_id' => $status->getID())); ?>', 'status');">
-                                        <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getColor() : '#FFF'; ?>;color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getTextColor() : '#333'; ?>;">
-                                            <span>&nbsp;&nbsp;</span>
+                                        <div class="status_badge" style="background-color: <?php echo $status->getColor(); ?>;color: <?php echo $status->getTextColor(); ?>;">
+                                            <span><?php echo __($status->getName()); ?></span>
                                         </div>
-                                        <?php echo __($status->getName()); ?>
                                     </a>
                                 </li>
                             <?php endforeach; ?>
@@ -102,10 +107,10 @@
                 <dt id="percent_complete_header"><?php echo __('Progress'); ?></dt>
                 <dd id="percent_complete_content" class="hoverable">
                     <?php if ($issue->canEditPercentage()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete')); ?>', 'percent_complete');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'percent_complete_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to set percent completed'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul class="popup_box more_actions_dropdown" id="percent_complete_change">
+                        <ul class="popup_box more_actions_dropdown with-header" id="percent_complete_change">
                             <li class="header"><?php echo __('Set percent completed'); ?></li>
                             <li><a href="javascript:void(0);" onclick="TBG.Issues.Field.setPercent('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'percent_complete', 'percent' => 0)); ?>', 'set');"><?php echo __('Clear percent completed'); ?></a></li>
                             <li class="separator"></li>
@@ -136,10 +141,10 @@
                 <dt id="pain_bug_type_header"><?php echo __('Type of bug'); ?></dt>
                 <dd id="pain_bug_type_content">
                     <?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type')); ?>', 'pain_bug_type');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type')); ?>', 'pain_bug_type');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_bug_type_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to triage type of bug'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul class="popup_box more_actions_dropdown" id="pain_bug_type_change">
+                        <ul class="popup_box more_actions_dropdown with-header" id="pain_bug_type_change">
                             <li class="header"><?php echo __('Triage bug type'); ?></li>
                             <li>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_bug_type', 'pain_bug_type_id' => 0)); ?>', 'pain_bug_type');"><?php echo __('Clear bug type'); ?></a>
@@ -166,10 +171,10 @@
                 <dt id="pain_likelihood_header"><?php echo __('Likelihood'); ?></dt>
                 <dd id="pain_likelihood_content">
                     <?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood')); ?>', 'pain_likelihood');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood')); ?>', 'pain_likelihood');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_likelihood_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to triage likelihood'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul class="popup_box more_actions_dropdown" id="pain_likelihood_change">
+                        <ul class="popup_box more_actions_dropdown with-header" id="pain_likelihood_change">
                             <li class="header"><?php echo __('Triage likelihood'); ?></li>
                             <li>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_likelihood', 'pain_likelihood_id' => 0)); ?>', 'pain_likelihood');"><?php echo __('Clear likelihood'); ?></a>
@@ -196,10 +201,10 @@
                 <dt id="pain_effect_header"><?php echo __('Effect'); ?></dt>
                 <dd id="pain_effect_content">
                     <?php if ($issue->isUpdateable() && $issue->canEditUserPain()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect')); ?>', 'pain_effect');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect')); ?>', 'pain_effect');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'pain_effect_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to triage effect'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <ul class="popup_box more_actions_dropdown" id="pain_effect_change">
+                        <ul class="popup_box more_actions_dropdown with-header" id="pain_effect_change">
                             <li class="header"><?php echo __('Triage effect'); ?></li>
                             <li>
                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'pain_effect', 'pain_effect_id' => 0)); ?>', 'pain_effect');"><?php echo __('Clear effect'); ?></a>
@@ -239,17 +244,17 @@
                 <dt id="posted_by_header"><?php echo __('Posted by'); ?></dt>
                 <dd id="posted_by_content">
                     <?php if ($issue->isEditable() && $issue->canEditPostedBy()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by')); ?>', 'posted_by');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by')); ?>', 'posted_by');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'posted_by_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change owner'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <?php include_component('identifiableselector', array(    'html_id'             => 'posted_by_change',
+                        <?php include_component('main/identifiableselector', array(    'html_id'             => 'posted_by_change',
                                                                                 'header'             => __('Change poster'),
                                                                                 'allow_clear'        => false,
                                                                                 'clear_link_text'    => '',
                                                                                 'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'posted_by', 'value' => '%identifiable_value')) . "', 'posted_by');",
                                                                                 'base_id'            => 'posted_by',
                                                                                 'absolute'            => true,
-                                                                                'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                'classes'            => 'popup_box more_actions_dropdown')); ?>
                     <?php endif; ?>
                     <div style="width: 170px; display: inline;" id="posted_by_name">
                         <?php echo include_component('main/userdropdown', array('user' => $issue->getPostedBy())); ?>
@@ -263,10 +268,10 @@
                 <dt id="owned_by_header"><?php echo __('Owned by'); ?></dt>
                 <dd id="owned_by_content">
                     <?php if ($issue->isUpdateable() && $issue->canEditOwner()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by')); ?>', 'owned_by');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by')); ?>', 'owned_by');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'owned_by_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change owner'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <?php include_component('identifiableselector', array(    'html_id'             => 'owned_by_change',
+                        <?php include_component('main/identifiableselector', array(    'html_id'             => 'owned_by_change',
                                                                                 'header'             => __('Change issue owner'),
                                                                                 'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => 'user', 'value' => '%identifiable_value')) . "', 'owned_by');",
                                                                                 'team_callback'         => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'owned_by', 'identifiable_type' => 'team', 'value' => '%identifiable_value')) . "', 'owned_by');",
@@ -275,7 +280,7 @@
                                                                                 'base_id'            => 'owned_by',
                                                                                 'include_teams'        => true,
                                                                                 'absolute'            => true,
-                                                                                'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                'classes'            => 'popup_box more_actions_dropdown')); ?>
                     <?php endif; ?>
                     <div style="width: 170px; display: <?php if ($issue->isOwned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="owned_by_name">
                         <?php if ($issue->getOwner() instanceof \thebuggenie\core\entities\User): ?>
@@ -293,10 +298,10 @@
                 <dt id="assigned_to_header"><?php echo __('Assigned to'); ?></dt>
                 <dd id="assigned_to_content">
                     <?php if ($issue->canEditAssignee() && $issue->isUpdateable()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to')); ?>', 'assigned_to');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'assigned_to_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to change assignee'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
-                        <?php include_component('identifiableselector', array(    'html_id'             => 'assigned_to_change',
+                        <?php include_component('main/identifiableselector', array(    'html_id'             => 'assigned_to_change',
                                                                                 'header'             => __('Assign this issue'),
                                                                                 'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'user', 'value' => '%identifiable_value')) . "', 'assigned_to');",
                                                                                 'team_callback'         => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'assigned_to', 'identifiable_type' => 'team', 'value' => '%identifiable_value')) . "', 'assigned_to');",
@@ -305,7 +310,7 @@
                                                                                 'base_id'            => 'assigned_to',
                                                                                 'include_teams'        => true,
                                                                                 'absolute'            => true,
-                                                                                'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                'classes'            => 'popup_box more_actions_dropdown')); ?>
                     <?php endif; ?>
                     <div style="width: 170px; display: <?php if ($issue->isAssigned()): ?>inline<?php else: ?>none<?php endif; ?>;" id="assigned_to_name">
                         <?php if ($issue->getAssignee() instanceof \thebuggenie\core\entities\User): ?>
@@ -361,7 +366,7 @@
                 <dt id="estimated_time_header"><?php echo __('Estimated time'); ?></dt>
                 <dd id="estimated_time_content">
                     <?php if ($issue->isUpdateable() && $issue->canEditEstimatedTime()): ?>
-                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                        <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => 'estimated_time')); ?>', 'estimated_time');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                         <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => 'estimated_time_undo_spinning')); ?>
                         <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo __('Click to estimate this issue'); ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                         <?php include_component('main/issueestimator', array('issue' => $issue, 'field' => 'estimated_time', 'mode' => 'left')); ?>
@@ -404,20 +409,20 @@
                         </dt>
                         <dd id="<?php echo $field; ?>_content">
                             <?php if ($issue->isUpdateable() && $issue->canEditCustomFields($field) && $info['editable']): ?>
-                                <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo image_tag('undo.png', array('class' => 'undo')); ?></a>
+                                <a href="javascript:void(0);" onclick="TBG.Issues.Field.revert('<?php echo make_url('issue_revertfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>');" title="<?php echo __('Undo this change'); ?>"><?php echo fa_image_tag('undo-alt', ['class' => 'undo'], 'fas'); ?></a>
                                 <?php echo image_tag('spinning_16.gif', array('style' => 'display: none; float: left; margin-right: 5px;', 'id' => $field . '_undo_spinning')); ?>
                                 <a href="javascript:void(0);" class="dropper dropdown_link" title="<?php echo $info['change_tip']; ?>"><?php echo image_tag('tabmenu_dropdown.png', array('class' => 'dropdown')); ?></a>
                                 <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::USER_CHOICE): ?>
-                                    <?php include_component('identifiableselector', array(    'html_id'             => $field.'_change',
+                                    <?php include_component('main/identifiableselector', array(    'html_id'             => $field.'_change',
                                                                                             'header'             => __('Select a user'),
                                                                                             'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, 'identifiable_type' => 'user', $field.'_value' => '%identifiable_value')) . "', '".$field."');",
                                                                                             'clear_link_text'    => __('Clear currently selected user'),
                                                                                             'base_id'            => $field,
                                                                                             'include_teams'        => false,
                                                                                             'absolute'            => true,
-                                                                                            'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                            'classes'            => 'popup_box more_actions_dropdown')); ?>
                                 <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::TEAM_CHOICE): ?>
-                                    <?php include_component('identifiableselector', array(    'html_id'             => $field.'_change',
+                                    <?php include_component('main/identifiableselector', array(    'html_id'             => $field.'_change',
                                                                                             'header'             => __('Select a team'),
                                                                                             'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, 'identifiable_type' => 'team', $field.'_value' => '%identifiable_value')) . "', '".$field."');",
                                                                                             'clear_link_text'    => __('Clear currently selected team'),
@@ -425,9 +430,9 @@
                                                                                             'include_teams'        => true,
                                                                                             'include_users'        => false,
                                                                                             'absolute'            => true,
-                                                                                            'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                            'classes'            => 'popup_box more_actions_dropdown')); ?>
                                 <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::CLIENT_CHOICE): ?>
-                                    <?php include_component('identifiableselector', array(    'html_id'             => $field.'_change',
+                                    <?php include_component('main/identifiableselector', array(    'html_id'             => $field.'_change',
                                                                                             'header'             => __('Select a client'),
                                                                                             'callback'             => "TBG.Issues.Field.set('" . make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, 'identifiable_type' => 'client', $field.'_value' => '%identifiable_value')) . "', '".$field."');",
                                                                                             'clear_link_text'    => __('Clear currently selected client'),
@@ -436,9 +441,9 @@
                                                                                             'include_teams'        => false,
                                                                                             'include_users'        => false,
                                                                                             'absolute'            => true,
-                                                                                            'classes'            => 'leftie popup_box more_actions_dropdown')); ?>
+                                                                                            'classes'            => 'popup_box more_actions_dropdown')); ?>
                                 <?php else: ?>
-                                    <ul class="popup_box more_actions_dropdown" id="<?php echo $field; ?>_change">
+                                    <ul class="popup_box more_actions_dropdown with-header" id="<?php echo $field; ?>_change">
                                         <li class="header"><?php echo $info['change_header']; ?></li>
                                         <li id="<?php echo $field; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
                                         <li id="<?php echo $field; ?>_change_error" class="error_message" style="display: none;"></li>
@@ -452,23 +457,60 @@
                                                     <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => $choice->getID())); ?>', '<?php echo $field; ?>');"><?php echo image_tag('icon_customdatatype.png').__($choice->getName()); ?></a>
                                                 </li>
                                             <?php endforeach; ?>
-                                        <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER): ?>
+                                        <?php elseif ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER || $info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
                                             <li>
                                                 <a href="javascript:void(0);" onclick="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field, $field . '_value' => "")); ?>', '<?php echo $field; ?>');"><?php echo $info['clear']; ?></a>
                                             </li>
                                             <li class="separator"></li>
                                             <li id="customfield_<?php echo $field; ?>_calendar_container" style="padding: 0;"></li>
+                                            <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
+                                                <li class="nohover">
+                                                    <form id="customfield_<?php echo $field; ?>_form" method="post" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="" onsubmit="TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>', '<?php echo $field; ?>', 'customfield_<?php echo $field; ?>');return false;">
+                                                        <label><?php echo __('Time'); ?></label>
+                                                        <input type="text" id="customfield_<?php echo $field; ?>_hour" value="00" style="width: 20px; font-size: 0.9em; text-align: center;">&nbsp;:&nbsp;
+                                                        <input type="text" id="customfield_<?php echo $field; ?>_minute" value="00" style="width: 20px; font-size: 0.9em; text-align: center;">
+                                                        <input type="hidden" name="<?php echo $field; ?>_value" value="<?php echo (int) $info['name'] - tbg_get_timezone_offset(); ?>" id="<?php echo $field; ?>_value" />
+                                                        <input type="submit" value="<?php echo __('Set'); ?>">
+                                                    </form>
+                                                </li>
+                                            <?php endif; ?>
                                             <script type="text/javascript">
                                                 require(['domReady', 'thebuggenie/tbg', 'calendarview'], function (domReady, tbgjs, Calendar) {
                                                     domReady(function () {
                                                         Calendar.setup({
-                                                            dateField: '<?php echo $field; ?>_name',
+                                                            dateField: '<?php echo $field; ?>_new_name',
                                                             parentElement: 'customfield_<?php echo $field; ?>_calendar_container',
                                                             valueCallback: function(element, date) {
-                                                                var value = Math.floor(date.getTime() / 1000);
-                                                                TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>?<?php echo $field; ?>_value='+value, '<?php echo $field; ?>');
+                                                                <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
+                                                                    var value = date.setUTCHours(parseInt($('customfield_<?php echo $field; ?>_hour').value));
+                                                                    var date  = new Date(value);
+                                                                    var value = Math.floor(date.setUTCMinutes(parseInt($('customfield_<?php echo $field; ?>_minute').value)) / 1000);
+                                                                <?php else: ?>
+                                                                    var value = Math.floor(date.getTime() / 1000);
+                                                                    TBG.Issues.Field.set('<?php echo make_url('issue_setfield', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID(), 'field' => $field)); ?>?<?php echo $field; ?>_value='+value, '<?php echo $field; ?>');
+                                                                <?php endif; ?>
+                                                                $('<?php echo $field; ?>_value').value = value;
                                                             }
                                                         });
+                                                        <?php if ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER): ?>
+                                                            var date = new Date(parseInt($('<?php echo $field; ?>_value').value) * 1000);
+                                                            $('customfield_<?php echo $field; ?>_hour').value = date.getUTCHours();
+                                                            $('customfield_<?php echo $field; ?>_minute').value = date.getUTCMinutes();
+                                                            Event.observe($('customfield_<?php echo $field; ?>_hour'), 'change', function (event) {
+                                                                var value = parseInt($('<?php echo $field; ?>_value').value);
+                                                                var hours = parseInt(this.value);
+                                                                if (value <= 0 || hours < 0 || hours > 24) return;
+                                                                var date = new Date(value * 1000);
+                                                                $('<?php echo $field; ?>_value').value = date.setUTCHours(parseInt(this.value)) / 1000;
+                                                            });
+                                                            Event.observe($('customfield_<?php echo $field; ?>_minute'), 'change', function (event) {
+                                                                var value = parseInt($('<?php echo $field; ?>_value').value);
+                                                                var minutes = parseInt(this.value);
+                                                                if (value <= 0 || minutes < 0 || minutes > 60) return;
+                                                                var date = new Date(value * 1000);
+                                                                $('<?php echo $field; ?>_value').value = date.setUTCMinutes(parseInt(this.value)) / 1000;
+                                                            });
+                                                        <?php endif; ?>
                                                     });
                                                 });
                                             </script>
@@ -616,9 +658,14 @@
                                         ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><div class="status_badge" style="background-color: <?php echo $color; ?>;"><span><?php echo __($value); ?></span></div></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
                                         break;
                                     case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
+                                    case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
                                         $tbg_response->addJavascript('calendarview');
-                                        $value = ($info['name']) ? date('Y-m-d', $info['name']) : __('Not set');
-                                        ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
+                                        if (is_numeric($info['name'])) {
+                                            $value = ($info['name']) ? date('Y-m-d' . ($info['type'] == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), $info['name']) : __('Not set');
+                                        } else {
+                                            $value = $info['name'];
+                                        }
+                                        ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo $value; ?></span><span id="<?php echo $field; ?>_new_name" style="display: none;"><?php echo (int) $value; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not set'); ?></span><?php
                                         break;
                                     default:
                                         ?><span id="<?php echo $field; ?>_name"<?php if (!$info['name_visible']): ?> style="display: none;"<?php endif; ?>><?php echo (filter_var($info['name'], FILTER_VALIDATE_URL) !== false) ? link_tag($info['name'], $info['name']) : $info['name']; ?></span><span class="faded_out" id="no_<?php echo $field; ?>"<?php if (!$info['noname_visible']): ?> style="display: none;"<?php endif; ?>><?php echo __('Not determined'); ?></span><?php
@@ -643,16 +690,16 @@
         <div class="no_items" id="viewissue_no_uploaded_files"<?php if (count($issue->getFiles()) + count($issue->getLinks()) > 0): ?> style="display: none;"<?php endif; ?>><?php echo __('There is nothing attached to this issue'); ?></div>
         <ul class="attached_items" id="viewissue_uploaded_links">
             <?php foreach ($issue->getLinks() as $link_id => $link): ?>
-                <?php include_component('attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link['id'])); ?>
+                <?php include_component('main/attachedlink', array('issue' => $issue, 'link' => $link, 'link_id' => $link['id'])); ?>
             <?php endforeach; ?>
         </ul>
         <ul class="attached_items" id="viewissue_uploaded_files">
-            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+            <?php foreach (array_reverse($issue->getFiles()) as $file_id => $file): ?>
                 <?php if (!$file->isImage()): ?>
                     <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <?php foreach ($issue->getFiles() as $file_id => $file): ?>
+            <?php foreach (array_reverse($issue->getFiles()) as $file_id => $file): ?>
                 <?php if ($file->isImage()): ?>
                     <?php include_component('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue' => $issue, 'file' => $file)); ?>
                 <?php endif; ?>
@@ -663,7 +710,7 @@
 <?php \thebuggenie\core\framework\Event::createNew('core', 'viewissue_left_after_attachments', $issue)->trigger(); ?>
 <fieldset id="viewissue_related_information_container">
     <legend>
-        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.count($issue->getChildIssues()).'</span>')); ?>
+        <?php echo image_tag('spinning_16.gif', array('style' => 'display: none;', 'id' => 'related_issues_indicator')) . __('Child issues (%count)', array('%count' => '<span id="viewissue_related_issues_count">'.$issue->countChildIssues().'</span>')); ?>
     </legend>
     <div id="viewissue_related_information">
         <?php include_component('main/relatedissues', array('issue' => $issue)); ?>

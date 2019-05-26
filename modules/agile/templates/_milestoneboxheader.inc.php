@@ -42,8 +42,8 @@
     </div>
     <?php if ($include_buttons): ?>
         <div class="settings_container">
-            <?php echo image_tag('icon-mono-settings.png', array('class' => 'dropper dropdown_link')); ?>
-            <ul class="popup_box milestone_moreactions more_actions_dropdown" id="milestone_<?php echo $milestone->getID(); ?>_moreactions" style="display: none;">
+            <?php echo fa_image_tag('cog', array('class' => 'dropper dropdown_link')); ?>
+            <ul class="popup_box milestone_moreactions more_actions_dropdown" id="milestone_<?php echo $milestone->getID(); ?>_moreactions">
                 <li><?php echo link_tag(make_url('project_milestone_details', array('project_key' => $milestone->getProject()->getKey(), 'milestone_id' => $milestone->getID())), __('Show overview')); ?></li>
                 <?php if ($tbg_user->canEditProjectDetails(\thebuggenie\core\framework\Context::getCurrentProject())): ?>
                     <li class="separator"></li>

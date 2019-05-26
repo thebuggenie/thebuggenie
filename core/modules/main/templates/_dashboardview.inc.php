@@ -4,7 +4,7 @@
     <div class="container_div">
         <div class="header">
             <?php if ($view->hasRSS()): ?>
-                <?php echo link_tag($view->getRSSUrl(), image_tag('icon_rss.png'), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
+                <?php echo link_tag($view->getRSSUrl(), fa_image_tag('rss-square', ['class' => 'rss-icon']), array('title' => __('Download feed'), 'style' => 'float: right; margin-left: 5px;', 'class' => 'image')); ?>
                 <?php $tbg_response->addFeed($view->getRSSUrl(), $view->getTitle()); ?>
             <?php endif; ?>
             <?php echo image_tag('icon_delete.png', array('class' => 'remover', 'onclick' => "TBG.Main.Dashboard.removeView('click', this);")); ?>

@@ -30,12 +30,12 @@
 
         public function getByModuleAndNameAndUserId($module, $name, $user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere('notificationsettings.module_name', $module);
-            $crit->addWhere('notificationsettings.name', $name);
-            $crit->addWhere('notificationsettings.user_id', $user_id);
+            $query = $this->getQuery();
+            $query->where('notificationsettings.module_name', $module);
+            $query->where('notificationsettings.name', $name);
+            $query->where('notificationsettings.user_id', $user_id);
 
-            return $this->selectOne($crit);
+            return $this->selectOne($query);
         }
 
     }

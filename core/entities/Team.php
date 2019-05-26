@@ -21,6 +21,8 @@
      * @package thebuggenie
      * @subpackage main
      *
+     * @method static tables\Teams getB2DBTable()
+     *
      * @Table(name="\thebuggenie\core\entities\tables\Teams")
      */
     class Team extends IdentifiableScoped
@@ -163,23 +165,6 @@
             tables\TeamMembers::getTable()->removeUsersFromTeam($this->getID());
         }
 
-        public static function findTeams($details)
-        {
-            $crit = new \b2db\Criteria();
-            $crit->addWhere(tables\Teams::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
-            $crit->addWhere(tables\Teams::ONDEMAND, false);
-
-            $teams = array();
-            if ($res = tables\Teams::getTable()->doSelect($crit))
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $teams[$row->get(tables\Teams::ID)] = new \thebuggenie\core\entities\Team($row->get(tables\Teams::ID), $row);
-                }
-            }
-            return $teams;
-        }
-
         public function getNumberOfMembers()
         {
             if ($this->_members !== null)
@@ -213,6 +198,46 @@
             }
 
             return $this->_associated_projects;
+        }
+
+        /**
+         * @return Project[][]
+         */
+        public function getProjects()
+        {
+            /** @var Project[] $projects */
+            $projects = [];
+
+            foreach (Project::getAllByOwner($this) as $project)
+            {
+                $projects[$project->getID()] = $project;
+            }
+            foreach (Project::getAllByLeader($this) as $project)
+            {
+                $projects[$project->getID()] = $project;
+            }
+            foreach (Project::getAllByQaResponsible($this) as $project)
+            {
+                $projects[$project->getID()] = $project;
+            }
+            foreach ($this->getAssociatedProjects() as $project_id => $project)
+            {
+                $projects[$project_id] = $project;
+            }
+
+            $active_projects = [];
+            $archived_projects = [];
+
+            foreach ($projects as $project_id => $project)
+            {
+                if ($project->isArchived()) {
+                    $archived_projects[$project_id] = $project;
+                } else {
+                    $active_projects[$project_id] = $project;
+                }
+            }
+
+            return [$active_projects, $archived_projects];
         }
 
         public function isOndemand()
@@ -263,11 +288,11 @@
         /**
          * Returns an array of team dashboards
          *
-         * @return array|\thebuggenie\core\entities\Dashboard
+         * @return \thebuggenie\core\entities\Dashboard[]
          */
         public function getDashboards()
         {
-            $this->_b2dbLazyload('_dashboards');
+            $this->_b2dbLazyLoad('_dashboards');
             return $this->_dashboards;
         }
 

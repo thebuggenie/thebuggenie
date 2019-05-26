@@ -27,5 +27,6 @@
     {
 
         const B2DB_TABLE_VERSION = 1;
+        const SCOPE = 'dashboards.scope';
 
     }

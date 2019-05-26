@@ -35,7 +35,7 @@
             $this->cliEcho("This command is useful if you've managed to lock yourself.\n");
             $this->cliEcho("out due to an authentication backend change gone bad.\n\n");
 
-            if (\thebuggenie\core\framework\Settings::getAuthenticationBackend() == 'tbg' || \thebuggenie\core\framework\Settings::getAuthenticationBackend() == null)
+            if (\thebuggenie\core\framework\Settings::getAuthenticationBackendIdentifier() == 'tbg' || \thebuggenie\core\framework\Settings::getAuthenticationBackendIdentifier() == null)
             {
                 $this->cliEcho("You are currently using the default authentication backend.\n\n");
             }

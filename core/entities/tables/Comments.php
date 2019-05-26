@@ -4,27 +4,22 @@
 
     use b2db\Criteria,
         thebuggenie\core\framework;
-
-    /**
-     * Comments table
-     *
-     * @author Daniel Andre Eikeland <zegenie@zegeniestudios.net>
-     * @version 3.1
-     * @license http://opensource.org/licenses/MPL-2.0 Mozilla Public License 2.0 (MPL 2.0)
-     * @package thebuggenie
-     * @subpackage tables
-     */
+    use b2db\Criterion;
+    use b2db\Update;
+    use thebuggenie\core\entities\Comment;
 
     /**
      * Comments table
      *
      * @package thebuggenie
      * @subpackage tables
+     *
+     * @method static Comments getTable()
      *
      * @Table(name="comments")
      * @Entity(class="\thebuggenie\core\entities\Comment")
      * @Discriminator(column="target_type")
-     * @Discriminators(\thebuggenie\core\entities\Issue=1, \thebuggenie\core\entities\Article=2)
+     * @Discriminators(\thebuggenie\core\entities\Issue=1, \thebuggenie\core\entities\Article=2, \thebuggenie\core\entities\Commit=3)
      */
     class Comments extends ScopedTable
     {
@@ -47,43 +42,42 @@
         const SYSTEM_COMMENT = 'comments.system_comment';
         const HAS_ASSOCIATED_CHANGES = 'comments.has_associated_changes';
 
-        protected $_preloaded_issue_counts;
+        protected $_preloaded_counts = [];
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('type_target', array(self::TARGET_TYPE, self::TARGET_ID));
-            $this->_addIndex('type_target_deleted_system', array(self::TARGET_TYPE, self::TARGET_ID, self::DELETED, self::SYSTEM_COMMENT));
+            $this->addIndex('type_target', array(self::TARGET_TYPE, self::TARGET_ID));
+            $this->addIndex('type_target_deleted_system', array(self::TARGET_TYPE, self::TARGET_ID, self::DELETED, self::SYSTEM_COMMENT));
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             switch ($old_table::B2DB_TABLE_VERSION)
             {
                 case 3:
                     $ids = [];
-                    $crit = $this->getCriteria();
-                    $crit->addSelectionColumn(self::ID, 'id');
-                    $res = $this->doSelect($crit);
+                    $query = $this->getQuery();
+                    $query->addSelectionColumn(self::ID, 'id');
+                    $res = $this->rawSelect($query);
                     if ($res) {
                         while ($row = $res->getNextRow()) {
                             $ids[$row['id']] = $row['id'];
                         }
                     }
 
-                    $log_table = Log::getTable();
+                    $log_table = LogItems::getTable();
                     $ids_count = count($ids);
                     if ($ids_count > 0) {
                         $step = ceil($ids_count / 100);
                         $cc = 0;
                         $pct = 0;
                         foreach ($ids as $id) {
-                            $log_crit = $log_table->getCriteria();
-                            $log_crit->addWhere(Log::COMMENT_ID, $id);
-                            if ($log_table->count($log_crit)) {
-                                $comment_crit = $this->getCriteria();
-                                $comment_crit->addUpdate(self::HAS_ASSOCIATED_CHANGES, true);
-                                $comment_crit->addWhere(self::ID, $id);
-                                $this->doUpdate($comment_crit);
+                            $log_query = $log_table->getQuery();
+                            $log_query->where(LogItems::COMMENT_ID, $id);
+                            if ($log_table->count($log_query)) {
+                                $update = new Update();
+                                $update->add(self::HAS_ASSOCIATED_CHANGES, true);
+                                $this->rawUpdateById($update, $id);
                             }
                             $cc++;
 
@@ -97,32 +91,32 @@
             }
         }
 
-        public function getComments($target_id, $target_type, $sort_order = Criteria::SORT_ASC)
+        public function getComments($target_id, $target_type, $sort_order = \b2db\QueryColumnSort::SORT_ASC)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if($target_id != 0)
             {
-                $crit->addWhere(self::TARGET_ID, $target_id);
+                $query->where(self::TARGET_ID, $target_id);
             }
-            $crit->addWhere(self::TARGET_TYPE, $target_type);
-            $crit->addWhere(self::DELETED, 0);
-            $crit->addOrderBy(self::COMMENT_NUMBER, $sort_order);
-            $res = $this->select($crit, false);
+            $query->where(self::TARGET_TYPE, $target_type);
+            $query->where(self::DELETED, 0);
+            $query->addOrderBy(self::COMMENT_NUMBER, $sort_order);
+            $res = $this->select($query, false);
 
             return $res;
         }
 
-        public function getCommentIDs($target_id, $target_type, $sort_order = Criteria::SORT_ASC)
+        public function getCommentIDs($target_id, $target_type, $sort_order = \b2db\QueryColumnSort::SORT_ASC)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if($target_id != 0)
             {
-                $crit->addWhere(self::TARGET_ID, $target_id);
+                $query->where(self::TARGET_ID, $target_id);
             }
-            $crit->addWhere(self::TARGET_TYPE, $target_type);
-            $crit->addSelectionColumn(self::ID);
-            $crit->addOrderBy(self::POSTED, $sort_order);
-            $res = $this->doSelect($crit, false);
+            $query->where(self::TARGET_TYPE, $target_type);
+            $query->addSelectionColumn(self::ID);
+            $query->addOrderBy(self::POSTED, $sort_order);
+            $res = $this->rawSelect($query, false);
 
             $ids = array();
             if ($res)
@@ -137,80 +131,92 @@
 
         public function countComments($target_id, $target_type, $include_system_comments = true)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if($target_id != 0)
             {
-                $crit->addWhere(self::TARGET_ID, $target_id);
+                $query->where(self::TARGET_ID, $target_id);
             }
-            $crit->addWhere(self::TARGET_TYPE, $target_type);
-            $crit->addWhere(self::DELETED, 0);
+            $query->where(self::TARGET_TYPE, $target_type);
+            $query->where(self::DELETED, 0);
             if (!$include_system_comments)
-                $crit->addWhere(self::SYSTEM_COMMENT, false);
+                $query->where(self::SYSTEM_COMMENT, false);
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
-        public function preloadIssueCommentCounts($target_ids)
+        public function preloadCommentCounts($target_type, $target_ids)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID, 'num_comments', Criteria::DB_COUNT);
-            $crit->addSelectionColumn(self::TARGET_ID, 'issue_id');
-            $crit->addWhere(self::TARGET_ID, $target_ids, Criteria::DB_IN);
-            $crit->addWhere(self::TARGET_TYPE, \thebuggenie\core\entities\Comment::TYPE_ISSUE);
-            $crit->addWhere(self::DELETED, 0);
-            $crit->addWhere(self::SYSTEM_COMMENT, false);
-            $crit->addGroupBy(self::TARGET_ID);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID, 'num_comments', \b2db\Query::DB_COUNT);
+            $query->addSelectionColumn(self::TARGET_ID, 'identifier');
+            $query->where(self::TARGET_ID, $target_ids, \b2db\Criterion::IN);
+            $query->where(self::TARGET_TYPE, $target_type);
+            $query->where(self::DELETED, 0);
+            $query->where(self::SYSTEM_COMMENT, false);
+            $query->addGroupBy(self::TARGET_ID);
 
-            $res = $this->doSelect($crit, false);
-            $this->_preloaded_issue_counts = array();
+            $res = $this->rawSelect($query, false);
+            $this->_preloaded_counts[$target_type] = [];
             if ($res)
             {
                 while ($row = $res->getNextRow())
                 {
-                    $this->_preloaded_issue_counts[$row->get('issue_id')] = $row->get('num_comments');
+                    $this->_preloaded_counts[$target_type][$row->get('identifier')] = $row->get('num_comments');
                 }
             }
         }
 
-        public function clearPreloadedIssueCommentCounts()
+        public function clearPreloadedCommentCounts($target_type)
         {
-            $this->_preloaded_issue_counts = null;
+            unset($this->_preloaded_counts[$target_type]);
         }
 
-        public function getPreloadedIssueCommentCount($target_id)
+        public function getPreloadedCommentCount($target_type, $target_id)
         {
-            if (!is_array($this->_preloaded_issue_counts)) return null;
+            if (!array_key_exists($target_type, $this->_preloaded_counts) || !is_array($this->_preloaded_counts[$target_type])) return null;
 
-            if (isset($this->_preloaded_issue_counts[$target_id]))
+            if (isset($this->_preloaded_counts[$target_type][$target_id]))
             {
-                $val = $this->_preloaded_issue_counts[$target_id];
-                unset($this->_preloaded_issue_counts[$target_id]);
+                $val = $this->_preloaded_counts[$target_type][$target_id];
+                unset($this->_preloaded_counts[$target_type][$target_id]);
                 return $val;
             }
+
             return 0;
         }
 
         public function getNextCommentNumber($target_id, $target_type)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::COMMENT_NUMBER, 'max_no', Criteria::DB_MAX, '', '+1');
-            $crit->addWhere(self::TARGET_ID, $target_id);
-            $crit->addWhere(self::TARGET_TYPE, $target_type);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::COMMENT_NUMBER, 'max_no', \b2db\Query::DB_MAX, '', '+1');
+            $query->where(self::TARGET_ID, $target_id);
+            $query->where(self::TARGET_TYPE, $target_type);
 
-            $row = $this->doSelectOne($crit);
+            $row = $this->rawSelectOne($query);
             return ($row->get('max_no')) ? $row->get('max_no') : 1;
         }
 
         public function getRecentCommentsByUserIDandTargetType($user_id, $target_type, $limit = 10)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::POSTED_BY, $user_id);
-            $crit->addWhere(self::TARGET_TYPE, $target_type);
-            $crit->addWhere(self::SYSTEM_COMMENT, false);
-            $crit->addOrderBy(self::POSTED, Criteria::SORT_DESC);
-            $crit->setLimit($limit);
+            $query = $this->getQuery();
+            $query->where(self::POSTED_BY, $user_id);
+            $query->where(self::TARGET_TYPE, $target_type);
+            $query->where(self::SYSTEM_COMMENT, false);
+            $query->addOrderBy(self::POSTED, \b2db\QueryColumnSort::SORT_DESC);
+            $query->setLimit($limit);
 
-            return $this->select($crit);
+            return $this->select($query);
+        }
+
+        public function fixFileComments()
+        {
+            $query = $this->getQuery();
+            $query->where(self::CONTENT, 'A file was uploaded%', Criterion::LIKE);
+
+            $update = new Update();
+            $update->add(self::SYSTEM_COMMENT, true);
+
+            $this->rawUpdate($update, $query);
         }
 
     }

@@ -12,7 +12,7 @@
                 <div class="content faded_out">
                     <p>
                         <?php echo __('All issue types have their own settings for which fields are available / required on both the reporting page and on the issue overview page.'); ?>
-                        <?php echo __('You can read more about how issue types and schemes in The Bug Genie works and is set up in the %online_documentation', array('%online_documentation' => link_tag('http://issues.thebuggenie.com/wiki/IssuetypeScheme', __('online documentation')))); ?>
+                        <?php echo __('You can read more about how issue types and schemes in The Bug Genie works and is set up in the %online_documentation', array('%online_documentation' => link_tag('https://issues.thebuggenie.com/wiki/IssuetypeScheme', __('online documentation')))); ?>
                     </p>
                 </div>
                 <div style="clear: both; margin-top: 15px;" class="tab_menu inset">

@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\framework\Settings;
 
     /**
      * Workflow scheme class
@@ -76,13 +77,28 @@
         
         public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
         {
-            $scheme = new \thebuggenie\core\entities\WorkflowScheme();
-            $scheme->setScope($scope);
-            $scheme->setName("Default workflow scheme");
-            $scheme->setDescription("This is the default workflow scheme. It is used by all projects with no specific workflow scheme selected. This scheme cannot be edited or removed.");
-            $scheme->save();
+            $multi_team_workflow_scheme = new WorkflowScheme();
+            $multi_team_workflow_scheme->setScope($scope);
+            $multi_team_workflow_scheme->setName("Multi-team workflow scheme");
+            $multi_team_workflow_scheme->setDescription("This is a workflow scheme well suited for projects with multiple teams. It uses the multi-team workflow for all issue types.");
+            $multi_team_workflow_scheme->save();
+            Settings::saveSetting(Settings::SETTING_MULTI_TEAM_WORKFLOW_SCHEME, $multi_team_workflow_scheme->getID(), 'core', $scope->getID());
 
-            \thebuggenie\core\framework\Settings::saveSetting(\thebuggenie\core\framework\Settings::SETTING_DEFAULT_WORKFLOWSCHEME, $scheme->getID(), 'core', $scope->getID());
+            $balanced_workflow_scheme = new WorkflowScheme();
+            $balanced_workflow_scheme->setScope($scope);
+            $balanced_workflow_scheme->setName("Balanced workflow scheme");
+            $balanced_workflow_scheme->setDescription("This is a workflow scheme used to handle medium-sized projects or small-team projects. It uses the balanced workflow for all issue types.");
+            $balanced_workflow_scheme->save();
+            Settings::saveSetting(Settings::SETTING_BALANCED_WORKFLOW_SCHEME, $balanced_workflow_scheme->getID(), 'core', $scope->getID());
+
+            $simple_workflow_scheme = new WorkflowScheme();
+            $simple_workflow_scheme->setScope($scope);
+            $simple_workflow_scheme->setName("Simple workflow scheme");
+            $simple_workflow_scheme->setDescription("This is a simple workflow scheme for projects with few people, or even just one person. It uses the simple workflow for all issue types.");
+            $simple_workflow_scheme->save();
+            Settings::saveSetting(Settings::SETTING_SIMPLE_WORKFLOW_SCHEME, $simple_workflow_scheme->getID(), 'core', $scope->getID());
+
+            return [$multi_team_workflow_scheme, $balanced_workflow_scheme, $simple_workflow_scheme];
         }
 
         protected function _preDelete()
@@ -108,17 +124,6 @@
         public function setDescription($description)
         {
             $this->_description = $description;
-        }
-
-        /**
-         * Whether this is the builtin workflow that cannot be
-         * edited or removed
-         *
-         * @return boolean
-         */
-        public function isCore()
-        {
-            return ($this->getID() == \thebuggenie\core\framework\Settings::getCoreWorkflowScheme()->getID());
         }
 
         protected function _populateAssociatedWorkflows()
@@ -169,10 +174,8 @@
             {
                 return $this->_issuetype_workflows[$issuetype->getID()];
             }
-            else
-            {
-                return \thebuggenie\core\framework\Settings::getCoreWorkflow();
-            }
+
+            throw new \Exception('This issue type is missing workflow settings');
         }
 
         public function isInUse()
@@ -184,7 +187,7 @@
         {
             if ($this->_projects === null)
             {
-                return $this->_b2dbLazycount('_projects');
+                return $this->_b2dbLazyCount('_projects');
             }
             return count($this->_projects);
         }

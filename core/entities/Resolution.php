@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     /**
+     * @method static Resolution getByKeyish($key)
      * @Table(name="\thebuggenie\core\entities\tables\ListTypes")
      */
     class Resolution extends Datatype
@@ -16,11 +17,11 @@
         
         protected $_itemtype = Datatype::RESOLUTION;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             foreach (array("CAN'T REPRODUCE", "WON'T FIX", "NOT AN ISSUE", "POSTPONED", "RESOLVED", "CAN'T FIX", "DUPLICATE") as $name)
             {
-                $resolution = new \thebuggenie\core\entities\Resolution();
+                $resolution = new Resolution();
                 $resolution->setName($name);
                 $resolution->setItemdata('');
                 $resolution->setScope($scope);

@@ -11,15 +11,20 @@
             <tr>
                 <td style="width: 300px; padding: 5px;"><label for="enable_outgoing_notifications"><?php echo __('Enable outgoing email notifications'); ?></label></td>
                 <td style="width: auto;">
-                    <select name="enable_outgoing_notifications" id="enable_outgoing_notifications" onchange="if ($(this).getValue() == 0) { $('mailnotification_settings_container').select('input').each(function (element, index) { element.disable(); }); } else { $('mailnotification_settings_container').select('input').each(function (element, index) { element.enable(); }); }">
-                        <option value="1"<?php if ($module->isOutgoingNotificationsEnabled()): ?> selected<?php endif; ?>><?php echo __('Yes'); ?></option>
-                        <option value="0"<?php if (!$module->isOutgoingNotificationsEnabled()): ?> selected<?php endif; ?>><?php echo __('No'); ?></option>
-                    </select>
+                    <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
+                        <input type="radio" name="enable_outgoing_notifications" value="1" class="fancycheckbox" id="enable_outgoing_notifications_yes"<?php if ($module->isOutgoingNotificationsEnabled()): ?> checked<?php endif; ?> onchange="if ($(this).checked) { $('mailnotification_settings_container').select('input').each(function (element, index) { if (element.name !== 'enable_outgoing_notifications') element.enable(); }); }"><label for="enable_outgoing_notifications_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                        <input type="radio" name="enable_outgoing_notifications" value="0" class="fancycheckbox" id="enable_outgoing_notifications_no"<?php if (!$module->isOutgoingNotificationsEnabled()): ?> checked<?php endif; ?> onchange="if ($(this).checked) { $('mailnotification_settings_container').select('input').each(function (element, index) { if (element.name !== 'enable_outgoing_notifications') element.disable(); }); }"><label for="enable_outgoing_notifications_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
+                    <?php else: ?>
+                        <?= ($module->isOutgoingNotificationsEnabled()) ? __('Yes') : __('No'); ?>
+                    <?php endif; ?>
                 </td>
             </tr>
             <tr>
-                <td style="padding: 5px;"><label for="activation_needed"><?php echo __("Require email activation for new accounts"); ?></label></td>
-                <td><input type="checkbox" name="activation_needed" id="activation_needed" value="1" <?php if ($module->isActivationNeeded()): ?>checked<?php endif; ?> style="width: 100%;"<?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
+                <td style="padding: 5px;"><label for="activation_needed_yes"><?php echo __("Require email activation for new accounts"); ?></label></td>
+                <td style="width: auto;">
+                    <input type="radio" class="fancycheckbox" name="activation_needed" id="activation_needed_yes" value="1" <?php if ($module->isActivationNeeded()): ?>checked<?php endif; ?> <?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>><label for="activation_needed_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" class="fancycheckbox" name="activation_needed" id="activation_needed_no" value="0" <?php if (!$module->isActivationNeeded()): ?>checked<?php endif; ?> <?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>><label for="activation_needed_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label>
+                </td>
             </tr>
             <tr>
                 <td class="config_explanation" colspan="2"><?php echo __("If this option is ticked, new accounts will require activation by clicking a link in the email. If this is ticked, the user's password will also be provided in the email, instead of in the registration screen"); ?></td>
@@ -37,7 +42,7 @@
             </tr>
             <tr>
                 <td style="padding: 5px;"><label for="from_address"><?php echo __('Issue tracker URL'); ?></label></td>
-                <td><input type="text" name="cli_mailing_url" id="cli_mailing_url" value="<?php echo $module->getMailingUrl(); ?>" placeholder="<?php echo \thebuggenie\core\framework\Context::getScope()->getCurrentHostname(); ?>" style="width: 100%;"<?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
+                <td><input type="text" name="cli_mailing_url" id="cli_mailing_url" value="<?php echo $module->getMailingUrl(); ?>" placeholder="<?php echo __('e.g.: %example', ['%example' => \thebuggenie\core\framework\Context::getScope()->getCurrentHostname()]); ?>" style="width: 100%;"<?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>></td>
             </tr>
             <tr>
                 <td class="config_explanation" colspan="2">
@@ -54,8 +59,8 @@
             <tr>
                 <td style="padding: 5px;"><label for="use_queue"><?php echo __('Queue emails for batch processing'); ?></label></td>
                 <td>
-                    <input type="radio" name="use_queue" value="0" id="use_queue_no"<?php if (!$module->usesEmailQueue()): ?> checked<?php endif; ?> <?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="use_queue_no"><?php echo __('Send email notifications instantly'); ?></label><br>
-                    <input type="radio" name="use_queue" value="1" id="use_queue_yes"<?php if ($module->usesEmailQueue()): ?> checked<?php endif; ?> <?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="use_queue_yes"><?php echo __('Use email queueing'); ?></label>
+                    <input type="radio" name="use_queue" class="fancycheckbox" value="1" id="use_queue_yes"<?php if ($module->usesEmailQueue()): ?> checked<?php endif; ?> <?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="use_queue_yes"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('Yes'); ?></label>
+                    <input type="radio" name="use_queue" class="fancycheckbox" value="0" id="use_queue_no"<?php if (!$module->usesEmailQueue()): ?> checked<?php endif; ?> <?php echo ($access_level != \thebuggenie\core\framework\Settings::ACCESS_FULL || !$module->isOutgoingNotificationsEnabled()) ? ' disabled' : ''; ?>>&nbsp;<label for="use_queue_no"><?php echo fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far') . __('No'); ?></label><br>
                 </td>
             </tr>
             <tr>

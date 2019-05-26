@@ -120,6 +120,7 @@
 
         protected function _preSave($is_new)
         {
+            parent::_preSave($is_new);
             if ($is_new && $this->_edited_at == 0) $this->_edited_at = time();
         }
 
@@ -146,7 +147,7 @@
 
         public function getUser()
         {
-            return $this->_b2dbLazyload('_edited_by');
+            return $this->_b2dbLazyLoad('_edited_by');
         }
 
         public function setUser($uid)
@@ -156,7 +157,7 @@
 
         public function getActivityType()
         {
-            return $this->_b2dbLazyload('_activity_type');
+            return $this->_b2dbLazyLoad('_activity_type');
         }
 
         public function setActivityType($activity_type)
@@ -174,7 +175,7 @@
          */
         public function getIssue()
         {
-            return $this->_b2dbLazyload('_issue_id');
+            return $this->_b2dbLazyLoad('_issue_id');
         }
 
         public function getIssueID()

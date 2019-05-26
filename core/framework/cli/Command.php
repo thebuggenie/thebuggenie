@@ -21,6 +21,20 @@
     abstract class Command
     {
 
+        const COLOR_BLACK = 29;
+        const COLOR_RED = 31;
+        const COLOR_GREEN = 32;
+        const COLOR_YELLOW = 33;
+        const COLOR_BLUE = 34;
+        const COLOR_MAGENTA = 35;
+        const COLOR_CYAN = 36;
+        const COLOR_WHITE = 37;
+
+        const STYLE_BOLD = 1;
+        const STYLE_UNDERLINE = 4;
+        const STYLE_BLINK = 5;
+        const STYLE_CONCEAL = 8;
+
         protected static $_available_commands = null;
 
         protected static $_provided_arguments = null;
@@ -230,14 +244,14 @@
             return array();
         }
 
-        protected function _getCliInput()
+        protected static function _getCliInput()
         {
             return trim(fgets(STDIN));
         }
 
         public function getInputConfirmation()
         {
-            $retval = $this->_getCliInput();
+            $retval = self::_getCliInput();
             return (bool) (mb_strtolower(trim($retval)) == 'yes');
         }
 
@@ -248,13 +262,18 @@
 
         public function askToDecline()
         {
-            $retval = $this->_getCliInput();
+            $retval = self::_getCliInput();
             return !(bool) (mb_strtolower(trim($retval)) == 'no');
         }
 
         public function getInput($default = '')
         {
-            $retval = $this->_getCliInput();
+            return self::getUserInput($default);
+        }
+
+        public static function getUserInput($default = '')
+        {
+            $retval = self::_getCliInput();
             return ($retval == '') ? $default : $retval;
         }
 
@@ -279,8 +298,15 @@
                 $fg_colors = array('black' => 29, 'red' => 31, 'green' => 32, 'yellow' => 33, 'blue' => 34, 'magenta' => 35, 'cyan' => 36, 'white' => 37);
                 $op_format = array('bold' => 1, 'underline' => 4, 'blink' => 5, 'reverse' => 7, 'conceal' => 8);
 
-                $return_text = "\033[" . $fg_colors[$color];
-                $return_text .= ($style !== null && array_key_exists($style, $op_format)) ? ";" . $op_format[$style] : '';
+                $color = (is_numeric($color)) ? $color : $fg_colors[$color];
+                $return_text = "\033[" . $color;
+
+                if ($style !== null)
+                {
+                    $style = (is_numeric($style)) ? $style : $op_format[$style];
+                    $return_text .= ';' . $style;
+                }
+
                 $return_text .= "m" . $text . "\033[0m";
             }
             else
@@ -289,6 +315,9 @@
             }
 
             echo $return_text;
+            if (!empty(ob_get_status())) {
+                ob_end_flush();
+            }
         }
 
         public function cliEcho($text, $color = 'white', $style = null)
@@ -296,7 +325,7 @@
             self::cli_echo($text, $color, $style);
         }
 
-        public static function cliError($title, $exception)
+        public static function cliError($title, $exception, $include_sql_queries = false)
         {
             $trace_elements = null;
             if ($exception instanceof \Exception || $exception instanceof \Error)
@@ -336,10 +365,12 @@
                 echo "\n";
                 self::cli_echo($title, 'red', 'bold');
                 echo "\n";
-                self::cli_echo("occured in\n");
-                self::cli_echo($exception['file'] . ', line ' . $exception['line'], 'blue', 'bold');
-                echo "\n";
-                echo "\n";
+                if (isset($exception['file']) && isset($exception['line'])) {
+                    self::cli_echo("occured in\n");
+                    self::cli_echo($exception['file'] . ', line ' . $exception['line'], 'blue', 'bold');
+                    echo "\n";
+                    echo "\n";
+                }
                 self::cli_echo("Backtrace:\n", 'white', 'bold');
                 $trace_elements = debug_backtrace();
             }
@@ -370,7 +401,7 @@
                 }
                 echo "\n";
             }
-            if (class_exists('\\b2db\\Core'))
+            if (class_exists('\\b2db\\Core') && $include_sql_queries)
             {
                 echo "\n";
                 $sqlhits = \b2db\Core::getSQLHits();

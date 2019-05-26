@@ -3,10 +3,10 @@
     <?php if (isset($board)) $moreactions_url['board_id'] = $board->getID(); ?>
     <?php if (isset($estimator_mode)) $moreactions_url['estimator_mode'] = $estimator_mode; ?>
     <ul class="more_actions_dropdown popup_box dynamic_menu" data-menu-url="<?php echo make_url('issue_moreactions', $moreactions_url); ?>">
-        <li class="spinning"><?php echo image_tag('spinning_32.gif'); ?></li>
+        <li class="spinning disabled"><a href="javascript:void(0);"><?php echo image_tag('spinning_32.gif'); ?></a></li>
     </ul>
 <?php else: ?>
-    <ul class="more_actions_dropdown popup_box">
+    <ul class="more_actions_dropdown popup_box with-header">
         <?php if (!$issue->getProject()->isArchived() && $issue->canEditIssueDetails()): ?>
             <?php if (!isset($multi) || !$multi): ?>
                 <li class="header"><?php echo __('Workflow transition actions'); ?></li>
@@ -70,40 +70,40 @@
                     <?php endif; ?>
                 <?php endif; ?>
                 <?php if ($issue->canAddRelatedIssues()): ?>
-                    <li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('sign-in').__('Add a relation for this issue'); ?></a></li>
+                    <li><a href="javascript:void(0)" id="relate_to_existing_issue_button" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'relate_issue', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('share-alt').__('Add a relation for this issue'); ?></a></li>
                 <?php endif; ?>
             <?php else: ?>
                 <?php if ($issue->canAddRelatedIssues() && $tbg_user->canReportIssues($issue->getProject())): ?>
                     <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('list-alt').__("Create a new related issue"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
                 <?php endif; ?>
                 <?php if ($issue->canAddRelatedIssues()): ?>
-                    <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('sign-in').__("Relate to an existing issue"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
+                    <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('sign-in-alt').__("Relate to an existing issue"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if (!isset($times) || $times): ?>
                 <li class="separator"></li>
                 <?php if ($issue->canEditEstimatedTime()): ?>
                     <?php if ($issue->isUpdateable()): ?>
-                        <li><a href="javascript:void(0);" onclick="TBG.Main.Profile.clearPopupsAndButtons();$('estimated_time_<?php echo $issue->getID(); ?>_change').toggle('block');" title="<?php echo ($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue'); ?>"><?php echo fa_image_tag('clock-o').(($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue')); ?></a></li>
+                        <li><a href="javascript:void(0);" onclick="TBG.Main.Profile.clearPopupsAndButtons();$('estimated_time_<?php echo $issue->getID(); ?>_change').toggle('block');" title="<?php echo ($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue'); ?>"><?php echo fa_image_tag('clock').(($issue->hasEstimatedTime()) ? __('Change estimate') : __('Estimate this issue')); ?></a></li>
                     <?php else: ?>
-                        <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('clock-o').__("Change estimate"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
+                        <li class="disabled"><a href="javascript:void(0);"><?php echo fa_image_tag('clock').__("Change estimate"); ?></a><div class="tooltip rightie"><?php echo __('This action is not available at this stage in the workflow'); ?></div></li>
                     <?php endif; ?>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if ($issue->canEditSpentTime()): ?>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID(), 'initial_view' => 'entry')); ?>');"><?php echo fa_image_tag('clock-o').__('Log time spent'); ?></a></li>
+                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_spenttimes', 'issue_id' => $issue->getID(), 'initial_view' => 'entry')); ?>');"><?php echo fa_image_tag('clock').__('Log time spent'); ?></a></li>
             <?php endif; ?>
             <?php if ($issue->canEditAccessPolicy()): ?>
                 <li class="separator"></li>
                 <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_permissions', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('lock', ['class' => 'access_policy']).__("Update issue access policy"); ?></a></li>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('star-o', ['class' => 'subscriber_list']).__("Manage issue subscribers"); ?></a></li>
+                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'issue_subscribers', 'issue_id' => $issue->getID())); ?>');"><?php echo fa_image_tag('star', ['class' => 'subscriber_list']).__("Manage issue subscribers"); ?></a></li>
             <?php endif; ?>
             <?php if ($issue->canEditIssueDetails()): ?>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'move_issue', 'issue_id' => $issue->getID(), 'multi' => (int) (isset($multi) && $multi))); ?>');"><?php echo fa_image_tag('sign-out').__("Move issue to another project"); ?></a></li>
+                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Backdrop.show('<?php echo make_url('get_partial_for_backdrop', array('key' => 'move_issue', 'issue_id' => $issue->getID(), 'multi' => (int) (isset($multi) && $multi))); ?>');"><?php echo fa_image_tag('exchange-alt').__("Move issue to another project"); ?></a></li>
             <?php endif; ?>
             <?php if ($issue->canDeleteIssue()): ?>
                 <li class="separator"></li>
-                <li><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?><?php if (isset($_SERVER['HTTP_REFERER'])): ?>?referer=<?php echo tbg_template_escape($_SERVER['HTTP_REFERER']); ?><?php echo ($issue->getMilestone()) ? '#roadmap_milestone_' . $issue->getMilestone()->getID() : ''; endif; ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo fa_image_tag('times', ['class' => 'delete']).__("Permanently delete this issue"); ?></a></li>
+                <li class="delete"><a href="javascript:void(0)" onclick="TBG.Main.Profile.clearPopupsAndButtons();TBG.Main.Helpers.Dialog.show('<?php echo __('Permanently delete this issue?'); ?>', '<?php echo __('Are you sure you wish to delete this issue? It will remain in the database for your records, but will not be accessible via The Bug Genie.'); ?>', {yes: {href: '<?php echo make_url('deleteissue', array('project_key' => $issue->getProject()->getKey(), 'issue_id' => $issue->getID())); ?><?php if (isset($_SERVER['HTTP_REFERER'])): ?>?referer=<?php echo tbg_template_escape($_SERVER['HTTP_REFERER']); ?><?php echo ($issue->getMilestone()) ? '#roadmap_milestone_' . $issue->getMilestone()->getID() : ''; endif; ?>' }, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo fa_image_tag('times').__("Permanently delete this issue"); ?></a></li>
             <?php endif; ?>
         <?php else: ?>
             <li class="disabled"><a href="#"><?php echo __('No additional actions available'); ?></a></li>

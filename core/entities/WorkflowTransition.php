@@ -78,7 +78,7 @@
         /**
          * The associated workflow object
          *
-         * @var \thebuggenie\core\entities\Workflow
+         * @var Workflow
          * @Column(type="integer", length=10)
          * @Relates(class="\thebuggenie\core\entities\Workflow")
          */
@@ -91,42 +91,17 @@
             
             return $event->getReturnList();
         }
-        
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope, \thebuggenie\core\entities\Workflow $workflow, $steps)
-        {
-            $rejected_resolutions = array();
-            $rejected_resolutions[] = Resolution::getByKeyish('notanissue')->getID();
-            $rejected_resolutions[] = Resolution::getByKeyish('wontfix')->getID();
-            $rejected_resolutions[] = Resolution::getByKeyish('cantfix')->getID();
-            $rejected_resolutions[] = Resolution::getByKeyish('cantreproduce')->getID();
-            $rejected_resolutions[] = Resolution::getByKeyish('duplicate')->getID();
-            $resolved_resolutions = array();
-            $resolved_resolutions[] = Resolution::getByKeyish('resolved')->getID();
-            $resolved_resolutions[] = Resolution::getByKeyish('wontfix')->getID();
-            $resolved_resolutions[] = Resolution::getByKeyish('postponed')->getID();
-            $resolved_resolutions[] = Resolution::getByKeyish('duplicate')->getID();
-            $closed_statuses = array();
-            $closed_statuses[] = Status::getByKeyish('closed')->getID();
-            $closed_statuses[] = Status::getByKeyish('postponed')->getID();
-            $closed_statuses[] = Status::getByKeyish('done')->getID();
-            $closed_statuses[] = Status::getByKeyish('fixed')->getID();
-            $transitions = array();
-            $transitions['investigateissue'] = array('name' => 'Investigate issue', 'description' => 'Assign the issue to yourself and start investigating it', 'outgoing_step' => 'investigating', 'template' => null, 'pre_validations' => array(WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES => 5), 'actions' => array(WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0));
-            $transitions['requestmoreinformation'] = array('name' => 'Request more information', 'description' => 'Move issue back to new state for more details', 'outgoing_step' => 'new', 'template' => 'main/updateissueproperties', 'actions' => array(WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0));
-            $transitions['confirmissue'] = array('name' => 'Confirm issue', 'description' => 'Confirm that the issue is valid', 'outgoing_step' => 'confirmed', 'template' => null, 'actions' => array(WorkflowTransitionAction::ACTION_SET_PERCENT => 10));
-            $transitions['rejectissue'] = array('name' => 'Reject issue', 'description' => 'Reject the issue as invalid', 'outgoing_step' => 'rejected', 'template' => 'main/updateissueproperties', 'post_validations' => array(WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID => join(',', $rejected_resolutions)), 'actions' => array(WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0, WorkflowTransitionAction::ACTION_SET_DUPLICATE => 0, WorkflowTransitionAction::ACTION_SET_PERCENT => 100, WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0));
-            $transitions['acceptissue'] = array('name' => 'Accept issue', 'description' => 'Accept the issue and assign it to yourself', 'outgoing_step' => 'inprogress', 'template' => null, 'pre_validations' => array(WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES => 5), 'actions' => array(WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0, WorkflowTransitionAction::ACTION_USER_START_WORKING => 0));
-            $transitions['reopenissue'] = array('name' => 'Reopen issue', 'description' => 'Reopen the issue', 'outgoing_step' => 'new', 'template' => null, 'actions' => array(WorkflowTransitionAction::ACTION_CLEAR_RESOLUTION => 0, WorkflowTransitionAction::ACTION_CLEAR_DUPLICATE => 0, WorkflowTransitionAction::ACTION_CLEAR_PERCENT => 0));
-            $transitions['assignissue'] = array('name' => 'Assign issue', 'description' => 'Accept the issue and assign it to someone', 'outgoing_step' => 'inprogress', 'template' => 'main/updateissueproperties', 'actions' => array(WorkflowTransitionAction::ACTION_ASSIGN_ISSUE => 0, WorkflowTransitionAction::ACTION_USER_START_WORKING => 0));
-            $transitions['markreadyfortesting'] = array('name' => 'Mark ready for testing', 'description' => 'Mark the issue as ready to be tested', 'outgoing_step' => 'readyfortesting', 'template' => null, 'actions' => array(WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0, WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0));
-            $transitions['resolveissue'] = array('name' => 'Resolve issue', 'description' => 'Resolve the issue', 'outgoing_step' => 'closed', 'template' => 'main/updateissueproperties', 'post_validations' => array(WorkflowTransitionValidationRule::RULE_STATUS_VALID => join(',', $closed_statuses), WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID => join(',', $resolved_resolutions)), 'actions' => array(WorkflowTransitionAction::ACTION_SET_STATUS => 0, WorkflowTransitionAction::ACTION_SET_PERCENT => 100, WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0, WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0));
-            $transitions['testissuesolution'] = array('name' => 'Test issue solution', 'description' => 'Check whether the solution is valid', 'outgoing_step' => 'testing', 'template' => null, 'actions' => array(WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0, WorkflowTransitionAction::ACTION_USER_START_WORKING => 0));
-            $transitions['acceptissuesolution'] = array('name' => 'Accept issue solution', 'description' => 'Mark the issue as resolved', 'outgoing_step' => 'closed', 'template' => 'main/updateissueproperties', 'actions' => array(WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0, WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0, WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0));
-            $transitions['rejectissuesolution'] = array('name' => 'Reject issue solution', 'description' => 'Reject the proposed solution and mark the issue as in progress', 'outgoing_step' => 'inprogress', 'template' => null, 'actions' => array(WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0, WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0, WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0));
 
+
+        protected static function loadFixtures(Scope $scope, Workflow $workflow, $transitions, $steps)
+        {
             foreach ($transitions as $key => $transition)
             {
-                $transition_object = new \thebuggenie\core\entities\WorkflowTransition();
+                if (!isset($steps[$transition['outgoing_step']])) {
+                    throw new \Exception('Outgoing step ' . $transition['outgoing_step'] . ' does not exist for workflow ' . $workflow->getName());
+                }
+
+                $transition_object = new WorkflowTransition();
                 $transition_object->setName($transition['name']);
                 $transition_object->setDescription($transition['description']);
                 $transition_object->setOutgoingStep($steps[$transition['outgoing_step']]['step']);
@@ -134,12 +109,12 @@
                 $transition_object->setWorkflow($workflow);
                 $transition_object->save();
                 $transitions[$key] = $transition_object;
-                
+
                 if (array_key_exists('pre_validations', $transition) && is_array($transition['pre_validations']))
                 {
                     foreach ($transition['pre_validations'] as $type => $validation)
                     {
-                        $rule = new \thebuggenie\core\entities\WorkflowTransitionValidationRule();
+                        $rule = new WorkflowTransitionValidationRule();
                         $rule->setTransition($transition_object);
                         $rule->setPre();
                         $rule->setRule($type);
@@ -152,7 +127,7 @@
                 {
                     foreach ($transition['post_validations'] as $type => $validation)
                     {
-                        $rule = new \thebuggenie\core\entities\WorkflowTransitionValidationRule();
+                        $rule = new WorkflowTransitionValidationRule();
                         $rule->setTransition($transition_object);
                         $rule->setPost();
                         $rule->setRule($type);
@@ -165,7 +140,7 @@
                 {
                     foreach ($transition['actions'] as $type => $action)
                     {
-                        $action_object = new \thebuggenie\core\entities\WorkflowTransitionAction();
+                        $action_object = new WorkflowTransitionAction();
                         $action_object->setActionType($type);
                         $action_object->setTransition($transition_object);
                         $action_object->setWorkflow($workflow);
@@ -174,10 +149,300 @@
                     }
                 }
             }
+
+            foreach ($steps as $step)
+            {
+                foreach ($step['transitions'] as $transition)
+                {
+                    $step['step']->addOutgoingTransition($transitions[$transition]);
+                }
+            }
+
+            return $transitions;
+        }
+
+        public static function loadMultiTeamWorkflowFixtures(Scope $scope, Workflow $workflow, $steps)
+        {
+            $rejected_resolutions = [
+                Resolution::getByKeyish('notanissue')->getID(),
+                Resolution::getByKeyish('wontfix')->getID(),
+                Resolution::getByKeyish('cantfix')->getID(),
+                Resolution::getByKeyish('cantreproduce')->getID(),
+                Resolution::getByKeyish('duplicate')->getID()
+            ];
+            $resolved_resolutions = [
+                Resolution::getByKeyish('resolved')->getID(),
+                Resolution::getByKeyish('wontfix')->getID(),
+                Resolution::getByKeyish('postponed')->getID(),
+                Resolution::getByKeyish('duplicate')->getID()
+            ];
+            $closed_statuses = [
+                Status::getByKeyish('closed')->getID(),
+                Status::getByKeyish('postponed')->getID(),
+                Status::getByKeyish('done')->getID(),
+                Status::getByKeyish('fixed')->getID()
+            ];
+            $transitions = [];
+            $transitions['investigateissue'] = [
+                'name' => 'Investigate issue',
+                'description' => 'Assign the issue to yourself and start investigating it',
+                'outgoing_step' => 'investigating',
+                'template' => null,
+                'pre_validations' => [
+                    WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES => 5]
+                ,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0
+                ]
+            ];
+            $transitions['requestmoreinformation'] = [
+                'name' => 'Request more information',
+                'description' => 'Move issue back to new state for more details',
+                'outgoing_step' => 'new',
+                'template' => 'main/updateissueproperties',
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0
+                ]
+            ];
+            $transitions['confirmissue'] = [
+                'name' => 'Confirm issue',
+                'description' => 'Confirm that the issue is valid',
+                'outgoing_step' => 'confirmed',
+                'template' => null,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_SET_PERCENT => 10
+                ]
+            ];
+            $transitions['rejectissue'] = [
+                'name' => 'Reject issue',
+                'description' => 'Reject the issue as invalid',
+                'outgoing_step' => 'rejected',
+                'template' => 'main/updateissueproperties',
+                'post_validations' => [
+                    WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID => join(',', $rejected_resolutions)]
+                ,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0,
+                    WorkflowTransitionAction::ACTION_SET_DUPLICATE => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT => 100,
+                    WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0
+                ]
+            ];
+            $transitions['acceptissue'] = [
+                'name' => 'Accept issue',
+                'description' => 'Accept the issue and assign it to yourself',
+                'outgoing_step' => 'inprogress',
+                'template' => null,
+                'pre_validations' => [
+                    WorkflowTransitionValidationRule::RULE_MAX_ASSIGNED_ISSUES => 5]
+                ,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0,
+                    WorkflowTransitionAction::ACTION_USER_START_WORKING => 0
+                ]
+            ];
+            $transitions['reopenissue'] = [
+                'name' => 'Reopen issue',
+                'description' => 'Reopen the issue',
+                'outgoing_step' => 'new',
+                'template' => null,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_CLEAR_RESOLUTION => 0,
+                    WorkflowTransitionAction::ACTION_CLEAR_DUPLICATE => 0,
+                    WorkflowTransitionAction::ACTION_CLEAR_PERCENT => 0
+                ]
+            ];
+            $transitions['assignissue'] = [
+                'name' => 'Assign issue',
+                'description' => 'Accept the issue and assign it to someone',
+                'outgoing_step' => 'inprogress',
+                'template' => 'main/updateissueproperties',
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_ASSIGN_ISSUE => 0,
+                    WorkflowTransitionAction::ACTION_USER_START_WORKING => 0
+                ]
+            ];
+            $transitions['markreadyfortesting'] = [
+                'name' => 'Mark ready for testing',
+                'description' => 'Mark the issue as ready to be tested',
+                'outgoing_step' => 'readyfortesting',
+                'template' => null,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0,
+                    WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0
+                ]
+            ];
+            $transitions['resolveissue'] = [
+                'name' => 'Resolve issue',
+                'description' => 'Resolve the issue',
+                'outgoing_step' => 'closed',
+                'template' => 'main/updateissueproperties',
+                'post_validations' => [
+                    WorkflowTransitionValidationRule::RULE_STATUS_VALID => join(',', $closed_statuses),
+                    WorkflowTransitionValidationRule::RULE_RESOLUTION_VALID => join(',', $resolved_resolutions)]
+                ,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_SET_STATUS => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT => 100,
+                    WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0,
+                    WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0
+                ]
+            ];
+            $transitions['testissuesolution'] = [
+                'name' => 'Test issue solution',
+                'description' => 'Check whether the solution is valid',
+                'outgoing_step' => 'testing',
+                'template' => null,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0,
+                    WorkflowTransitionAction::ACTION_USER_START_WORKING => 0
+                ]
+            ];
+            $transitions['acceptissuesolution'] = [
+                'name' => 'Accept issue solution',
+                'description' => 'Mark the issue as resolved',
+                'outgoing_step' => 'closed',
+                'template' => 'main/updateissueproperties',
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0,
+                    WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0,
+                    WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0
+                ]
+            ];
+            $transitions['rejectissuesolution'] = [
+                'name' => 'Reject issue solution',
+                'description' => 'Reject the proposed solution and mark the issue as in progress',
+                'outgoing_step' => 'inprogress',
+                'template' => null,
+                'actions' => [
+                    WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0,
+                    WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0,
+                    WorkflowTransitionAction::ACTION_USER_STOP_WORKING => 0
+                ]
+            ];
+
+            $transitions = self::loadFixtures($scope, $workflow, $transitions, $steps);
             
             return $transitions;
         }
-        
+
+        public static function loadSimpleWorkflowFixtures(Scope $scope, Workflow $workflow, $steps)
+        {
+            $transitions = [];
+            $transitions['startprogress'] = [
+                'name'          => 'Start progress',
+                'description'   => 'Assign the issue to yourself and start working on it',
+                'outgoing_step' => 'inprogress',
+                'template'      => null,
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT       => 33
+                ]
+            ];
+            $transitions['resolveissue'] = [
+                'name'          => 'Resolve issue',
+                'description'   => 'Mark issue as resolved',
+                'outgoing_step' => 'resolved',
+                'template'      => 'main/updateissueproperties',
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT    => 90
+                ]
+            ];
+            $transitions['closeissue'] = [
+                'name'          => 'Close issue',
+                'description'   => 'Close the issue',
+                'outgoing_step' => 'closed',
+                'template'      => 'main/updateissueproperties',
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_SET_PERCENT   => 100,
+                    WorkflowTransitionAction::ACTION_SET_DUPLICATE => 0
+                ]
+            ];
+            $transitions['reopenissue'] = [
+                'name'          => 'Reopen issue',
+                'description'   => 'Reopen the issue',
+                'outgoing_step' => 'reopened',
+                'template'      => 'main/updateissueproperties',
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT    => 0
+                ]
+            ];
+
+            $transitions = self::loadFixtures($scope, $workflow, $transitions, $steps);
+            return $transitions;
+        }
+
+        public static function loadBalancedWorkflowFixtures(Scope $scope, Workflow $workflow, $steps)
+        {
+            $transitions = [];
+            $transitions['startprogress'] = [
+                'name'          => 'Start progress',
+                'description'   => 'Assign the issue to yourself and start working on it',
+                'outgoing_step' => 'inprogress',
+                'template'      => null,
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_ASSIGN_ISSUE_SELF => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT       => 33
+                ]
+            ];
+            $transitions['readyfortesting'] = [
+                'name'          => 'Mark ready for testing',
+                'description'   => 'Mark issue as ready to be tested',
+                'outgoing_step' => 'readyfortesting',
+                'template'      => 'main/updateissueproperties',
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT    => 80
+                ]
+            ];
+            $transitions['confirmissue'] = [
+                'name'          => 'Confirm issue',
+                'description'   => 'Confirm that the issue is valid',
+                'outgoing_step' => 'confirmed',
+                'template'      => 'main/updateissueproperties',
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT    => 10
+                ]
+            ];
+            $transitions['resolveissue'] = [
+                'name'          => 'Resolve issue',
+                'description'   => 'Mark issue as resolved',
+                'outgoing_step' => 'resolved',
+                'template'      => 'main/updateissueproperties',
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_CLEAR_ASSIGNEE => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT    => 90
+                ]
+            ];
+            $transitions['closeissue'] = [
+                'name'          => 'Close issue',
+                'description'   => 'Close the issue',
+                'outgoing_step' => 'closed',
+                'template'      => 'main/updateissueproperties',
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_SET_PERCENT   => 100,
+                    WorkflowTransitionAction::ACTION_SET_DUPLICATE => 0
+                ]
+            ];
+            $transitions['reopenissue'] = [
+                'name'          => 'Reopen issue',
+                'description'   => 'Reopen the issue',
+                'outgoing_step' => 'reopened',
+                'template'      => 'main/updateissueproperties',
+                'actions'       => [
+                    WorkflowTransitionAction::ACTION_SET_RESOLUTION => 0,
+                    WorkflowTransitionAction::ACTION_SET_PERCENT    => 0
+                ]
+            ];
+
+            $transitions = self::loadFixtures($scope, $workflow, $transitions, $steps);
+
+            return $transitions;
+        }
+
         /**
          * Return the items name
          *
@@ -221,27 +486,16 @@
         /**
          * Return the workflow
          *
-         * @return \thebuggenie\core\entities\Workflow
+         * @return Workflow
          */
         public function getWorkflow()
         {
-            return $this->_b2dbLazyload('_workflow_id');
+            return $this->_b2dbLazyLoad('_workflow_id');
         }
 
-        public function setWorkflow(\thebuggenie\core\entities\Workflow $workflow)
+        public function setWorkflow(Workflow $workflow)
         {
             $this->_workflow_id = $workflow;
-        }
-
-        /**
-         * Whether this is a transition in the builtin workflow that cannot be
-         * edited or removed
-         *
-         * @return boolean
-         */
-        public function isCore()
-        {
-            return $this->getWorkflow()->isCore();
         }
 
         public function getTemplate()
@@ -307,7 +561,7 @@
          */
         public function getOutgoingStep()
         {
-            return $this->_b2dbLazyload('_outgoing_step_id');
+            return $this->_b2dbLazyLoad('_outgoing_step_id');
         }
         
         /**
@@ -387,7 +641,7 @@
 
         /**
          *
-         * @return array|\thebuggenie\core\entities\WorkflowTransitionValidationRule
+         * @return WorkflowTransitionValidationRule[]
          */
         public function getPostValidationRules()
         {
@@ -416,7 +670,7 @@
         {
             foreach ($this->getPreValidationRules() as $validation_rule)
             {
-                if ($validation_rule instanceof \thebuggenie\core\entities\WorkflowTransitionValidationRule)
+                if ($validation_rule instanceof WorkflowTransitionValidationRule)
                 {
                     if (!$validation_rule->isValid($issue)) return false;
                 }
@@ -579,7 +833,7 @@
             $issue->save();
         }
 
-        public function copy(\thebuggenie\core\entities\Workflow $new_workflow)
+        public function copy(Workflow $new_workflow)
         {
             $new_transition = clone $this;
             $new_transition->setWorkflow($new_workflow);
@@ -616,5 +870,22 @@
         {
             return ($this->getWorkflow()->getInitialTransition()->getID() == $this->getID());
         }
-        
+
+        public function toJSON($detailed = true)
+        {
+            $details = [
+                'name' => $this->getName(),
+                'description' => $this->getDescription(),
+                'template' => $this->getTemplate(),
+                'post_validations' => []
+            ];
+
+            foreach ($this->getPostValidationRules() as $rule)
+            {
+                $details['post_validations'][] = $rule->toJSON();
+            }
+
+            return $details;
+        }
+
     }

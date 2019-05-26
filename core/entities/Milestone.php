@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\tables\LogItems;
     use thebuggenie\core\framework;
 
     /**
@@ -193,6 +194,45 @@
             $this->_reached = ($this->_reacheddate > 0);
         }
 
+        protected function _preSave($is_new)
+        {
+            parent::_preSave($is_new);
+            if ($is_new)
+            {
+                if (!$this->_itemtype) {
+                    $this->_itemtype = self::TYPE_REGULAR;
+                }
+                if (!$this->_percentage_type) {
+                    $this->_percentage_type = self::PERCENTAGE_TYPE_REGULAR;
+                }
+            }
+        }
+
+        public function generateLogItems()
+        {
+            $dates = [
+                LogItem::ACTION_MILESTONE_STARTED => $this->_startingdate,
+                LogItem::ACTION_MILESTONE_REACHED => $this->_reacheddate
+            ];
+
+            foreach ($dates as $type => $date) {
+                $log_item = LogItems::getTable()->getByTargetAndChangeAndType($this->getID(), $type);
+                if ($date) {
+                    if (!$log_item instanceof LogItem) {
+                        $log_item = new LogItem();
+                        $log_item->setTargetType(LogItem::TYPE_MILESTONE);
+                        $log_item->setTarget($this->getID());
+                        $log_item->setChangeType($type);
+                        $log_item->setProject($this->getProject()->getID());
+                    }
+                    $log_item->setTime($date);
+                    $log_item->save();
+                } elseif ($log_item instanceof LogItem) {
+                    $log_item->delete();
+                }
+            }
+        }
+
         protected function _postSave($is_new)
         {
             if ($is_new)
@@ -200,6 +240,8 @@
                 framework\Context::setPermission("canseemilestone", $this->getID(), "core", 0, framework\Context::getUser()->getGroup()->getID(), 0, true);
                 \thebuggenie\core\framework\Event::createNew('core', 'Milestone::_postSave', $this)->trigger();
             }
+
+            $this->generateLogItems();
         }
 
         public static function doesIDExist($id)
@@ -210,7 +252,7 @@
         /**
          * Returns an array with issues
          *
-         * @return array|Issue
+         * @return Issue[]
          */
         public function getIssues()
         {
@@ -518,7 +560,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project');
+            return $this->_b2dbLazyLoad('_project');
         }
 
         public function setProject($project)
@@ -787,6 +829,10 @@
          */
         public function updateStatus()
         {
+            if (!$this->getProject() instanceof Project) {
+                return;
+            }
+
             $all_issues_closed = (bool) ($this->countClosedIssues() == $this->countIssues());
             if (!$this->hasReachedDate() && $all_issues_closed)
             {
@@ -1182,6 +1228,16 @@
             	$returnJSON['points'] = $this->_points;
             }
             return $returnJSON;
+        }
+
+        public function getFontAwesomeIcon()
+        {
+            return 'compact-disc';
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            return 'fas';
         }
 
     }

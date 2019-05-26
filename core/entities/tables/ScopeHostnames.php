@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+
     /**
      * Scopes table
      *
@@ -30,33 +32,33 @@
         const SCOPE = 'scopehostnames.scope_id';
         const HOSTNAME = 'scopehostnames.hostname';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::HOSTNAME, 200, '');
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::HOSTNAME, 200, '');
         }
 
         public function addHostnameToScope($hostname, $scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::HOSTNAME, $hostname);
-            $crit->addInsert(self::SCOPE_ID, $scope_id);
-            $res = $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::HOSTNAME, $hostname);
+            $insertion->add(self::SCOPE_ID, $scope_id);
+            $res = $this->rawInsert($insertion);
         }
 
         public function removeHostnameFromScope($hostname, $scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::HOSTNAME, $hostname);
-            $crit->addWhere(self::SCOPE_ID, $scope_id);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::HOSTNAME, $hostname);
+            $query->where(self::SCOPE_ID, $scope_id);
+            $res = $this->rawDelete($query);
         }
 
         public function saveScopeHostnames($hostnames, $scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE_ID, $scope_id);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE_ID, $scope_id);
+            $res = $this->rawDelete($query);
             foreach ($hostnames as $hostname)
             {
                 $this->addHostnameToScope($hostname, $scope_id);
@@ -65,11 +67,11 @@
 
         public function getHostnamesForScope($scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE_ID, $scope_id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE_ID, $scope_id);
 
             $hostnames = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -82,23 +84,23 @@
 
         public function getScopeIDForHostname($hostname)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::HOSTNAME, $hostname);
+            $query = $this->getQuery();
+            $query->where(self::HOSTNAME, $hostname);
 
-            $row = $this->doSelectOne($crit);
+            $row = $this->rawSelectOne($query);
 
             return ($row instanceof \b2db\Row) ? (int) $row->get(self::SCOPE_ID) : null;
         }
 
         public function addIndexes()
         {
-            $this->_setupIndexes();
+            $this->setupIndexes();
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('id_hostname', array(self::ID, self::HOSTNAME));
-            $this->_addIndex('scopeid_hostname', array(self::SCOPE_ID, self::HOSTNAME));
+            $this->addIndex('id_hostname', array(self::ID, self::HOSTNAME));
+            $this->addIndex('scopeid_hostname', array(self::SCOPE_ID, self::HOSTNAME));
         }
 
     }

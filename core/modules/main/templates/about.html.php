@@ -22,7 +22,7 @@
         <b><?php echo __('Enjoy using The Bug Genie!'); ?></b>
     </div>
     <br>
-    <a href="http://www.thebuggenie.com" target="_blank">The Bug Genie</a>, Copyright &copy; 2002 - <?php echo date('Y'); ?> <b>The Bug Genie team</b><br>
+    <a href="https://thebuggenie.com" target="_blank">The Bug Genie</a>, Copyright &copy; 2002 - <?php echo date('Y'); ?> <b>The Bug Genie team</b><br>
     <?php echo __('Licensed under the MPL 2.0, read it at %link_to_MPL', array('%link_to_MPL' => '<a href="http://opensource.org/licenses/MPL-2.0">opensource.org</a>')); ?>.<br>
     <br>
     <span class="faded_out">

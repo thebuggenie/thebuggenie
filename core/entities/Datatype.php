@@ -78,7 +78,7 @@
          */
         const ACTIVITYTYPE = 'activitytype';
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             Category::loadFixtures($scope);
             Priority::loadFixtures($scope);
@@ -134,6 +134,41 @@
         public static function getAll()
         {
             return tables\ListTypes::getTable()->getAllByItemType(static::ITEMTYPE);
+        }
+
+        public function getFontAwesomeIcon()
+        {
+            switch ($this->_itemtype) {
+                case self::PRIORITY:
+                    switch ($this->_itemdata) {
+                        case Priority::CRITICAL:
+                            return 'exclamation';
+                        case Priority::HIGH:
+                            return 'angle-up';
+                        case Priority::NORMAL:
+                            return 'minus';
+                        case Priority::LOW:
+                            return 'angle-down';
+                        case Priority::TRIVIAL:
+                            return 'angle-double-down';
+                    }
+                case self::RESOLUTION:
+                    return 'clipboard-check';
+                case self::REPRODUCABILITY:
+                    return 'list-ol';
+                case self::SEVERITY:
+                    return 'chart-line';
+            }
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            switch ($this->_itemtype) {
+                case self::PRIORITY:
+                    return 'fas';
+                default:
+                    return 'fas';
+            }
         }
 
     }

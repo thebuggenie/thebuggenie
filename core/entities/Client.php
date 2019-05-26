@@ -230,21 +230,6 @@
             tables\ClientMembers::getTable()->removeUsersFromClient($this->getID());
         }
 
-        public static function findClients($details)
-        {
-            $crit = new \b2db\Criteria();
-            $crit->addWhere(tables\Clients::NAME, "%$details%", \b2db\Criteria::DB_LIKE);
-            $clients = array();
-            if ($res = tables\Clients::getTable()->doSelect($crit))
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $clients[$row->get(tables\Clients::ID)] = new \thebuggenie\core\entities\Client($row->get(tables\Clients::ID), $row);
-                }
-            }
-            return $clients;
-        }
-
         public function getNumberOfMembers()
         {
             if ($this->_members !== null)
@@ -287,12 +272,34 @@
         /**
          * Returns an array of client dashboards
          *
-         * @return array|\thebuggenie\core\entities\Dashboard
+         * @return \thebuggenie\core\entities\Dashboard[]
          */
         public function getDashboards()
         {
-            $this->_b2dbLazyload('_dashboards');
+            $this->_b2dbLazyLoad('_dashboards');
             return $this->_dashboards;
+        }
+
+        /**
+         * @return Project[][]
+         */
+        public function getProjects()
+        {
+            $projects = Project::getAllByClientID($this->getID());
+
+            $active_projects = [];
+            $archived_projects = [];
+
+            foreach ($projects as $project_id => $project)
+            {
+                if ($project->isArchived()) {
+                    $archived_projects[$project_id] = $project;
+                } else {
+                    $active_projects[$project_id] = $project;
+                }
+            }
+
+            return [$active_projects, $archived_projects];
         }
 
     }

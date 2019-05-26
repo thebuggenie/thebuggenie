@@ -3,7 +3,10 @@
     namespace thebuggenie\core\entities;
 
     use b2db\Core;
+    use b2db\Criterion;
+    use b2db\Query;
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\SavedSearch;
     use thebuggenie\core\framework;
     use b2db\Criteria;
 
@@ -33,6 +36,12 @@
         const SEARCH_ID = 'savedsearchfilters.search_id';
         const FILTER_KEY = 'savedsearchfilters.filter_key';
 
+        const FILTER_RELATION_NEITHER_CHILD_NOR_PARENT = 0;
+        const FILTER_RELATION_WITHOUT_PARENT = 1;
+        const FILTER_RELATION_ONLY_PARENT = 2;
+        const FILTER_RELATION_WITHOUT_CHILD = 3;
+        const FILTER_RELATION_ONLY_CHILD = 4;
+
         /**
          * The value of the filter
          *
@@ -60,7 +69,7 @@
         /**
          * The saved search this filter applies to
          *
-         * @var \thebuggenie\core\entities\SavedSearch
+         * @var SavedSearch
          * @Column(type="integer", length=10)
          * @Relates(class="\thebuggenie\core\entities\SavedSearch")
          */
@@ -73,12 +82,12 @@
          */
         protected $_customtype;
 
-        public static function createFilter($key, $options = array(), \thebuggenie\core\entities\SavedSearch $search = null)
+        public static function createFilter($key, $options = [], SavedSearch $search = null)
         {
             if (isset($options['o'])) $options['operator'] = $options['o'];
             if (isset($options['v'])) $options['value'] = $options['v'];
 
-            $options = array_merge(array('operator' => '=', 'value' => ''), $options);
+            $options = array_merge(['operator' => '=', 'value' => ''], $options);
             $filter = new \thebuggenie\core\entities\SearchFilter();
             $filter->setFilterKey($key);
             $filter->setOperator($options['operator']);
@@ -90,47 +99,56 @@
 
         public static function getValidSearchFilters()
         {
-            return array('id', 'project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone', 'blocking', 'votes_total');
+            return ['id', 'project_id', 'subprojects', 'text', 'state', 'issuetype', 'status', 'resolution', 'reproducability', 'category', 'severity', 'priority', 'posted_by', 'assignee_user', 'assignee_team', 'owner_user', 'owner_team', 'component', 'build', 'edition', 'posted', 'last_updated', 'milestone', 'blocking', 'votes_total', 'relation', 'time_spent'];
         }
 
-        public static function getPredefinedFilters($type, \thebuggenie\core\entities\SavedSearch $search)
+        public static function getPredefinedFilters($type, SavedSearch $search)
         {
-            $filters = array();
+            $filters = [];
             switch ($type)
             {
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
-                    $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
-                    $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
-                    break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
-                    $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
-                    $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
-                    $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
-                    break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
-                    $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
-                    $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
-                    break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
-                    $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
-                    $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
-                    $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
-                    break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST:
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $types = array();
                     foreach (framework\Context::getCurrentProject()->getIssuetypeScheme()->getIssuetypes() as $issuetype)
                     {
-                        if (in_array($issuetype->getIcon(), array('feature_request', 'enhancement')))
+                        if (in_array($issuetype->getType(), [Issuetype::TYPE_BUG, Issuetype::TYPE_TASK])) {
                             $types[] = $issuetype->getID();
+                        }
                     }
                     if (count($types))
                     {
                         $filters['issuetype'] = self::createFilter('issuetype', array('operator' => '=', 'value' => join(',', $types)));
                     }
+                    if ($type == SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS) {
+                        $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
+                    }
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_TIMEUNITS:
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
+                    $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'closed'), $search);
+                    $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
+                    if ($type == SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS) {
+                        $filters['subprojects'] = self::createFilter('subprojects', array('operator' => '=', 'value' => 'all'), $search);
+                    }
+                    break;
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST:
+                    $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
+                    $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
+                    $types = array();
+                    foreach (framework\Context::getCurrentProject()->getIssuetypeScheme()->getIssuetypes() as $issuetype)
+                    {
+                        if (in_array($issuetype->getType(), [Issuetype::TYPE_FEATURE, Issuetype::TYPE_ENHANCEMENT]))
+                            $types[] = $issuetype->getID();
+                    }
+                    if (count($types))
+                    {
+                        $filters['issuetype'] = self::createFilter('issuetype', array('operator' => '=', 'value' => implode(',', $types)));
+                    }
+                    break;
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_LAST_NUMBEROF_TIMEUNITS:
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $units = framework\Context::getRequest()->getParameter('units');
                     switch (framework\Context::getRequest()->getParameter('time_unit'))
@@ -161,28 +179,28 @@
                     }
                     $filters['posted'] = self::createFilter('posted', array('operator' => '>=', 'value' => $time_unit), $search);
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH:
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_REPORTED_THIS_MONTH:
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $filters['posted'] = self::createFilter('posted', array('operator' => '>=', 'value' => mktime(date('H'), date('i'), date('s'), date('n'), 1)), $search);
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $filters['milestone'] = self::createFilter('milestone', array('operator' => '!=', 'value' => 0), $search);
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
+                case SavedSearch::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
                     $filters['project_id'] = self::createFilter('project_id', array('operator' => '=', 'value' => framework\Context::getCurrentProject()->getID()), $search);
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['votes_total'] = self::createFilter('votes_total', array('operator' => '>=', 'value' => '1'), $search);
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+                case SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
                     $filters['posted_by'] = self::createFilter('posted_by', array('operator' => '=', 'value' => framework\Context::getUser()->getID()), $search);
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+                case SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['assignee_user'] = self::createFilter('assignee_user', array('operator' => '=', 'value' => framework\Context::getUser()->getID()), $search);
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+                case SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $teams = array();
                     foreach (framework\Context::getUser()->getTeams() as $team_id => $team)
@@ -191,7 +209,7 @@
                     }
                     $filters['assignee_team'] = self::createFilter('assignee_team', array('operator' => '=', 'value' => join(',', $teams)), $search);
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
+                case SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
                     $filters['status'] = self::createFilter('status', array('operator' => '=', 'value' => 'open'), $search);
                     $filters['owner_user'] = self::createFilter('owner_user', array('operator' => '=', 'value' => framework\Context::getUser()->getID()), $search);
                     break;
@@ -200,7 +218,7 @@
             return $filters;
         }
 
-        public static function getFromRequest(\thebuggenie\core\framework\Request $request, \thebuggenie\core\entities\SavedSearch $search)
+        public static function getFromRequest(\thebuggenie\core\framework\Request $request, SavedSearch $search)
         {
             $filters = $request->getRawParameter('fs', array());
             if ($request['quicksearch'])
@@ -217,8 +235,18 @@
             {
                 if (!isset($details['o']))
                 {
-                    foreach ($details as $subdetails)
+                    foreach ($details as $i => $subdetails)
                     {
+                        if (count($subdetails) == 1)
+                        {
+                            if (isset($subdetails['o']))
+                            {
+                                $return_filters[$key][] = self::createFilter($key, array('o' => $subdetails['o'], 'v' => $details[$i+1]['v']), $search);
+                            }
+
+                            continue;
+                        }
+
                         $return_filters[$key][] = self::createFilter($key, $subdetails, $search);
                     }
                 }
@@ -289,7 +317,7 @@
         }
 
         /**
-         * @param \thebuggenie\core\entities\SavedSearch $search_id
+         * @param SavedSearch $search_id
          */
         public function setSearchId($search_id)
         {
@@ -297,19 +325,19 @@
         }
 
         /**
-         * @param \thebuggenie\core\entities\SavedSearch $search
+         * @param SavedSearch $search
          */
-        public function setSearch(\thebuggenie\core\entities\SavedSearch $search)
+        public function setSearch(SavedSearch $search)
         {
             $this->_search_id = $search;
         }
 
         /**
-         * @return \thebuggenie\core\entities\SavedSearch
+         * @return SavedSearch
          */
         public function getSearch()
         {
-            return $this->_b2dbLazyload('_search_id');
+            return $this->_b2dbLazyLoad('_search_id');
         }
 
         /**
@@ -620,16 +648,16 @@
 
         /**
          *
-         * @param \b2db\Criteria $crit
-         * @param array|\thebuggenie\core\entities\SearchFilter $filters
-         * @param \b2db\Criterion $ctn
+         * @param \b2db\Query $query
+         * @param \thebuggenie\core\entities\SearchFilter[] $filters
+         * @param \b2db\Criteria $criteria
          * @return null
          */
-        public function addToCriteria($crit, $filters, $ctn = null)
+        public function addToCriteria(Query $query, $filters, $criteria = null)
         {
             $filter_key = $this->getFilterKey();
 
-            if (in_array($this['operator'], array('=', '!=', '<=', '>=', '<', '>')))
+            if (in_array($this['operator'], array(Criterion::EQUALS, Criterion::NOT_EQUALS, Criterion::GREATER_THAN, Criterion::GREATER_THAN_EQUAL, Criterion::LESS_THAN, Criterion::LESS_THAN_EQUAL)))
             {
                 if ($filter_key == 'text')
                 {
@@ -639,29 +667,31 @@
                         $issue_no = Issue::extractIssueNoFromNumber($this['value']);
                         if ($this['operator'] == '=')
                         {
-                            $comparison = (Core::getDBtype() == 'pgsql') ? Criteria::DB_ILIKE : Criteria::DB_LIKE;
-                            if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, $comparison);
-                            $ctn->addOr(tables\Issues::DESCRIPTION, $searchterm, $comparison);
-                            $ctn->addOr(tables\Issues::REPRODUCTION_STEPS, $searchterm, $comparison);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
-                            if (is_numeric($issue_no)) $ctn->addOr(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
-                            if (is_numeric($issue_no)) $ctn->addOr(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
-                            // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_ILIKE);
+                            $comparison = (Core::getDriver() == 'pgsql') ? \b2db\Criterion::ILIKE : \b2db\Criterion::LIKE;
+                            if ($criteria === null) {
+                                $criteria = new Criteria();
+                                $criteria->where(tables\Issues::TITLE, $searchterm, $comparison);
+                            }
+                            $criteria->or(tables\Issues::DESCRIPTION, $searchterm, $comparison);
+                            $criteria->or(tables\Issues::REPRODUCTION_STEPS, $searchterm, $comparison);
+                            $criteria->or(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
+                            if (is_numeric($issue_no)) $criteria->or(tables\Issues::ISSUE_NO, $issue_no, \b2db\Criterion::EQUALS);
                         }
                         else
                         {
-                            $comparison = (Core::getDBtype() == 'pgsql') ? Criteria::DB_NOT_ILIKE : Criteria::DB_NOT_LIKE;
-                            if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::TITLE, $searchterm, $comparison);
-                            $ctn->addWhere(tables\Issues::DESCRIPTION, $searchterm, $comparison);
-                            $ctn->addWhere(tables\Issues::REPRODUCTION_STEPS, $searchterm, $comparison);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
-                            if (is_numeric($issue_no)) $ctn->addWhere(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
-                            $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
-                            if (is_numeric($issue_no)) $ctn->addWhere(tables\Issues::ISSUE_NO, $issue_no, Criteria::DB_EQUALS);
-                            // $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $searchterm, Criteria::DB_NOT_LIKE);
+                            $comparison = (Core::getDriver() == 'pgsql') ? \b2db\Criterion::NOT_ILIKE : \b2db\Criterion::NOT_LIKE;
+                            if ($criteria === null) {
+                                $criteria = new Criteria();
+                                $criteria->where(tables\Issues::TITLE, $searchterm, $comparison);
+                            }
+                            $criteria->or(tables\Issues::DESCRIPTION, $searchterm, $comparison);
+                            $criteria->or(tables\Issues::REPRODUCTION_STEPS, $searchterm, $comparison);
+                            $criteria->or(tables\IssueCustomFields::OPTION_VALUE, $searchterm, $comparison);
+                            if (is_numeric($issue_no)) {
+                                $criteria->or(tables\Issues::ISSUE_NO, $issue_no, \b2db\Criterion::EQUALS);
+                            }
                         }
-                        return $ctn;
+                        return $criteria;
                     }
                 }
                 elseif (in_array($filter_key, self::getValidSearchFilters()))
@@ -670,7 +700,10 @@
                     {
                         if (framework\Context::isProjectContext())
                         {
-                            if ($ctn === null) $ctn = $crit->returnCriterion(tables\Issues::PROJECT_ID, framework\Context::getCurrentProject()->getID());
+                            if ($criteria === null) {
+                                $criteria = new Criteria();
+                                $criteria->where(tables\Issues::PROJECT_ID, framework\Context::getCurrentProject()->getID());
+                            }
                             if ($this->hasValue())
                             {
                                 foreach ($this->getValues() as $value)
@@ -682,44 +715,90 @@
                                             foreach ($subprojects as $subproject)
                                             {
                                                 if ($subproject->getID() == framework\Context::getCurrentProject()->getID()) continue;
-                                                $ctn->addOr(tables\Issues::PROJECT_ID, $subproject->getID());
+                                                $criteria->or(tables\Issues::PROJECT_ID, $subproject->getID());
                                             }
                                             break;
                                         case 'none':
                                         case '':
                                             break;
                                         default:
-                                            $ctn->addOr(tables\Issues::PROJECT_ID, (int) $value);
+                                            $criteria->or(tables\Issues::PROJECT_ID, (int) $value);
                                             break;
                                     }
                                 }
                             }
-                            return $ctn;
+                            return $criteria;
                         }
                     }
-                    elseif (in_array($filter_key, array('build', 'edition', 'component')))
+                    elseif (in_array($filter_key, array('build', 'edition', 'component', 'relation', 'time_spent')))
                     {
                         switch ($filter_key)
                         {
                             case 'component':
-                                $tbl = tables\IssueAffectsComponent::getTable();
-                                $fk  = tables\IssueAffectsComponent::ISSUE;
+                                $table = tables\IssueAffectsComponent::getTable();
+                                $foreign_key  = tables\IssueAffectsComponent::ISSUE;
                                 break;
                             case 'edition':
-                                $tbl = tables\IssueAffectsEdition::getTable();
-                                $fk  = tables\IssueAffectsEdition::ISSUE;
+                                $table = tables\IssueAffectsEdition::getTable();
+                                $foreign_key  = tables\IssueAffectsEdition::ISSUE;
                                 break;
                             case 'build':
-                                $tbl = tables\IssueAffectsBuild::getTable();
-                                $fk  = tables\IssueAffectsBuild::ISSUE;
+                                $table = tables\IssueAffectsBuild::getTable();
+                                $foreign_key  = tables\IssueAffectsBuild::ISSUE;
+                                break;
+                            case 'relation':
+                                if ($this->hasValue(self::FILTER_RELATION_ONLY_CHILD))
+                                {
+                                    $query->join(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID, [], \b2db\Join::INNER);
+                                }
+                                else if ($this->hasValue(self::FILTER_RELATION_WITHOUT_CHILD))
+                                {
+                                    $query->join(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID);
+                                    $criteria = new Criteria();
+                                    $criteria->where(tables\IssueRelations::CHILD_ID, '', \b2db\Criterion::IS_NULL);
+                                    return $criteria;
+                                }
+                                else if ($this->hasValue(self::FILTER_RELATION_ONLY_PARENT))
+                                {
+                                    $query->join(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID, array(), \b2db\Join::INNER);
+                                }
+                                else if ($this->hasValue(self::FILTER_RELATION_WITHOUT_PARENT))
+                                {
+                                    $query->join(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID);
+                                    $criteria = new Criteria();
+                                    $criteria->where(tables\IssueRelations::PARENT_ID, '', \b2db\Criterion::IS_NULL);
+                                    return $criteria;
+                                }
+                                else if ($this->hasValue(self::FILTER_RELATION_NEITHER_CHILD_NOR_PARENT))
+                                {
+                                    $query->join(tables\IssueRelations::getTable(), tables\IssueRelations::CHILD_ID, tables\Issues::ID);
+                                    $query->join(tables\IssueRelations::getTable(), tables\IssueRelations::PARENT_ID, tables\Issues::ID);
+                                    $query->where(tables\IssueRelations::CHILD_ID, '', \b2db\Criterion::IS_NULL);
+                                    $criteria = new Criteria();
+                                    $criteria->where(tables\IssueRelations::PARENT_ID, '', \b2db\Criterion::IS_NULL);
+                                    return $criteria;
+                                }
+                                return null;
+                                break;
+                            case 'time_spent':
+                                $query->join(tables\IssueSpentTimes::getTable(), tables\IssueSpentTimes::ISSUE_ID, tables\Issues::ID);
+                                $query->addSelectionColumn(tables\IssueSpentTimes::SPENT_MINUTES, 'spent_minutes_sum', \b2db\Query::DB_SUM);
+                                $query->addSelectionColumn(tables\IssueSpentTimes::SPENT_HOURS, 'spent_hours_sum', \b2db\Query::DB_SUM);
+                                $query->addSelectionColumn(tables\IssueSpentTimes::SPENT_DAYS, 'spent_days_sum', \b2db\Query::DB_SUM);
+                                $query->addSelectionColumn(tables\IssueSpentTimes::SPENT_WEEKS, 'spent_weeks_sum', \b2db\Query::DB_SUM);
+                                $query->addSelectionColumn(tables\IssueSpentTimes::SPENT_MONTHS, 'spent_months_sum', \b2db\Query::DB_SUM);
+                                $query->addGroupBy(tables\Issues::ID);
+                                $criteria = new Criteria();
+                                $criteria->where(tables\IssueSpentTimes::EDITED_AT, $this->_value, $this->_operator);
+                                return $criteria;
                                 break;
                         }
-                        $crit->addJoin($tbl, $fk, tables\Issues::ID, array(array($tbl->getB2DBAlias().'.'.$filter_key, $this->getValues())), \b2db\Criteria::DB_INNER_JOIN);
+                        $query->join($table, $foreign_key, tables\Issues::ID, array(array($table->getB2DBAlias().'.'.$filter_key, $this->getValues())), \b2db\Join::INNER);
                         return null;
                     }
                     else
                     {
-                        if ($filter_key == 'project_id' && in_array('subprojects', $filters)) return null;
+                        if ($filter_key == 'project_id' && in_array('subprojects', $filters, true)) return null;
 
                         $values = $this->getValues();
                         $num_values = 0;
@@ -728,24 +807,32 @@
                         {
                             if ($this->hasValue('open'))
                             {
-                                $c = $crit->returnCriterion(tables\Issues::STATE, Issue::STATE_OPEN);
+                                $c = new Criteria();
+                                $c->where(tables\Issues::STATE, Issue::STATE_OPEN);
                                 $num_values++;
                             }
                             if ($this->hasValue('closed'))
                             {
                                 $num_values++;
-                                if (isset($c)) $c->addWhere(tables\Issues::STATE, Issue::STATE_CLOSED);
-                                else $c = $crit->returnCriterion(tables\Issues::STATE, Issue::STATE_CLOSED);
+                                if (isset($c)) {
+                                    $c->where(tables\Issues::STATE, Issue::STATE_CLOSED);
+                                } else {
+                                    $c = new Criteria();
+                                    $c->where(tables\Issues::STATE, Issue::STATE_CLOSED);
+                                }
                             }
 
                             if (isset($c))
                             {
-                                if (count($values) == $num_values) return $c;
-                                else $crit->addWhere($c);
+                                if (count($values) == $num_values) {
+                                    return $c;
+                                } else {
+                                    $query->where($c);
+                                }
                             }
                         }
 
-                        $dbname     = tables\Issues::getTable()->getB2DBName();
+                        $dbname = tables\Issues::getTable()->getB2DBName();
 
                         foreach ($values as $value)
                         {
@@ -763,21 +850,22 @@
                                     $or = false;
                                 }
                             }
-                            if ($ctn === null)
+                            if ($criteria === null)
                             {
-                                $ctn = $crit->returnCriterion($field, $value, urldecode($operator));
+                                $criteria = new Criteria();
+                                $criteria->where($field, $value, urldecode($operator));
                             }
                             elseif ($or)
                             {
-                                $ctn->addOr($field, $value, urldecode($operator));
+                                $criteria->or($field, $value, urldecode($operator));
                             }
                             else
                             {
-                                $ctn->addWhere($field, $value, urldecode($operator));
+                                $criteria->where($field, $value, urldecode($operator));
                             }
                         }
 
-                        return $ctn;
+                        return $criteria;
                     }
                 }
                 elseif (CustomDatatype::doesKeyExist($filter_key))
@@ -785,8 +873,8 @@
                     $customdatatype = CustomDatatype::getByKey($filter_key);
                     if (in_array($this->getFilterType(), CustomDatatype::getInternalChoiceFieldsAsArray()))
                     {
-                        $tbl = clone tables\IssueCustomFields::getTable();
-                        $crit->addJoin($tbl, tables\IssueCustomFields::ISSUE_ID, tables\Issues::ID, array(array($tbl->getB2DBAlias().'.customfields_id', $customdatatype->getID()), array($tbl->getB2DBAlias().'.customfieldoption_id', $this->getValues())), \b2db\Criteria::DB_INNER_JOIN);
+                        $table = clone tables\IssueCustomFields::getTable();
+                        $query->join($table, tables\IssueCustomFields::ISSUE_ID, tables\Issues::ID, array(array($table->getB2DBAlias().'.customfields_id', $customdatatype->getID()), array($table->getB2DBAlias().'.customfieldoption_id', $this->getValues())), \b2db\Join::INNER);
                         return null;
                     }
                     else
@@ -795,33 +883,40 @@
                         {
                             if ($customdatatype->hasCustomOptions())
                             {
-                                if ($ctn === null)
+                                if ($criteria === null)
                                 {
-                                    $ctn = $crit->returnCriterion(tables\IssueCustomFields::CUSTOMFIELDS_ID, $customdatatype->getID());
-                                    $ctn->addWhere(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
+                                    $criteria = new Criteria();
+                                    $criteria->where(tables\IssueCustomFields::CUSTOMFIELDS_ID, $customdatatype->getID());
+                                    $criteria->where(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
                                 }
                                 else
                                 {
-                                    $ctn->addOr(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
+                                    $criteria->or(tables\IssueCustomFields::CUSTOMFIELDOPTION_ID, $value, $this['operator']);
                                 }
                             }
                             else
                             {
-                                if ($ctn === null)
+                                if ($criteria === null)
                                 {
-                                    $ctn = $crit->returnCriterion(tables\IssueCustomFields::CUSTOMFIELDS_ID, $customdatatype->getID());
-                                    $ctn->addWhere(tables\IssueCustomFields::OPTION_VALUE, $value, $this['operator']);
+                                    $criteria = new Criteria();
+                                    $criteria->where(tables\IssueCustomFields::CUSTOMFIELDS_ID, $customdatatype->getID());
+                                    $criteria->where(tables\IssueCustomFields::OPTION_VALUE, $value, $this['operator']);
                                 }
                                 else
                                 {
-                                    $ctn->addOr(tables\IssueCustomFields::OPTION_VALUE, $value, $this['operator']);
+                                    $criteria->or(tables\IssueCustomFields::OPTION_VALUE, $value, $this['operator']);
                                 }
                             }
                         }
-                        return $ctn;
+                        return $criteria;
                     }
                 }
             }
+        }
+
+        public function getName()
+        {
+            return $this->_filter_key;
         }
 
     }

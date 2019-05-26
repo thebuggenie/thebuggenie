@@ -203,7 +203,7 @@
 
         public static function getPredefinedSearchObject($predefined_search)
         {
-            $search = new \thebuggenie\core\entities\SavedSearch();
+            $search = new SavedSearch();
             $search->setPredefinedVariables($predefined_search);
             return $search;
         }
@@ -229,51 +229,51 @@
             $i18n = framework\Context::getI18n();
             switch ($type)
             {
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
+                case self::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES:
                     $this->_searchtitle = (framework\Context::isProjectContext()) ? $i18n->__('Open issues for %project_name', array('%project_name' => framework\Context::getCurrentProject()->getName())) : $i18n->__('All open issues');
                     $this->_groupby = 'issuetype';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
+                case self::PREDEFINED_SEARCH_PROJECT_OPEN_ISSUES_INCLUDING_SUBPROJECTS:
                     $this->_searchtitle = $i18n->__('Open issues for %project_name (including subprojects)', array('%project_name' => framework\Context::getCurrentProject()->getName()));
                     $this->_groupby = 'issuetype';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
+                case self::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES:
                     $this->_searchtitle = (framework\Context::isProjectContext()) ? $i18n->__('Closed issues for %project_name', array('%project_name' => framework\Context::getCurrentProject()->getName())) : $i18n->__('All closed issues');
                     $this->_groupby = 'issuetype';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
+                case self::PREDEFINED_SEARCH_PROJECT_CLOSED_ISSUES_INCLUDING_SUBPROJECTS:
                     $this->_searchtitle = $i18n->__('Closed issues for %project_name (including subprojects)', array('%project_name' => framework\Context::getCurrentProject()->getName()));
                     $this->_groupby = 'issuetype';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_WISHLIST:
+                case self::PREDEFINED_SEARCH_PROJECT_WISHLIST:
                     $this->_searchtitle = $i18n->__('%project_name wishlist', array('%project_name' => framework\Context::getCurrentProject()->getName()));
                     $this->_groupby = 'issuetype';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
+                case self::PREDEFINED_SEARCH_PROJECT_MILESTONE_TODO:
                     $this->_searchtitle = $i18n->__('Milestone todo-list for %project_name', array('%project_name' => framework\Context::getCurrentProject()->getName()));
                     $this->_templatename = 'results_todo';
                     $this->_groupby = 'milestone';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
+                case self::PREDEFINED_SEARCH_PROJECT_MOST_VOTED:
                     $this->_searchtitle = (framework\Context::isProjectContext()) ? $i18n->__('Most voted issues for %project_name', array('%project_name' => framework\Context::getCurrentProject()->getName())) : $i18n->__('Most voted issues');
                     $this->_templatename = 'results_votes';
                     $this->_groupby = 'votes';
                     $this->_grouporder = 'desc';
                     $this->_issues_per_page = 100;
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
+                case self::PREDEFINED_SEARCH_MY_REPORTED_ISSUES:
                     $this->_searchtitle = $i18n->__('Issues reported by me');
                     $this->_groupby = 'issuetype';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
+                case self::PREDEFINED_SEARCH_MY_ASSIGNED_OPEN_ISSUES:
                     $this->_searchtitle = $i18n->__('Open issues assigned to me');
                     $this->_groupby = 'issuetype';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
+                case self::PREDEFINED_SEARCH_TEAM_ASSIGNED_OPEN_ISSUES:
                     $this->_searchtitle = $i18n->__('Open issues assigned to my teams');
                     $this->_groupby = 'issuetype';
                     break;
-                case \thebuggenie\core\entities\SavedSearch::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
+                case self::PREDEFINED_SEARCH_MY_OWNED_OPEN_ISSUES:
                     $this->_searchtitle = $i18n->__('Open issues owned by me');
                     $this->_groupby = 'issuetype';
                     break;
@@ -281,7 +281,7 @@
             $this->_filters = SearchFilter::getPredefinedFilters($type, $this);
         }
 
-        public function setValuesFromRequest(\thebuggenie\core\framework\Request $request)
+        public function setValuesFromRequest(framework\Request $request)
         {
             if ($request->hasParameter('predefined_search'))
             {
@@ -333,11 +333,11 @@
         }
 
         /**
-         * @param \thebuggenie\core\framework\Request $request
+         * @param framework\Request $request
          *
-         * @return \thebuggenie\core\entities\SavedSearch
+         * @return SavedSearch
          */
-        public static function getFromRequest(\thebuggenie\core\framework\Request $request)
+        public static function getFromRequest(framework\Request $request)
         {
             $search = null;
             $search_id = ($request['saved_search_id']) ? $request['saved_search_id'] : $request['saved_search'];
@@ -347,7 +347,7 @@
             }
             else
             {
-                $search = new \thebuggenie\core\entities\SavedSearch();
+                $search = new SavedSearch();
                 $search->setValuesFromRequest($request);
             }
 
@@ -367,7 +367,7 @@
          */
         public function getAppliesToProject()
         {
-            return $this->_b2dbLazyload('_applies_to_project');
+            return $this->_b2dbLazyLoad('_applies_to_project');
         }
 
         public function getProject()
@@ -526,7 +526,7 @@
          */
         public function getUser()
         {
-            return $this->_b2dbLazyload('_uid');
+            return $this->_b2dbLazyLoad('_uid');
         }
 
         public function getUserID()
@@ -553,7 +553,7 @@
             if ($this->_filters === null)
             {
                 $filters = array();
-                $this->_b2dbLazyload('_filters');
+                $this->_b2dbLazyLoad('_filters');
                 foreach ($this->_filters as $filter)
                 {
                     $filters[$filter->getFilterKey()] = $filter;
@@ -716,6 +716,10 @@
             list ($this->_issues, $this->_total_number_of_issues) = Issue::findIssues($this->getFilters(), $this->getIssuesPerPage(), $this->getOffset(), $this->getGroupby(), $this->getGrouporder(), $this->getSortFields(), $include_deleted);
         }
 
+        /**
+         * @param bool $include_deleted
+         * @return Issue[]
+         */
         public function getIssues($include_deleted = false)
         {
             if ($this->hasQuickfoundIssues()) {

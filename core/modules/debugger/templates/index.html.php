@@ -19,7 +19,7 @@
         #debug_routes ul li.selected:hover { background-color: rgba(160, 230, 160, 0.4); }
         #log_sql li .sql { font-family: monospace; font-size: 1em; display: block; margin: 5px 0; padding: 5px; border: 1px dotted rgba(100, 100, 100, 0.1); background-color: rgba(200, 200, 200, 0.2); color: #888; text-shadow: none; }
         #debug-frames-container .partial, #debug-frames-container .logmessage, #debug-frames-container .badge.url, #debug-frames-container .badge.method, #debug-frames-container .expander { display: inline-block; font-weight: normal; font-size: 1.1em; vertical-align: middle; }
-        #debug-frames-container .partial.code { font-family: 'Droid Sans Mono', monospace; background: rgba(100, 100, 100, 0.1); border: 1px solid rgba(100, 100, 100, 0.2); padding: 1px 3px; text-shadow: none; vertical-align: middle; }
+        #debug-frames-container .partial.code { font-family: 'Fira Mono', monospace; background: rgba(100, 100, 100, 0.1); border: 1px solid rgba(100, 100, 100, 0.2); padding: 1px 3px; text-shadow: none; vertical-align: middle; }
         #debug-frames-container .partial { display: inline-block; vertical-align: middle; }
         #debug-frames-container .file-icon { font-size: 1.2em; margin-right: 6px; margin-left: 6px; vertical-align: middle; color: rgba(100, 100, 100, 0.6); }
         #debug-frames-container .badge.url { text-align: left; }
@@ -45,8 +45,9 @@
         #debug-frames-container .badge.classname { background-color: rgba(235, 235, 205, 0.5); min-width: 200px; }
         #debug-frames-container .badge.classcount { background-color: rgba(205, 205, 235, 0.5); min-width: 30px; }
         #debug-frames-container .badge.modulename { background-color: rgba(225, 225, 225, 0.5); margin: 0; }
-        #debug-bar { cursor: pointer; text-align: left; border-top: 1px solid rgba(100, 100, 100, 0.2); width: 100%; padding: 0; background-color: #FAFAFA; z-index: 10000; box-shadow: 0 -3px 2px rgba(100, 100, 100, 0.2); font-size: 1.1em; list-style: none; margin: 0; height: 41px; }
+        #debug-bar { cursor: pointer; text-align: left; border-top: 1px solid rgba(100, 100, 100, 0.2); width: 100%; padding: 0; background-color: #FAFAFA; z-index: 10000; box-shadow: 0 -3px 2px rgba(100, 100, 100, 0.2); font-size: 1.1em; list-style: none; margin: 0; height: 41px; transition: height 0.3s ease-in-out, width 0.3s ease-in-out, top 0.3s ease-in-out; }
         #debug-bar.enabled { position: fixed; top: 0; left: 0; border: 0; }
+        #debug-bar.minimized { width: 50px; }
         #debug-bar > li { display: block; float: left; padding: 11px 20px; border-right: 1px solid rgba(100, 100, 100, 0.2); border-left: 1px solid rgba(255, 255, 255, 0.8); vertical-align: middle; }
         #debug-bar > li:first-child { border-left: none; }
         #debug-bar.enabled > li.selected { background-color: #FFF; box-shadow: 0 -4px 4px rgba(100, 100, 100, 0.3); }
@@ -54,7 +55,10 @@
         #debug-bar > li > span { display: inline-block; vertical-align: middle; }
         #debug-bar.enabled + #debug-frames-container { display: block; }
         #debug-bar .minimizer { display: none; }
+        #debug-bar.minimized > li:not(.maximizer) { display: none; }
+        #debug-bar.enabled .maximizer { display: none; }
         #debug-bar.enabled .minimizer { display: inline-block; cursor: pointer; float:right; }
+        #debug-bar .maximizer { display: inline-block; cursor: pointer; float:right; }
         #debug-frames-container { display: none; width: 100%; height: calc(100% - 40px); box-sizing: border-box; padding: 0; margin: 0; position: fixed; left: 0; top: 40px; background: #FFF; }
         #debug-frames-container > li { display: none }
         #debug-frames-container > li.selected { display: block; text-align: left; position: absolute; height: 100%; width: 100%; left: 0; top: 0; right: 0; bottom: 0; box-sizing: border-box; padding: 5px; background: #FFF; margin: 0; overflow: auto; }
@@ -68,7 +72,7 @@
             </span>
         </li>
         <li onclick="tbg_debug_show_menu_tab('log_timing', $(this));" title="Click to toggle timing overview">
-            <?php echo fa_image_tag('tachometer'); ?>
+            <?php echo fa_image_tag('tachometer-alt'); ?>
             <span>
                 <?php echo $tbg_summary['load_time']; ?> <span title="Time spent by php loading session data">(<?= $tbg_summary['session_initialization_time']; ?>)</span> /
                 <?php echo round($tbg_summary['memory'] / 1000000, 2); ?>MiB
@@ -102,11 +106,14 @@
             </li>
         <?php endif; ?>
         <li onclick="tbg_debug_show_menu_tab('log_messages', $(this));" style="cursor: pointer;">
-            <?php echo fa_image_tag('file-text-o'); ?>
+            <?php echo fa_image_tag('file-alt'); ?>
             <span>Log</span>
         </li>
         <li onclick="setTimeout(function() { $('debug-bar').removeClassName('enabled'); }, 150);" title="Minimize" class="minimizer">
-            <?php echo image_tag('tabmenu_dropdown.png'); ?>
+            <?php echo fa_image_tag('arrows-alt-h'); ?>
+        </li>
+        <li onclick="event.preventDefault(); event.stopPropagation(); setTimeout(function() { $('debug-bar').toggleClassName('minimized');$('debug-bar').removeClassName('enabled'); }, 150);" title="Minimize" class="maximizer">
+            <?php echo fa_image_tag('arrows-alt-h'); ?>
         </li>
     </ul>
     <ul id="debug-frames-container">

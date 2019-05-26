@@ -19,15 +19,15 @@
         const AUTHOR = 'articles.author';
         const SCOPE = 'articles.scope';
 
-        public function _initialize()
+        public function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::NAME, 255);
-            parent::_addText(self::CONTENT, false);
-            parent::_addBoolean(self::IS_PUBLISHED);
-            parent::_addInteger(self::DATE, 10);
-            parent::_addInteger(self::AUTHOR, 10);
-            parent::_addInteger(self::SCOPE, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::NAME, 255);
+            parent::addText(self::CONTENT, false);
+            parent::addBoolean(self::IS_PUBLISHED);
+            parent::addInteger(self::DATE, 10);
+            parent::addInteger(self::AUTHOR, 10);
+            parent::addInteger(self::SCOPE, 10);
         }
 
     }

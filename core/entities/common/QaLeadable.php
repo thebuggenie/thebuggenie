@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class QaLeadable extends Releaseable
+    abstract class QaLeadable extends Releaseable
     {
 
         /**
@@ -59,8 +59,8 @@
 
         public function getLeader()
         {
-            $this->_b2dbLazyload('_leader_team');
-            $this->_b2dbLazyload('_leader_user');
+            $this->_b2dbLazyLoad('_leader_team');
+            $this->_b2dbLazyLoad('_leader_user');
 
             if ($this->_leader_team instanceof \thebuggenie\core\entities\Team) {
                 return $this->_leader_team;
@@ -102,9 +102,9 @@
         public function getQaResponsible()
         {
             if (!empty($this->_qa_responsible_team)) {
-                $this->_b2dbLazyload('_qa_responsible_team');
+                $this->_b2dbLazyLoad('_qa_responsible_team');
             } elseif (!empty($this->_qa_responsible_user)) {
-                $this->_b2dbLazyload('_qa_responsible_user');
+                $this->_b2dbLazyLoad('_qa_responsible_user');
             }
 
             if ($this->_qa_responsible_team instanceof \thebuggenie\core\entities\Team) {

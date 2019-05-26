@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -35,46 +36,46 @@
         const PROJECT_ID = 'visible_issue_types.project_id';
         const ISSUETYPE_ID = 'visible_issue_types.issuetype_id';
         
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ISSUETYPE_ID, IssueTypes::getTable(), IssueTypes::ID);
-            parent::_addForeignKeyColumn(self::PROJECT_ID, Projects::getTable(), Projects::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::ISSUETYPE_ID, IssueTypes::getTable(), IssueTypes::ID);
+            parent::addForeignKeyColumn(self::PROJECT_ID, Projects::getTable(), Projects::ID);
         }
         
         public function getAllByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addOrderBy(IssueTypes::NAME, Criteria::SORT_ASC);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->addOrderBy(IssueTypes::NAME, \b2db\QueryColumnSort::SORT_ASC);
+            $res = $this->rawSelect($query);
             return $res;
         }
         
         public function clearByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
+            $this->rawDelete($query);
             return true;
         }
         
         public function addByProjectIDAndIssuetypeID($project_id, $issuetype_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::PROJECT_ID, $project_id);
-            $crit->addInsert(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::PROJECT_ID, $project_id);
+            $insertion->add(self::ISSUETYPE_ID, $issuetype_id);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawInsert($insertion);
             return true;
         }
         
         public function deleteByIssuetypeID($issuetype_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ISSUETYPE_ID, $issuetype_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ISSUETYPE_ID, $issuetype_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $this->rawDelete($query);
             return true;
         }
         

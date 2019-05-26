@@ -87,11 +87,8 @@
         protected function _install($scope)
         {
             framework\Context::setPermission('article_management', 0, 'publish', 0, 1, 0, true, $scope);
-            framework\Context::setPermission('publish_postonglobalbillboard', 0, 'publish', 0, 1, 0, true, $scope);
-            framework\Context::setPermission('publish_postonteambillboard', 0, 'publish', 0, 1, 0, true, $scope);
-            framework\Context::setPermission('manage_billboard', 0, 'publish', 0, 1, 0, true, $scope);
             $this->saveSetting('allow_camelcase_links', 1);
-            $this->saveSetting('require_change_reason', 1);
+            $this->saveSetting('require_change_reason', 0);
 
             framework\Context::getRouting()->addRoute('publish_article', '/wiki/:article_name', 'publish', 'showArticle');
             TextParser::addRegex('/(?<![\!|\"|\[|\>|\/\:])\b[A-Z]+[a-z]+[A-Z][A-Za-z]*\b/', array($this, 'getArticleLinkTag'));
@@ -321,7 +318,7 @@
         public function listen_frontpageArticle(framework\Event $event)
         {
             $article = $this->getFrontpageArticle('main');
-            if ($article instanceof Article)
+            if ($article instanceof Article && $article->hasContent())
             {
                 framework\ActionComponent::includeComponent('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
             }
@@ -330,7 +327,7 @@
         public function listen_frontpageLeftmenu(framework\Event $event)
         {
             $article = $this->getFrontpageArticle('menu');
-            if ($article instanceof Article)
+            if ($article instanceof Article && $article->hasContent())
             {
                 framework\ActionComponent::includeComponent('publish/articledisplay', array('article' => $article, 'show_title' => false, 'show_details' => false, 'show_actions' => false, 'embedded' => true));
             }
@@ -614,7 +611,12 @@
 
         public function getFontAwesomeIcon()
         {
-            return 'newspaper-o';
+            return 'newspaper';
+        }
+
+        public function getFontAwesomeIconStyle()
+        {
+            return 'fas';
         }
 
         public function getFontAwesomeColor()

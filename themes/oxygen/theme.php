@@ -10,14 +10,17 @@
 ?>
 <style>
     #header_banner { background-image: url('<?= image_url('mobile_header_banner.png'); ?>'); }
-    #tbg3_username, #fieldusername { background-image: url('<?php echo $webroot; ?>images/user_mono.png'); }
+    #tbg_username, #fieldusername { background-image: url('<?php echo $webroot; ?>images/user_mono.png'); }
     #fieldusername.invalid { background-image: url('<?php echo $webroot; ?>images/icon_error.png'); background-color: rgba(255, 220, 220, 0.5); }
     #fieldusername.valid { background-image: url('<?php echo $webroot; ?>images/icon_ok.png'); background-color: rgba(220, 255, 220, 0.5); }
     .login_popup input[type=password] { background-image: url('<?php echo $webroot; ?>images/password_mono.png'); }
     #openid-signin-button.persona-button span:after{ background-image: url('<?php echo $webroot; ?>images/openid_providers.small/openid.ico.png'); }
     #regular-signin-button.persona-button span:after{ background-image: url('<?php echo $webroot; ?>images/footer_logo.png'); }
     #forgot_password_username { background-image: url('<?php echo $webroot; ?>images/user_mono.png'); }
-    #planning_filter_title_input { background-image: url('<?php echo $webroot; ?>images/icon-mono-search.png'); }
+    #planning_filter_title_input {
+        background-image: url('<?php echo $webroot; ?>images/icon-mono-search.png');
+        background: url('<?php echo $webroot; ?>images/icon-mono-search.png') no-repeat 6px 6px, white;
+    }
     .login_popup .article h1 { background: url('<?php echo $webroot; ?>images/logo_48.png') 0 50% no-repeat; }
 
     table.results_normal th.sort_asc { background-image: url('<?php echo $webroot; ?>images/sort_down.png') !important; padding-left: 25px !important; }

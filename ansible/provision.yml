@@ -19,7 +19,7 @@
     - name: Install MariaDB, Apache httpd with PHP support, and OpenLDAP server
       apt:
         name: "{{ item }}"
-        state: installed
+        state: present
       with_items:
         # Database server.
         - mariadb-server
@@ -27,20 +27,24 @@
         - python-mysqldb
         # Apache + PHP base requirements.
         - apache2
-        - libapache2-mod-php5
+        - libapache2-mod-php7.0
         - libapache2-mod-ruid2
-        - php5-gd
-        - php5-curl
-        - php5-mysql
+        - php-gd
+        - php-curl
+        - php-mysql
+        - php-mbstring
+        - php-xml
+        # Composer dependencies.
+        - unzip
         # HTTPS/TLS.
         - gnutls-bin
         # Developer tools.
-        - php5-xdebug
+        - php-xdebug
         # LDAP server.
         - slapd
         - ldap-utils
         - python-ldap
-        - php5-ldap
+        - php-ldap
       notify:
         - Restart apache2
 
@@ -184,29 +188,218 @@
         group: root
         mode: 0644
 
-    - name: Deploy LDIF files configuring and setting-up LDAP server
-      copy:
-        src: "{{ item }}"
-        dest: "/root/{{ item }}"
-        owner: root
-        group: root
-        mode: 0640
-      with_items:
-        - permissions.ldif
-        - config.ldif
-        - structure.ldif
+    - name: Configure LDAP server logging
+      ldap_attr:
+        dn: cn=config
+        name: olcLogLevel
+        values: 256
+        state: exact
 
-    - name: Configure LDAP server
-      command: "ldapmodify -Y EXTERNAL -H ldapi:/// -f '/root/{{ item }}'"
-      with_items:
-        - config.ldif
-        - permissions.ldif
+    # We need to have this hack around TLS configuration because OpenLDAP
+    # expects both private key and certificate to be set at the same
+    # time.
+    #
+    # OpenLDAP server behaviour is a bit weird around this thing, so here
+    # is what happens:
+    #
+    # 1. First we set the private key, but ignore all errors. This has not
+    #    yet changed the private key path, though.
+    #
+    # 2. Then we set the certificate. This succeeds, but the private key
+    #    path still has the old value. If we haven't done the step (1),
+    #    this task would fail too.
+    #
+    # 3. Now we can finally change the private key too, and LDAP server
+    #    will be able to validate it against the corresponding certificate.
+    #
+    # See https://github.com/ansible/ansible/issues/25665 for more
+    # information.
+    - name: Configure TLS private key (ignore errors)
+      ldap_attr:
+        dn: cn=config
+        name: olcTLSCertificateKeyFile
+        values: "/etc/ssl/private/slapd.key.pem"
+        state: exact
+      failed_when: false
+
+    - name: Configure TLS certificate
+      ldap_attr:
+        dn: cn=config
+        name: olcTLSCertificateFile
+        values: "/etc/ssl/certs/slapd.cert.pem"
+        state: exact
+
+    - name: Configure TLS private key
+      ldap_attr:
+        dn: cn=config
+        name: olcTLSCertificateKeyFile
+        values: "/etc/ssl/private/slapd.key.pem"
+        state: exact
+
+    - name: Set-up permissions
+      ldap_attr:
+        dn: 'olcDatabase={1}mdb,cn=config'
+        name: olcAccess
+        values:
+          - >-
+            {0}to *
+            by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+            by dn="cn=admin,dc=tbg,dc=local" manage
+            by * break
+          - >-
+            {1}to attrs=userPassword,shadowLastChange
+            by self write
+            by anonymous auth
+            by * none
+          - >-
+            {2}to dn.base=""
+            by * read
+          - >-
+            {3}to *
+            by self write
+            by dn="cn=admin,dc=tbg,dc=local" write
+            by users read
+            by * none
+        state: exact
 
     - name: Create directory structure
-      shell: "ldapadd -c -Y EXTERNAL -H ldapi:/// -f /root/structure.ldif 2>&1 | grep '^ldap_add: ' | sort -u"
-      register: create_directory_structure
-      changed_when: "create_directory_structure.stdout_lines | length == 0"
-      failed_when: "create_directory_structure.stdout_lines | length != 0 and create_directory_structure.stdout_lines != ['ldap_add: Already exists (68)']"
+      ldap_entry:
+        dn: "{{ item.dn }}"
+        objectClass: "{{ item.objectClass }}"
+        attributes: "{{ item.attributes }}"
+      with_items:
+        # Base LDAP directory structure.
+        - dn: ou=people,dc=tbg,dc=local
+          objectClass: organizationalUnit
+          attributes:
+            ou: people
+
+        - dn: ou=groups,dc=tbg,dc=local
+          objectClass: organizationalUnit
+          attributes:
+            ou: groups
+
+        - dn: ou=services,dc=tbg,dc=local
+          objectClass: organizationalUnit
+          attributes:
+            ou: services
+
+        # Services.
+        - dn: cn=tbg,ou=services,dc=tbg,dc=local
+          objectClass:
+            - applicationProcess
+            - simpleSecurityObject
+          attributes:
+            cn: tbg
+            userPassword: tbg
+
+        # Users.
+        - dn: uid=administrator,ou=people,dc=tbg,dc=local
+          objectClass: inetOrgPerson
+          attributes:
+            uid: administrator
+            userPassword: administrator
+            givenName: Admin
+            sn: Adminsky
+            cn: Admin Adminsky
+            mail: administrator@tbg.local
+
+        - dn: uid=user1,ou=people,dc=tbg,dc=local
+          objectClass: inetOrgPerson
+          attributes:
+            uid: user1
+            userPassword: user1
+            givenName: First
+            sn: User
+            cn: First User
+            mail: user1@tbg.local
+
+        - dn: uid=user2,ou=people,dc=tbg,dc=local
+          objectClass: inetOrgPerson
+          attributes:
+            uid: user2
+            userPassword: user2
+            givenName: Second
+            sn: User
+            cn: Second User
+            mail: user2@tbg.local
+
+        - dn: uid=user3,ou=people,dc=tbg,dc=local
+          objectClass: inetOrgPerson
+          attributes:
+            uid: user3
+            userPassword: user3
+            givenName: Third
+            sn: User
+            cn: Third User
+            mail: user3@tbg.local
+
+        - dn: uid=user4,ou=people,dc=tbg,dc=local
+          objectClass: inetOrgPerson
+          attributes:
+            uid: user4
+            userPassword: user4
+            givenName: Fourth
+            sn: User
+            cn: Fourth User
+            mail: user4@tbg.local
+
+        - dn: uid=user5,ou=people,dc=tbg,dc=local
+          objectClass: inetOrgPerson
+          attributes:
+            uid: user5
+            userPassword: user5
+            givenName: Fifth
+            sn: User
+            cn: Fifth User
+            mail: user5@tbg.local
+
+        - dn: uid=usernoaccess,ou=people,dc=tbg,dc=local
+          objectClass: inetOrgPerson
+          attributes:
+            uid: usernoaccess
+            userPassword: usernoaccess
+            givenName: Ignored
+            sn: User
+            cn: Ignored User
+            mail: usernoaccess@tbg.local
+
+        # Groups.
+        - dn: cn=tbg1,ou=groups,dc=tbg,dc=local
+          objectClass: groupOfUniqueNames
+          attributes:
+            cn: tbg
+            uniqueMember:
+              - uid=administrator,ou=people,dc=tbg,dc=local
+              - uid=user1,ou=people,dc=tbg,dc=local
+
+        - dn: cn=tbg2,ou=groups,dc=tbg,dc=local
+          objectClass: groupOfUniqueNames
+          attributes:
+            cn: tbg
+            uniqueMember:
+              - uid=user2,ou=people,dc=tbg,dc=local
+              - uid=user3,ou=people,dc=tbg,dc=local
+
+        - dn: cn=tbg3,ou=groups,dc=tbg,dc=local
+          objectClass: groupOfUniqueNames
+          attributes:
+            cn: tbg
+            uniqueMember:
+              - uid=user4,ou=people,dc=tbg,dc=local
+              - uid=user5,ou=people,dc=tbg,dc=local
+
+        - dn: cn=groupnoaccess1,ou=groups,dc=tbg,dc=local
+          objectClass: groupOfNames
+          attributes:
+            cn: groupnoaccess1
+            member: uid=usernoaccess,ou=people,dc=tbg,dc=local
+
+        - dn: cn=groupnoaccess2,ou=groups,dc=tbg,dc=local
+          objectClass: groupOfNames
+          attributes:
+            cn: groupnoaccess2
+            member: uid=usernoaccess,ou=people,dc=tbg,dc=local
 
     - name: Enable mod_ssl
       apache2_module:
@@ -230,8 +423,8 @@
         group: root
         mode: 0644
       with_items:
-        - /etc/php5/apache2/conf.d/99-local.ini
-        - /etc/php5/cli/conf.d/99-local.ini
+        - /etc/php/7.0/apache2/conf.d/99-local.ini
+        - /etc/php/7.0/cli/conf.d/99-local.ini
       notify:
         - Restart apache2
 

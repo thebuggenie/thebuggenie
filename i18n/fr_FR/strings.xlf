@@ -1660,8 +1660,8 @@
                 <target>The Bug Genie est obsolète</target>
             </trans-unit>
             <trans-unit id="ddfff062a36b47d8bb6d81d1d25bf602">
-                <source>The latest version is %ver. Update now from www.thebuggenie.com.</source>
-                <target>La dernière version est %ver. Mettez à jour maintenant depuis www.thebuggenie.com.</target>
+                <source>The latest version is %ver. Update now from thebuggenie.com.</source>
+                <target>La dernière version est %ver. Mettez à jour maintenant depuis thebuggenie.com.</target>
             </trans-unit>
             <trans-unit id="fdc710799453874a6aac1ba5f0fbc591">
                 <source>Please provide a valid setting for highlighting interval</source>
@@ -8103,24 +8103,24 @@
                 <target>Nom de l'article</target>
             </trans-unit>
             <trans-unit id="89a36c9d6a7508f642992cbd8746d9b7">
-                <source>Enter the name of the article to link to here, along with an (optional) description, and press &quot;%add_link&quot; to add it to the menu.</source>
-                <target>Entrer le nom de l'article à lier ici, avec une description (facultative) et appuyer sur &quot;%add_link&quot; pour l'ajouter au menu.</target>
+                <source>Enter the name of the article to link to here, along with an (optional) description, and press &quot;%add_item&quot; to add it to the menu.</source>
+                <target>Entrer le nom de l'article à lier ici, avec une description (facultative) et appuyer sur &quot;%add_item&quot; pour l'ajouter au menu.</target>
             </trans-unit>
             <trans-unit id="32210b37e4d23029d6ee2f5149e9c3e1">
                 <source>Add link</source>
                 <target>Ajouter le lien</target>
             </trans-unit>
             <trans-unit id="7d0c0cd95a3245aba95a57bedfb6406e">
-                <source>Enter the link URL here, along with an (optional) description, and press &quot;%add_link&quot; to add it to the menu.</source>
-                <target>Entrez l'URL du lien ici, avec une description (facultative), et appuyez sur &quot;%add_link&quot; pour l'ajouter au menu.</target>
+                <source>Enter the link URL here, along with an (optional) description, and press &quot;%add_item&quot; to add it to the menu.</source>
+                <target>Entrez l'URL du lien ici, avec une description (facultative), et appuyez sur &quot;%add_item&quot; pour l'ajouter au menu.</target>
             </trans-unit>
             <trans-unit id="fb45735a0ac6c52c953f4be031ebed46">
-                <source>To add free text, just enter text in the description - without any url - and press the &quot;%add_link&quot; button (Text will be parsed according to the %wiki_formatting).</source>
-                <target>Pour ajouter du texte libre, il suffit d'entrer du texte dans la description - sans aucune URL - et appuyer sur le bouton &quot;%add_link&quot; (le texte sera analysé en fonction du %wiki_formatting).</target>
+                <source>To add free text, just enter text in the description - without any url - and press the &quot;%add_item&quot; button (Text will be parsed according to the %wiki_formatting).</source>
+                <target>Pour ajouter du texte libre, il suffit d'entrer du texte dans la description - sans aucune URL - et appuyer sur le bouton &quot;%add_item&quot; (le texte sera analysé en fonction du %wiki_formatting).</target>
             </trans-unit>
             <trans-unit id="643daeb01ab2b7330646f80e43f87a34">
-                <source>To add a spacer, just press &quot;%add_link&quot;, without any url or description.</source>
-                <target>Pour ajouter un espace, appuyez simplement sur &quot;%add_link&quot;, sans aucune URL ou description.</target>
+                <source>To add a spacer, just press &quot;%add_item&quot;, without any url or description.</source>
+                <target>Pour ajouter un espace, appuyez simplement sur &quot;%add_item&quot;, sans aucune URL ou description.</target>
             </trans-unit>
             <trans-unit id="296580eedc2c4f68d401fc1ec7e8e161">
                 <source>%cancel or %attach_link</source>
@@ -10270,8 +10270,8 @@
                 <target>Spécifiez un nom de sprint</target>
             </trans-unit>
             <trans-unit id="15fcdeb0bfe7999726b0d7265f484abc">
-                <source>The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information</source>
-                <target>Les bibliothèque de génération d'image ne sont pas installées. Veuillez vous référer à http://www.thebuggenie.com pour plus d'informations</target>
+                <source>The libraries to generate images are not installed. Please see https://thebuggenie.com for more information</source>
+                <target>Les bibliothèque de génération d'image ne sont pas installées. Veuillez vous référer à https://thebuggenie.com pour plus d'informations</target>
             </trans-unit>
             <trans-unit id="03f4f2bb69a38628b3392f1dd51eff41">
                 <source>Open issues</source>
@@ -11627,7 +11627,7 @@
             </trans-unit>
             <trans-unit id="9e3ae9e0341f37edf4b7dd5441546510">
                 <source>Please confirm that you want to remove this user from the project team</source>
-                <target>Veuillez confirmer que vous souhaitez supprimer cet utilisateur de l'équipe projet</target>
+                <target>Veuillez confirmer que vous souhaitez supprimer cet utilisateur de l\'équipe projet</target>
             </trans-unit>
             <trans-unit id="cd64c221e26c566964382b65bf16f93d">
                 <source>Assigned teams</source>

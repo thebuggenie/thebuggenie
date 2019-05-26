@@ -21,7 +21,7 @@
          */
         protected $_permissions = null;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             $roles = array();
             $roles['Developer'] = array(
@@ -84,13 +84,13 @@
             
             foreach ($roles as $name => $permissions)
             {
-                $role = new \thebuggenie\core\entities\Role();
+                $role = new Role();
                 $role->setName($name);
                 $role->setScope($scope);
                 $role->save();
                 foreach ($permissions as $k => $permission)
                 {
-                    $p = new \thebuggenie\core\entities\RolePermission();
+                    $p = new RolePermission();
                     $p->setPermission($permission['permission']);
 
                     if (array_key_exists('target_id', $permission)) $p->setTargetID($permission['target_id']);
@@ -153,14 +153,14 @@
         {
             if ($this->_permissions === null)
             {
-                $this->_b2dbLazyload('_permissions');
+                $this->_b2dbLazyLoad('_permissions');
             }
         }
 
         /**
          * Removes a set of permissions
          *
-         * @param array|\thebuggenie\core\entities\RolePermission $permissions
+         * @param array|RolePermission $permissions
          */
         public function removePermissions($permissions)
         {
@@ -175,7 +175,7 @@
          *
          * @param permission \thebuggenie\core\entities\RolePermission Role permission that should be removed.
          */
-        public function removePermission(\thebuggenie\core\entities\RolePermission $permission)
+        public function removePermission(RolePermission $permission)
         {
             $this->_populatePermissions();
             $permission_id = $permission->getID();
@@ -192,7 +192,7 @@
             }
         }
 
-        public function addPermission(\thebuggenie\core\entities\RolePermission $permission)
+        public function addPermission(RolePermission $permission)
         {
             $permission->setRole($this);
             $permission->save();
@@ -206,7 +206,7 @@
         /**
          * Returns all permissions assigned to this role
          * 
-         * @return array|\thebuggenie\core\entities\RolePermission An array of all permissions
+         * @return RolePermission[]
          */
         public function getPermissions()
         {

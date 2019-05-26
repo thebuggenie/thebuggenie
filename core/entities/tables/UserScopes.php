@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -38,97 +40,109 @@
         const GROUP_ID = 'userscopes.group_id';
         const CONFIRMED = 'userscopes.confirmed';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addBoolean(self::CONFIRMED);
-            parent::_addForeignKeyColumn(self::USER_ID, Users::getTable(), Users::ID);
-            parent::_addForeignKeyColumn(self::GROUP_ID, Groups::getTable(), Groups::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addBoolean(self::CONFIRMED);
+            parent::addForeignKeyColumn(self::USER_ID, Users::getTable(), Users::ID);
+            parent::addForeignKeyColumn(self::GROUP_ID, Groups::getTable(), Groups::ID);
         }
 
-        public function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('uid_scope', array(self::USER_ID, self::SCOPE));
-            $this->_addIndex('groupid_scope', array(self::GROUP_ID, self::SCOPE));
+            $this->addIndex('uid_scope', array(self::USER_ID, self::SCOPE));
+            $this->addIndex('groupid_scope', array(self::GROUP_ID, self::SCOPE));
         }
 
         public function countUsers()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function addUserToScope($user_id, $scope_id, $group_id = null, $confirmed = false)
         {
             $group_id = ($group_id === null) ? \thebuggenie\core\framework\Settings::get(\thebuggenie\core\framework\Settings::SETTING_USER_GROUP, 'core', $scope_id) : $group_id;
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::USER_ID, $user_id);
-            $crit->addInsert(self::SCOPE, $scope_id);
-            $crit->addInsert(self::GROUP_ID, $group_id);
-            $crit->addInsert(self::CONFIRMED, $confirmed);
-            $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::USER_ID, $user_id);
+            $insertion->add(self::SCOPE, $scope_id);
+            $insertion->add(self::GROUP_ID, $group_id);
+            $insertion->add(self::CONFIRMED, $confirmed);
+            $this->rawInsert($insertion);
         }
 
         public function removeUserFromScope($user_id, $scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, $scope_id);
+            $this->rawDelete($query);
         }
 
         public function confirmUserInScope($user_id, $scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $crit->addUpdate(self::CONFIRMED, true);
-            $this->doUpdate($crit);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add(self::CONFIRMED, true);
+
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, $scope_id);
+
+            $this->rawUpdate($update, $query);
         }
 
         public function isUserInCurrentScope($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::USER_ID, $user_id);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::USER_ID, $user_id);
+            return $this->count($query);
         }
 
         public function clearUserScopes($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, \thebuggenie\core\framework\Settings::getDefaultScopeID(), Criteria::DB_NOT_EQUALS);
-            $crit->addWhere(self::USER_ID, $user_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, \thebuggenie\core\framework\Settings::getDefaultScopeID(), \b2db\Criterion::NOT_EQUALS);
+            $query->where(self::USER_ID, $user_id);
+            $this->rawDelete($query);
         }
 
         public function clearUserGroups($group_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::GROUP_ID, $group_id);
-            $crit->addUpdate(self::GROUP_ID, null);
-            $this->doUpdate($crit);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add(self::GROUP_ID, null);
+
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::GROUP_ID, $group_id);
+
+            $this->rawUpdate($update, $query);
         }
 
         public function updateUserScopeGroup($user_id, $scope_id, $group_id)
         {
             $group_id = ($group_id instanceof \thebuggenie\core\entities\Group) ? $group_id->getID() : (int) $group_id;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $crit->addUpdate(self::GROUP_ID, $group_id);
-            $this->doUpdate($crit);
+            $query = $this->getQuery();
+            $update = new Update();
+
+            $update->add(self::GROUP_ID, $group_id);
+
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, $scope_id);
+
+            $this->rawUpdate($update, $query);
         }
 
         public function getUserGroupIdByScope($user_id, $scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $row = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, $scope_id);
+            $row = $this->rawSelectOne($query);
 
             return ($row) ? (int) $row->get(self::GROUP_ID) : null;
         }
@@ -143,10 +157,10 @@
                 return $this->_scope_confirmed_cache[$scope_id][$user_id];
             }
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $row = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, $scope_id);
+            $row = $this->rawSelectOne($query);
 
             $value = ($row) ? (boolean) $row->get(self::CONFIRMED) : false;
             $this->_scope_confirmed_cache[$scope_id][$user_id] = $value;
@@ -156,22 +170,22 @@
 
         public function getUserDetailsByScope($user_id, $scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $row = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
+            $query->where(self::SCOPE, $scope_id);
+            $row = $this->rawSelectOne($query);
 
             return ($row) ? array('confirmed' => (boolean) $row->get(self::CONFIRMED), 'group_id' => $row->get(self::GROUP_ID)) : null;
         }
 
         public function getScopeDetailsByUser($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::USER_ID, $user_id);
+            $query = $this->getQuery();
+            $query->where(self::USER_ID, $user_id);
 
             $scope_details = array();
 
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -188,7 +202,7 @@
                     }
                     else
                     {
-                        $this->doDeleteById($detail['internal_id']);
+                        $this->rawDeleteById($detail['internal_id']);
                         unset($scope_details[$id]);
                     }
                 }
@@ -199,12 +213,12 @@
 
         public function getUsersByGroupID($group_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::GROUP_ID, $group_id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::GROUP_ID, $group_id);
 
             $users = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -222,11 +236,11 @@
 
         public function countUsersByGroupID($group_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::GROUP_ID, $group_id);
-            $crit->addWhere(self::CONFIRMED, true);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::GROUP_ID, $group_id);
+            $query->where(self::CONFIRMED, true);
+            return $this->count($query);
         }
 
     }

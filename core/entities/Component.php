@@ -59,7 +59,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project');
+            return $this->_b2dbLazyLoad('_project');
         }
         
         public function setProject($project)

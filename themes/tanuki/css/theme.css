@@ -150,7 +150,7 @@ select {
 
 textarea {
     padding: 5px;
-    font-family: 'Droid Sans Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     box-sizing: border-box;
 }
 
@@ -214,7 +214,7 @@ label > input[type="checkbox"] {
     border: 1px dashed #DDD;
     background-color: #F5F5F5;
     padding: 4px;
-    font-family: 'Droid Sans Mono', monospace;
+    font-family: 'Fira Mono', monospace;
     display: inline-block;
     margin: 0 5px;
 }
@@ -645,7 +645,7 @@ header #user_notifications_count.unread {
     margin: 0;
 }
 
-#user_notifications_list li .user_popup .user_realname, #user_notifications_list li .user_popup .user_details {
+#user_notifications_list li .user_dropdown .user_realname, #user_notifications_list li .user_dropdown .user_details {
     color: #555 !important;
 }
 
@@ -854,10 +854,11 @@ header .logo { margin-right: 10px; }
 }
 
 #topmenu-container {
-    height: 100%;
-    display: inline-block;
     vertical-align: middle;
-    float: right;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 #quicksearchform {
@@ -1215,7 +1216,7 @@ footer img {
     border: none;
 }
 
-#tbg3_username, #forgot_password_username, .login_popup input[type=password], #fieldusername {
+#tbg_username, #forgot_password_username, .login_popup input[type=password], #fieldusername {
     background-repeat: no-repeat;
     background-position: 7px 10px;
     padding: 8px 8px 8px 28px;
@@ -2172,7 +2173,6 @@ a.not_clickable:hover {
     width: 100%;
     box-sizing: border-box;
 }
-
 .header_menu .tab_menu_dropdown#issues_menu a {
     width: calc(100% - 10px);
     box-sizing: border-box;
@@ -2835,7 +2835,7 @@ a.shadowed:active {
 }
 
 /* user popups */
-.user_popup {
+.user_dropdown {
     z-index: 100;
     width: 300px;
     margin-top: 10px;
@@ -2843,12 +2843,12 @@ a.shadowed:active {
     position: absolute;
 }
 
-.user_popup, #user_details_popup {
+.user_dropdown, #user_details_popup {
     font-size: 0.9em;
     color: #555;
 }
 
-.user_popup .user_realname {
+.user_dropdown .user_realname {
     font-size: 1.2em;
     font-weight: bold;
     padding: 0;
@@ -3089,7 +3089,7 @@ label[for=profile_prefer_wiki_markdown] {
     color: #C4CAE9;
 }
 
-.user_popup .user_realname .user_status, .usercard .user_realname .user_status {
+.user_dropdown .user_realname .user_status, .usercard .user_realname .user_status {
     font-size: 0.8em;
     font-weight: normal;
     color: #AAA;
@@ -3136,7 +3136,7 @@ label[for=profile_prefer_wiki_markdown] {
     float: left;
 }
 
-.user_popup .user_avatar {
+.user_dropdown .user_avatar {
     padding: 2px;
     width: 36px;
     height: 36px;
@@ -3147,7 +3147,7 @@ label[for=profile_prefer_wiki_markdown] {
     display: inline-block;
 }
 
-.user_popup .user_details {
+.user_dropdown .user_details {
     font-size: 0.8em;
     width: 230px;
     font-weight: normal;
@@ -3162,7 +3162,7 @@ label[for=profile_prefer_wiki_markdown] {
     vertical-align: top;
 }
 
-.user_popup .user_details:first-line {
+.user_dropdown .user_details:first-line {
     font-size: 1.7em;
     font-weight: normal;
 }
@@ -10438,11 +10438,11 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
     padding-bottom: 5px;
 }
 
-.whiteboard-issue .issue_info .user_popup {
+.whiteboard-issue .issue_info .user_dropdown {
     text-align: initial;
 }
 
-.whiteboard-issue .issue_info .userdropdown .user_popup {
+.whiteboard-issue .issue_info .userdropdown .user_dropdown {
     margin-left: -23px;
     margin-top: 13px;
 }
@@ -10644,30 +10644,6 @@ h3 .dropdown_box a, h3 .dropdown_box a:hover {
 
 .infobox_modal .backdrop_detail_content {
     padding: 10px;
-}
-
-.infobox_modal .close_me {
-    padding: 10px;
-    text-align: right;
-}
-
-.infobox_modal .close_me label {
-    font-weight: normal;
-    vertical-align: middle;
-    font-size: 0.9em;
-}
-
-.infobox_modal .close_me .button {
-    font-size: 1.1em;
-    padding: 3px 7px;
-}
-
-.infobox_modal .close_me input[type=submit] {
-    font-size: 1.1em;
-}
-
-.infobox_modal .close_me input[type=checkbox] {
-    vertical-align: middle;
 }
 
 #scrum .infobox .content ul {
@@ -11082,7 +11058,7 @@ div.quickaddtask .close_micro_popup_link {
     margin: 0;
 }
 
-.dashboard_view_issues .issue_user_avatar_cell .user_popup {
+.dashboard_view_issues .issue_user_avatar_cell .user_dropdown {
     left: -14px;
 }
 
@@ -13469,12 +13445,12 @@ table.sortable tr th.nosort {
 }
 
 .markItUpContainer {
-    font: 11px 'Droid Sans', sans-serif;
+    font: 11px 'Open Sans', sans-serif;
 }
 
 .markItUpEditor {
     box-sizing: border-box;
-    font: 12px 'Droid Sans Mono', monospace;
+    font: 12px 'Fira Mono', monospace;
     padding: 5px;
     width: 690px;
     height: 320px;
@@ -16344,12 +16320,6 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
     font-size: 14px;
 }
 
-#milestone_edit_indicator {
-    position: absolute;
-    left: 8px;
-    margin-top: 4px;
-}
-
 #milestone_details_overview > .milestone_details > h3 > a {
     margin-top: -7px;
 }
@@ -16439,7 +16409,7 @@ img[id^='remove_assignee_team_'][id$='_indicator'] {
     padding: 2px 14px;
 }
 
-#viewissue_add_relation_div #find_issue_indicator {
+#viewissue_add_relation_div #viewissue_find_issue_indicator {
     position: absolute;
     margin-left: 5px;
 }
@@ -16731,7 +16701,7 @@ ul[id^='popup_find_subscriber_'][id$='_results'] > li.disabled {
     margin-bottom: 5px;
 }
 
-.dashboard_view_content .userdropdown .user_popup .header {
+.dashboard_view_content .userdropdown .user_dropdown .header {
     margin: 0 !important;
     padding: 7px 7px 0 7px !important;
     text-transform: none;
@@ -16798,14 +16768,14 @@ div[id^='dashboard_view_'] .recent_activities .faded_out.smaller a {
     font-size: 1em;
 }
 
-#dashboard_lefthand .userdropdown .user_popup .header {
+#dashboard_lefthand .userdropdown .user_dropdown .header {
     margin: 0;
     background-color: rgb(253, 250, 223) !important;
     text-transform: none;
     padding: 7px 7px 0 7px;
 }
 
-.dashboard_view_issues .userdropdown .user_popup .header {
+.dashboard_view_issues .userdropdown .user_dropdown .header {
     margin: 0 !important;
     background-color: rgb(253, 250, 223) !important;
     text-transform: none;
@@ -17435,12 +17405,12 @@ form[id^='estimated_time_'][id$='_form'] .estimator_table tr {
     padding: 5px 11px;
 }
 
-.user_popup > li > a,
-.user_popup > li > a:hover {
+.user_dropdown > li > a,
+.user_dropdown > li > a:hover {
     font-size: 13px;
 }
 
-.user_popup > li.header {
+.user_dropdown > li.header {
     margin-bottom: 3px;
     padding-bottom: 0;
 }
@@ -17750,13 +17720,13 @@ li.header div.user_avatar {
     margin-top: 8px;
 }
 
-#related_child_issues_inline .user_popup li,
-#related_duplicate_issues_inline .user_popup li {
+#related_child_issues_inline .user_dropdown li,
+#related_duplicate_issues_inline .user_dropdown li {
     width: initial !important;
 }
 
-#related_child_issues_inline .user_popup,
-#related_duplicate_issues_inline .user_popup {
+#related_child_issues_inline .user_dropdown,
+#related_duplicate_issues_inline .user_dropdown {
     top: initial !important;
     left: 80px !important;
 }
@@ -18127,17 +18097,17 @@ div[id^='comment_reply_indicator_'] {
     opacity: 1;
 }
 
-.milestone_issue .user_popup {
+.milestone_issue .user_dropdown {
     margin-left: -263px;
     margin-top: 13px;
 }
 
-.milestone_issue .user_popup .user_realname {
+.milestone_issue .user_dropdown .user_realname {
     line-height: 20px;
 }
 
-.milestone_issue .user_popup.leftie:before,
-.milestone_issue .user_popup.leftie:after {
+.milestone_issue .user_dropdown.leftie:before,
+.milestone_issue .user_dropdown.leftie:after {
     left: 90%;
 }
 
@@ -18596,7 +18566,7 @@ div[id^='wiki_'][id$='_no_links'] {
 
 #viewissue_vcs_integration_commits .commentbody {
     clear: both;
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     background-color: #F3F3F3;
     padding: 5px;
     margin-bottom: 5px;
@@ -18693,7 +18663,7 @@ div[id^='wiki_'][id$='_no_links'] {
 
 .system_comment .commit_main {
     clear: both;
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     padding: 5px;
     margin-bottom: -10px;
     border-radius: 3px;

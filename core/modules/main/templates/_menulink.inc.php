@@ -1,21 +1,21 @@
 <li id="<?php echo $link['target_type']; ?>_<?php echo $link['target_id']; ?>_links_<?php echo $link_id; ?>" style="clear: both;">
     <?php if ($link['target_type'] == 'wiki' && $link['url'] != ''): ?>
         <?php if ($tbg_routing->getCurrentRouteModule() == 'publish' && $tbg_request['article_name'] == $link['url']): ?>
-            <?php echo link_tag(make_url('publish_article', array('article_name' => strip_tags($link['url']))), (($link['description'] != '') ? tbg_parse_text($link['description'], false, null, array('embedded' => true)) : strip_tags($link['url'])), array('class' => 'selected')); ?>
+            <?php echo link_tag(make_url('publish_article', array('article_name' => strip_tags($link['url']))), (($link['description'] != '') ? fa_image_tag('book') . tbg_parse_text($link['description'], false, null, array('embedded' => true)) : fa_image_tag('book') . strip_tags($link['url'])), array('class' => 'selected')); ?>
         <?php else: ?>
-            <?php echo link_tag(make_url('publish_article', array('article_name' => strip_tags($link['url']))), (($link['description'] != '') ? tbg_parse_text($link['description'], false, null, array('embedded' => true)) : strip_tags($link['url']))); ?>
+            <?php echo link_tag(make_url('publish_article', array('article_name' => strip_tags($link['url']))), (($link['description'] != '') ? fa_image_tag('book') . tbg_parse_text($link['description'], false, null, array('embedded' => true)) : fa_image_tag('book') . strip_tags($link['url']))); ?>
         <?php endif; ?>
     <?php elseif (mb_substr($link['url'], 0, 1) == '@'): ?>
-        <?php echo link_tag(make_url($link['url']), (($link['description'] != '') ? tbg_parse_text($link['description'], false, null, array('embedded' => true)) : strip_tags($link['url']))); ?>
+        <?php echo link_tag(make_url($link['url']), (($link['description'] != '') ? fa_image_tag('envelope') . tbg_parse_text($link['description'], false, null, array('embedded' => true)) : fa_image_tag('envelope') . strip_tags($link['url']))); ?>
     <?php elseif ($link['url'] != ''): ?>
-        <?php echo link_tag($link['url'], (($link['description'] != '') ? tbg_parse_text($link['description'], false, null, array('embedded' => true)) : strip_tags($link['url']))); ?>
+        <?php echo link_tag($link['url'], (($link['description'] != '') ? fa_image_tag('globe') . tbg_parse_text($link['description'], false, null, array('embedded' => true)) : fa_image_tag('globe') . strip_tags($link['url']))); ?>
     <?php elseif ($link['description'] != ''): ?>
         <?php echo tbg_parse_text($link['description'], false, null, array('embedded' => true)); ?>
     <?php else: ?>
         &nbsp;
     <?php endif; ?>
     <?php if ($tbg_user->canEditMainMenu($link['target_type'])): ?>
-        <?php echo javascript_link_tag(image_tag('action_delete.png'), array('class' => 'delete-icon', 'style' => 'float: right;', 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this link?')."', {yes: {click: function() {TBG.Main.Link.remove('".make_url('remove_link', array('target_type' => $link['target_type'], 'target_id' => $link['target_id'], 'link_id' => $link_id))."', '{$link['target_type']}', '{$link['target_id']}', ".$link_id."); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?>
+        <?php echo javascript_link_tag(fa_image_tag('close'), array('class' => 'delete-icon', 'style' => 'float: right;', 'onclick' => "TBG.Main.Helpers.Dialog.show('".__('Please confirm')."', '".__('Do you really want to delete this link?')."', {yes: {click: function() {TBG.Main.Link.remove('".make_url('remove_link', array('target_type' => $link['target_type'], 'target_id' => $link['target_id'], 'link_id' => $link_id))."', '{$link['target_type']}', '{$link['target_id']}', ".$link_id."); }}, no: {click: TBG.Main.Helpers.Dialog.dismiss}})")); ?>
     <?php endif; ?>
 </li>
 <?php /* if ($tbg_user->canEditMainMenu()): ?>

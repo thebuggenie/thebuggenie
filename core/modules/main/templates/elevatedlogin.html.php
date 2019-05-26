@@ -3,7 +3,7 @@
     \thebuggenie\core\framework\Context::loadLibrary('ui');
 
 ?>
-<div id="login_backdrop">
+<div id="elevated_login_container">
     <div class="backdrop_box login_page login_popup" id="login_popup">
         <div id="backdrop_detail_content" class="backdrop_detail_content rounded_top login_content">
             <div class="logindiv regular active" id="regular_login_container">
@@ -14,16 +14,16 @@
                     </div>
                     <ul class="login_formlist">
                         <li>
-                            <label for="tbg3_username"><?php echo __('Username'); ?></label>
-                            <input type="text" id="tbg3_username" name="dummy_username" disabled value="<?php echo $tbg_user->getUsername(); ?>">
+                            <label for="tbg_username"><?php echo __('Username'); ?></label>
+                            <input type="text" id="tbg_username" name="dummy_username" disabled value="<?php echo $tbg_user->getUsername(); ?>">
                         </li>
                         <li>
-                            <label for="tbg3_password"><?php echo __('Password'); ?></label>
-                            <input type="password" id="tbg3_password" name="tbg3_elevated_password"><br>
+                            <label for="tbg_password"><?php echo __('Password'); ?></label>
+                            <input type="password" id="tbg_password" name="elevated_password"><br>
                         </li>
                         <li>
-                            <label for="tbg3_elevation_duration"><?php echo __('Re-authentication duration'); ?></label>
-                            <select name="tbg3_elevation_duration">
+                            <label for="tbg_elevation_duration"><?php echo __('Re-authentication duration'); ?></label>
+                            <select name="elevation_duration">
                                 <?php foreach (array(5, 10, 15, 30, 60) as $minute): ?>
                                     <option value="<?php echo $minute; ?>" <?php if ($minute == 30) echo 'selected'; ?>><?php echo __('Remember for %minutes minutes', array('%minutes' => $minute)); ?></option>
                                 <?php endforeach; ?>
@@ -46,7 +46,7 @@
         <?php elseif (\thebuggenie\core\framework\Context::hasMessage('elevated_login_message_err')): ?>
             TBG.Main.Helpers.Message.error('<?php echo \thebuggenie\core\framework\Context::getMessageAndClear('elevated_login_message_err'); ?>');
         <?php endif; ?>
-            $('tbg3_password').focus();
+            $('tbg_password').focus();
         });
     });
 </script>

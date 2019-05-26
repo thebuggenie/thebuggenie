@@ -93,6 +93,11 @@
             return $this->_article_name;
         }
 
+        public function getName()
+        {
+            return $this->getArticleName();
+        }
+
         /**
          * Returns old content of the article (prior to change).
          *
@@ -156,7 +161,7 @@
          */
         public function getAuthor()
         {
-            return $this->_b2dbLazyload('_author');
+            return $this->_b2dbLazyLoad('_author');
         }
 
 

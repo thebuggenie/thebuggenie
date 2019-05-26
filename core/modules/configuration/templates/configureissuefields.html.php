@@ -31,7 +31,7 @@
                 </div>
                 <h5><?php echo __('Existing issue fields'); ?></h5>
                 <?php foreach ($builtin_types as $type_key => $type): ?>
-                    <div class="greybox" style="margin: 5px 0 0 0;">
+                    <div class="greybox">
                         <button class="button button-silver" onclick="TBG.Config.Issuefields.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"" style="float: right; margin-left: 5px;"><?php echo __('Edit'); ?></button>
                         <?php echo image_tag('spinning_32.gif', array('style' => 'float: right; margin-left: 5px; display: none;', 'id' => $type_key . '_indicator')); ?>
                         <div class="header"><a href="javascript:void(0);" onclick="TBG.Config.Issuefields.Options.show('<?php echo make_url('configure_issuefields_getoptions', array('type' => $type_key)); ?>', '<?php echo $type_key; ?>');"><?php echo $type['description']; ?></a>&nbsp;<span class="faded_out dark" style="font-weight: normal; font-size: 12px;"><?php echo $type['key']; ?></span></div>

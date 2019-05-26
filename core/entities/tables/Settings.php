@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework,
         b2db\Core,
         b2db\Criteria,
@@ -38,100 +40,103 @@
         const UPDATED_AT = 'settings.updated_at';
         const UID = 'settings.uid';
 
-        public function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope_uid', array(self::SCOPE, self::UID));
+            $this->addIndex('scope_uid', array(self::SCOPE, self::UID));
         }
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::NAME, 45);
-            parent::_addVarchar(self::MODULE, 45);
-            parent::_addVarchar(self::VALUE, 200);
-            parent::_addInteger(self::UID, 10);
-            parent::_addInteger(self::UPDATED_AT, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::NAME, 45);
+            parent::addVarchar(self::MODULE, 45);
+            parent::addVarchar(self::VALUE, 200);
+            parent::addInteger(self::UID, 10);
+            parent::addInteger(self::UPDATED_AT, 10);
         }
 
         public function getSettingsForScope($scope, $uid = 0)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if (framework\Context::isUpgrademode())
             {
-                $crit->addSelectionColumn(self::NAME);
-                $crit->addSelectionColumn(self::MODULE);
-                $crit->addSelectionColumn(self::VALUE);
-                $crit->addSelectionColumn(self::UID);
-                $crit->addSelectionColumn(self::SCOPE);
+                $query->addSelectionColumn(self::NAME);
+                $query->addSelectionColumn(self::MODULE);
+                $query->addSelectionColumn(self::VALUE);
+                $query->addSelectionColumn(self::UID);
+                $query->addSelectionColumn(self::SCOPE);
             }
-            $ctn = $crit->returnCriterion(self::SCOPE, $scope);
-            $ctn->addOr(self::SCOPE, 0);
-            $crit->addWhere($ctn);
-            $crit->addWhere(self::UID, $uid);
-            $res = $this->doSelect($crit, 'none');
+            $query->where(self::UID, $uid);
+
+            $criteria = new Criteria();
+            $criteria->where(self::SCOPE, $scope);
+            $criteria->or(self::SCOPE, 0);
+            $query->and($criteria);
+
+            $res = $this->rawSelect($query, 'none');
             return $res;
         }
 
         public function saveSetting($name, $module, $value, $uid, $scope)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $name);
-            $crit->addWhere(self::MODULE, $module);
-            $crit->addWhere(self::UID, $uid);
-            $crit->addWhere(self::SCOPE, $scope);
-            $res = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->where(self::NAME, $name);
+            $query->where(self::MODULE, $module);
+            $query->where(self::UID, $uid);
+            $query->where(self::SCOPE, $scope);
+            $res = $this->rawSelectOne($query);
 
             if ($res instanceof \b2db\Row)
             {
                 $theID = $res->get(self::ID);
-                $crit2 = new Criteria();
-                $crit2->addWhere(self::NAME, $name);
-                $crit2->addWhere(self::MODULE, $module);
-                $crit2->addWhere(self::UID, $uid);
-                $crit2->addWhere(self::SCOPE, $scope);
-                $crit2->addWhere(self::ID, $theID, Criteria::DB_NOT_EQUALS);
-                $res2 = $this->doDelete($crit2);
+                $query = $this->getQuery();
+                $query->where(self::NAME, $name);
+                $query->where(self::MODULE, $module);
+                $query->where(self::UID, $uid);
+                $query->where(self::SCOPE, $scope);
+                $query->where(self::ID, $theID, \b2db\Criterion::NOT_EQUALS);
+                $res2 = $this->rawDelete($query);
 
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::NAME, $name);
-                $crit->addUpdate(self::MODULE, $module);
-                $crit->addUpdate(self::UID, $uid);
-                $crit->addUpdate(self::VALUE, $value);
-                $crit->addUpdate(self::UPDATED_AT, time());
-                $this->doUpdateById($crit, $theID);
+                $update = new Update();
+                $update->add(self::NAME, $name);
+                $update->add(self::MODULE, $module);
+                $update->add(self::UID, $uid);
+                $update->add(self::VALUE, $value);
+                $update->add(self::UPDATED_AT, time());
+                $this->rawUpdateById($update, $theID);
             }
             else
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::NAME, $name);
-                $crit->addInsert(self::MODULE, $module);
-                $crit->addInsert(self::VALUE, $value);
-                $crit->addInsert(self::SCOPE, $scope);
-                $crit->addInsert(self::UID, $uid);
-                $crit->addInsert(self::UPDATED_AT, time());
-                $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::NAME, $name);
+                $insertion->add(self::MODULE, $module);
+                $insertion->add(self::VALUE, $value);
+                $insertion->add(self::SCOPE, $scope);
+                $insertion->add(self::UID, $uid);
+                $insertion->add(self::UPDATED_AT, time());
+                $this->rawInsert($insertion);
             }
         }
 
         public function deleteModuleSettings($module_name, $scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::MODULE, $module_name);
-            $crit->addWhere(self::SCOPE, $scope);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::MODULE, $module_name);
+            $query->where(self::SCOPE, $scope);
+            $this->rawDelete($query);
         }
 
         public function deleteAllUserModuleSettings($module_name, $scope = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::MODULE, $module_name);
-            $crit->addWhere(self::UID, 0, Criteria::DB_GREATER_THAN);
+            $query = $this->getQuery();
+            $query->where(self::MODULE, $module_name);
+            $query->where(self::UID, 0, \b2db\Criterion::GREATER_THAN);
             if ($scope !== null)
             {
-                $crit->addWhere(self::SCOPE, $scope);
+                $query->where(self::SCOPE, $scope);
             }
-            $this->doDelete($crit);
+            $this->rawDelete($query);
         }
 
         public function loadFixtures(\thebuggenie\core\entities\Scope $scope)
@@ -140,31 +145,28 @@
 
             $settings = array();
             $settings[\thebuggenie\core\framework\Settings::SETTING_THEME_NAME] = 'oxygen';
-            $settings[\thebuggenie\core\framework\Settings::SETTING_REQUIRE_LOGIN] = 0;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_DEFAULT_USER_IS_GUEST] = 1;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_ALLOW_REGISTRATION] = 1;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_REQUIRE_LOGIN] = false;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_DEFAULT_USER_IS_GUEST] = true;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ALLOW_REGISTRATION] = true;
             $settings[\thebuggenie\core\framework\Settings::SETTING_RETURN_FROM_LOGIN] = 'referer';
             $settings[\thebuggenie\core\framework\Settings::SETTING_RETURN_FROM_LOGOUT] = 'home';
-            $settings[\thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW] = 1;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_ALLOW_USER_THEMES] = 0;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_ENABLE_UPLOADS] = 0;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_ENABLE_GRAVATARS] = 1;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW] = true;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ALLOW_USER_THEMES] = false;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ENABLE_UPLOADS] = false;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ENABLE_GRAVATARS] = true;
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_RESTRICTION_MODE] = 'blacklist';
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_EXTENSIONS_LIST] = 'exe,bat,php,asp,jsp';
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_STORAGE] = 'files';
             $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_LOCAL_PATH] = THEBUGGENIE_PATH . 'files/';
-            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_ALLOW_IMAGE_CACHING] = 0;
-            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_DELIVERY_USE_XSEND] = 0;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_ALLOW_IMAGE_CACHING] = false;
+            $settings[\thebuggenie\core\framework\Settings::SETTING_UPLOAD_DELIVERY_USE_XSEND] = false;
             $settings[\thebuggenie\core\framework\Settings::SETTING_TBG_NAME] = 'The Bug Genie';
-            $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE] = 'html4strict';
+            $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_LANGUAGE] = 'html';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_NUMBERING] = '3';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SYNTAX_HIGHLIGHT_DEFAULT_INTERVAL] = '10';
             $settings[\thebuggenie\core\framework\Settings::SETTING_ICONSET] = 'oxygen';
             $settings[\thebuggenie\core\framework\Settings::SETTING_SERVER_TIMEZONE] = date_default_timezone_get();
-            if ($scope->isDefault())
-            {
-                $settings[\thebuggenie\core\framework\Settings::SETTING_SALT] = sha1(time().mt_rand(1000, 10000));
-            }
+            $settings[\thebuggenie\core\framework\Settings::SETTING_ELEVATED_LOGIN_DISABLED] = true;
 
             $scope_id = $scope->getID();
             foreach ($settings as $settings_name => $settings_val)
@@ -175,15 +177,15 @@
 
         public function getFileIds()
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             $file_id_settings = [
                 framework\Settings::SETTING_FAVICON_ID,
                 framework\Settings::SETTING_HEADER_ICON_ID
             ];
-            $crit->addWhere(self::NAME, $file_id_settings, Criteria::DB_IN);
-            $crit->addSelectionColumn(self::VALUE, 'file_id');
+            $query->where(self::NAME, $file_id_settings, \b2db\Criterion::IN);
+            $query->addSelectionColumn(self::VALUE, 'file_id');
 
-            $res = $this->doSelect($crit);
+            $res = $this->rawSelect($query);
             $file_ids = [];
             if ($res) {
                 while ($row = $res->getNextRow()) {

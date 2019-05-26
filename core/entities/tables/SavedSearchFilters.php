@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
 
     /**
@@ -20,24 +21,24 @@
         const SEARCH_ID = 'savedsearchfilters.search_id';
         const FILTER_KEY = 'savedsearchfilters.filter_key';
         
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::VALUE, 200);
-            parent::_addVarchar(self::OPERATOR, 40);
-            parent::_addVarchar(self::FILTER_KEY, 100);
-            parent::_addForeignKeyColumn(self::SEARCH_ID, SavedSearches::getTable(), SavedSearches::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::VALUE, 200);
+            parent::addVarchar(self::OPERATOR, 40);
+            parent::addVarchar(self::FILTER_KEY, 100);
+            parent::addForeignKeyColumn(self::SEARCH_ID, SavedSearches::getTable(), SavedSearches::ID);
         }
 
         public function getFiltersBySavedSearchID($savedsearch_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::SEARCH_ID, $savedsearch_id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::SEARCH_ID, $savedsearch_id);
 
             $retarr = array();
 
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -51,21 +52,21 @@
 
         protected function _saveFilterForSavedSearch($saved_search_id, $filter_key, $value, $operator)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addInsert(self::SEARCH_ID, $saved_search_id);
-            $crit->addInsert(self::FILTER_KEY, $filter_key);
-            $crit->addInsert(self::VALUE, $value);
-            $crit->addInsert(self::OPERATOR, $operator);
-            $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion->add(self::SEARCH_ID, $saved_search_id);
+            $insertion->add(self::FILTER_KEY, $filter_key);
+            $insertion->add(self::VALUE, $value);
+            $insertion->add(self::OPERATOR, $operator);
+            $this->rawInsert($insertion);
         }
 
         public function deleteBySearchID($saved_search_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::SEARCH_ID, $saved_search_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::SEARCH_ID, $saved_search_id);
+            $this->rawDelete($query);
         }
 
         public function saveFiltersForSavedSearch($saved_search_id, $filters)

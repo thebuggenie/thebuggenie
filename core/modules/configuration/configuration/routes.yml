@@ -120,7 +120,6 @@ configure_workflow_copy_workflow:
       config_module: core
       section: 1
       mode: copy_workflow
-      format: json
     csrf_enabled: false
 
 configure_workflow_delete_workflow:
@@ -131,7 +130,6 @@ configure_workflow_delete_workflow:
       config_module: core
       section: 1
       mode: delete_workflow
-      format: json
     csrf_enabled: false
 
 configure_workflow_schemes:
@@ -151,7 +149,6 @@ configure_workflow_copy_scheme:
       config_module: core
       section: 1
       mode: copy_scheme
-      format: json
     csrf_enabled: false
 
 configure_workflow_delete_scheme:
@@ -162,7 +159,6 @@ configure_workflow_delete_scheme:
       config_module: core
       section: 1
       mode: delete_scheme
-      format: json
     csrf_enabled: false
 
 configure_workflow_scheme:
@@ -529,7 +525,6 @@ configure_issuetypes_copy_scheme:
       config_module: core
       section: 6
       mode: copy_scheme
-      format: json
     csrf_enabled: false
 
 configure_issuetypes_delete_scheme:
@@ -540,7 +535,6 @@ configure_issuetypes_delete_scheme:
       config_module: core
       section: 6
       mode: delete_scheme
-      format: json
     csrf_enabled: false
 
 configure_issuefields:
@@ -674,7 +668,6 @@ configure_users_add_group:
     parameters:
       config_module: core
       section: 2
-      format: json
       mode: new
     csrf_enabled: false
 
@@ -685,7 +678,6 @@ configure_users_clone_group:
     parameters:
       config_module: core
       section: 2
-      format: json
       mode: clone
     csrf_enabled: false
 
@@ -696,7 +688,6 @@ configure_users_delete_group:
     parameters:
       config_module: core
       section: 2
-      format: json
     csrf_enabled: false
 
 configure_users_get_group_members:
@@ -706,7 +697,6 @@ configure_users_get_group_members:
     parameters:
       config_module: core
       section: 2
-      format: json
     csrf_enabled: false
 
 configure_users_add_team:
@@ -716,7 +706,6 @@ configure_users_add_team:
     parameters:
       config_module: core
       section: 2
-      format: json
       mode: new
     csrf_enabled: false
 
@@ -727,19 +716,18 @@ configure_users_clone_team:
     parameters:
       config_module: core
       section: 2
-      format: json
       mode: clone
     csrf_enabled: false
 
 configure_users_delete_team:
-    route: /configure/users/delete/team/:team_id
+    route: /configure/users/delete/team/:team_id/:csrf_token
     module: configuration
     action: deleteTeam
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-      format: json
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_get_team_members:
     route: /configure/users/get/members/in/team/:team_id
@@ -748,28 +736,27 @@ configure_users_get_team_members:
     parameters:
       config_module: core
       section: 2
-      format: json
     csrf_enabled: false
 
 configure_users_remove_team_member:
-    route: /configure/users/remove/:user_id/from/team/:team_id
+    route: /configure/users/remove/:user_id/from/team/:team_id/:csrf_token
     module: configuration
     action: removeTeamMember
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-      format: json
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_add_team_member:
-    route: /configure/users/add/user/:user_id/to/team/:team_id
+    route: /configure/users/add/user/:user_id/to/team/:team_id/:csrf_token
     module: configuration
     action: addTeamMember
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-      format: json
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_add_client:
     route: /configure/users/add/client
@@ -778,7 +765,6 @@ configure_users_add_client:
     parameters:
       config_module: core
       section: 2
-      format: json
       mode: new
     csrf_enabled: false
 
@@ -789,19 +775,18 @@ configure_users_edit_client:
     parameters:
       config_module: core
       section: 2
-      format: json
       mode: edit
     csrf_enabled: false
 
 configure_users_delete_client:
-    route: /configure/users/delete/client/:client_id
+    route: /configure/users/delete/client/:client_id/:csrf_token
     module: configuration
     action: deleteClient
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-      format: json
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_get_client_members:
     route: /configure/users/get/members/in/client/:client_id
@@ -810,28 +795,27 @@ configure_users_get_client_members:
     parameters:
       config_module: core
       section: 2
-      format: json
     csrf_enabled: false
 
 configure_users_remove_client_member:
-    route: /configure/users/remove/:user_id/from/client/:client_id
+    route: /configure/users/remove/:user_id/from/client/:client_id/:csrf_token
     module: configuration
     action: removeClientMember
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-      format: json
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_add_client_member:
-    route: /configure/users/add/user/:user_id/to/client/:client_id
+    route: /configure/users/add/user/:user_id/to/client/:client_id/:csrf_token
     module: configuration
     action: addClientMember
+    authentication_method: AUTHENTICATION_METHOD_CORE
     parameters:
       config_module: core
       section: 2
-      format: json
-    csrf_enabled: false
+    csrf_enabled: true
 
 configure_users_update_user:
     route: /configure/users/update/user/:user_id

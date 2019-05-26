@@ -3,6 +3,7 @@
 namespace thebuggenie\core\modules\installation\controllers;
 
 use thebuggenie\core\framework;
+use thebuggenie\core\modules\installation\upgrade_4112\UsersTable;
 
 class Main extends framework\Action
 {
@@ -85,11 +86,12 @@ class Main extends framework\Action
         $this->mb_ok = true;
         $this->php_ok = true;
         $this->pcre_ok = true;
+        $this->dom_ok = true;
         $this->docblock_ok = false;
         $this->php_ver = PHP_VERSION;
         $this->pcre_ver = PCRE_VERSION;
 
-        if (version_compare($this->php_ver, '5.3.0', 'lt'))
+        if (version_compare($this->php_ver, '7.1.0', 'lt'))
         {
             $this->php_ok = false;
             $this->all_well = false;
@@ -130,6 +132,11 @@ class Main extends framework\Action
         if (!class_exists('PDO'))
         {
             $this->pdo_ok = false;
+            $this->all_well = false;
+        }
+        if (!class_exists('DOMDocument'))
+        {
+            $this->dom_ok = false;
             $this->all_well = false;
         }
         if (!extension_loaded('pdo_mysql'))
@@ -198,13 +205,13 @@ class Main extends framework\Action
             if (\b2db\Core::isInitialized())
             {
                 $this->preloaded = true;
-                $this->username = \b2db\Core::getUname();
-                $this->password = \b2db\Core::getPasswd();
+                $this->username = \b2db\Core::getUsername();
+                $this->password = \b2db\Core::getPassword();
                 $this->dsn = \b2db\Core::getDSN();
-                $this->hostname = \b2db\Core::getHost();
+                $this->hostname = \b2db\Core::getHostname();
                 $this->port = \b2db\Core::getPort();
-                $this->b2db_dbtype = \b2db\Core::getDBtype();
-                $this->db_name = \b2db\Core::getDBname();
+                $this->b2db_dbtype = \b2db\Core::getDriver();
+                $this->db_name = \b2db\Core::getDatabaseName();
             }
         }
     }
@@ -224,10 +231,10 @@ class Main extends framework\Action
         {
             if ($this->username = $request['db_username'])
             {
-                \b2db\Core::setUname($this->username);
+                \b2db\Core::setUsername($this->username);
                 \b2db\Core::setTablePrefix($request['db_prefix']);
                 if ($this->password = $request->getRawParameter('db_password'))
-                    \b2db\Core::setPasswd($this->password);
+                    \b2db\Core::setPassword($this->password);
 
                 if ($this->selected_connection_detail == 'dsn')
                 {
@@ -240,9 +247,9 @@ class Main extends framework\Action
                 {
                     if ($this->db_type = $request['db_type'])
                     {
-                        \b2db\Core::setDBtype($this->db_type);
+                        \b2db\Core::setDriver($this->db_type);
                         if ($this->db_hostname = $request['db_hostname'])
-                            \b2db\Core::setHost($this->db_hostname);
+                            \b2db\Core::setHostname($this->db_hostname);
                         else
                             throw new \Exception('You must provide a database hostname');
 
@@ -250,7 +257,7 @@ class Main extends framework\Action
                             \b2db\Core::setPort($this->db_port);
 
                         if ($this->db_databasename = $request['db_name'])
-                            \b2db\Core::setDBname($this->db_databasename);
+                            \b2db\Core::setDatabaseName($this->db_databasename);
                         else
                             throw new \Exception('You must provide a database to use');
                     }
@@ -269,7 +276,7 @@ class Main extends framework\Action
                     throw new \Exception('There was an error connecting to the database: '.$e->getMessage());
                 }
 
-                if (\b2db\Core::getDBname() == '')
+                if (\b2db\Core::getDatabaseName() == '')
                     throw new \Exception('You must provide a database to use');
 
                 \b2db\Core::saveConnectionParameters(\THEBUGGENIE_CONFIGURATION_PATH . "b2db.yml");
@@ -369,7 +376,7 @@ class Main extends framework\Action
             {
                 if (!is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/') || (file_exists(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess') && !is_writable(THEBUGGENIE_PATH . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess')))
                 {
-                    $this->htaccess_error = 'Permission denied when trying to save the [main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess';
+                    $this->htaccess_error = 'Permission denied when trying to save the file <span class="command_box">[main folder]/' . THEBUGGENIE_PUBLIC_FOLDER_NAME . '/.htaccess</span>';
                 }
                 else
                 {
@@ -450,28 +457,38 @@ class Main extends framework\Action
         list ($this->current_version, $this->upgrade_available) = framework\Settings::getUpgradeStatus();
 
         $this->upgrade_complete = false;
-        if ($this->upgrade_available && $request->isPost())
+        $this->adminusername = UsersTable::getTable()->getAdminUsername();
+        $this->requires_password_reset = !in_array($this->current_version, ['4.2.0', '4.2.1']);
+        try
         {
-            $upgrader = new \thebuggenie\core\modules\installation\Upgrade();
-            $this->upgrade_complete = $upgrader->upgrade();
+            if ($this->upgrade_available)
+            {
+                $this->permissions_ok = false;
+                if (is_writable(THEBUGGENIE_PATH . 'installed') && is_writable(THEBUGGENIE_PATH . 'upgrade'))
+                {
+                    $this->permissions_ok = true;
+                }
+            }
 
-            if ($this->upgrade_complete)
+            if ($this->upgrade_available && $request->isPost())
             {
-                $this->current_version = framework\Settings::getVersion(false, false);
-                $this->upgrade_available = false;
+                $upgrader = new \thebuggenie\core\modules\installation\Upgrade();
+                $this->upgrade_complete = $upgrader->upgrade($request);
+
+                if ($this->upgrade_complete)
+                {
+                    $this->current_version = framework\Settings::getVersion(false, false);
+                    $this->upgrade_available = false;
+                }
+            }
+            elseif ($this->upgrade_complete)
+            {
+                $this->forward(framework\Context::getRouting()->generate('home'));
             }
         }
-        elseif ($this->upgrade_available)
+        catch (\Exception $e)
         {
-            $this->permissions_ok = false;
-            if (is_writable(THEBUGGENIE_PATH . 'installed') && is_writable(THEBUGGENIE_PATH . 'upgrade'))
-            {
-                $this->permissions_ok = true;
-            }
-        }
-        elseif ($this->upgrade_complete)
-        {
-            $this->forward(framework\Context::getRouting()->generate('home'));
+            $this->error = $e->getMessage();
         }
     }
 

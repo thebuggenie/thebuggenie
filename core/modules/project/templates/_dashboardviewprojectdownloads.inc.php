@@ -17,7 +17,15 @@
     
     if ($found == false)
     {
-        ?><p class="content faded_out"><?php echo __('There are no downloadable releases at the moment'); ?></p><?php
+        ?><div class="content no-items">
+            <?= fa_image_tag('download'); ?>
+            <span><?php echo __('There are no downloadable releases at the moment'); ?></span>
+            <?php if ($tbg_user->canEditProjectDetails($project)): ?>
+                <?php if ($project->isBuildsEnabled()): ?>
+                    <?php echo link_tag(make_url('project_release_center', array('project_key' => $project->getKey())), __('Manage project releases'), ['class' => 'button button-silver']); ?>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div><?php
     }
     
 ?>

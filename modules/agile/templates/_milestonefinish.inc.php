@@ -16,7 +16,7 @@
 <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('agile_markmilestonefinished', array('project_key' => $milestone->getProject()->getKey(), 'board_id' => $board->getID(), 'milestone_id' => $milestone->getID())); ?>" method="post" id="mark_milestone_finished_form" onsubmit="TBG.Project.Milestone.markFinished(this);return false;" data-milestone-id="<?php echo $milestone->getID(); ?>">
     <div class="backdrop_box large sectioned" id="milestone_finish_container">
         <div class="backdrop_detail_header">
-            <?php
+            <span><?php
                 switch ($board->getType())
                 {
                     case AgileBoard::TYPE_GENERIC:
@@ -27,7 +27,8 @@
                         echo __('Mark sprint as finished');
                         break;
                 }
-            ?>
+            ?></span>
+            <a href="javascript:void(0);" class="closer" onclick="TBG.Main.Helpers.Backdrop.reset();"><?= fa_image_tag('times'); ?></a>
         </div>
         <div id="backdrop_detail_content" class="backdrop_detail_content edit_milestone">
             <?php
@@ -119,10 +120,11 @@
                 </div>
             <?php endif; ?>
             <div class="backdrop_details_submit">
-                <?php echo __('%cancel or %mark_milestone_finished', array('%cancel' => javascript_link_tag(__('Cancel'), array('onclick' => 'TBG.Main.Helpers.Backdrop.reset();')), '%mark_milestone_finished' => '')); ?>
-                <span id="milestone_edit_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
-                <input class="button button-silver" id="mark_milestone_finished_submit" type="submit" value="<?php echo $savelabel; ?>">
-                <input class="button button-silver" id="mark_milestone_finished_next" type="button" value="<?php echo __('Next'); ?>" style="display: none;" onclick="$('milestone_finish_container').hide();$('edit_milestone_container').show();">
+                <div class="submit_container">
+                    <span id="milestone_edit_indicator" style="display: none;"><?php echo image_tag('spinning_20.gif'); ?></span>
+                    <input class="button button-silver" id="mark_milestone_finished_submit" type="submit" value="<?php echo $savelabel; ?>">
+                    <input class="button button-silver" id="mark_milestone_finished_next" type="button" value="<?php echo __('Next'); ?>" style="display: none;" onclick="$('milestone_finish_container').hide();$('edit_milestone_container').show();">
+                </div>
             </div>
         </div>
     </div>

@@ -2,6 +2,8 @@
 
     namespace thebuggenie\modules\agile\entities\tables;
 
+    use b2db\Criteria;
+    use b2db\Update;
     use thebuggenie\core\entities\tables\ScopedTable;
 
     /**
@@ -31,25 +33,30 @@
 
         const B2DB_TABLE_VERSION = 1;
 
+        const SCOPE = 'agileboards.scope';
+
         public function getAvailableProjectBoards($user_id, $project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere('agileboards.project_id', $project_id);
-            $ctn = $crit->returnCriterion('agileboards.user_id', $user_id);
-            $ctn->addOr('agileboards.is_private', false);
-            $crit->addWhere($ctn);
+            $query = $this->getQuery();
+            $query->where('agileboards.project_id', $project_id);
 
-            return $this->select($crit);
+            $criteria = new Criteria();
+            $criteria->where('agileboards.user_id', $user_id);
+            $criteria->or('agileboards.is_private', false);
+
+            $query->and($criteria);
+
+            return $this->select($query);
         }
 
-        public function _migrateData(\b2db\Table $old_table)
+        protected function migrateData(\b2db\Table $old_table)
         {
             if ($old_table instanceof \thebuggenie\core\modules\installation\upgrade_413\AgileBoardsTable)
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate('agileboards.issue_field_values', serialize(array()));
+                $update = new Update();
+                $update->add('agileboards.issue_field_values', serialize(array()));
 
-                $this->doUpdate($crit);
+                $this->rawUpdate($update);
             }
         }
 

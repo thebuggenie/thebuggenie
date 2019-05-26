@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\publish\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\tables\ScopedTable;
 
@@ -33,11 +34,11 @@
         const ARTICLE = 'userarticles.article';
         const UID = 'userarticles.uid';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::ARTICLE, Articles::getTable(), Articles::ID);
-            parent::_addForeignKeyColumn(self::UID, \thebuggenie\core\entities\tables\Users::getTable(), \thebuggenie\core\entities\tables\Users::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::ARTICLE, Articles::getTable(), Articles::ID);
+            parent::addForeignKeyColumn(self::UID, \thebuggenie\core\entities\tables\Users::getTable(), \thebuggenie\core\entities\tables\Users::ID);
         }
 
         public function _setupIndexes()
@@ -48,11 +49,11 @@
         public function getUserIDsByArticleID($article_id)
         {
             $uids = array();
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
 
-            $crit->addWhere(self::ARTICLE, $article_id);
+            $query->where(self::ARTICLE, $article_id);
 
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -71,15 +72,15 @@
 
             if (count($old_watchers))
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::ARTICLE, $to_article_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
+                $insertion = new Insertion();
+                $insertion->add(self::ARTICLE, $to_article_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
                 foreach ($old_watchers as $uid)
                 {
                     if (!in_array($uid, $new_watchers))
                     {
-                        $crit->addInsert(self::UID, $uid);
-                        $this->doInsert($crit);
+                        $insertion->add(self::UID, $uid);
+                        $this->rawInsert($insertion);
                     }
                 }
             }
@@ -87,43 +88,43 @@
 
         public function getUserStarredArticles($user_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::UID, $user_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addJoin(tables\Articles::getTable(), Articles::ID, self::ARTICLE);
-            $crit->addWhere(Articles::DELETED, 0);
+            $query = $this->getQuery();
+            $query->where(self::UID, $user_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->join(tables\Articles::getTable(), Articles::ID, self::ARTICLE);
+            $query->where(Articles::DELETED, 0);
 
-            $res = $this->select($crit);
+            $res = $this->select($query);
             return $res;
         }
 
         public function addStarredArticle($user_id, $article_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ARTICLE, $article_id);
-            $crit->addInsert(self::UID, $user_id);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
+            $insertion = new Insertion();
+            $insertion->add(self::ARTICLE, $article_id);
+            $insertion->add(self::UID, $user_id);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
 
-            $this->doInsert($crit);
+            $this->rawInsert($insertion);
         }
 
         public function removeStarredArticle($user_id, $article_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE, $article_id);
-            $crit->addWhere(self::UID, $user_id);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE, $article_id);
+            $query->where(self::UID, $user_id);
 
-            $this->doDelete($crit);
+            $this->rawDelete($query);
             return true;
         }
 
         public function hasStarredArticle($user_id, $article_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE, $article_id);
-            $crit->addWhere(self::UID, $user_id);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE, $article_id);
+            $query->where(self::UID, $user_id);
 
-            return $this->count($crit);
+            return $this->count($query);
         }
 
     }

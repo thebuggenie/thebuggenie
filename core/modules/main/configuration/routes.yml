@@ -349,13 +349,6 @@ account_pick_username:
     parameters: [ ]
     csrf_enabled: true
 
-account_remove_openid:
-    route: /account/remove/openid/:openid/:csrf_token
-    module: main
-    action: removeOpenIDIdentity
-    parameters: [ ]
-    csrf_enabled: true
-
 account_confirm_scope:
     route: /account/confirm/scope/:scope_id/:csrf_token
     module: main
@@ -472,10 +465,10 @@ move_issue:
     parameters: [ ]
     csrf_enabled: false
 
-viewissue_find_issue:
-    route: /:project_key/findissues/:issue_id/:type
+viewissue_find_related_issues:
+    route: /:project_key/find_issues/:issue_id/related
     module: main
-    action: findIssue
+    action: findRelatedIssues
     parameters:
       format: json
     csrf_enabled: false
@@ -493,6 +486,14 @@ viewissue_remove_related_issue:
     module: main
     action: removeRelatedIssue
     parameters: [ ]
+    csrf_enabled: false
+
+viewissue_find_duplicated_issue:
+    route: /:project_key/find_issues/:issue_id/duplicated
+    module: main
+    action: findDuplicatedIssue
+    parameters:
+      format: json
     csrf_enabled: false
 
 viewissue_remove_duplicated_issue:
@@ -608,40 +609,6 @@ project_reportissue:
     parameters: [ ]
     csrf_enabled: false
 
-nextopenissue:
-    route: /:project_key/issues/:issue_no/next/open
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: next
-      mode: open
-    csrf_enabled: false
-
-nextissue:
-    route: /:project_key/issues/:issue_no/next
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: next
-    csrf_enabled: false
-
-previousopenissue:
-    route: /:project_key/issues/:issue_no/previous/open
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: previous
-      mode: open
-    csrf_enabled: false
-
-previousissue:
-    route: /:project_key/issues/:issue_no/previous
-    module: main
-    action: navigateIssue
-    parameters:
-      direction: previous
-    csrf_enabled: false
-
 issue_log:
     route: /:project_key/issuelog/:issue_id
     module: main
@@ -715,3 +682,24 @@ asset_js_unthemed:
     module: main
     action: Asset::resolve
     anonymous_route: true
+
+todo_delete:
+    route: /:project_key/issues/:issue_id/delete-todo/:comment_id
+    module: main
+    action: deleteTodo
+    parameters: [ ]
+    csrf_enabled: false
+
+todo_mark:
+    route: /:project_key/issues/:issue_id/mark-todo/:comment_id/:mark
+    module: main
+    action: toggleDoneTodo
+    parameters: [ ]
+    csrf_enabled: false
+
+todo_add:
+    route: /:project_key/issues/:issue_id/add-todo
+    module: main
+    action: addTodo
+    parameters: [ ]
+    csrf_enabled: false

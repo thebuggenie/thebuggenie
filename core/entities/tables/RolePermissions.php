@@ -5,6 +5,7 @@
     use b2db\Core,
         b2db\Criteria,
         b2db\Criterion;
+    use b2db\Insertion;
 
     /**
      * Roles <- permissions table
@@ -37,27 +38,27 @@
         const MODULE = 'rolepermissions.module';
         const TARGET_ID = 'rolepermissions.target_id';
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('role_id', self::ROLE_ID);
+            $this->addIndex('role_id', self::ROLE_ID);
         }
 
         public function clearPermissionsForRole($role_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ROLE_ID, $role_id);
+            $this->rawDelete($query);
         }
 
         public function addPermissionForRole($role_id, $permission, $module, $target_id = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ROLE_ID, $role_id);
-            $crit->addInsert(self::PERMISSION, $permission);
-            $crit->addInsert(self::MODULE, $module);
-            $crit->addInsert(self::TARGET_ID, $target_id);
+            $insertion = new Insertion();
+            $insertion->add(self::ROLE_ID, $role_id);
+            $insertion->add(self::PERMISSION, $permission);
+            $insertion->add(self::MODULE, $module);
+            $insertion->add(self::TARGET_ID, $target_id);
 
-            $this->doInsert($crit);
+            $this->rawInsert($insertion);
         }
 
     }

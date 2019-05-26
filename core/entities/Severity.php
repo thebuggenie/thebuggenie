@@ -14,7 +14,7 @@
         
         protected $_itemtype = Datatype::SEVERITY;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             $severities = array();
             $severities['Low'] = '';
@@ -23,7 +23,7 @@
 
             foreach ($severities as $name => $itemdata)
             {
-                $severity = new \thebuggenie\core\entities\Severity();
+                $severity = new Severity();
                 $severity->setName($name);
                 $severity->setItemdata($itemdata);
                 $severity->setScope($scope);

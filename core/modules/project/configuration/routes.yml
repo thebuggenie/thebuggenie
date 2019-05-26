@@ -207,7 +207,6 @@ configure_project_edition:
     parameters:
       config_module: core
       section: 10
-      format: json
     csrf_enabled: false
 
 configure_project_component:
@@ -217,7 +216,6 @@ configure_project_component:
     parameters:
       config_module: core
       section: 10
-      format: json
     csrf_enabled: false
 
 configure_project:
@@ -227,7 +225,6 @@ configure_project:
     parameters:
       config_module: core
       section: 10
-      format: json
     csrf_enabled: false
 
 project_getmenulinks:
@@ -434,30 +431,44 @@ project_roadmap_milestone_issues:
     parameters: [ ]
     csrf_enabled: false
 
-project_list_issues:
-    route: '/:project_key/list/issues/:format/*'
-    module: project
-    action: listIssues
-    parameters: [ ]
-    csrf_enabled: false
-
-project_update_issuedetails:
-    route: '/:project_key/update/issue/:issue_no/:format/*'
-    module: project
-    action: updateIssueDetails
-    parameters: [ ]
-    csrf_enabled: false
-
-project_list_workflowtransitions:
-    route: '/:project_key/list/workflowtransitions/:issue_no/:format/*'
-    module: project
-    action: listWorkflowTransitions
-    parameters: [ ]
-    csrf_enabled: false
-
 project_dashboard_specific:
     route: /:project_key/dashboard/:dashboard_id
     module: project
     action: dashboard
     parameters: [ ]
     csrf_enabled: false
+
+nextopenissue:
+    route: /:project_key/issues/:issue_no/next/open
+    module: project
+    action: navigateIssue
+    parameters:
+      direction: next
+      mode: open
+    csrf_enabled: false
+
+nextissue:
+    route: /:project_key/issues/:issue_no/next
+    module: project
+    action: navigateIssue
+    parameters:
+      direction: next
+    csrf_enabled: false
+
+previousopenissue:
+    route: /:project_key/issues/:issue_no/previous/open
+    module: project
+    action: navigateIssue
+    parameters:
+      direction: previous
+      mode: open
+    csrf_enabled: false
+
+previousissue:
+    route: /:project_key/issues/:issue_no/previous
+    module: project
+    action: navigateIssue
+    parameters:
+      direction: previous
+    csrf_enabled: false
+

@@ -2,7 +2,7 @@
     <div class="milestone_details" id="milestone_details_<?php echo $milestone->getID(); ?>">
         <h3>
             <span id="milestone_name" class="milestone_name"><?php echo $milestone->getName(); ?></span>&nbsp;
-            <?php echo javascript_link_tag(image_tag('icon_edit.png'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID()))."');", 'class' => 'button button-icon button-silver')); ?>
+            <?php echo javascript_link_tag(fa_image_tag('edit'), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'milestone', 'project_id' => $milestone->getProject()->getId(), 'milestone_id' => $milestone->getID()))."');", 'class' => 'button button-icon button-silver')); ?>
             <br>
         </h3>
         <span class="milestone_date">

@@ -41,6 +41,21 @@
             return null;
         }
 
+        public static function getOrCreateByKeyish($scope, $key, $name)
+        {
+            $item = static::getByKeyish($key);
+
+            if (!$item instanceof Keyable) {
+                $item = new static();
+                $item->setKey($key);
+                $item->setName($name);
+                $item->setScope($scope);
+                $item->save();
+            }
+
+            return $item;
+        }
+
         protected function _generateKey()
         {
             if ($this->_key === null)

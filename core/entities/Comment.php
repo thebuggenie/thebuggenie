@@ -3,10 +3,10 @@
     namespace thebuggenie\core\entities;
 
     use thebuggenie\core\entities\common\IdentifiableScoped;
+    use thebuggenie\core\entities\traits\TextParserTodo;
     use thebuggenie\core\helpers\MentionableProvider;
     use thebuggenie\core\framework;
     use thebuggenie\modules\publish;
-    use \Michelf\MarkdownExtra;
 
     /**
      * Class used for comments
@@ -38,6 +38,11 @@
          * Article comment
          */
         const TYPE_ARTICLE = 2;
+
+        /**
+         * Commit comment
+         */
+        const TYPE_COMMIT = 3;
 
         /**
          * @Column(type="text")
@@ -129,6 +134,16 @@
         protected $_syntax = framework\Settings::SYNTAX_MW;
 
         /**
+         * List of replies linked to this comment
+         *
+         * @var array
+         * @Relates(class="\thebuggenie\core\entities\Comment", collection=true, foreign_column="reply_to_comment")
+         */
+        protected $_replies;
+
+        protected $_replies_count;
+
+        /**
          * List of log items linked to this comment
          *
          * @var array
@@ -142,18 +157,43 @@
 
         protected $_parser = null;
 
+        public static function getPlaceholderTextForType($target_type)
+        {
+            $i18n = framework\Context::getI18n();
+
+            switch ($target_type) {
+                case self::TYPE_ISSUE:
+                    return $i18n->__('Issue created');
+                case self::TYPE_COMMIT:
+                    return $i18n->__('Commit pushed');
+                case self::TYPE_ARTICLE:
+                    return $i18n->__('Article created');
+            }
+        }
+
         /**
-         *
          * Returns all comments for a given item
          *
+         * @param $target_id
+         * @param $target_type
+         * @param string $sort_order
+         * @return Comment[]
          */
-        public static function getComments($target_id, $target_type, $sort_order = \b2db\Criteria::SORT_ASC)
+        public static function getComments($target_id, $target_type, $sort_order = \b2db\QueryColumnSort::SORT_ASC)
         {
             $comments = tables\Comments::getTable()->getComments($target_id, $target_type, $sort_order);
 
             return $comments;
         }
 
+        /**
+         * Returns all recent comments for a given item
+         *
+         * @param $user_id
+         * @param int $target_type
+         * @param int $limit
+         * @return Comment[]
+         */
         public static function getRecentCommentsByAuthor($user_id, $target_type = self::TYPE_ISSUE, $limit = 10)
         {
             $comments = tables\Comments::getTable()->getRecentCommentsByUserIDandTargetType($user_id, $target_type, $limit);
@@ -313,11 +353,11 @@
         /**
          * Returns the associated parser object
          *
-         * @return \thebuggenie\core\helpers\ContentParser
+         * @return \thebuggenie\core\helpers\ContentParser|TextParserTodo
          */
         protected function _getParser()
         {
-            if (!isset($this->_parser))
+            if (is_null($this->_parser))
             {
                 $this->_parseContent();
             }
@@ -366,7 +406,9 @@
                     }
                     $this->_addTargetNotifications();
                 }
-
+            }
+            else
+            {
                 switch ($this->getTargetType())
                 {
                     case self::TYPE_ISSUE:
@@ -630,6 +672,11 @@
             return $this->_content;
         }
 
+        public function getName()
+        {
+            return '';
+        }
+
         protected function _parseContent($options = array())
         {
             switch ($this->_syntax)
@@ -672,6 +719,11 @@
         public function getPosted()
         {
             return $this->_posted;
+        }
+
+        public function setPosted($timestamp)
+        {
+            $this->_posted = $timestamp;
         }
 
         public function isSystemComment()
@@ -764,7 +816,7 @@
         {
             if (!is_object($this->_reply_to_comment) && $this->_reply_to_comment)
             {
-                $this->_b2dbLazyload('_reply_to_comment');
+                $this->_b2dbLazyLoad('_reply_to_comment');
             }
             return $this->_reply_to_comment;
         }
@@ -791,7 +843,12 @@
 
         public function getLogItems()
         {
-            return $this->_b2dbLazyload('_log_items');
+            return $this->_b2dbLazyLoad('_log_items');
+        }
+
+        public function getReplies()
+        {
+            return $this->_b2dbLazyLoad('_replies');
         }
 
         public function getSyntax()
@@ -820,6 +877,26 @@
         protected function _postDelete()
         {
             $this->touchTargetIfItsIssue();
+        }
+
+        /**
+         * Get todos from comment content.
+         *
+         * @return array
+         */
+        public function getTodos()
+        {
+            return $this->_getParser()->getTodos();
+        }
+
+        /**
+         * Reset "cached" todos.
+         *
+         * @return void
+         */
+        public function resetTodos()
+        {
+            $this->_parser = null;
         }
 
     }

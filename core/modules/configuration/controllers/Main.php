@@ -4,7 +4,8 @@
 
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
-        thebuggenie\core\entities\tables;
+        thebuggenie\core\entities\tables,
+        GuzzleHttp\Client as GuzzleClient;
 
     class Main extends framework\Action
     {
@@ -81,7 +82,7 @@
                 {
                     $uptodate = false;
                     $title = framework\Context::getI18n()->__('The Bug Genie is out of date');
-                    $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', ['%ver' => $latest_version->nicever]);
+                    $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from thebuggenie.com.', ['%ver' => $latest_version->nicever]);
                 }
                 else
                 {
@@ -109,7 +110,7 @@
             {
                 $this->forward403unless($this->access_level == framework\Settings::ACCESS_FULL);
                 $settings = array(framework\Settings::SETTING_USER_DISPLAYNAME_FORMAT, framework\Settings::SETTING_ENABLE_GRAVATARS, framework\Settings::SETTING_IS_SINGLE_PROJECT_TRACKER,
-                    framework\Settings::SETTING_REQUIRE_LOGIN, framework\Settings::SETTING_ALLOW_REGISTRATION, framework\Settings::SETTING_ALLOW_OPENID, framework\Settings::SETTING_USER_GROUP,
+                    framework\Settings::SETTING_REQUIRE_LOGIN, framework\Settings::SETTING_ALLOW_REGISTRATION, framework\Settings::SETTING_USER_GROUP,
                     framework\Settings::SETTING_RETURN_FROM_LOGIN, framework\Settings::SETTING_RETURN_FROM_LOGOUT, framework\Settings::SETTING_IS_PERMISSIVE_MODE,
                     framework\Settings::SETTING_REGISTRATION_DOMAIN_WHITELIST, framework\Settings::SETTING_SHOW_PROJECTS_OVERVIEW, framework\Settings::SETTING_KEEP_COMMENT_TRAIL_CLEAN,
                     framework\Settings::SETTING_TBG_NAME, framework\Settings::SETTING_TBG_NAME_HTML, framework\Settings::SETTING_DEFAULT_CHARSET, framework\Settings::SETTING_DEFAULT_LANGUAGE,
@@ -435,12 +436,12 @@
                         if (array_key_exists($request['type'], $types))
                         {
                             $classname = $types[$request['type']];
-                            $item = $classname::getB2DBTable()->doDeleteById($request['id']);
+                            $item = $classname::getB2DBTable()->rawDeleteById($request['id']);
                             return $this->renderJSON(array('title' => $i18n->__('The option was deleted')));
                         }
                         else
                         {
-                            tables\CustomFieldOptions::getTable()->doDeleteById($request['id']);
+                            tables\CustomFieldOptions::getTable()->rawDeleteById($request['id']);
                             return $this->renderJSON(array('title' => $i18n->__('The option was deleted')));
                         }
                     }
@@ -519,6 +520,7 @@
          */
         public function runConfigureModules(framework\Request $request)
         {
+            $this->license_ok = framework\Settings::hasLicenseIdentifier();
             $this->module_message = framework\Context::getMessageAndClear('module_message');
             $this->module_error = framework\Context::getMessageAndClear('module_error');
             $this->modules = framework\Context::getModules();
@@ -734,6 +736,39 @@
         }
 
         /**
+         * Configure the license
+         *
+         * @param framework\Request $request
+         * @Route(name="configure_license", url="/configure/license")
+         * @Parameters(config_module="core", section=19)
+         */
+        public function runConfigureLicense(framework\Request $request)
+        {
+            if ($request->isPost()) {
+                $license_key = $request['license_key'];
+
+                $client = new GuzzleClient(['base_uri' => 'https://thebuggenie.com']);
+                $response = $client->get('/license/verify/' . $license_key);
+
+                $status = ($response->getStatusCode() == 200) ? json_decode($response->getBody(), true) : ['verified' => false];
+
+                if ($status['verified']) {
+
+                    framework\Settings::setLicenseIdentifier($license_key);
+                    return $this->renderJSON(['message' => $this->getI18n()->__('License key saved')]);
+
+                } else {
+
+                    framework\Settings::clearLicenseIdentifier();
+                    $this->getResponse()->setHttpStatus(400);
+                    return $this->renderJSON(['error' => $this->getI18n()->__('Could not verify license key')]);
+
+                }
+
+            }
+        }
+
+        /**
          * Configure the selected theme
          *
          * @param framework\Request $request
@@ -853,6 +888,9 @@
                         break;
                     case framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND:
                         framework\Context::setMessage('module_error', $this->getI18n()->__('The module could not be downloaded'));
+                        break;
+                    case framework\exceptions\ModuleDownloadException::MISSING_LICENSE:
+                        framework\Context::setMessage('module_error', $this->getI18n()->__('License key for automatic updates are missing'));
                         break;
                 }
             }
@@ -1998,7 +2036,8 @@
                                         case \thebuggenie\core\entities\CustomDatatype::INPUT_TEXTAREA_SMALL:
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::DATE_PICKER:
-                                            return $this->renderJSON(array('content' => date('Y-m-d', (int) $text)));
+                                        case \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER:
+                                            return $this->renderJSON(array('content' => date('Y-m-d' . (\thebuggenie\core\entities\CustomDatatype::getByKey($this->action->getCustomActionType())->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int) $text)));
                                             break;
                                         case \thebuggenie\core\entities\CustomDatatype::USER_CHOICE:
                                             return $this->renderJSON(array('content' => $this->getComponentHTML('main/userdropdown', array('user' => $text))));
@@ -2200,7 +2239,7 @@
 
         public function getAccessLevel($section, $module)
         {
-            return (framework\Context::getUser()->canSaveConfiguration($section, $module)) ? framework\Settings::ACCESS_FULL : framework\Settings::ACCESS_READ;
+            return framework\Settings::getAccessLevel($section, $module);
         }
 
         public function runAddClient(framework\Request $request)

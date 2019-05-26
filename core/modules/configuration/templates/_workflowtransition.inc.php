@@ -1,5 +1,5 @@
 <div class="workflow_browser_step_transition transition <?php echo $direction; ?>" id="transition_<?php echo $transition->getID(); ?>">
-    <?php if (!$transition->isCore() && !$transition->isInitialTransition()): ?>
+    <?php if (!$transition->isInitialTransition()): ?>
         <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="<?php echo make_url('configure_workflow_delete_transition', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID())); ?>" id="transition_<?php echo $transition->getID(); ?>_delete_form">
           <input type="hidden" name="direction" value="<?php echo $direction; ?>">
           <input type="hidden" name="step_id" value="<?php echo $step->getID(); ?>">

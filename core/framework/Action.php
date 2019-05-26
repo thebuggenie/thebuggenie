@@ -30,14 +30,27 @@
         const AUTHENTICATION_METHOD_ELEVATED = 'elevated';
         const AUTHENTICATION_METHOD_BASIC = 'basic';
 
+        /**
+         * Retrieves authentication method for running an
+         * action. Default method implementation will only detect
+         * whether the CLI is being used, and set the authentiction
+         * method appropriatelly, otherwise defaulting to standard
+         * (core) user authentication.
+         *
+         * Modules implementing their own controller should override
+         * this method if certain actions can be performed by
+         * providing application password, require elevated privileges
+         * etc.
+         *
+         * Use the AUTHENTICATION_METHOD constants from above when
+         * returning or checking the authentication method.
+         *
+         * @return string Authentication method.
+         */
         public function getAuthenticationMethodForAction($action)
         {
             if (Context::isCLI())
                 return self::AUTHENTICATION_METHOD_CLI;
-
-            if (in_array(Context::getRequest()->getRequestedFormat(), ['json', 'rss', 'xml'])) {
-                return self::AUTHENTICATION_METHOD_APPLICATION_PASSWORD;
-            }
 
             return self::AUTHENTICATION_METHOD_CORE;
         }
@@ -189,6 +202,26 @@
             $this->getResponse()->setHttpStatus(Response::HTTP_STATUS_NOT_MODIFIED);
             $this->getResponse()->renderHeaders();
             exit();
+        }
+
+        /**
+         * Sets response code to 400 (bad request), sending optional
+         * error message to caller.
+         *
+         * @param string $message [optional] Error message to return to caller.
+         */
+        public function return400($message = null)
+        {
+            if (Context::getRequest()->isAjaxCall() || Context::getRequest()->getRequestedFormat() == 'json')
+            {
+                $this->getResponse()->ajaxResponseText(Response::HTTP_STATUS_BAD_REQUEST, $message);
+            }
+
+            $this->message = $message;
+            $this->getResponse()->setHttpStatus(Response::HTTP_STATUS_BAD_REQUEST);
+            $this->getResponse()->setTemplate('main/http400');
+
+            return false;
         }
 
         /**

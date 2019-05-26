@@ -4,7 +4,7 @@
 Vagrant.configure("2") do |config|
 
   # Configure a single virtual machine.
-  config.vm.box = "bento/debian-8.6"
+  config.vm.box = "bento/debian-9.4"
   config.vm.hostname = "tbg"
 
   # Forward ports for accessing the web server.
@@ -20,6 +20,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "ansible/provision.yml"
     ansible.install_mode = "pip"
-    ansible.version = "2.2.0.0"
+    ansible.version = "2.5.4"
   end
 end

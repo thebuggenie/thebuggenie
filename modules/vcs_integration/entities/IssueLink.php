@@ -48,7 +48,7 @@
          */
         public function getIssue()
         {
-            return $this->_b2dbLazyload('_issue');
+            return $this->_b2dbLazyLoad('_issue');
         }
 
         /**
@@ -57,7 +57,7 @@
          */
         public function getCommit()
         {
-            return $this->_b2dbLazyload('_commit');
+            return $this->_b2dbLazyLoad('_commit');
         }
 
         /**

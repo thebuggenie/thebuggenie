@@ -2,6 +2,8 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
+    use b2db\Update;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -37,15 +39,15 @@
         const TARGET_ID = 'links.target_id';
         const SCOPE = 'links.scope';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::URL, 300);
-            parent::_addInteger(self::LINK_ORDER, 3);
-            parent::_addVarchar(self::TARGET_TYPE, 30);
-            parent::_addInteger(self::TARGET_ID, 10);
-            parent::_addVarchar(self::DESCRIPTION, 100, '');
-            parent::_addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::URL, 300);
+            parent::addInteger(self::LINK_ORDER, 3);
+            parent::addVarchar(self::TARGET_TYPE, 30);
+            parent::addInteger(self::TARGET_ID, 10);
+            parent::addVarchar(self::DESCRIPTION, 100, '');
+            parent::addForeignKeyColumn(self::UID, Users::getTable(), Users::ID);
         }
         
         public function addLink($target_type, $target_id = 0, $url = null, $description = null, $link_order = null, $scope = null)
@@ -53,25 +55,25 @@
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
             if ($link_order === null)
             {
-                $crit = $this->getCriteria();
-                $crit->addSelectionColumn(self::LINK_ORDER, 'max_order', Criteria::DB_MAX, '', '+1');
-                $crit->addWhere(self::TARGET_TYPE, $target_type);
-                $crit->addWhere(self::TARGET_ID, $target_id);
-                $crit->addWhere(self::SCOPE, $scope);
+                $query = $this->getQuery();
+                $query->addSelectionColumn(self::LINK_ORDER, 'max_order', \b2db\Query::DB_MAX, '', '+1');
+                $query->where(self::TARGET_TYPE, $target_type);
+                $query->where(self::TARGET_ID, $target_id);
+                $query->where(self::SCOPE, $scope);
     
-                $row = $this->doSelectOne($crit);
+                $row = $this->rawSelectOne($query);
                 $link_order = ($row->get('max_order')) ? $row->get('max_order') : 1;
             }
-            
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::TARGET_TYPE, $target_type);
-            $crit->addInsert(self::TARGET_ID, $target_id);
-            $crit->addInsert(self::URL, $url);
-            $crit->addInsert(self::DESCRIPTION, $description);
-            $crit->addInsert(self::LINK_ORDER, $link_order);
-            $crit->addInsert(self::UID, (framework\Context::getUser() instanceof \thebuggenie\core\entities\User) ? framework\Context::getUser()->getID() : 0);
-            $crit->addInsert(self::SCOPE, $scope);
-            $res = $this->doInsert($crit);
+
+            $insertion = new Insertion();
+            $insertion->add(self::TARGET_TYPE, $target_type);
+            $insertion->add(self::TARGET_ID, $target_id);
+            $insertion->add(self::URL, $url);
+            $insertion->add(self::DESCRIPTION, $description);
+            $insertion->add(self::LINK_ORDER, $link_order);
+            $insertion->add(self::UID, (framework\Context::getUser() instanceof \thebuggenie\core\entities\User) ? framework\Context::getUser()->getID() : 0);
+            $insertion->add(self::SCOPE, $scope);
+            $res = $this->rawInsert($insertion);
 
             framework\Context::getCache()->clearCacheKeys(array(framework\Cache::KEY_MAIN_MENU_LINKS));
 
@@ -81,12 +83,12 @@
         public function getLinks($target_type, $target_id = 0)
         {
             $links = array();
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::TARGET_TYPE, $target_type);
-            $crit->addWhere(self::TARGET_ID, $target_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addOrderBy(self::LINK_ORDER, Criteria::SORT_ASC);
-            if ($res = $this->doSelect($crit, 'none'))
+            $query = $this->getQuery();
+            $query->where(self::TARGET_TYPE, $target_type);
+            $query->where(self::TARGET_ID, $target_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->addOrderBy(self::LINK_ORDER, \b2db\QueryColumnSort::SORT_ASC);
+            if ($res = $this->rawSelect($query, 'none'))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -113,15 +115,15 @@
         
         public function removeByTargetTypeTargetIDandLinkID($target_type, $target_id, $link_id = null)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::TARGET_TYPE, $target_type);
-            $crit->addWhere(self::TARGET_ID, $target_id);
+            $query = $this->getQuery();
+            $query->where(self::TARGET_TYPE, $target_type);
+            $query->where(self::TARGET_ID, $target_id);
             if ($link_id !== null)
             {
-                $crit->addWhere(self::ID, $link_id);
+                $query->where(self::ID, $link_id);
             }
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
 
             framework\Context::getCache()->clearCacheKeys(array(framework\Cache::KEY_MAIN_MENU_LINKS));
             
@@ -142,10 +144,9 @@
         {
             foreach ($links as $key => $link_id)
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::LINK_ORDER, $key + 1);
-                $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-                $this->doUpdateById($crit, $link_id);
+                $update = new Update();
+                $update->add(self::LINK_ORDER, $key + 1);
+                $this->rawUpdateById($update, $link_id);
             }
             framework\Context::getCache()->clearCacheKeys(array(framework\Cache::KEY_MAIN_MENU_LINKS));
         }
@@ -154,15 +155,15 @@
         {
             $scope_id = $scope->getID();
             
-            $this->addMainMenuLink('http://www.thebuggenie.com', 'The Bug Genie homepage', 1, $scope_id);
+            $this->addMainMenuLink('https://thebuggenie.com', 'The Bug Genie homepage', 1, $scope_id);
             $this->addMainMenuLink(null, null, 2, $scope_id);
-            $this->addMainMenuLink('http://issues.thebuggenie.com', 'Online issue tracker', 4, $scope_id);
+            $this->addMainMenuLink('https://issues.thebuggenie.com', 'Online issue tracker', 4, $scope_id);
             $this->addMainMenuLink('', "''This is the issue tracker for The Bug Genie''", 5, $scope_id);
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('targettype_targetid_scope', array(self::TARGET_TYPE, self::TARGET_ID, self::SCOPE));
+            $this->addIndex('targettype_targetid_scope', array(self::TARGET_TYPE, self::TARGET_ID, self::SCOPE));
         }
 
     }

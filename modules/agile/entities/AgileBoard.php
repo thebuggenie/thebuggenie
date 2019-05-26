@@ -177,7 +177,7 @@
          */
         public function getUser()
         {
-            return $this->_b2dbLazyload('_user_id');
+            return $this->_b2dbLazyLoad('_user_id');
         }
 
         public function setUser($user)
@@ -192,7 +192,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project_id');
+            return $this->_b2dbLazyLoad('_project_id');
         }
 
         public function setProject($project)
@@ -207,7 +207,7 @@
          */
         public function getEpicIssuetype()
         {
-            return $this->_b2dbLazyload('_epic_issuetype_id');
+            return $this->_b2dbLazyLoad('_epic_issuetype_id');
         }
 
         public function getEpicIssuetypeID()
@@ -227,7 +227,7 @@
          */
         public function getTaskIssuetype()
         {
-            return $this->_b2dbLazyload('_task_issuetype_id');
+            return $this->_b2dbLazyLoad('_task_issuetype_id');
         }
 
         public function setTaskIssuetype($task_issuetype_id)
@@ -247,7 +247,7 @@
          */
         public function getBacklogSearch()
         {
-            return $this->_b2dbLazyload('_backlog_search_id');
+            return $this->_b2dbLazyLoad('_backlog_search_id');
         }
 
         public function setBacklogSearch($backlog_search)
@@ -508,7 +508,7 @@
          */
         public function getColumns()
         {
-            return $this->_b2dbLazyload('_board_columns');
+            return $this->_b2dbLazyLoad('_board_columns');
         }
 
         protected function _populateMilestoneSwimlanes(\thebuggenie\core\entities\Milestone $milestone)

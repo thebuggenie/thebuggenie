@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\Team;
     use thebuggenie\core\framework,
         b2db\Criteria;
 
@@ -21,6 +22,8 @@
      * @package thebuggenie
      * @subpackage tables
      *
+     * @method Team selectById()
+     *
      * @Table(name="teams")
      * @Entity(class="\thebuggenie\core\entities\Team")
      */
@@ -36,53 +39,53 @@
 
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ONDEMAND, false);
-            $crit->addOrderBy('teams.name', Criteria::SORT_ASC);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ONDEMAND, false);
+            $query->addOrderBy('teams.name', \b2db\QueryColumnSort::SORT_ASC);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function doesTeamNameExist($team_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, $team_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::NAME, $team_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return (bool) $this->doCount($crit);
+            return (bool) $this->count($query);
         }
 
         public function doesIDExist($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ONDEMAND, false);
-            $crit->addWhere(self::ID, $id);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::ONDEMAND, false);
+            $query->where(self::ID, $id);
+            return $this->count($query);
         }
 
         public function quickfind($team_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::NAME, "%{$team_name}%", Criteria::DB_LIKE);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ONDEMAND, false);
+            $query = $this->getQuery();
+            $query->where(self::NAME, "%{$team_name}%", \b2db\Criterion::LIKE);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ONDEMAND, false);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function countTeams()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere(self::ONDEMAND, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where(self::ONDEMAND, false);
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
-        protected function _setupIndexes()
+        protected function setupIndexes()
         {
-            $this->_addIndex('scope_ondemand', array(self::SCOPE, self::ONDEMAND));
+            $this->addIndex('scope_ondemand', array(self::SCOPE, self::ONDEMAND));
         }
 
     }

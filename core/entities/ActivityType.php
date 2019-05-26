@@ -16,11 +16,11 @@
         
         protected $_itemtype = Datatype::ACTIVITYTYPE;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             foreach (array("Investigation", "Documentation", "Development", "Testing", "Deployment") as $name)
             {
-                $activitytype = new \thebuggenie\core\entities\ActivityType();
+                $activitytype = new ActivityType();
                 $activitytype->setName($name);
                 $activitytype->setItemdata('');
                 $activitytype->setScope($scope);

@@ -1,6 +1,6 @@
 <p><?= __('Use this page to set up the connection details for your LDAP or Active Directory server. It is highly recommended that you read the online help before use, as misconfiguration may prevent you from accessing configuration pages to rectify issues.'); ?></p>
 
-<p><b><?= link_tag('http://issues.thebuggenie.com/wiki/Category%3ATheBugGenie%3AUserGuide%3AModules%3ALDAP', __('View the online documentation')); ?></b></p>
+<p><b><?= link_tag('https://issues.thebuggenie.com/wiki/Category%3ATheBugGenie%3AUserGuide%3AModules%3ALDAP', __('View the online documentation')); ?></b></p>
 
 <?php if ($noldap): ?>
     <div class="rounded_box red" style="margin-top: 5px">
@@ -125,9 +125,9 @@
             </table>
         </div>
         <?php if ($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL): ?>
-            <div class="rounded_box iceblue borderless cut_top" style="margin: 0 0 5px 0; width: 700px; border-top: 0; padding: 8px 5px 2px 5px; height: 25px;">
-                <div style="float: left; font-size: 13px; padding-top: 2px;"><?= __('Click "%save" to save the settings', array('%save' => __('Save'))); ?></div>
-                <input type="submit" id="submit_settings_button" style="float: right; padding: 0 10px 0 10px; font-size: 14px; font-weight: bold;" value="<?= __('Save'); ?>">
+            <div class="save-button-container">
+                <div class="message"><?= __('Click "%save" to save the settings', array('%save' => __('Save'))); ?></div>
+                <input type="submit" id="submit_settings_button" value="<?= __('Save'); ?>">
             </div>
         <?php endif; ?>
     </form>

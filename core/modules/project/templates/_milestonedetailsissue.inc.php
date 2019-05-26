@@ -1,9 +1,15 @@
+<?php
+
+/**
+ * @var \thebuggenie\core\entities\Issue $issue
+ */
+
+?>
 <?php $child = (isset($child)) ? $child : false; ?>
 <tr class="hover_highlight">
     <td style="font-weight: normal;" class="issue_title_container<?php if ($issue->isClosed()) echo ' faded_out'; ?>">
         <?php if ($child) echo image_tag('icon_tree_child.png', array('style' => 'float: left; margin: 0 5px 0 0;')); ?>
-        <?php echo image_tag($issue->getIssueType()->getIcon() . '_tiny.png', array('style' => 'float: left; margin: 2px 5px -2px 0;', 'title' => $issue->getIssueType()->getName())); ?>
-        <?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(false), 'project_key' => $issue->getProject()->getKey())), $issue->getFormattedTitle(), array('title' => $issue->getFormattedTitle(), 'style' => 'width: ' . (550 - 30*($child)).'px')); ?>
+        <?php echo link_tag(make_url('viewissue', array('issue_no' => $issue->getFormattedIssueNo(false), 'project_key' => $issue->getProject()->getKey())), fa_image_tag($issue->getIssueType()->getFontAwesomeIcon(), ['title' => $issue->getIssueType()->getName()]) . $issue->getFormattedTitle(), array('title' => $issue->getFormattedTitle(), 'style' => 'width: ' . (550 - 30*($child)).'px')); ?>
     </td>
     <td class="estimates">
         <span class="<?php if (!$issue->getSpentPoints()): ?> faded_out<?php endif; ?>" id="spent_time_<?php echo $issue->getID(); ?>_points"><?php echo $issue->getSpentPoints(); ?></span> /
@@ -15,7 +21,7 @@
     </td>
     <td class="milestone_issue_actions">
         <div>
-            <a class="dropper button button-icon button-silver" id="more_actions_<?php echo $issue->getID(); ?>_button"><?php echo image_tag('action_dropdown_small.png', array('title' => __('Show more actions'))); ?></a>
+            <a class="dropper button button-icon button-silver" id="more_actions_<?php echo $issue->getID(); ?>_button"><?php echo fa_image_tag('ellipsis-v', array('title' => __('Show more actions'))); ?></a>
             <?php include_component('main/issuemoreactions', array('issue' => $issue, 'multi' => true)); ?>
         </div>
     </td>

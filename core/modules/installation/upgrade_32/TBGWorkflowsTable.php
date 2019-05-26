@@ -32,13 +32,13 @@
         const DESCRIPTION = 'workflows.description';
         const IS_ACTIVE = 'workflows.is_active';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addInteger(self::SCOPE, 10);
-            parent::_addVarchar(self::NAME, 200);
-            parent::_addText(self::DESCRIPTION, false);
-            parent::_addBoolean(self::IS_ACTIVE);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addInteger(self::SCOPE, 10);
+            parent::addVarchar(self::NAME, 200);
+            parent::addText(self::DESCRIPTION, false);
+            parent::addBoolean(self::IS_ACTIVE);
         }
 
     }

@@ -1,21 +1,25 @@
 <?php $canedititem = (($itemtype == 'build' && $issue->canEditAffectedBuilds()) || ($itemtype == 'component' && $issue->canEditAffectedComponents()) || ($itemtype == 'edition' && $issue->canEditAffectedEditions())); ?>
 <li id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>" class="affected_item">
-    <?php echo image_tag('icon_'.$itemtype.'_large.png', array('alt' => $itemtypename, 'class' => 'icon_affected_type')); ?>
+    <?php if ($itemtype == 'component'): ?>
+        <?php echo fa_image_tag('puzzle-piece', ['title' => $itemtypename, 'class' => 'icon_affected_type']); ?>
+    <?php elseif ($itemtype == 'edition'): ?>
+        <?php echo fa_image_tag('window-restore', ['title' => $itemtypename, 'class' => 'icon_affected_type'], 'far'); ?>
+    <?php else: ?>
+        <?php echo fa_image_tag('compact-disc', ['title' => $itemtypename, 'class' => 'icon_affected_type']); ?>
+    <?php endif; ?>
     <?php if ($canedititem): ?>
-        <a href="javascript:void(0);" class="removelink" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove %itemname?', array('%itemname' => $item[$itemtype]->getName())); ?>', '<?php echo __('Please confirm that you want to remove this item from the list of items affected by this issue'); ?>', {yes: {click: function() {TBG.Issues.Affected.remove('<?php echo make_url('remove_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'])).'\', '.'\''.$itemtype.'_'.$item['a_id']; ?>');TBG.Main.Helpers.Dialog.dismiss();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo image_tag('action_delete.png', array('id' => 'affected_'.$itemtype.'_'.$item['a_id'].'_delete_icon', 'alt' => '[D]')); ?></a>
+        <a href="javascript:void(0);" class="removelink" onclick="TBG.Main.Helpers.Dialog.show('<?php echo __('Remove %itemname?', array('%itemname' => $item[$itemtype]->getName())); ?>', '<?php echo __('Please confirm that you want to remove this item from the list of items affected by this issue'); ?>', {yes: {click: function() {TBG.Issues.Affected.remove('<?php echo make_url('remove_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'])).'\', '.'\''.$itemtype.'_'.$item['a_id']; ?>');TBG.Main.Helpers.Dialog.dismiss();}}, no: {click: TBG.Main.Helpers.Dialog.dismiss}});"><?php echo fa_image_tag('times', array('id' => 'affected_'.$itemtype.'_'.$item['a_id'].'_delete_icon', 'class' => 'delete')); ?></a>
     <?php endif; ?>
     <span class="affected_name"><?php echo $item[$itemtype]->getName(); ?></span>
     <div class="status_badge dropper affected_status" id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status" style="background-color: <?php echo ($item['status'] instanceof \thebuggenie\core\entities\Status) ? $item['status']->getColor() : '#FFF'; ?>;" title="<?php echo ($item['status'] instanceof \thebuggenie\core\entities\Datatype) ? __($item['status']->getName()) : __('Unknown'); ?>"><?php echo ($item['status'] instanceof \thebuggenie\core\entities\Datatype) ? $item['status']->getName() : __('Unknown'); ?></div>
-    <ul class="rounded_box white shadowed dropdown_box leftie popup_box more_actions_dropdown" id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_change" style="display: none;">
-        <li class="header"><?php echo __('Set status'); ?></li>
+    <ul class="rounded_box white shadowed dropdown_box popup_box more_actions_dropdown" id="affected_<?php echo $itemtype; ?>_<?php echo $item['a_id']; ?>_status_change">
         <?php foreach ($statuses as $status): ?>
             <?php if (!$status->canUserSet($tbg_user)) continue; ?>
             <li>
                 <a href="javascript:void(0);" onclick="TBG.Issues.Affected.setStatus('<?php echo make_url('status_affected', array('issue_id' => $issue->getID(), 'affected_type' => $itemtype, 'affected_id' => $item['a_id'], 'status_id' => $status->getID())); ?>', '<?php echo $itemtype.'_'.$item['a_id']; ?>');">
-                    <div class="status_badge" style="background-color: <?php echo ($status instanceof \thebuggenie\core\entities\Status) ? $status->getColor() : '#FFF'; ?>;" id="status_<?php echo $issue->getID(); ?>_color">
-                        <span id="status_content">&nbsp;&nbsp;</span>
+                    <div class="status_badge" style="background-color: <?php echo $status->getColor(); ?>;color: <?php echo $status->getTextColor(); ?>;">
+                        <span><?php echo __($status->getName()); ?></span>
                     </div>
-                    <?php echo __($status->getName()); ?>
                 </a>
             </li>
         <?php endforeach; ?>

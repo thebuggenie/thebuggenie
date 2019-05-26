@@ -1,7 +1,8 @@
 # .htaccess file for The Bug Genie
 
 # Follow symlinks.
-Options +FollowSymlinks
+Options +SymlinksIfOwnerMatch
+# Options +FollowSymlinks
 
 # Apply rewrite rules for pretty URLs.
 <IfModule mod_rewrite.c>
@@ -32,6 +33,3 @@ Options +FollowSymlinks
     RewriteRule ^(.*)$ index.php?url=$1 [NC,QSA,L]
 
 </IfModule>
-
-# Prevent access to "hidden" files.
-RedirectMatch 404 ^/\..*$

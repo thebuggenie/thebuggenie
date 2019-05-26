@@ -1,4 +1,6 @@
-<<?php ?>?xml version="1.0" encoding="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" ?>
+<<?php ?>?xml version="1.0" encoding="<?php use thebuggenie\core\entities\LogItem;
+
+echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" ?>
 <rss version="2.0">
     <channel>
         <title><?php echo \thebuggenie\core\framework\Settings::getSiteHeaderName() . ' ~ '. __('%project_name project timeline', array('%project_name' => \thebuggenie\core\framework\Context::getCurrentProject()->getName())); ?></title>
@@ -26,61 +28,61 @@
                     $activity['text'] = str_replace("&rArr;", '->', html_entity_decode($activity['text']));
                     switch ($activity['change_type'])
                     {
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CREATED:
+                        case LogItem::ACTION_ISSUE_CREATED:
                             echo __('Issue created');
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CLOSE:
+                        case LogItem::ACTION_ISSUE_CLOSE:
                             echo __('Issue closed %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REOPEN:
+                        case LogItem::ACTION_ISSUE_REOPEN:
                             echo __('Issue reopened');
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE:
+                        case LogItem::ACTION_ISSUE_UPDATE_FREE_TEXT:
                             echo $activity['text'];
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CATEGORY:
+                        case LogItem::ACTION_ISSUE_UPDATE_CATEGORY:
                             echo __('Category changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED:
+                        case LogItem::ACTION_ISSUE_UPDATE_CUSTOMFIELD:
                             echo __('Custom field changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_STATUS:
+                        case LogItem::ACTION_ISSUE_UPDATE_STATUS:
                             echo __('Status changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REPRODUCABILITY:
+                        case LogItem::ACTION_ISSUE_UPDATE_REPRODUCABILITY:
                             echo __('Reproducability changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PRIORITY:
+                        case LogItem::ACTION_ISSUE_UPDATE_PRIORITY:
                             echo __('Priority changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_SEVERITY:
+                        case LogItem::ACTION_ISSUE_UPDATE_SEVERITY:
                             echo __('Severity changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_RESOLUTION:
+                        case LogItem::ACTION_ISSUE_UPDATE_RESOLUTION:
                             echo __('Resolution changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PERCENT:
+                        case LogItem::ACTION_ISSUE_UPDATE_PERCENT_COMPLETE:
                             echo __('Percent completed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_MILESTONE:
+                        case LogItem::ACTION_ISSUE_UPDATE_MILESTONE:
                             echo __('Target milestone changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ISSUETYPE:
+                        case LogItem::ACTION_ISSUE_UPDATE_ISSUETYPE:
                             echo __('Issue type changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_ESTIMATED:
+                        case LogItem::ACTION_ISSUE_UPDATE_ESTIMATED_TIME:
                             echo __('Estimation changed: %text', array('%text' => \thebuggenie\core\entities\common\Timeable::formatTimeableLog($activity['text'], $activity['previous_value'], $activity['current_value'], true, true)));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
+                        case LogItem::ACTION_ISSUE_UPDATE_TIME_SPENT:
                             echo __('Time spent: %text', array('%text' => \thebuggenie\core\entities\common\Timeable::formatTimeableLog($activity['text'], $activity['previous_value'], $activity['current_value'], true, true)));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ASSIGNED:
+                        case LogItem::ACTION_ISSUE_UPDATE_ASSIGNEE:
                             echo __('Assignee changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_OWNED:
+                        case LogItem::ACTION_ISSUE_UPDATE_OWNER:
                             echo __('Owner changed: %text', array('%text' => $activity['text']));
                             break;
-                        case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_POSTED:
+                        case LogItem::ACTION_ISSUE_UPDATE_POSTED_BY:
                             echo __('Posted by changed: %text', array('%text' => $activity['text']));
                             break;
                         default:

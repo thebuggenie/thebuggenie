@@ -6,6 +6,17 @@
 
 ?>
 <div id="project_release_center" class="project_info_container">
+    <div class="project_left_container">
+        <div class="project_left">
+            <h3><?php echo __('Filters'); ?></h3>
+            <ul class="simple_list">
+                <li class="selected"><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_active');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Active releases'); ?></a></li>
+                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_archived');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Archived releases'); ?></a></li>
+                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_downloads');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('With downloads'); ?></a></li>
+                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Show all releases'); ?></a></li>
+            </ul>
+        </div>
+    </div>
     <div class="project_right_container">
         <div class="project_right only_active" id="project_release_center_container">
             <?php if ($tbg_user->canManageProjectReleases($selected_project)): ?>
@@ -45,18 +56,6 @@
             <?php endif; ?>
         </div>
     </div>
-    <div class="project_left_container">
-        <div class="project_left">
-            <h3><?php echo __('Filters'); ?></h3>
-            <ul class="simple_list">
-                <li class="selected"><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_active');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Active releases'); ?></a></li>
-                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_archived');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Archived releases'); ?></a></li>
-                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); $('project_release_center_container').addClassName('only_downloads');TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('With downloads'); ?></a></li>
-                <li><a href="javascript:void(0);" onclick="TBG.Project.clearReleaseCenterFilters(); TBG.Project.checkAndToggleNoBuildsMessage();TBG.Project.toggleLeftSelection(this);"><?php echo __('Show all releases'); ?></a></li>
-            </ul>
-        </div>
-    </div>
-    <br style="clear: both;">
 </div>
 <?php if ($build_error): ?>
     <script type="text/javascript">

@@ -5,6 +5,7 @@
     use thebuggenie\core\framework;
 
     /**
+     * @method static Priority getByKeyish($key)
      * @Table(name="\thebuggenie\core\entities\tables\ListTypes")
      */
     class Priority extends Datatype
@@ -12,11 +13,11 @@
 
         const ITEMTYPE = Datatype::PRIORITY;
 
-        const PRIORITY_1 = 1;
-        const PRIORITY_2 = 2;
-        const PRIORITY_3 = 3;
-        const PRIORITY_4 = 4;
-        const PRIORITY_5 = 5;
+        const CRITICAL = 1;
+        const HIGH = 2;
+        const NORMAL = 3;
+        const LOW = 4;
+        const TRIVIAL = 5;
 
         protected static $_items = null;
 
@@ -24,18 +25,18 @@
 
         protected $_abbreviation = null;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             $priorities = array();
-            $priorities['Critical'] = self::PRIORITY_1;
-            $priorities['Needs to be fixed'] = self::PRIORITY_2;
-            $priorities['Must fix before next release'] = self::PRIORITY_3;
-            $priorities['Normal'] = self::PRIORITY_4;
-            $priorities['Low'] = self::PRIORITY_5;
+            $priorities['Critical'] = self::CRITICAL;
+            $priorities['High'] = self::HIGH;
+            $priorities['Normal'] = self::NORMAL;
+            $priorities['Low'] = self::LOW;
+            $priorities['Trivial'] = self::TRIVIAL;
 
             foreach ($priorities as $name => $itemdata)
             {
-                $priority = new \thebuggenie\core\entities\Priority();
+                $priority = new Priority();
                 $priority->setName($name);
                 $priority->setItemdata($itemdata);
                 $priority->setScope($scope);
@@ -60,7 +61,13 @@
 
         public static function getAvailableValues()
         {
-            return array(self::PRIORITY_1, self::PRIORITY_2, self::PRIORITY_3, self::PRIORITY_4, self::PRIORITY_5);
+            return [
+                self::CRITICAL => 'exclamation',
+                self::HIGH => 'angle-up',
+                self::NORMAL => 'minus',
+                self::LOW => 'angle-down',
+                self::TRIVIAL => 'angle-double-down'
+            ];
         }
 
     }

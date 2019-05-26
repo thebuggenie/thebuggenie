@@ -56,45 +56,33 @@
     </td>
     <td style="padding: 2px; text-align: center;" class="highlighted_column">
         <?php if (in_array($key, array('status'))): ?>
-            <input type="hidden" name="field[<?php echo $key; ?>][visible]" value="1"><?php echo image_tag('action_ok.png'); ?>
+            <input type="hidden" name="field[<?php echo $key; ?>][visible]" value="1"><?php echo fa_image_tag('check'); ?>
         <?php else: ?>
-            <?php if (!$scheme->isCore()): ?>
-                <input type="checkbox" onclick="if (this.checked) { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable').enable(); } else { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable').disable(); }" name="field[<?php echo $key; ?>][visible]" value="1"<?php if (array_key_exists($key, $visiblefields)): ?> checked<?php endif; ?>>
-            <?php else: ?>
-                <?php echo (array_key_exists($key, $visiblefields)) ? image_tag('action_ok.png') : ''; ?>
-            <?php endif; ?>
+            <input type="checkbox" class="fancycheckbox" id="f_<?= $issuetype->getID(); ?>_<?= $key; ?>_visible" onclick="if (this.checked) { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable').enable(); } else { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable').disable(); }" name="field[<?php echo $key; ?>][visible]" value="1"<?php if (array_key_exists($key, $visiblefields)): ?> checked<?php endif; ?>>
+            <label for="f_<?= $issuetype->getID(); ?>_<?= $key; ?>_visible"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label>
         <?php endif; ?>
     </td>
     <td style="padding: 2px; text-align: center;">
         <?php if (in_array($key, array('votes', 'owner', 'assignee'))): ?>
             <input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable"> -
         <?php else: ?>
-            <?php if (!$scheme->isCore()): ?>
-                <input type="checkbox" onclick="if (this.checked) { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional').enable();$('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required').enable(); } else { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional').disable();$('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required').disable(); }" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable" name="field[<?php echo $key; ?>][reportable]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['reportable']): ?> checked<?php endif; ?><?php if (!array_key_exists($key, $visiblefields) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>></td>
-            <?php else: ?>
-                <?php echo (array_key_exists($key, $visiblefields) && $visiblefields[$key]['reportable']) ? image_tag('action_ok.png') : ''; ?>
-            <?php endif; ?>
+            <input type="checkbox" class="fancycheckbox" id="f_<?= $issuetype->getID(); ?>_<?= $key; ?>_reportable" onclick="if (this.checked) { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional').enable();$('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required').enable(); } else { $('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional').disable();$('f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required').disable(); }" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_reportable" name="field[<?php echo $key; ?>][reportable]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['reportable']): ?> checked<?php endif; ?><?php if (!array_key_exists($key, $visiblefields) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>>
+            <label for="f_<?= $issuetype->getID(); ?>_<?= $key; ?>_reportable"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label>
         <?php endif; ?>
     <td style="padding: 2px; text-align: center;">
-        <?php if (in_array($key, array('description', 'reproduction_steps', 'user_pain', 'votes', 'owner', 'assignee')) || (is_object($item) && $item instanceof \thebuggenie\core\entities\CustomDatatype && $item->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER)): ?>
+        <?php if (in_array($key, array('description', 'reproduction_steps', 'user_pain', 'votes', 'owner', 'assignee')) || (is_object($item) && $item instanceof \thebuggenie\core\entities\CustomDatatype && $item->getType() == \thebuggenie\core\entities\CustomDatatype::DATE_PICKER) || (is_object($item) && $item instanceof \thebuggenie\core\entities\CustomDatatype && $item->getType() == \thebuggenie\core\entities\CustomDatatype::DATETIME_PICKER)): ?>
             <input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional"> -
         <?php else: ?>
-            <?php if (!$scheme->isCore()): ?>
-                <input type="checkbox" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional" name="field[<?php echo $key; ?>][additional]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['additional']): ?> checked<?php endif; ?><?php if ((!array_key_exists($key, $visiblefields) || !$visiblefields[$key]['reportable']) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>>
-            <?php else: ?>
-                <?php echo (array_key_exists($key, $visiblefields) && $visiblefields[$key]['additional']) ? image_tag('action_ok.png') : ''; ?>
-            <?php endif; ?>
+            <input type="checkbox" class="fancycheckbox" id="f_<?= $issuetype->getID(); ?>_<?= $key; ?>_additional" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_additional" name="field[<?php echo $key; ?>][additional]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['additional']): ?> checked<?php endif; ?><?php if ((!array_key_exists($key, $visiblefields) || !$visiblefields[$key]['reportable']) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>>
+            <label for="f_<?= $issuetype->getID(); ?>_<?= $key; ?>_additional"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label>
         <?php endif; ?>
     </td>
     <td style="padding: 2px; text-align: center;">
         <?php if (in_array($key, array('votes', 'owner', 'assignee'))): ?>
             <input type="hidden" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required"> -
         <?php else: ?>
-            <?php if (!$scheme->isCore()): ?>
-                <input type="checkbox" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required" name="field[<?php echo $key; ?>][required]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['required']): ?> checked<?php endif; ?><?php if ((!array_key_exists($key, $visiblefields) || !$visiblefields[$key]['reportable']) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>>
-            <?php else: ?>
-                <?php echo (array_key_exists($key, $visiblefields) && $visiblefields[$key]['required']) ? image_tag('action_ok.png') : ''; ?>
-            <?php endif; ?>
+            <input type="checkbox" class="fancycheckbox" id="f_<?= $issuetype->getID(); ?>_<?= $key; ?>_required" id="f_<?php echo $issuetype->getID(); ?>_<?php echo $key; ?>_required" name="field[<?php echo $key; ?>][required]" value="1"<?php if (array_key_exists($key, $visiblefields) && $visiblefields[$key]['required']): ?> checked<?php endif; ?><?php if ((!array_key_exists($key, $visiblefields) || !$visiblefields[$key]['reportable']) && !in_array($key, array('status'))): ?> disabled<?php endif; ?>>
+            <label for="f_<?= $issuetype->getID(); ?>_<?= $key; ?>_required"><?= fa_image_tag('check-square', ['class' => 'checked'], 'far') . fa_image_tag('square', ['class' => 'unchecked'], 'far'); ?></label>
         <?php endif; ?>
     </td>
 </tr>

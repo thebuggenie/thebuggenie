@@ -56,7 +56,7 @@
             $this->cliEcho("By making a donation, or buying a support contract you can help us continue development.\n\n");
             $this->cliEcho("If this software is valuable to you - please consider supporting it.\n\n");
             $this->cliEcho("More information about supporting The Bug Genie's development can be found here:\n");
-            $this->cliEcho("http://www.thebuggenie.com/support\n\n", 'blue', 'underline');
+            $this->cliEcho("https://thebuggenie.com/support\n\n", 'blue', 'underline');
             $this->cliEcho("Press ENTER to continue: ");
 
             $this->pressEnterToContinue();
@@ -142,7 +142,7 @@
                         $this->cliEcho("The Bug Genie uses a database to store information. To be able to connect\nto your database, The Bug Genie needs some information, such as\ndatabase type, username, password, etc.\n\n");
                         $this->cliEcho("Please select what kind of database you are installing The Bug Genie on:\n");
                         $db_types = array();
-                        foreach (\b2db\Core::getDBtypes() as $db_type => $db_desc)
+                        foreach (\b2db\Core::getDrivers() as $db_type => $db_desc)
                         {
                             $db_types[] = $db_type;
                             $this->cliEcho(count($db_types) . ': ' . $db_desc . "\n", 'white', 'bold');
@@ -189,22 +189,22 @@
                         while (!$e_ok);
                         try
                         {
-                            \b2db\Core::setHost($db_hostname);
-                            \b2db\Core::setUname($db_username);
-                            \b2db\Core::setPasswd($db_password);
-                            \b2db\Core::setDBtype($db_type);
+                            \b2db\Core::setHostname($db_hostname);
+                            \b2db\Core::setUsername($db_username);
+                            \b2db\Core::setPassword($db_password);
+                            \b2db\Core::setDriver($db_type);
                             \b2db\Core::setTablePrefix('tbg_');
 
                             \b2db\Core::doConnect();
                             \b2db\Core::createDatabase($db_name);
-                            \b2db\Core::setDBname($db_name);
+                            \b2db\Core::setDatabaseName($db_name);
                             \b2db\Core::doConnect();
                         }
                         catch (\Exception $e)
                         {
                             throw new \Exception("Could not connect to the database:\n" . $e->getMessage());
                         }
-                        \b2db\Core::setDBname($db_name);
+                        \b2db\Core::setDatabaseName($db_name);
                         $this->cliEcho("\nSuccessfully connected to the database.\n", 'green');
                         $this->cliEcho("Press ENTER to continue ... ");
                         $this->pressEnterToContinue();
@@ -244,7 +244,7 @@
                     {
                         $this->cliEcho("URL rewriting\n", 'cyan', 'bold');
                         $this->cliEcho("The Bug Genie uses a technique called \"url rewriting\" - which allows for pretty\nURLs such as ") . $this->cliEcho('/issue/1', 'white', 'bold') . $this->cliEcho(' instead of ') . $this->cliEcho("viewissue.php?issue_id=1\n", 'white', 'bold');
-                        $this->cliEcho("Make sure you have read the URL_REWRITE document located in the root\nfolder, or at http://www.thebuggenie.com before you continue\n");
+                        $this->cliEcho("Make sure you have read the URL_REWRITE document located in the root\nfolder, or at https://thebuggenie.com before you continue\n");
 
                         if (!$this->hasProvidedArgument('url_subdir'))
                         {
@@ -419,7 +419,7 @@
                         $this->cliEcho("The installation was completed successfully!\n", 'green', 'bold');
                         $this->cliEcho("\nTo use The Bug Genie, access http://example.com" . $url_subdir . "index.php with a web-browser.\n");
                         $this->cliEcho("The default username is ") . $this->cliEcho('Administrator') . $this->cliEcho(' and the password is ') . $this->cliEcho('admin');
-                        $this->cliEcho("\n\nFor support, please visit ") . $this->cliEcho('http://www.thebuggenie.com/', 'blue', 'underline');
+                        $this->cliEcho("\n\nFor support, please visit ") . $this->cliEcho('https://thebuggenie.com/', 'blue', 'underline');
                         $this->cliEcho("\n");
                     }
                     catch (\Exception $e)

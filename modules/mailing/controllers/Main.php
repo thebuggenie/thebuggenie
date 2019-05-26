@@ -3,7 +3,8 @@
     namespace thebuggenie\modules\mailing\controllers;
 
     use thebuggenie\core\framework,
-        thebuggenie\modules\mailing\entities;
+        thebuggenie\modules\mailing\entities,
+		thebuggenie\modules\mailing;
 
     class Main extends framework\Action
     {
@@ -132,10 +133,11 @@
                     $account->setKeepEmails($request['keepemail']);
                     $account->setServer($request['servername']);
                     $account->setUsername($request['username']);
-                    $account->setPassword($request['password']);
-                    $account->setSSL((boolean) $request['ssl']);
-                    $account->setIgnoreCertificateValidation((boolean) $request['ignore_certificate_validation']);
-                    $account->setUsePlaintextAuthentication((boolean) $request['plaintext_authentication']);
+                    $account->setPassword($request->getRawParameter('password'));
+                    $account->setSSL((bool) $request['ssl']);
+                    $account->setPreferHtml((bool) $request['prefer_html']);
+                    $account->setIgnoreCertificateValidation((bool) $request['ignore_certificate_validation']);
+                    $account->setUsePlaintextAuthentication((bool) $request['plaintext_authentication']);
                     $account->setServerType((integer) $request['account_type']);
                     $account->save();
 
@@ -257,14 +259,14 @@
                 {
                     if (filter_var(trim($request['mailing_from_address']), FILTER_VALIDATE_EMAIL) !== false)
                     {
-                        framework\Context::getModule('mailing')->saveSetting(Mailing::SETTING_PROJECT_FROM_ADDRESS . $project_id, trim(mb_strtolower($request->getParameter('mailing_from_address'))));
+                        framework\Context::getModule('mailing')->saveSetting(\thebuggenie\modules\mailing\Mailing::SETTING_PROJECT_FROM_ADDRESS . $project_id, trim(mb_strtolower($request->getParameter('mailing_from_address'))));
                         if (trim($request['mailing_from_name']) !== '')
                         {
-                            framework\Context::getModule('mailing')->saveSetting(Mailing::SETTING_PROJECT_FROM_NAME . $project_id, trim($request->getParameter('mailing_from_name')));
+                            framework\Context::getModule('mailing')->saveSetting(\thebuggenie\modules\mailing\Mailing::SETTING_PROJECT_FROM_NAME . $project_id, trim($request->getParameter('mailing_from_name')));
                         }
                         else
                         {
-                            framework\Context::getModule('mailing')->deleteSetting(Mailing::SETTING_PROJECT_FROM_NAME . $project_id);
+                            framework\Context::getModule('mailing')->deleteSetting(\thebuggenie\modules\mailing\Mailing::SETTING_PROJECT_FROM_NAME . $project_id);
                         }
                     }
                     else
@@ -275,8 +277,8 @@
                 }
                 elseif (trim($request['mailing_from_address']) == '')
                 {
-                    framework\Context::getModule('mailing')->deleteSetting(Mailing::SETTING_PROJECT_FROM_ADDRESS . $project_id);
-                    framework\Context::getModule('mailing')->deleteSetting(Mailing::SETTING_PROJECT_FROM_NAME . $project_id);
+                    framework\Context::getModule('mailing')->deleteSetting(\thebuggenie\modules\mailing\Mailing::SETTING_PROJECT_FROM_ADDRESS . $project_id);
+                    framework\Context::getModule('mailing')->deleteSetting(\thebuggenie\modules\mailing\Mailing::SETTING_PROJECT_FROM_NAME . $project_id);
                 }
 
                 return $this->renderJSON(array('failed' => false, 'message' => framework\Context::getI18n()->__('Settings saved')));

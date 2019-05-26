@@ -38,37 +38,37 @@
 
         public function getAll()
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->indexBy(self::FIELD_KEY);
-            return $this->select($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->indexBy(self::FIELD_KEY);
+            return $this->select($query);
         }
 
         public function countByKey($key)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::FIELD_KEY, $key);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::FIELD_KEY, $key);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function getByKey($key)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::FIELD_KEY, $key);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::FIELD_KEY, $key);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            return $this->doSelectOne($crit);
+            return $this->rawSelectOne($query);
         }
 
         public function getKeyFromID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ID, $id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->where(self::ID, $id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
-            $row = $this->doSelectOne($crit);
+            $row = $this->rawSelectOne($query);
             if ($row instanceof \b2db\Row)
             {
                 return $row->get(self::FIELD_KEY);

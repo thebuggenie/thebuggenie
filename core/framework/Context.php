@@ -32,6 +32,9 @@ use thebuggenie\core\helpers\TextParserMarkdown;
 class Context
 {
 
+    const INTERNAL_MODULES = 'internal_modules';
+    const EXTERNAL_MODULES = 'external_modules';
+
     protected static $_environment = 2;
     protected static $_debug_mode = true;
     protected static $debug_id = null;
@@ -56,16 +59,23 @@ class Context
     /**
      * List of modules
      *
-     * @var array|\thebuggenie\core\entities\Module
+     * @var Module[]
      */
     protected static $_modules = array();
 
     /**
      * List of internal modules
      *
-     * @var array|string
+     * @var CoreModule[]
      */
     protected static $_internal_modules = array();
+
+    /**
+     * List of internal module paths
+     *
+     * @var string[]
+     */
+    protected static $_internal_module_paths = array();
 
     /**
      * List of permissions
@@ -496,11 +506,6 @@ class Context
             $starttime = explode(' ', microtime());
             define('NOW', (integer) $starttime[1]);
 
-            // Set up error and exception handling
-            set_exception_handler(array('\thebuggenie\core\framework\Context', 'exceptionHandler'));
-            set_error_handler(array('\thebuggenie\core\framework\Context', 'errorHandler'));
-            error_reporting(E_ALL | E_NOTICE | E_STRICT);
-
             // Set the start time
             self::setLoadStart($starttime[1] + $starttime[0]);
 
@@ -598,7 +603,7 @@ class Context
     protected static function setupI18n()
     {
         Logging::log('Initializing i18n');
-        if (!self::isCLI())
+        if (true || !self::isCLI())
         {
             $language = (self::$_user instanceof User) ? self::$_user->getLanguage() : Settings::getLanguage();
 
@@ -635,7 +640,7 @@ class Context
                 if ($event->isProcessed())
                     self::loadUser($event->getReturnValue());
                 elseif (!self::isCLI())
-                    self::loadUser();
+                    self::loadUser(null);
                 else
                     self::$_user = new User();
 
@@ -711,15 +716,26 @@ class Context
         Logging::log('... done (loading event listeners)');
     }
 
+    /**
+     * @return interfaces\ModuleInterface[][]
+     */
+    public static function getAllModules()
+    {
+        return [
+            self::INTERNAL_MODULES => self::$_internal_modules,
+            self::EXTERNAL_MODULES => self::getModules()
+        ];
+    }
+
     protected static function loadRoutes()
     {
         Logging::log('Loading routes from routing files', 'routing');
 
-        foreach (array('internal' => self::$_internal_modules, 'external' => self::getModules()) as $module_type => $modules)
+        foreach (self::getAllModules() as $modules)
         {
             foreach ($modules as $module_name => $module)
             {
-                self::getRouting()->loadRoutes($module_name, $module_type);
+                self::getRouting()->loadRoutes($module_name);
             }
         }
         self::getRouting()->loadYamlRoutes(\THEBUGGENIE_CONFIGURATION_PATH . 'routes.yml');
@@ -897,6 +913,7 @@ class Context
     {
         $theme_path_handle = opendir(THEBUGGENIE_PATH . 'themes' . DS);
         $themes = array();
+        $parser = new TextParserMarkdown();
 
         while ($theme = readdir($theme_path_handle))
         {
@@ -907,7 +924,7 @@ class Context
                     'name' => ucfirst($theme),
                     'version' => file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'VERSION'),
                     'author' => file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'AUTHOR'),
-                    'description' => TextParserMarkdown::defaultTransform(file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'README.md'))
+                    'description' => $parser->transform(file_get_contents(THEBUGGENIE_PATH . 'themes' . DS . $theme . DS . 'README.md'))
                 );
             }
         }
@@ -924,10 +941,10 @@ class Context
     {
         try
         {
-            self::$_user = ($user === null) ? User::loginCheck(self::getRequest(), self::getCurrentAction()) : $user;
+            self::$_user = ($user === null) ? User::identify(self::getRequest(), self::getCurrentAction(), true) : $user;
             if (self::$_user->isAuthenticated())
             {
-                if (!self::getRequest()->hasCookie('tbg3_original_username'))
+                if (!self::getRequest()->hasCookie('original_username'))
                 {
                     self::$_user->updateLastSeen();
                 }
@@ -976,9 +993,13 @@ class Context
 
     public static function switchUserContext(User $user)
     {
+        if (self::getUser() instanceof User && $user->getID() == self::getUser()->getID()) {
+            return;
+        }
+
         self::setUser($user);
         Settings::forceSettingsReload();
-        self::cacheAllPermissions();
+        self::reloadPermissionsCache();
     }
 
     /**
@@ -996,13 +1017,22 @@ class Context
                 if (in_array($modulename, array('.', '..')) || !is_dir(THEBUGGENIE_INTERNAL_MODULES_PATH . $modulename))
                     continue;
 
-                self::$_internal_modules[$modulename] = $modulename;
+                self::$_internal_module_paths[$modulename] = $modulename;
             }
+
+            self::getCache()->add(Cache::KEY_INTERNAL_MODULES, $modules, false);
         }
         else
         {
             Logging::log('Loading cached modules');
-            self::$_internal_modules = $modules;
+            self::$_internal_module_paths = $modules;
+        }
+
+        foreach (self::$_internal_module_paths as $modulename)
+        {
+            $classname = "\\thebuggenie\\core\\modules\\{$modulename}\\" . ucfirst($modulename);
+            self::$_internal_modules[$modulename] = new $classname($modulename);
+            self::$_internal_modules[$modulename]->initialize();
         }
 
         Logging::log('...done (loading internal modules)');
@@ -1054,7 +1084,7 @@ class Context
     /**
      * Adds a module to the module list
      *
-     * @param \thebuggenie\core\entities\Module $module
+     * @param Module $module
      */
     public static function addModule($module, $module_name)
     {
@@ -1082,7 +1112,7 @@ class Context
     /**
      * Returns an array of modules
      *
-     * @return array
+     * @return Module[]
      */
     public static function getModules()
     {
@@ -1114,7 +1144,7 @@ class Context
     /**
      * Get uninstalled modules
      *
-     * @return array|\thebuggenie\core\entities\Module
+     * @return Module[]
      */
     public static function getUninstalledModules()
     {
@@ -1141,7 +1171,7 @@ class Context
      *
      * @param string $module_name
      *
-     * @return \thebuggenie\core\entities\Module
+     * @return Module
      */
     public static function getModule($module_name)
     {
@@ -1181,36 +1211,36 @@ class Context
      */
     public static function getAllPermissions($type, $uid, $tid, $gid, $target_id = null, $all = false)
     {
-        $crit = new \b2db\Criteria();
-        $crit->addWhere(Permissions::SCOPE, self::getScope()->getID());
-        $crit->addWhere(Permissions::PERMISSION_TYPE, $type);
+        $query = Permissions::getTable()->getQuery();
+        $query->where(Permissions::SCOPE, self::getScope()->getID());
+        $query->where(Permissions::PERMISSION_TYPE, $type);
 
         if (($uid + $tid + $gid) == 0 && !$all)
         {
-            $crit->addWhere(Permissions::UID, $uid);
-            $crit->addWhere(Permissions::TID, $tid);
-            $crit->addWhere(Permissions::GID, $gid);
+            $query->where(Permissions::UID, $uid);
+            $query->where(Permissions::TID, $tid);
+            $query->where(Permissions::GID, $gid);
         }
         else
         {
             switch (true)
             {
                 case ($uid != 0):
-                    $crit->addWhere(Permissions::UID, $uid);
+                    $query->where(Permissions::UID, $uid);
                 case ($tid != 0):
-                    $crit->addWhere(Permissions::TID, $tid);
+                    $query->where(Permissions::TID, $tid);
                 case ($gid != 0):
-                    $crit->addWhere(Permissions::GID, $gid);
+                    $query->where(Permissions::GID, $gid);
             }
         }
         if ($target_id !== null)
         {
-            $crit->addWhere(Permissions::TARGET_ID, $target_id);
+            $query->where(Permissions::TARGET_ID, $target_id);
         }
 
         $permissions = array();
 
-        if ($res = Permissions::getTable()->doSelect($crit))
+        if ($res = Permissions::getTable()->rawSelect($query))
         {
             while ($row = $res->getNextRow())
             {
@@ -1288,6 +1318,15 @@ class Context
     {
         self::getCache()->delete(Cache::KEY_PERMISSIONS_CACHE, true, true);
         self::getCache()->fileDelete(Cache::KEY_PERMISSIONS_CACHE, true, true);
+    }
+
+    public static function reloadPermissionsCache()
+    {
+        self::$_available_permission_paths = null;
+        self::$_available_permissions = null;
+
+        self::_cacheAvailablePermissions();
+        self::cacheAllPermissions();
     }
 
     /**
@@ -1589,7 +1628,6 @@ class Context
             $i18n = self::getI18n();
             self::$_available_permissions = array('user' => array(), 'general' => array(), 'project' => array());
 
-            self::$_available_permissions['user']['canseeallissues'] = array('description' => $i18n->__('Can see issues reported by other users'), 'mode' => 'permissive');
             self::$_available_permissions['user']['canseegroupissues'] = array('description' => $i18n->__('Can see issues reported by users in the same group'), 'mode' => 'permissive');
             self::$_available_permissions['configuration']['cansaveconfig'] = array('description' => $i18n->__('Can access the configuration page and edit all configuration'), 'details' => array());
             self::$_available_permissions['configuration']['cansaveconfig']['details'][] = array('canviewconfig' => array('description' => $i18n->__('Read-only access: "Settings" configuration page'), 'target_id' => 12));
@@ -1626,6 +1664,7 @@ class Context
             self::$_available_permissions['pages']['page_account_access']['details']['canchangepassword'] = array('description' => $i18n->__('Can change own password'), 'mode' => 'permissive');
             self::$_available_permissions['pages']['page_teamlist_access'] = array('description' => $i18n->__('Can see list of teams in header menu'));
             self::$_available_permissions['pages']['page_clientlist_access'] = array('description' => $i18n->__('Can access all clients'));
+            self::$_available_permissions['project']['canseeallissues'] = array('description' => $i18n->__('Can see issues reported by other users'), 'mode' => 'permissive');
             self::$_available_permissions['project']['canseeproject'] = array('description' => $i18n->__('Has access to the project'), 'details' => array());
             self::$_available_permissions['project']['canseeproject']['details']['canseeprojecthierarchy'] = array('description' => $i18n->__('Can see complete project hierarchy'));
             self::$_available_permissions['project']['canseeproject']['details']['canseeprojecthierarchy']['details']['canseeallprojecteditions'] = array('description' => $i18n->__('Can see all editions'));
@@ -1692,9 +1731,16 @@ class Context
                 self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['candeleteissues'.$suffix] = array('description' => $i18n->__('Can delete issue'));
             }
 
+            foreach ($arr as $suffix => $description) {
+                self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['caneditissuecustomfields'.$suffix] = [
+                    'description' => $i18n->__('Can edit custom fields for issues'),
+                    'details' => []
+                ];
+            }
+
             foreach (CustomDatatype::getAll() as $cdf) {
                 foreach ($arr as $suffix => $description) {
-                    self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['caneditissue'.$suffix]['details']['caneditissuecustomfields'.$suffix]['details']['caneditissuecustomfields' . $cdf->getKey() . $suffix] = array('description' => $i18n->__('Can change custom field "%field_name"', array('%field_name' => $i18n->__($cdf->getDescription()))));
+                    self::$_available_permissions['issues']['caneditissue'.$suffix]['details']['caneditissuecustomfields'.$suffix]['details']['caneditissuecustomfields' . $cdf->getKey() . $suffix] = array('description' => $i18n->__('Can change custom field "%field_name"', array('%field_name' => $i18n->__($cdf->getDescription()))));
                 }
 
                 // Set permissions for custom option types
@@ -1824,16 +1870,10 @@ class Context
      */
     public static function logout()
     {
-        if (Settings::isUsingExternalAuthenticationBackend())
-        {
-            $mod = self::getModule(Settings::getAuthenticationBackend());
-            $mod->logout();
-        }
+        $authentication_backend = Settings::getAuthenticationBackend();
+        $authentication_backend->logout();
 
         Event::createNew('core', 'pre_logout')->trigger();
-        self::getResponse()->deleteCookie('tbg3_username');
-        self::getResponse()->deleteCookie('tbg3_password');
-        self::getResponse()->deleteCookie('tbg3_elevated_password');
         self::getResponse()->deleteCookie('THEBUGGENIE');
         session_regenerate_id(true);
         Event::createNew('core', 'post_logout')->trigger();
@@ -2496,6 +2536,46 @@ class Context
         }
     }
 
+    public static function bootstrap()
+    {
+        // Set up error and exception handling
+        set_exception_handler([self::class, 'exceptionHandler']);
+        set_error_handler([self::class, 'errorHandler']);
+        error_reporting(E_ALL | E_NOTICE | E_STRICT);
+
+        if (PHP_VERSION_ID < 70100)
+            die('This software requires PHP 7.1.0 or newer. Please upgrade to a newer version of php to use The Bug Genie.');
+
+        gc_enable();
+        date_default_timezone_set('UTC');
+
+        if (!defined('THEBUGGENIE_PATH'))
+            die('You must define the THEBUGGENIE_PATH constant so we can find the files we need');
+
+        defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+        defined('THEBUGGENIE_CORE_PATH') || define('THEBUGGENIE_CORE_PATH', THEBUGGENIE_PATH . 'core' . DS);
+        defined('THEBUGGENIE_VENDOR_PATH') || define('THEBUGGENIE_VENDOR_PATH', THEBUGGENIE_PATH . 'vendor' . DS);
+        defined('THEBUGGENIE_CACHE_PATH') || define('THEBUGGENIE_CACHE_PATH', THEBUGGENIE_PATH . 'cache' . DS);
+        defined('THEBUGGENIE_CONFIGURATION_PATH') || define('THEBUGGENIE_CONFIGURATION_PATH', THEBUGGENIE_CORE_PATH . 'config' . DS);
+        defined('THEBUGGENIE_INTERNAL_MODULES_PATH') || define('THEBUGGENIE_INTERNAL_MODULES_PATH', THEBUGGENIE_CORE_PATH . 'modules' . DS);
+        defined('THEBUGGENIE_MODULES_PATH') || define('THEBUGGENIE_MODULES_PATH', THEBUGGENIE_PATH . 'modules' . DS);
+        defined('THEBUGGENIE_PUBLIC_FOLDER_NAME') || define('THEBUGGENIE_PUBLIC_FOLDER_NAME', '');
+
+        self::initialize();
+
+        if (self::isCLI()) {
+            self::setupI18n();
+
+            // Available permissions cannot be cached during
+            // installation because the scope is not set-up at that
+            // point. Permissions also must be cached at this point,
+            // and not together with self::initializeUser since i18n
+            // system must be initialised beforehand.
+            if (!self::isInstallmode())
+                self::_cacheAvailablePermissions();
+        }
+    }
+
     /**
      * Launches the MVC framework
      */
@@ -2786,7 +2866,7 @@ class Context
 
         // Set-up client and retrieve version information.
         $client = new \GuzzleHttp\Client([
-            'base_uri' => 'http://www.thebuggenie.com/',
+            'base_uri' => 'https://thebuggenie.com/',
             'http_errors' => false]);
         $response = $client->request('GET', '/updatecheck.php');
 

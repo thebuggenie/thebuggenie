@@ -8,7 +8,11 @@
         <div class="score" style="width: <?php echo $onlinemodule->rating * 16; ?>px;"></div>
     </div>
     <div class="module-actions plugin-actions">
-        <button class="install-button button button-silver" data-key="<?php echo htmlentities($onlinemodule->key); ?>"><?php echo image_tag('spinning_16.gif'); ?><span><?php echo __('Add'); ?></span></button>
+        <?php if ($license_ok): ?>
+            <button class="install-button button button-silver" data-key="<?php echo htmlentities($onlinemodule->key); ?>"><?php echo image_tag('spinning_16.gif'); ?><span><?php echo __('Add'); ?></span></button>
+        <?php else: ?>
+            <button class="install-button button button-silver" onclick="TBG.Main.Helpers.Message.success('<?= __('Add modules with one click'); ?>', '<?= __('With a valid subscription you can install modules straight from the control center'); ?>')"><span><?php echo __('Add'); ?></span></button>
+        <?php endif; ?>
         <div class="status_badge module_status plugin_status enabled">
             <?php echo __('Enabled'); ?>
         </div>

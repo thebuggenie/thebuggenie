@@ -33,29 +33,33 @@
         {
             list ($current_version, $upgrade_available) = framework\Settings::getUpgradeStatus();
 
-            $this->cliEcho('Currently installed version: ');
+            $this->cliEcho('Performing upgrade: ');
             $this->cliEcho($current_version, 'white', 'bold');
-            $this->cliEcho("\n");
-            $this->cliEcho('Upgrading to version: ');
+            $this->cliEcho(' -> ');
             $this->cliEcho(framework\Settings::getVersion(false), 'green', 'bold');
-            $this->cliEcho("\n");
+            $this->cliEcho("\n\n");
 
             if (!$upgrade_available) {
-                $this->cliEcho('No upgrade necessary', 'green');
+                $this->cliEcho('No upgrade necessary!', 'green');
                 $this->cliEcho("\n");
                 return;
             } else {
                 try {
                     $upgrader = new \thebuggenie\core\modules\installation\Upgrade();
                     $result = $upgrader->upgrade();
+                    $this->cliEcho("\n");
                     if ($result) {
                         $this->cliEcho("Upgrade complete!\n");
+                        unlink(THEBUGGENIE_PATH . 'upgrade');
                     } else {
                         $this->cliEcho("Upgrade failed!\n", 'red');
                     }
                 } catch (\Exception $e) {
+                    $this->cliEcho("\n");
+                    $this->cliEcho("\n---------------------\n");
                     $this->cliEcho("An error occured during the upgrade:\n", 'red', 'bold');
                     $this->cliEcho($e->getMessage() . "\n");
+                    $this->cliEcho("---------------------\n");
                 }
             }
         }

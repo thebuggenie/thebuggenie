@@ -39,14 +39,14 @@
         return "<img " . parseHTMLoptions($params) . '>';
     }
 
-    function fa_image_tag($image, $params = [])
+    function fa_image_tag($image, $params = [], $mode = 'fas')
     {
         if (!isset($params['class']))
             $params['class'] = [];
         elseif (!is_array($params['class']))
             $params['class'] = [$params['class']];
 
-        $params['class'][] = 'fa';
+        $params['class'][] = $mode;
         $params['class'][] = 'fa-'.$image;
 
         return '<i ' . parseHTMLoptions($params) . '></i>';
@@ -60,13 +60,13 @@
      * @param string $image
      * @return string
      */
-    function config_explanation($tooltipText, $image = 'icon_info.png')
+    function config_explanation($tooltipText, $image = 'question-circle', $image_style = 'far')
     {
         return sprintf('<span class="config_explanation" style="position: relative;">
                 %s
                 <span class="tooltip from-above rightie">%s</span>
             </span>',
-            image_tag($image, array('style' => 'margin: 0 5px; vertical-align: middle; cursor: pointer;')),
+            fa_image_tag($image, ['style' => 'cursor: pointer;'], $image_style),
             $tooltipText
         );
     }
@@ -209,7 +209,7 @@
      * @param string    $component    name of component to load, or module/component to load
      * @param array     $params      key => value pairs of parameters for the template
      */
-    function get_component_html($component, $params = array())
+    function get_component_html($component, $params = [])
     {
         return Action::returnComponentHTML($component, $params);
     }
@@ -223,7 +223,7 @@
      *
      * @return string
      */
-    function make_url($name, $params = array(), $relative = true)
+    function make_url($name, $params = [], $relative = true)
     {
         return \thebuggenie\core\framework\Context::getRouting()->generate($name, $params, $relative);
     }
@@ -237,7 +237,7 @@
      */
     function parseHTMLoptions($options)
     {
-        $option_strings = array();
+        $option_strings = [];
         if (!is_array($options))
         {
             throw new \Exception('Invalid HTML options. Must be an array with key => value pairs corresponding to html attributes');

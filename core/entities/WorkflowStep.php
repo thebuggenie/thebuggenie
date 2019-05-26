@@ -75,51 +75,218 @@
          */
         protected $_workflow_id = null;
 
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope, \thebuggenie\core\entities\Workflow $workflow)
+        public static function loadWorkflowStepsAndTransitions(Scope $scope, Workflow $workflow, $steps)
         {
-            $steps = array();
-            $steps['new'] = array('name' => 'New', 'description' => 'A new issue, not yet handled', 'status_id' => Status::getByKeyish('new')->getID(), 'transitions' => array('investigateissue', 'confirmissue', 'rejectissue', 'acceptissue', 'resolveissue'), 'editable' => true, 'is_closed' => false);
-            $steps['investigating'] = array('name' => 'Investigating', 'description' => 'An issue that is being investigated, looked into or is by other means between new and unconfirmed state', 'status_id' => Status::getByKeyish('investigating')->getID(), 'transitions' => array('requestmoreinformation', 'confirmissue', 'rejectissue', 'acceptissue'), 'editable' => true, 'is_closed' => false);
-            $steps['confirmed'] = array('name' => 'Confirmed', 'description' => 'An issue that has been confirmed', 'status_id' => Status::getByKeyish('confirmed')->getID(), 'transitions' => array('acceptissue', 'assignissue', 'resolveissue'), 'editable' => false, 'is_closed' => false);
-            $steps['inprogress'] = array('name' => 'In progress', 'description' => 'An issue that is being adressed', 'status_id' => Status::getByKeyish('beingworkedon')->getID(), 'transitions' => array('rejectissue', 'markreadyfortesting', 'resolveissue'), 'editable' => false, 'is_closed' => false);
-            $steps['readyfortesting'] = array('name' => 'Ready for testing', 'description' => 'An issue that has been marked fixed and is ready for testing', 'status_id' => Status::getByKeyish('readyfortesting/qa')->getID(), 'transitions' => array('resolveissue', 'testissuesolution'), 'editable' => false, 'is_closed' => false);
-            $steps['testing'] = array('name' => 'Testing', 'description' => 'An issue where the proposed or implemented solution is currently being tested or approved', 'status_id' => Status::getByKeyish('testing/qa')->getID(), 'transitions' => array('acceptissuesolution', 'rejectissuesolution'), 'editable' => false, 'is_closed' => false);
-            $steps['rejected'] = array('name' => 'Rejected', 'description' => 'A closed issue that has been rejected', 'status_id' => Status::getByKeyish('notabug')->getID(), 'transitions' => array('reopenissue'), 'editable' => false, 'is_closed' => true);
-            $steps['closed'] = array('name' => 'Closed', 'description' => 'A closed issue', 'status_id' => null, 'transitions' => array('reopenissue'), 'editable' => false, 'is_closed' => true);
-
             foreach ($steps as $key => $step)
             {
-                $step_object = new \thebuggenie\core\entities\WorkflowStep();
+                $step_object = new WorkflowStep();
                 $step_object->setWorkflow($workflow);
                 $step_object->setName($step['name']);
                 $step_object->setDescription($step['description']);
                 $step_object->setLinkedStatusID($step['status_id']);
                 $step_object->setIsClosed($step['is_closed']);
                 $step_object->setIsEditable($step['editable']);
+                $step_object->setScope($scope);
                 $step_object->save();
                 $steps[$key]['step'] = $step_object;
             }
-            
-            $transitions = WorkflowTransition::loadFixtures($scope, $workflow, $steps);
 
-            $transition = new \thebuggenie\core\entities\WorkflowTransition();
+            $transition = new WorkflowTransition();
             $step = $steps['new']['step'];
             $transition->setOutgoingStep($step);
             $transition->setName('Issue created');
             $transition->setWorkflow($workflow);
             $transition->setDescription('This is the initial transition for issues using this workflow');
+            $transition->setScope($scope);
             $transition->save();
             $workflow->setInitialTransition($transition);
             $workflow->save();
 
-            foreach ($steps as $step)
-            {
-                foreach ($step['transitions'] as $transition)
-                {
-                    $step['step']->addOutgoingTransition($transitions[$transition]);
-                }
-            }
-            
+            return $steps;
+        }
+
+        public static function loadMultiTeamWorkflowFixtures(Scope $scope, Workflow $workflow)
+        {
+            $steps = [];
+            $steps['new'] = [
+                'name'        => 'New',
+                'description' => 'A new issue, not yet handled',
+                'status_id'   => Status::getByKeyish('new')->getID(),
+                'transitions' => ['investigateissue', 'confirmissue', 'rejectissue', 'acceptissue', 'resolveissue'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+            $steps['investigating'] = [
+                'name'        => 'Investigating',
+                'description' => 'An issue that is being investigated, looked into or is by other means between new and unconfirmed state',
+                'status_id'   => Status::getByKeyish('investigating')->getID(),
+                'transitions' => ['requestmoreinformation', 'confirmissue', 'rejectissue', 'acceptissue'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+            $steps['confirmed'] = [
+                'name'        => 'Confirmed',
+                'description' => 'An issue that has been confirmed',
+                'status_id'   => Status::getByKeyish('confirmed')->getID(),
+                'transitions' => ['acceptissue', 'assignissue', 'resolveissue'],
+                'editable'    => false,
+                'is_closed'   => false
+            ];
+            $steps['inprogress'] = [
+                'name'        => 'In progress',
+                'description' => 'An issue that is being adressed',
+                'status_id'   => Status::getByKeyish('beingworkedon')->getID(),
+                'transitions' => ['rejectissue', 'markreadyfortesting', 'resolveissue'],
+                'editable'    => false,
+                'is_closed'   => false
+            ];
+            $steps['readyfortesting'] = [
+                'name'        => 'Ready for testing',
+                'description' => 'An issue that has been marked fixed and is ready for testing',
+                'status_id'   => Status::getByKeyish('readyfortesting/qa')->getID(),
+                'transitions' => ['resolveissue', 'testissuesolution'],
+                'editable'    => false,
+                'is_closed'   => false
+            ];
+            $steps['testing'] = [
+                'name'        => 'Testing',
+                'description' => 'An issue where the proposed or implemented solution is currently being tested or approved',
+                'status_id'   => Status::getByKeyish('testing/qa')->getID(),
+                'transitions' => ['acceptissuesolution', 'rejectissuesolution'],
+                'editable'    => false,
+                'is_closed'   => false
+            ];
+            $steps['rejected'] = [
+                'name'        => 'Rejected',
+                'description' => 'A closed issue that has been rejected',
+                'status_id'   => Status::getByKeyish('notabug')->getID(),
+                'transitions' => ['reopenissue'],
+                'editable'    => false,
+                'is_closed'   => true
+            ];
+            $steps['closed'] = [
+                'name'        => 'Closed',
+                'description' => 'A closed issue',
+                'status_id'   => null,
+                'transitions' => ['reopenissue'],
+                'editable'    => false,
+                'is_closed'   => true
+            ];
+
+            $steps = self::loadWorkflowStepsAndTransitions($scope, $workflow, $steps);
+            WorkflowTransition::loadMultiTeamWorkflowFixtures($scope, $workflow, $steps);
+        }
+
+        public static function loadBalancedWorkflowFixtures(Scope $scope, Workflow $workflow)
+        {
+            $steps = [];
+            $steps['new'] = [
+                'name'        => 'New',
+                'description' => 'A new issue, not yet handled',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'new', 'New')->getID(),
+                'transitions' => ['resolveissue', 'closeissue', 'confirmissue'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+            $steps['confirmed'] = [
+                'name'        => 'Confirmed',
+                'description' => 'A new issue, not yet handled',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'confirmed', 'Confirmed')->getID(),
+                'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+            $steps['inprogress'] = [
+                'name'        => 'In progress',
+                'description' => 'An issue that is being worked on',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'inprogress', 'In progress')->getID(),
+                'transitions' => ['closeissue', 'resolveissue', 'readyfortesting'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+            $steps['readyfortesting'] = [
+                'name'        => 'Ready for testing',
+                'description' => 'An issue that is ready to be tested',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'readytotest', 'Ready to test')->getID(),
+                'transitions' => ['resolveissue', 'closeissue', 'reopenissue'],
+                'editable'    => false,
+                'is_closed'   => false
+            ];
+            $steps['resolved'] = [
+                'name'        => 'Resolved',
+                'description' => 'An issue that has been resolved',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'resolved', 'Resolved')->getID(),
+                'transitions' => ['reopenissue', 'closeissue'],
+                'editable'    => false,
+                'is_closed'   => false
+            ];
+            $steps['closed'] = [
+                'name'        => 'Closed',
+                'description' => 'An issue that has been closed',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'closed', 'Closed')->getID(),
+                'transitions' => ['reopenissue'],
+                'editable'    => false,
+                'is_closed'   => true
+            ];
+            $steps['reopened'] = [
+                'name'        => 'Reopened',
+                'description' => 'An issue that was previously resolved or closed',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'reopened', 'Reopened')->getID(),
+                'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+
+            $steps = self::loadWorkflowStepsAndTransitions($scope, $workflow, $steps);
+            WorkflowTransition::loadBalancedWorkflowFixtures($scope, $workflow, $steps);
+        }
+
+        public static function loadSimpleWorkflowFixtures(Scope $scope, Workflow $workflow)
+        {
+            $steps = [];
+            $steps['new'] = [
+                'name'        => 'Open',
+                'description' => 'A new issue, not yet handled',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'open', 'Open')->getID(),
+                'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+            $steps['inprogress'] = [
+                'name'        => 'In progress',
+                'description' => 'An issue that is being worked on',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'inprogress', 'In progress')->getID(),
+                'transitions' => ['closeissue', 'resolveissue'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+            $steps['resolved'] = [
+                'name'        => 'Resolved',
+                'description' => 'An issue that has been resolved',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'resolved', 'Resolved')->getID(),
+                'transitions' => ['reopenissue', 'closeissue'],
+                'editable'    => false,
+                'is_closed'   => false
+            ];
+            $steps['closed'] = [
+                'name'        => 'Closed',
+                'description' => 'An issue that has been closed',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'closed', 'Closed')->getID(),
+                'transitions' => ['reopenissue'],
+                'editable'    => false,
+                'is_closed'   => true
+            ];
+            $steps['reopened'] = [
+                'name'        => 'Reopened',
+                'description' => 'An issue that was previously resolved or closed',
+                'status_id'   => Status::getOrCreateByKeyish($scope, 'reopened', 'Reopened')->getID(),
+                'transitions' => ['resolveissue', 'closeissue', 'startprogress'],
+                'editable'    => true,
+                'is_closed'   => false
+            ];
+
+            $steps = self::loadWorkflowStepsAndTransitions($scope, $workflow, $steps);
+            WorkflowTransition::loadSimpleWorkflowFixtures($scope, $workflow, $steps);
         }
 
         public static function getAllByWorkflowSchemeID($scheme_id)
@@ -128,7 +295,7 @@
             $steps = array();
             foreach ($ids as $step_id)
             {
-                $steps[$step_id] = new \thebuggenie\core\entities\WorkflowStep((int) $step_id);
+                $steps[$step_id] = new WorkflowStep((int) $step_id);
             }
 
             return $steps;
@@ -161,7 +328,7 @@
          */
         public function getWorkflow()
         {
-            return $this->_b2dbLazyload('_workflow_id');
+            return $this->_b2dbLazyLoad('_workflow_id');
         }
 
         public function setWorkflow(\thebuggenie\core\entities\Workflow $workflow)
@@ -169,17 +336,6 @@
             $this->_workflow_id = $workflow;
         }
         
-        /**
-         * Whether this is a step in the builtin workflow that cannot be
-         * edited or removed
-         *
-         * @return boolean
-         */
-        public function isCore()
-        {
-            return $this->getWorkflow()->isCore();
-        }
-
         /**
          * Return this steps linked status if any
          * 
@@ -252,7 +408,7 @@
         /**
          * Get all outgoing transitions from this step
          *
-         * @return array|\thebuggenie\core\entities\WorkflowTransition An array of \thebuggenie\core\entities\WorkflowTransition objects
+         * @return WorkflowTransition[]
          */
         public function getOutgoingTransitions()
         {
@@ -273,13 +429,13 @@
             return $this->_num_outgoing_transitions;
         }
 
-        public function hasOutgoingTransition(\thebuggenie\core\entities\WorkflowTransition $transition)
+        public function hasOutgoingTransition(WorkflowTransition $transition)
         {
             $transitions = $this->getOutgoingTransitions();
             return array_key_exists($transition->getID(), $transitions);
         }
 
-        public function addOutgoingTransition(\thebuggenie\core\entities\WorkflowTransition $transition)
+        public function addOutgoingTransition(WorkflowTransition $transition)
         {
             tables\WorkflowStepTransitions::getTable()->addNew($this->getID(), $transition->getID(), $this->getWorkflow()->getID());
             if ($this->_outgoing_transitions !== null)

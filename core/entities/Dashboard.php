@@ -82,7 +82,7 @@
         /**
          * Dashboard views
          *
-         * @var array|\thebuggenie\core\entities\DashboardView
+         * @var \thebuggenie\core\entities\DashboardView[]
          * @Relates(class="\thebuggenie\core\entities\DashboardView", collection=true, foreign_column="dashboard_id", orderby="sort_order")
          */
         protected $_dashboard_views = null;
@@ -117,33 +117,33 @@
                         $dv_logged->save();
                         break;
                     case self::TYPE_PROJECT:
-                        $dv_project_info = new DashboardView();
-                        $dv_project_info->setDashboard($this);
-                        $dv_project_info->setColumn(1);
-                        $dv_project_info->setType(DashboardView::VIEW_PROJECT_INFO);
-                        $dv_project_info->setDetail(0);
-                        $dv_project_info->save();
-
-                        $dv_project_team = new DashboardView();
-                        $dv_project_team->setDashboard($this);
-                        $dv_project_team->setColumn(1);
-                        $dv_project_team->setType(DashboardView::VIEW_PROJECT_TEAM);
-                        $dv_project_team->setDetail(0);
-                        $dv_project_team->save();
-
-                        $dv_project_statistics = new DashboardView();
-                        $dv_project_statistics->setDashboard($this);
-                        $dv_project_statistics->setColumn(2);
-                        $dv_project_statistics->setType(DashboardView::VIEW_PROJECT_STATISTICS_LAST15);
-                        $dv_project_statistics->setDetail(0);
-                        $dv_project_statistics->save();
-
-                        $dv_project_activities = new DashboardView();
-                        $dv_project_activities->setDashboard($this);
-                        $dv_project_activities->setColumn(2);
-                        $dv_project_activities->setType(DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES);
-                        $dv_project_activities->setDetail(0);
-                        $dv_project_activities->save();
+//                        $dv_project_info = new DashboardView();
+//                        $dv_project_info->setDashboard($this);
+//                        $dv_project_info->setColumn(1);
+//                        $dv_project_info->setType(DashboardView::VIEW_PROJECT_INFO);
+//                        $dv_project_info->setDetail(0);
+//                        $dv_project_info->save();
+//
+//                        $dv_project_team = new DashboardView();
+//                        $dv_project_team->setDashboard($this);
+//                        $dv_project_team->setColumn(1);
+//                        $dv_project_team->setType(DashboardView::VIEW_PROJECT_TEAM);
+//                        $dv_project_team->setDetail(0);
+//                        $dv_project_team->save();
+//
+//                        $dv_project_statistics = new DashboardView();
+//                        $dv_project_statistics->setDashboard($this);
+//                        $dv_project_statistics->setColumn(2);
+//                        $dv_project_statistics->setType(DashboardView::VIEW_PROJECT_STATISTICS_LAST15);
+//                        $dv_project_statistics->setDetail(0);
+//                        $dv_project_statistics->save();
+//
+//                        $dv_project_activities = new DashboardView();
+//                        $dv_project_activities->setDashboard($this);
+//                        $dv_project_activities->setColumn(2);
+//                        $dv_project_activities->setType(DashboardView::VIEW_PROJECT_RECENT_ACTIVITIES);
+//                        $dv_project_activities->setDetail(0);
+//                        $dv_project_activities->save();
                         break;
                 }
             }
@@ -156,7 +156,7 @@
          */
         public function getUser()
         {
-            return $this->_b2dbLazyload('_user_id');
+            return $this->_b2dbLazyLoad('_user_id');
         }
 
         public function setUser($user)
@@ -171,7 +171,7 @@
          */
         public function getTeam()
         {
-            return $this->_b2dbLazyload('_team_id');
+            return $this->_b2dbLazyLoad('_team_id');
         }
 
         public function setTeam($team)
@@ -186,7 +186,7 @@
          */
         public function getClient()
         {
-            return $this->_b2dbLazyload('_client_id');
+            return $this->_b2dbLazyLoad('_client_id');
         }
 
         public function setClient($client)
@@ -201,7 +201,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project_id');
+            return $this->_b2dbLazyLoad('_project_id');
         }
 
         public function setProject($project)
@@ -215,12 +215,15 @@
             {
                 return count($this->_dashboard_views);
             }
-            return $this->_b2dbLazycount('_dashboard_views');
+            return $this->_b2dbLazyCount('_dashboard_views');
         }
 
+        /**
+         * @return DashboardView[]
+         */
         public function getViews()
         {
-            return $this->_b2dbLazyload('_dashboard_views');
+            return $this->_b2dbLazyLoad('_dashboard_views');
         }
 
         public function getName()

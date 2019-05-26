@@ -49,38 +49,38 @@
         const GROUP_ID = 'users.group_id';
         const OPENID_LOCKED = 'users.openid_locked';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::UNAME, 50);
-            parent::_addVarchar(self::PASSWORD, 100);
-            parent::_addVarchar(self::BUDDYNAME, 50);
-            parent::_addVarchar(self::REALNAME, 100);
-            parent::_addVarchar(self::EMAIL, 200);
-            parent::_addInteger(self::USERSTATE, 10);
-            parent::_addBoolean(self::CUSTOMSTATE);
-            parent::_addVarchar(self::HOMEPAGE, 250, '');
-            parent::_addVarchar(self::LANGUAGE, 100, '');
-            parent::_addInteger(self::LASTSEEN, 10);
-            parent::_addInteger(self::QUOTA);
-            parent::_addBoolean(self::ACTIVATED);
-            parent::_addBoolean(self::ENABLED);
-            parent::_addBoolean(self::DELETED);
-            parent::_addVarchar(self::AVATAR, 30, '');
-            parent::_addBoolean(self::USE_GRAVATAR, true);
-            parent::_addBoolean(self::PRIVATE_EMAIL);
-            parent::_addBoolean(self::OPENID_LOCKED);
-            parent::_addInteger(self::JOINED, 10);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::UNAME, 50);
+            parent::addVarchar(self::PASSWORD, 100);
+            parent::addVarchar(self::BUDDYNAME, 50);
+            parent::addVarchar(self::REALNAME, 100);
+            parent::addVarchar(self::EMAIL, 200);
+            parent::addInteger(self::USERSTATE, 10);
+            parent::addBoolean(self::CUSTOMSTATE);
+            parent::addVarchar(self::HOMEPAGE, 250, '');
+            parent::addVarchar(self::LANGUAGE, 100, '');
+            parent::addInteger(self::LASTSEEN, 10);
+            parent::addInteger(self::QUOTA);
+            parent::addBoolean(self::ACTIVATED);
+            parent::addBoolean(self::ENABLED);
+            parent::addBoolean(self::DELETED);
+            parent::addVarchar(self::AVATAR, 30, '');
+            parent::addBoolean(self::USE_GRAVATAR, true);
+            parent::addBoolean(self::PRIVATE_EMAIL);
+            parent::addBoolean(self::OPENID_LOCKED);
+            parent::addInteger(self::JOINED, 10);
         }
 
         public function getAdminUsername()
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID);
-            $crit->addSelectionColumn(self::UNAME);
-            $crit->addWhere(self::ID, 1);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID);
+            $query->addSelectionColumn(self::UNAME);
+            $query->where(self::ID, 1);
 
-            $row = $this->doSelectOne($crit);
+            $row = $this->rawSelectOne($query);
             return $row[self::UNAME];
         }
 

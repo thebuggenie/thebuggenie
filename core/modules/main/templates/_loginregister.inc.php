@@ -11,7 +11,7 @@
                 <ul class="login_formlist">
                     <li>
                         <label for="fieldusername">*&nbsp;<?php echo __('Username'); ?></label>
-                        <input type="text" class="required" id="fieldusername" name="fieldusername" onblur="TBG.Main.Login.checkUsernameAvailability('<?php echo make_url('register_check_username'); ?>');">
+                        <input type="text" class="required" id="fieldusername" name="username" onblur="TBG.Main.Login.checkUsernameAvailability('<?php echo make_url('register_check_username'); ?>');">
                         <div class="error_message"><?php echo __('This username is invalid or in use'); ?></div>
                         <?php echo image_tag('spinning_20.gif', array('id' => 'username_check_indicator', 'style' => 'display: none;')); ?>
                     </li>
@@ -46,8 +46,8 @@
                 <br>
                 <span id="register_message"></span>
                 <form accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" action="<?php echo make_url('login'); ?>" method="post" id="register_auto_form" onsubmit="TBG.Main.Login.registerAutologin('<?php echo make_url('login'); ?>'); return false;">
-                    <input id="register_username_hidden" name="tbg3_username" type="hidden" value="">
-                    <input id="register_password_hidden" name="tbg3_password" type="hidden" value="">
+                    <input id="register_username_hidden" name="username" type="hidden" value="">
+                    <input id="register_password_hidden" name="password" type="hidden" value="">
                     <input type="hidden" name="return_to" value="<?php echo make_url('account'); ?>">
                     <div class="login_button_container">
                         <?php echo image_tag('spinning_20.gif', array('id' => 'register_autologin_indicator', 'style' => 'display: none;')); ?>

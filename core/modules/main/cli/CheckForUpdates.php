@@ -52,7 +52,7 @@ class CheckForUpdates extends \thebuggenie\core\framework\cli\Command
             {
                 $uptodate = false;
                 $title = framework\Context::getI18n()->__('The Bug Genie is out of date');
-                $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from www.thebuggenie.com.', ['%ver' => $latest_version->nicever]);
+                $message = framework\Context::getI18n()->__('The latest version is %ver. Update now from thebuggenie.com.', ['%ver' => $latest_version->nicever]);
                 $title_color = "yellow";
                 $exit_code = self::OUTDATED;
             }

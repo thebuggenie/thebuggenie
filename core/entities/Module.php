@@ -2,10 +2,11 @@
 
     namespace thebuggenie\core\entities;
 
-    use thebuggenie\core\entities\common\IdentifiableScoped;
-    use thebuggenie\core\entities\tables\Modules;
-    use thebuggenie\core\entities\tables\Settings;
-    use thebuggenie\core\framework;
+    use b2db\Update,
+        thebuggenie\core\entities\common\IdentifiableScoped,
+        thebuggenie\core\entities\tables\Modules,
+        GuzzleHttp\Client as GuzzleClient,
+        thebuggenie\core\framework;
 
     /**
      * Module class, extended by all thebuggenie modules
@@ -25,7 +26,7 @@
      *
      * @Table(name="\thebuggenie\core\entities\tables\Modules")
      */
-    abstract class Module extends IdentifiableScoped
+    abstract class Module extends IdentifiableScoped implements framework\interfaces\ModuleInterface
     {
 
         /**
@@ -193,9 +194,9 @@
 
         public function enable()
         {
-            $crit = new \b2db\Criteria();
-            $crit->addUpdate(tables\Modules::ENABLED, 1);
-            tables\Modules::getTable()->doUpdateById($crit, $this->getID());
+            $update = new Update();
+            $update->add(tables\Modules::ENABLED, 1);
+            tables\Modules::getTable()->rawUpdateById($update, $this->getID());
             $this->_enabled = true;
         }
 
@@ -223,11 +224,6 @@
             framework\Context::clearPermissionsCache();
         }
 
-        public function getClassname()
-        {
-            return $this->_classname;
-        }
-
         public function __toString()
         {
             return $this->_name;
@@ -235,7 +231,7 @@
 
         public function __call($func, $args)
         {
-            throw new \Exception('Trying to call function ' . $func . '() in module ' . $this->_shortname . ', but the function does not exist');
+            throw new \Exception('Trying to call function ' . $func . '() in module ' . $this->_name . ', but the function does not exist');
         }
 
         public function setLongName($name)
@@ -296,25 +292,25 @@
         /**
          * Shortcut for the global settings function
          *
-         * @param string  $setting the name of the setting
+         * @param string  $name the name of the setting
          * @param integer $uid     the uid for the user to check
          *
          * @return mixed
          */
-        public function getSetting($setting, $uid = 0)
+        public function getSetting($name, $uid = 0)
         {
-            return framework\Settings::get($setting, $this->getName(), framework\Context::getScope()->getID(), $uid);
+            return framework\Settings::get($name, $this->getName(), framework\Context::getScope()->getID(), $uid);
         }
 
-        public function saveSetting($setting, $value, $uid = 0, $scope = null)
+        public function saveSetting($name, $value, $uid = 0, $scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            return framework\Settings::saveSetting($setting, $value, $this->getName(), $scope, $uid);
+            framework\Settings::saveSetting($name, $value, $this->getName(), $scope, $uid);
         }
 
-        public function deleteSetting($setting, $uid = 0, $scope = null)
+        public function deleteSetting($name, $uid = 0, $scope = null)
         {
-            return framework\Settings::deleteSetting($setting, $this->getName(), $scope, $uid);
+            framework\Settings::deleteSetting($name, $this->getName(), $scope, $uid);
         }
 
         /**
@@ -437,6 +433,11 @@
             return 'puzzle-piece';
         }
 
+        public function getFontAwesomeStyle()
+        {
+            return 'fas';
+        }
+
         public function getFontAwesomeColor()
         {
             return 'mediumseagreen';
@@ -477,24 +478,36 @@
             $this->_name = $name;
         }
 
+        /**
+         * @param $plugin_type
+         * @param $plugin_key
+         * @throws framework\exceptions\ModuleDownloadException
+         */
         public static function downloadPlugin($plugin_type, $plugin_key)
         {
             try
             {
-                $client = new \Net_Http_Client();
-                $client->get('http://www.thebuggenie.com/'.$plugin_type.'s/'.$plugin_key . '.json');
-                $plugin_json = json_decode($client->getBody());
+                if (!framework\Settings::hasLicenseIdentifier()) {
+                    throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::MISSING_LICENSE);
+                }
+
+                $client = new GuzzleClient(['base_uri' => 'https://thebuggenie.com']);
+                $response = $client->get('/' . $plugin_type . 's/' . $plugin_key . '.json?license_key=' . framework\Settings::getLicenseIdentifier());
+
+                if ($response->getStatusCode() === 200) {
+                    $plugin_json = json_decode($response->getBody());
+                }
             }
             catch (\Exception $e) {}
 
             if (isset($plugin_json) && $plugin_json !== false) {
                 $filename = THEBUGGENIE_CACHE_PATH . $plugin_type . '_' . $plugin_json->key . '.zip';
-                $client->get($plugin_json->download);
-                if ($client->getResponse()->getStatus() != 200)
+                $response = $client->get($plugin_json->download);
+                if ($response->getStatusCode() != 200)
                 {
                     throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::JSON_NOT_FOUND);
                 }
-                file_put_contents($filename, $client->getBody());
+                file_put_contents($filename, $response->getBody());
                 $module_zip = new \ZipArchive();
                 $module_zip->open($filename);
                 switch ($plugin_type) {
@@ -505,19 +518,29 @@
                         $target_folder = THEBUGGENIE_PATH . 'themes';
                         break;
                 }
+                if (!is_writable($target_folder)) {
+                    throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::READONLY_TARGET);
+                }
                 $module_zip->extractTo(realpath($target_folder));
                 $module_zip->close();
-                unlink($filename);
             } else {
                 throw new framework\exceptions\ModuleDownloadException("", framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND);
             }
         }
 
+        /**
+         * @param $module_key
+         * @throws framework\exceptions\ModuleDownloadException
+         */
         public static function downloadModule($module_key)
         {
             self::downloadPlugin('addon', $module_key);
         }
 
+        /**
+         * @param $module_key
+         * @throws framework\exceptions\ModuleDownloadException
+         */
         public static function downloadTheme($theme_key)
         {
             self::downloadPlugin('theme', $theme_key);

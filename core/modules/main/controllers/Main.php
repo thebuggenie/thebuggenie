@@ -6,9 +6,14 @@ use thebuggenie\core\framework,
     thebuggenie\core\entities,
     thebuggenie\core\entities\tables,
     thebuggenie\modules\agile,
-    thebuggenie\core\entities\Comment;
+    thebuggenie\core\entities\Comment,
+    thebuggenie\core\helpers\Pagination;
 
 /**
+ * @property entities\Project $selected_project
+ * @property entities\Client $client
+ * @property entities\Team $team
+ *
  * actions for the main module
  */
 class Main extends framework\Action
@@ -19,6 +24,8 @@ class Main extends framework\Action
      *
      * @access protected
      * @property entities\Project $selected_project
+     * @param framework\Request $request
+     * @param $action
      */
     public function preExecute(framework\Request $request, $action)
     {
@@ -29,6 +36,10 @@ class Main extends framework\Action
             elseif ($project_id = (int) $request['project_id'])
                 $this->selected_project = tables\Projects::getTable()->selectById($project_id);
 
+            if ($this->selected_project instanceof entities\Project && !$this->selected_project->hasAccess($this->getUser())) {
+                $this->selected_project = null;
+            }
+
             framework\Context::setCurrentProject($this->selected_project);
         }
         catch (\Exception $e)
@@ -37,6 +48,13 @@ class Main extends framework\Action
         }
     }
 
+    /**
+     * Detect and return the requested issue
+     *
+     * @param framework\Request $request
+     * @return entities\Issue
+     * @throws \Exception
+     */
     protected function _getIssueFromRequest(framework\Request $request)
     {
         $issue = null;
@@ -62,10 +80,54 @@ class Main extends framework\Action
         return $issue;
     }
 
+
+    /**
+     * Helper method for sorting two issues based on their project and
+     * IDs.
+     *
+     * Sorting algorithm takes into account the following factors (in
+     * decreasing weight of importance):
+     *
+     * - Issue belongs to selected project.
+     * - Issue project name (alphabetical sorting).
+     * - Issue ID.
+     *
+     * @param \thebuggenie\core\entities\Issue $a Issue to compare.
+     * @param \thebuggenie\core\entities\Issue $b Issue to compare.
+     *
+     * @return -1 if issue $a comes ahead of issue $b, 0 if issue $a is the same as issue $b, 1 if issue $b comes ahead of issue $a.
+     */
+    protected function compareIssuesByProject($a, $b)
+    {
+        $project_a = $a->getProject();
+        $project_b = $b->getProject();
+
+        if ($project_a == $this->selected_project && $project_b != $this->selected_project)
+        {
+            $result = -1;
+        }
+        elseif ($project_b == $this->selected_project && $project_a != $this->selected_project)
+        {
+            $result = 1;
+        }
+        else
+        {
+            $result = strcasecmp($a->getProject()->getName(), $b->getProject()->getName());
+
+            if ($result == 0)
+            {
+                $result = $a->getID() > $b->getID();
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * Go to the next/previous open issue
      *
      * @param \thebuggenie\core\framework\Request $request
+     * @throws \Exception
      */
     public function runNavigateIssue(framework\Request $request)
     {
@@ -92,19 +154,19 @@ class Main extends framework\Action
                     $found_issue = tables\Issues::getTable()->getPreviousIssueFromIssueIDAndProjectID($issue->getID(), $issue->getProject()->getID(), $request['mode'] == 'open');
                 }
             }
-            if (is_null($found_issue))
+            if ($found_issue === null)
                 break;
         }
         while ($found_issue instanceof entities\Issue && !$found_issue->hasAccess());
 
         if ($found_issue instanceof entities\Issue)
         {
-            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $found_issue->getProject()->getKey(), 'issue_no' => $found_issue->getFormattedIssueNo())));
+            $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $found_issue->getProject()->getKey(), 'issue_no' => $found_issue->getFormattedIssueNo())));
         }
         else
         {
             framework\Context::setMessage('issue_message', $this->getI18n()->__('There are no more issues in that direction.'));
-            $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+            $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
         }
     }
 
@@ -139,7 +201,7 @@ class Main extends framework\Action
 
             framework\Context::getUser()->setNotificationSetting(framework\Settings::SETTINGS_USER_NOTIFY_ITEM_ONCE . '_issue_' . $issue->getID(), false);
 
-            \thebuggenie\core\framework\Event::createNew('core', 'viewissue', $issue)->trigger();
+            framework\Event::createNew('core', 'viewissue', $issue)->trigger();
         }
 
         $message = framework\Context::getMessageAndClear('issue_saved');
@@ -161,7 +223,7 @@ class Main extends framework\Action
                         }
                         $issue->save();
                         framework\Context::setMessage('issue_saved', true);
-                        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+                        $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                     }
                     catch (\thebuggenie\core\exceptions\WorkflowException $e)
                     {
@@ -211,7 +273,7 @@ class Main extends framework\Action
         }
 
         $this->issue = $issue;
-        $event = \thebuggenie\core\framework\Event::createNew('core', 'viewissue', $issue)->trigger();
+        $event = framework\Event::createNew('core', 'viewissue', $issue)->trigger();
         $this->listenViewIssuePostError($event);
     }
 
@@ -220,37 +282,36 @@ class Main extends framework\Action
         $issue = null;
         $project = null;
         $multi = (bool) $request->getParameter('multi', false);
-        if ($issue_id = $request['issue_id'])
+        try
         {
-            try
-            {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+            if ($issue_id = $request['issue_id']) {
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
-            catch (\Exception $e)
-            {
+            if ($project_id = $request['project_id']) {
+                $project = tables\Projects::getTable()->selectById($project_id);
+            }
+        } catch (\Exception $e) { }
 
-            }
+        if ($issue instanceof entities\Issue && !$issue->hasAccess()) {
+            $issue = null;
         }
-        if ($project_id = $request['project_id'])
-        {
-            try
-            {
-                $project = entities\Project::getB2DBTable()->selectById($project_id);
-            }
-            catch (\Exception $e)
-            {
-
-            }
+        if ($project instanceof entities\Project && !$project->hasAccess()) {
+            $project = null;
         }
 
         if (!$issue instanceof entities\Issue)
         {
             if ($multi)
             {
-                $this->getResponse()->setHttpStatus(400);
+                $this->getResponse()->setHttpStatus(404);
                 return $this->renderJSON(array('error' => $this->getI18n()->__('Cannot find the issue specified')));
             }
             return $this->return404(framework\Context::getI18n()->__('Cannot find the issue specified'));
+        }
+
+        if (!$issue->canEditIssueDetails()) {
+            $this->getResponse()->setHttpStatus(403);
+            return $this->forward403($this->getI18n()->__("You don't have permission to move this issue"));
         }
 
         if (!$project instanceof entities\Project)
@@ -266,6 +327,12 @@ class Main extends framework\Action
         if ($issue->getProject()->getID() != $project->getID())
         {
             $issue->setProject($project);
+
+            if (!$issue->canEditIssueDetails()) {
+                $this->getResponse()->setHttpStatus(403);
+                return $this->forward403($this->getI18n()->__("You don't have permission to move this issue"));
+            }
+
             $issue->clearUserWorkingOnIssue();
             $issue->clearAssignee();
             $issue->clearOwner();
@@ -291,7 +358,7 @@ class Main extends framework\Action
             framework\Context::setMessage('issue_error', framework\Context::getI18n()->__('The issue was not moved, since the project is the same'));
         }
 
-        return $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+        return $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $project->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
     }
 
     /**
@@ -305,26 +372,52 @@ class Main extends framework\Action
         {
             if (($projects = entities\Project::getAllRootProjects(false)) && $project = array_shift($projects))
             {
-                $this->forward(framework\Context::getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
+                $this->forward($this->getRouting()->generate('project_dashboard', array('project_key' => $project->getKey())));
             }
         }
         $this->forward403unless($this->getUser()->hasPageAccess('home'));
         $this->links = tables\Links::getTable()->getMainLinks();
         $this->show_project_list = framework\Settings::isFrontpageProjectListVisible();
-        $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
-        if ($this->show_project_list || $this->show_project_config_link)
-        {
-            $projects = entities\Project::getAllRootProjects(false);
-            foreach ($projects as $k => $project)
-            {
-                if (!$project->hasAccess())
-                    unset($projects[$k]);
-            }
-            $pagination = new \thebuggenie\core\helpers\Pagination($projects, $this->getRouting()->generate('home'), $request);
-            $this->pagination = $pagination;
-            $this->projects = $pagination->getPageItems();
-            $this->project_count = count($this->projects);
+    }
+
+    /**
+     * @param framework\Request $request
+     * @Route(url="/projects/list/:list_mode/:project_state/*", name="project_list")
+     */
+    public function runProjectList(framework\Request $request)
+    {
+        $list_mode = $request->getParameter('list_mode', 'all');
+        $project_state = $request->getParameter('project_state', 'active');
+        $paginationOptions = [
+            'list_mode' => $list_mode,
+            'project_state' => $project_state
+        ];
+
+        switch ($list_mode) {
+            case 'all':
+                $projects = entities\Project::getAllRootProjects(($project_state === 'archived'));
+                break;
+            case 'team':
+                $paginationOptions['team_id'] = $request['team_id'];
+                $this->team = tables\Teams::getTable()->selectById($request['team_id']);
+                list ($activeProjects, $archivedProjects) = $this->team->getProjects();
+                $projects = ($project_state === 'active') ? $activeProjects : $archivedProjects;
+                break;
+            case 'client':
+                $paginationOptions['client_id'] = $request['client_id'];
+                $this->client = tables\Clients::getTable()->selectById($request['client_id']);
+                list ($activeProjects, $archivedProjects) = $this->client->getProjects();
+                $projects = ($project_state === 'active') ? $activeProjects : $archivedProjects;
+                break;
         }
+
+        $pagination = new Pagination($projects, $this->getRouting()->generate('project_list', $paginationOptions), $request);
+        $this->pagination = $pagination;
+        $this->projects = $pagination->getPageItems();
+        $this->project_count = count($projects);
+        $this->list_mode = $list_mode;
+        $this->project_state = $project_state;
+        $this->show_project_config_link = $this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_PROJECTS) && framework\Context::getScope()->hasProjectsAvailable();
     }
 
     public function runUserdata(framework\Request $request)
@@ -359,6 +452,9 @@ class Main extends framework\Action
                                     break;
                                 case framework\exceptions\ModuleDownloadException::FILE_NOT_FOUND:
                                     return $this->renderJSON(array('message' => $this->getI18n()->__('The module could not be downloaded')));
+                                    break;
+                                case framework\exceptions\ModuleDownloadException::READONLY_TARGET:
+                                    return $this->renderJSON(array('title' => $this->getI18n()->__('Error extracting module zip'), 'message' => $this->getI18n()->__('Could not extract the module into the destination folder. Please check permissions.')));
                                     break;
                             }
                         }
@@ -426,14 +522,14 @@ class Main extends framework\Action
                 switch ($request['say'])
                 {
                     case 'get_module_updates':
-                        $addons_param = array();
+                        $addons_param = array('license_key' => framework\Settings::getLicenseIdentifier());
                         foreach ($request['addons'] as $addon) {
                             $addons_param[] = 'addons[]='.$addon;
                         }
                         try
                         {
                             $client = new \Net_Http_Client();
-                            $client->get('http://www.thebuggenie.com/addons.json?'.join('&', $addons_param));
+                            $client->get('https://thebuggenie.com/addons.json?'.join('&', $addons_param));
                             $addons_json = json_decode($client->getBody(), true);
                         }
                         catch (\Exception $e) {}
@@ -455,14 +551,14 @@ class Main extends framework\Action
                         return $this->renderJSON($counts_json);
                         break;
                     case 'get_theme_updates':
-                        $addons_param = array();
+                        $addons_param = array('license_key' => framework\Settings::getLicenseIdentifier());
                         foreach ($request['addons'] as $addon) {
                             $addons_param[] = 'themes[]='.$addon;
                         }
                         try
                         {
                             $client = new \Net_Http_Client();
-                            $client->get('http://www.thebuggenie.com/themes.json?'.join('&', $addons_param));
+                            $client->get('https://thebuggenie.com/themes.json?'.join('&', $addons_param));
                             $addons_json = json_decode($client->getBody(), true);
                         }
                         catch (\Exception $e) {}
@@ -483,7 +579,7 @@ class Main extends framework\Action
                         switch ($request['target_type'])
                         {
                             case 'issue':
-                                $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
+                                $target = tables\Issues::getTable()->selectById($request['target_id']);
                                 break;
                             case 'article':
                                 $target = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById($request['target_id']);
@@ -532,7 +628,7 @@ class Main extends framework\Action
                         switch ($request['target_type'])
                         {
                             case entities\Comment::TYPE_ISSUE:
-                                $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
+                                $target = tables\Issues::getTable()->selectById($request['target_id']);
                                 $data['comments'] = $this->getComponentHTML('main/commentlist', [
                                     'comment_count_div' => 'viewissue_comment_count',
                                     'mentionable_target_type' => 'issue',
@@ -575,7 +671,7 @@ class Main extends framework\Action
      */
     public function runDashboard(framework\Request $request)
     {
-        $this->forward403unless(!$this->getUser()->isThisGuest() && $this->getUser()->hasPageAccess('dashboard'));
+        $this->forward403unless(!$this->getUser()->isGuest() && $this->getUser()->hasPageAccess('dashboard'));
         if (framework\Settings::isSingleProjectTracker())
         {
             if (($projects = entities\Project::getAll()) && $project = array_shift($projects))
@@ -585,7 +681,7 @@ class Main extends framework\Action
         }
         if ($request['dashboard_id'])
         {
-            $dashboard = entities\Dashboard::getB2DBTable()->selectById((int) $request['dashboard_id']);
+            $dashboard = tables\Dashboards::getTable()->selectById((int) $request['dashboard_id']);
             if ($dashboard->getType() == entities\Dashboard::TYPE_PROJECT && !$dashboard->getProject()->hasAccess())
             {
                 unset($dashboard);
@@ -650,7 +746,7 @@ class Main extends framework\Action
         $column = $request['column'];
         foreach ($request['view_ids'] as $order => $view_id)
         {
-            $view = entities\DashboardView::getB2DBTable()->selectById($view_id);
+            $view = tables\DashboardViews::getTable()->selectById($view_id);
             $view->setSortOrder($order);
             $view->setColumn($column);
             $view->save();
@@ -669,20 +765,14 @@ class Main extends framework\Action
         $this->client = null;
         try
         {
-            $this->client = entities\Client::getB2DBTable()->selectById($request['client_id']);
-            $projects = entities\Project::getAllByClientID($this->client->getID());
+            $this->client = tables\Clients::getTable()->selectById($request['client_id']);
 
-            $final_projects = array();
-
-            foreach ($projects as $project)
-            {
-                if (!$project->isArchived()): $final_projects[] = $project;
-                endif;
+            if (!$this->client instanceof entities\Client) {
+                return $this->return404(framework\Context::getI18n()->__('This client does not exist'));
             }
+            $this->forward403unless($this->client->hasAccess());
 
-            $this->projects = $final_projects;
-
-            $this->forward403Unless($this->client->hasAccess());
+            $this->users = $this->client->getMembers();
         }
         catch (\Exception $e)
         {
@@ -700,36 +790,13 @@ class Main extends framework\Action
     {
         try
         {
-            $this->team = entities\Team::getB2DBTable()->selectById($request['team_id']);
-            $this->forward403Unless($this->team->hasAccess());
+            $this->team = tables\Teams::getTable()->selectById($request['team_id']);
 
-            $projects = array();
-            foreach (entities\Project::getAllByOwner($this->team) as $project)
-            {
-                $projects[$project->getID()] = $project;
-            }
-            foreach (entities\Project::getAllByLeader($this->team) as $project)
-            {
-                $projects[$project->getID()] = $project;
-            }
-            foreach (entities\Project::getAllByQaResponsible($this->team) as $project)
-            {
-                $projects[$project->getID()] = $project;
-            }
-            foreach ($this->team->getAssociatedProjects() as $project_id => $project)
-            {
-                $projects[$project_id] = $project;
+            if (!$this->team instanceof entities\Team) {
+                return $this->return404(framework\Context::getI18n()->__('This team does not exist'));
             }
 
-            $final_projects = array();
-
-            foreach ($projects as $project)
-            {
-                if (!$project->isArchived()): $final_projects[] = $project;
-                endif;
-            }
-
-            $this->projects = $final_projects;
+            $this->forward403unless($this->team->hasAccess());
 
             $this->users = $this->team->getMembers();
         }
@@ -750,7 +817,7 @@ class Main extends framework\Action
      */
     public function runLogin(framework\Request $request)
     {
-        //if (!$this->getUser()->isGuest()) return $this->forward(framework\Context::getRouting()->generate('home'));
+        //if (!$this->getUser()->isGuest()) return $this->forward($this->$this->getRouting()->generate('home'));
         $this->section = $request->getParameter('section', 'login');
     }
 
@@ -760,12 +827,26 @@ class Main extends framework\Action
      */
     public function runDoElevatedLogin(framework\Request $request)
     {
-        if ($this->getUser()->hasPassword($request['tbg3_elevated_password']))
+        if ($this->getUser()->hasPassword($request['elevated_password']))
         {
             // Calculate expiration period in seconds. setCookie() method should
             // add expiration period to current time.
-            $expiration = 60 * $request->getParameter('tbg3_elevation_duration', 30);
-            framework\Context::getResponse()->setCookie('tbg3_elevated_password', $this->getUser()->getPassword(), $expiration);
+            $expiration = 60 * $request->getParameter('elevation_duration', 30);
+            $authentication_backend = framework\Settings::getAuthenticationBackend();
+
+            if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
+            {
+                $token = $this->getUser()->createUserSession();
+                $token->setExpiresAt(time() + $expiration);
+                $token->setIsElevated(true);
+                $token->save();
+
+                framework\Context::getResponse()->setCookie('elevated_session_token', $token->getToken(), $expiration);
+            }
+            else
+            {
+                framework\Context::getResponse()->setCookie('elevated_password', $this->getUser()->getHashPassword(), $expiration);
+            }
             return $this->renderJSON(array('elevated' => true));
         }
         else
@@ -781,7 +862,7 @@ class Main extends framework\Action
     public function runElevatedLogin(framework\Request $request)
     {
         if ($this->getUser()->isGuest())
-            return $this->forward(framework\Context::getRouting()->generate('login_page'));
+            return $this->forward($this->getRouting()->generate('login_page'));
     }
 
     public function runDisableTutorial(framework\Request $request)
@@ -794,24 +875,45 @@ class Main extends framework\Action
 
     public function runSwitchUser(framework\Request $request)
     {
-        if (!$this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_USERS) && !$request->hasCookie('tbg3_original_username'))
+        if (!$this->getUser()->canAccessConfigurationPage(framework\Settings::CONFIGURATION_SECTION_USERS) && !$request->hasCookie('original_username'))
             return $this->forward403();
 
         $response = $this->getResponse();
+        $authentication_backend = framework\Settings::getAuthenticationBackend();
         if ($request['user_id'])
         {
             $user = new entities\User($request['user_id']);
-            $response->setCookie('tbg3_original_username', $request->getCookie('tbg3_username'));
-            $response->setCookie('tbg3_original_password', $request->getCookie('tbg3_password'));
-            framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
-            framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
+            if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
+            {
+                $response->setCookie('original_username', $request->getCookie('username'));
+                $response->setCookie('original_session_token', $request->getCookie('session_token'));
+                framework\Context::getResponse()->setCookie('username', $user->getUsername());
+                framework\Context::getResponse()->setCookie('session_token', $user->createUserSession()->getToken());
+            }
+            else
+            {
+                $response->setCookie('original_username', $request->getCookie('username'));
+                $response->setCookie('original_password', $request->getCookie('password'));
+                framework\Context::getResponse()->setCookie('password', $user->getHashPassword());
+                framework\Context::getResponse()->setCookie('username', $user->getUsername());
+            }
         }
         else
         {
-            $response->setCookie('tbg3_username', $request->getCookie('tbg3_original_username'));
-            $response->setCookie('tbg3_password', $request->getCookie('tbg3_original_password'));
-            framework\Context::getResponse()->deleteCookie('tbg3_original_password');
-            framework\Context::getResponse()->deleteCookie('tbg3_original_username');
+            if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
+            {
+                $response->setCookie('username', $request->getCookie('original_username'));
+                $response->setCookie('session_token', $request->getCookie('original_session_token'));
+                framework\Context::getResponse()->deleteCookie('original_session_token');
+                framework\Context::getResponse()->deleteCookie('original_username');
+            }
+            else
+            {
+                $response->setCookie('username', $request->getCookie('original_username'));
+                $response->setCookie('password', $request->getCookie('original_password'));
+                framework\Context::getResponse()->deleteCookie('original_password');
+                framework\Context::getResponse()->deleteCookie('original_username');
+            }
         }
         $this->forward($this->getRouting()->generate('home'));
     }
@@ -826,119 +928,35 @@ class Main extends framework\Action
      */
     public function runDoLogin(framework\Request $request)
     {
-        $i18n = framework\Context::getI18n();
-        $options = $request->getParameters();
-        $forward_url = framework\Context::getRouting()->generate('home');
+        $authentication_backend = framework\Settings::getAuthenticationBackend();
 
-        if (framework\Settings::isOpenIDavailable())
-            $openid = new \LightOpenID(framework\Context::getRouting()->generate('login_page', array(), false));
-
-        if (framework\Settings::isOpenIDavailable() && !$openid->mode && $request->isPost() && $request->hasParameter('openid_identifier'))
-        {
-            $openid->identity = $request->getRawParameter('openid_identifier');
-            $openid->required = array('contact/email');
-            $openid->optional = array('namePerson/first', 'namePerson/friendly');
-            return $this->forward($openid->authUrl());
-        }
-        elseif (framework\Settings::isOpenIDavailable() && $openid->mode == 'cancel')
-        {
-            $this->error = framework\Context::getI18n()->__("OpenID authentication cancelled");
-        }
-        elseif (framework\Settings::isOpenIDavailable() && $openid->mode)
+        if ($request->isPost())
         {
             try
             {
-                if ($openid->validate())
-                {
-                    if ($this->getUser()->isAuthenticated() && !$this->getUser()->isGuest())
-                    {
-                        if (tables\OpenIdAccounts::getTable()->getUserIDfromIdentity($openid->identity))
-                        {
-                            framework\Context::setMessage('openid_used', true);
-                            throw new \Exception('OpenID already in use');
-                        }
-                        $user = $this->getUser();
-                    }
-                    else
-                    {
-                        $user = entities\User::getByOpenID($openid->identity);
-                    }
-                    if ($user instanceof entities\User)
-                    {
-                        $attributes = $openid->getAttributes();
-                        $email = (array_key_exists('contact/email', $attributes)) ? $attributes['contact/email'] : null;
-                        if (!$user->getEmail())
-                        {
-                            if (array_key_exists('contact/email', $attributes))
-                                $user->setEmail($attributes['contact/email']);
-                            if (array_key_exists('namePerson/first', $attributes))
-                                $user->setRealname($attributes['namePerson/first']);
-                            if (array_key_exists('namePerson/friendly', $attributes))
-                                $user->setBuddyname($attributes['namePerson/friendly']);
+                $username = trim($request->getParameter('username', ''));
+                $password = trim($request->getParameter('password', ''));
+                $persist  = (bool) $request->getParameter('rememberme', false);
 
-                            if (!$user->getNickname() || $user->isOpenIdLocked())
-                                $user->setBuddyname($user->getEmail());
-                            if (!$user->getRealname())
-                                $user->setRealname($user->getBuddyname());
+                if ($username && $password)
+                {
+                    $user = entities\User::identify($request, $this);
 
-                            $user->save();
-                        }
-                        if (!$user->hasOpenIDIdentity($openid->identity))
-                        {
-                            tables\OpenIdAccounts::getTable()->addIdentity($openid->identity, $user->getID());
-                        }
-                        framework\Context::getResponse()->setCookie('tbg3_password', $user->getPassword());
-                        framework\Context::getResponse()->setCookie('tbg3_username', $user->getUsername());
-                        $user->setOnline();
-                        $user->save();
-                        $this->verifyScopeMembership($user);
-
-                        return $this->forward(framework\Context::getRouting()->generate(framework\Settings::get('returnfromlogin')));
-                    }
-                    else
+                    if (!$user instanceof entities\User || $user->isGuest())
                     {
-                        $this->error = framework\Context::getI18n()->__("Didn't recognize this OpenID. Please log in using your username and password, associate it with your user account in your account settings and try again.");
+                        throw new \Exception('No such login');
                     }
-                }
-                else
-                {
-                    $this->error = framework\Context::getI18n()->__("Could not validate against the OpenID provider");
-                }
-            }
-            catch (\Exception $e)
-            {
-                $this->error = framework\Context::getI18n()->__("Could not validate against the OpenID provider: %message", array('%message' => htmlentities($e->getMessage(), ENT_COMPAT, framework\Context::getI18n()->getCharset())));
-            }
-        }
-        elseif ($request->getMethod() == framework\Request::POST)
-        {
-            try
-            {
-                if ($request->hasParameter('tbg3_username') && $request->hasParameter('tbg3_password') && $request['tbg3_username'] != '' && $request['tbg3_password'] != '')
-                {
-                    $user = entities\User::loginCheck($request, $this);
 
                     $user->setOnline();
                     $user->save();
+
                     framework\Context::setUser($user);
                     $this->verifyScopeMembership($user);
 
-                    if ($request->hasParameter('return_to'))
+                    if (!$user->isGuest())
                     {
-                        $forward_url = $request['return_to'];
+                        $this->_persistLogin($authentication_backend, $user, $persist);
                     }
-                    else
-                    {
-                        if (framework\Settings::get('returnfromlogin') == 'referer')
-                        {
-                            $forward_url = $request->getParameter('tbg3_referer', framework\Context::getRouting()->generate('dashboard'));
-                        }
-                        else
-                        {
-                            $forward_url = framework\Context::getRouting()->generate(framework\Settings::get('returnfromlogin'));
-                        }
-                    }
-                    $forward_url = htmlentities($forward_url, ENT_COMPAT, framework\Context::getI18n()->getCharset());
                 }
                 else
                 {
@@ -950,8 +968,8 @@ class Main extends framework\Action
                 if ($request->isAjaxCall())
                 {
                     $this->getResponse()->setHttpStatus(401);
-                    framework\Logging::log($e->getMessage(), 'openid', framework\Logging::LEVEL_WARNING_RISK);
-                    return $this->renderJSON(array("error" => $i18n->__("Invalid login details")));
+                    framework\Logging::log($e->getMessage(), 'auth', framework\Logging::LEVEL_WARNING_RISK);
+                    return $this->renderJSON(array("error" => $this->getI18n()->__("Invalid login details")));
                 }
                 else
                 {
@@ -964,23 +982,20 @@ class Main extends framework\Action
             if ($request->isAjaxCall())
             {
                 $this->getResponse()->setHttpStatus(401);
-                return $this->renderJSON(array("error" => $i18n->__('Please enter a username and password')));
+                return $this->renderJSON(array("error" => $this->getI18n()->__('Please enter a username and password')));
             }
             else
             {
-                $this->forward403($i18n->__('Please enter a username and password'));
+                $this->forward403($this->getI18n()->__('Please enter a username and password'));
             }
         }
 
-        if (!isset($user))
+        if (!$user instanceof entities\User)
         {
-            $this->forward403($i18n->__("Invalid login details"));
+            $this->forward403($this->getI18n()->__("Invalid login details"));
         }
 
-        $this->verifyScopeMembership($user);
-
-        $user->setOnline();
-        $user->save();
+        $forward_url = $this->_getLoginForwardUrl($request);
 
         if ($request->isAjaxCall())
         {
@@ -1002,7 +1017,7 @@ class Main extends framework\Action
      */
     public function runRegisterCheckUsernameAvailability(framework\Request $request)
     {
-        $username = mb_strtolower(trim($request['fieldusername']));
+        $username = mb_strtolower(trim($request['username']));
         $available = ($username != '') ? tables\Users::getTable()->isUsernameAvailable($username) : false;
 
         return $this->renderJSON(array('available' => (bool) $available));
@@ -1024,7 +1039,7 @@ class Main extends framework\Action
 
         try
         {
-            $username = mb_strtolower(trim($request['fieldusername']));
+            $username = mb_strtolower(trim($request['username']));
             $buddyname = $request['buddyname'];
             $email = mb_strtolower(trim($request['email_address']));
             $confirmemail = mb_strtolower(trim($request['email_confirm']));
@@ -1060,10 +1075,10 @@ class Main extends framework\Action
                     $email_ok = true;
                 }
 
-                if ($email_ok && framework\Settings::get('limit_registration') != '')
+                if ($email_ok && framework\Settings::hasRegistrationDomainWhitelist())
                 {
 
-                    $allowed_domains = preg_replace('/[[:space:]]*,[[:space:]]*/', '|', framework\Settings::get('limit_registration'));
+                    $allowed_domains = preg_replace('/[[:space:]]*,[[:space:]]*/', '|', framework\Settings::getRegistrationDomainWhitelist());
                     if (preg_match('/@(' . $allowed_domains . ')$/i', $email) == false)
                     {
                         array_push($fields, 'email_address', 'email_confirm');
@@ -1147,7 +1162,7 @@ class Main extends framework\Action
         {
             framework\Context::setMessage('login_message_err', framework\Context::getI18n()->__('This activation link is not valid'));
         }
-        $this->forward(framework\Context::getRouting()->generate('login_page'));
+        $this->forward($this->getRouting()->generate('login_page'));
     }
 
     /**
@@ -1198,13 +1213,10 @@ class Main extends framework\Action
             $this->autopassword = framework\Context::getMessage('auto_password');
         }
 
-        if ($request->isPost() && $request->hasParameter('mode'))
-        {
-            switch ($request['mode'])
-            {
+        if ($request->isPost() && $request->hasParameter('mode')) {
+            switch ($request['mode']) {
                 case 'information':
-                    if (!$request['buddyname'] || !$request['email'])
-                    {
+                    if (!$request['buddyname'] || !$request['email']) {
                         $this->getResponse()->setHttpStatus(400);
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('Please fill out all the required fields')));
                     }
@@ -1216,10 +1228,8 @@ class Main extends framework\Action
                     $this->getUser()->setTimezone($request->getRawParameter('timezone'));
                     $this->getUser()->setLanguage($request['profile_language']);
 
-                    if ($this->getUser()->getEmail() != $request['email'])
-                    {
-                        if (\thebuggenie\core\framework\Event::createNew('core', 'changeEmail', $this->getUser(), array('email' => $request['email']))->triggerUntilProcessed()->isProcessed() == false)
-                        {
+                    if ($this->getUser()->getEmail() != $request['email']) {
+                        if (framework\Event::createNew('core', 'changeEmail', $this->getUser(), array('email' => $request['email']))->triggerUntilProcessed()->isProcessed() == false) {
                             $this->getUser()->setEmail($request['email']);
                         }
                     }
@@ -1295,24 +1305,26 @@ class Main extends framework\Action
                         }
                     }
 
-                    \thebuggenie\core\framework\Event::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request', 'categories'));
+                    framework\Event::createNew('core', 'mainActions::myAccount::saveNotificationSettings')->trigger(compact('request', 'categories'));
                     $this->getUser()->save();
 
                     return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Notification settings saved')));
                     break;
                 case 'module':
-                    foreach (framework\Context::getModules() as $module_name => $module)
-                    {
-                        if ($request['target_module'] == $module_name && $module->hasAccountSettings())
-                        {
-                            if ($module->postAccountSettings($request))
-                            {
-                                return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Settings saved')));
-                            }
-                            else
-                            {
-                                $this->getResponse()->setHttpStatus(400);
-                                return $this->renderJSON(array('error' => framework\Context::getI18n()->__('An error occured')));
+                    foreach (framework\Context::getAllModules() as $modules) {
+                        foreach ($modules as $module_name => $module) {
+                            if ($request['target_module'] == $module_name && $module->hasAccountSettings()) {
+                                try {
+                                    if ($module->postAccountSettings($request)) {
+                                        return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Settings saved')));
+                                    } else {
+                                        $this->getResponse()->setHttpStatus(400);
+                                        return $this->renderJSON(array('error' => framework\Context::getI18n()->__('An error occured')));
+                                    }
+                                } catch (\Exception $e) {
+                                    $this->getResponse()->setHttpStatus(400);
+                                    return $this->renderJSON(array('error' => framework\Context::getI18n()->__($e->getMessage())));
+                                }
                             }
                         }
                     }
@@ -1443,7 +1455,7 @@ class Main extends framework\Action
             $this->getUser()->changePassword($request['new_password_1']);
             $this->getUser()->save();
             framework\Context::clearMessage('auto_password');
-            $this->getResponse()->setCookie('tbg3_password', $this->getUser()->getHashPassword());
+
             return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Your new password has been saved')));
         }
     }
@@ -1485,7 +1497,7 @@ class Main extends framework\Action
             if ($project_key = $request['project_key'])
                 $this->selected_project = entities\Project::getByKey($project_key);
             elseif ($project_id = $request['project_id'])
-                $this->selected_project = entities\Project::getB2DBTable()->selectById($project_id);
+                $this->selected_project = tables\Projects::getTable()->selectById($project_id);
         }
         catch (\Exception $e)
         {
@@ -1512,7 +1524,7 @@ class Main extends framework\Action
             {
                 try
                 {
-                    $this->selected_issuetype = entities\Issuetype::getB2DBTable()->selectById($this->issuetype_id);
+                    $this->selected_issuetype = tables\Issuetypes::getTable()->selectById($this->issuetype_id);
                 }
                 catch (\Exception $e)
                 {
@@ -1545,11 +1557,11 @@ class Main extends framework\Action
             $this->selected_reproduction_steps_syntax = $request->getRawParameter('reproduction_steps_syntax', null);
 
             if ($edition_id = (int) $request['edition_id'])
-                $this->selected_edition = entities\Edition::getB2DBTable()->selectById($edition_id);
+                $this->selected_edition = tables\Editions::getTable()->selectById($edition_id);
             if ($build_id = (int) $request['build_id'])
-                $this->selected_build = entities\Build::getB2DBTable()->selectById($build_id);
+                $this->selected_build = tables\Builds::getTable()->selectById($build_id);
             if ($component_id = (int) $request['component_id'])
-                $this->selected_component = entities\Component::getB2DBTable()->selectById($component_id);
+                $this->selected_component = tables\Components::getTable()->selectById($component_id);
 
             if (trim($this->title) == '' || $this->title == $this->default_title)
                 $errors['title'] = true;
@@ -1571,7 +1583,7 @@ class Main extends framework\Action
 
             if ($category_id = (int) $request['category_id'])
             {
-                $category = entities\Category::getB2DBTable()->selectById($category_id);
+                $category = tables\ListTypes::getTable()->selectById($category_id);
 
                 if (! $category->hasAccess())
                 {
@@ -1584,10 +1596,10 @@ class Main extends framework\Action
             }
 
             if ($status_id = (int) $request['status_id'])
-                $this->selected_status = entities\Status::getB2DBTable()->selectById($status_id);
+                $this->selected_status = tables\ListTypes::getTable()->selectById($status_id);
 
             if ($reproducability_id = (int) $request['reproducability_id'])
-                $this->selected_reproducability = entities\Reproducability::getB2DBTable()->selectById($reproducability_id);
+                $this->selected_reproducability = tables\ListTypes::getTable()->selectById($reproducability_id);
 
             if ($milestone_id = (int) $request['milestone_id'])
             {
@@ -1604,16 +1616,16 @@ class Main extends framework\Action
             }
 
             if ($parent_issue_id = (int) $request['parent_issue_id'])
-                $this->parent_issue = entities\Issue::getB2DBTable()->selectById($parent_issue_id);
+                $this->parent_issue = tables\Issues::getTable()->selectById($parent_issue_id);
 
             if ($resolution_id = (int) $request['resolution_id'])
-                $this->selected_resolution = entities\Resolution::getB2DBTable()->selectById($resolution_id);
+                $this->selected_resolution = tables\ListTypes::getTable()->selectById($resolution_id);
 
             if ($severity_id = (int) $request['severity_id'])
-                $this->selected_severity = entities\Severity::getB2DBTable()->selectById($severity_id);
+                $this->selected_severity = tables\ListTypes::getTable()->selectById($severity_id);
 
             if ($priority_id = (int) $request['priority_id'])
-                $this->selected_priority = entities\Priority::getB2DBTable()->selectById($priority_id);
+                $this->selected_priority = tables\ListTypes::getTable()->selectById($priority_id);
 
             if ($request['estimated_time'])
                 $this->selected_estimated_time = $request['estimated_time'];
@@ -1705,7 +1717,7 @@ class Main extends framework\Action
                     }
                 }
             }
-            $event = new \thebuggenie\core\framework\Event('core', 'mainActions::_postIssueValidation', null, array(), $errors);
+            $event = new framework\Event('core', 'mainActions::_postIssueValidation', null, array(), $errors);
             $event->trigger();
             $errors = $event->getReturnList();
         }
@@ -1845,7 +1857,7 @@ class Main extends framework\Action
         {
             try
             {
-                $milestone = entities\Milestone::getB2DBTable()->selectById((int) $request['milestone_id']);
+                $milestone = tables\Milestones::getTable()->selectById((int) $request['milestone_id']);
                 if ($milestone instanceof entities\Milestone && !$milestone->hasAccess()) $milestone = null;
                 return $milestone;
             }
@@ -1859,7 +1871,7 @@ class Main extends framework\Action
         {
             try
             {
-                $build = entities\Build::getB2DBTable()->selectById((int) $request['build_id']);
+                $build = tables\Builds::getTable()->selectById((int) $request['build_id']);
                 return $build;
             }
             catch (\Exception $e) { }
@@ -1872,7 +1884,7 @@ class Main extends framework\Action
         {
             try
             {
-                $parent_issue = entities\Issue::getB2DBTable()->selectById((int) $request['parent_issue_id']);
+                $parent_issue = tables\Issues::getTable()->selectById((int) $request['parent_issue_id']);
                 return $parent_issue;
             }
             catch (\Exception $e) { }
@@ -1922,7 +1934,7 @@ class Main extends framework\Action
                         $file_descriptions = $request['file_description'];
                         foreach ($files as $file_id => $nothing)
                         {
-                            $file = entities\File::getB2DBTable()->selectById((int) $file_id);
+                            $file = tables\Files::getTable()->selectById((int) $file_id);
                             $file->setDescription($file_descriptions[$file_id]);
                             $file->save();
                             tables\IssueFiles::getTable()->addByIssueIDandFileID($issue->getID(), $file->getID());
@@ -1946,7 +1958,7 @@ class Main extends framework\Action
                     }
                     if ($request->getRequestedFormat() != 'json' && $issue->getProject()->getIssuetypeScheme()->isIssuetypeRedirectedAfterReporting($this->selected_issuetype))
                     {
-                        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
+                        $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())), 303);
                     }
                     else
                     {
@@ -2015,8 +2027,8 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                $user = entities\User::getB2DBTable()->selectById($request['user_id']);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
+                $user = tables\Users::getTable()->selectById($request['user_id']);
             }
             catch (\Exception $e)
             {
@@ -2037,7 +2049,7 @@ class Main extends framework\Action
             $retval = $user->addStarredIssue($issue_id);
             if ($user->getID() != $this->getUser()->getID())
             {
-                \thebuggenie\core\framework\Event::createNew('core', 'issue_subscribe_user', $issue, compact('user'))->trigger();
+                framework\Event::createNew('core', 'issue_subscribe_user', $issue, compact('user'))->trigger();
             }
         }
 
@@ -2051,7 +2063,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
                 $spenttime = tables\IssueSpentTimes::getTable()->selectById($request['entry_id']);
 
                 if ($spenttime instanceof entities\IssueSpentTime)
@@ -2084,7 +2096,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -2115,7 +2127,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -2221,10 +2233,10 @@ class Main extends framework\Action
                             switch ($request['identifiable_type'])
                             {
                                 case 'user':
-                                    $identified = entities\User::getB2DBTable()->selectById($request['value']);
+                                    $identified = tables\Users::getTable()->selectById($request['value']);
                                     break;
                                 case 'team':
-                                    $identified = entities\Team::getB2DBTable()->selectById($request['value']);
+                                    $identified = tables\Teams::getTable()->selectById($request['value']);
                                     break;
                             }
                             if ($identified instanceof entities\User || $identified instanceof entities\Team)
@@ -2255,7 +2267,7 @@ class Main extends framework\Action
                     }
                     elseif ($request['field'] == 'posted_by')
                     {
-                        $identified = entities\User::getB2DBTable()->selectById($request['value']);
+                        $identified = tables\Users::getTable()->selectById($request['value']);
                         if ($identified instanceof entities\User)
                         {
                             $issue->setPostedBy($identified);
@@ -2356,7 +2368,12 @@ class Main extends framework\Action
                             {
                                 if (isset($parameter))
                                 {
-                                    $name = $parameter->getName();
+                                    if ($parameter instanceof entities\Priority) {
+                                        framework\Context::loadLibrary('ui');
+                                        $name = fa_image_tag($parameter->getFontAwesomeIcon(), [], $parameter->getFontAwesomeIconStyle()) . $parameter->getName();
+                                    } else {
+                                        $name = $parameter->getName();
+                                    }
                                 }
                                 else
                                 {
@@ -2369,6 +2386,7 @@ class Main extends framework\Action
                                 {
                                     framework\Context::loadLibrary('ui');
                                     $field['src'] = htmlspecialchars(framework\Context::getWebroot() . 'images/' . $issue->getIssuetype()->getIcon() . '_small.png');
+                                    $field['fa_icon'] = $issue->getIssueType()->getFontAwesomeIcon();
                                 }
 
                                 if (!$issue->$is_changed_function_name())
@@ -2439,13 +2457,13 @@ class Main extends framework\Action
                                             $temp = tables\Milestones::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                             break;
                                         case entities\CustomDatatype::STATUS_CHOICE:
-                                            $temp = entities\Status::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            $temp = tables\ListTypes::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                             break;
                                         case entities\CustomDatatype::USER_CHOICE:
-                                            $temp = entities\User::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            $temp = tables\Users::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                             break;
                                         case entities\CustomDatatype::TEAM_CHOICE:
-                                            $temp = entities\Team::getB2DBTable()->selectById($request->getRawParameter("{$key}_value"));
+                                            $temp = tables\Teams::getTable()->selectById($request->getRawParameter("{$key}_value"));
                                             break;
                                         case entities\CustomDatatype::CLIENT_CHOICE:
                                             $temp = tables\Clients::getTable()->selectById($request->getRawParameter("{$key}_value"));
@@ -2492,6 +2510,7 @@ class Main extends framework\Action
 
                                 return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => tbg_parse_text($request->getRawParameter("{$key}_value")))));
                             case entities\CustomDatatype::DATE_PICKER:
+                            case entities\CustomDatatype::DATETIME_PICKER:
                                 if ($customdatatypeoption_value == '')
                                 {
                                     $issue->setCustomField($key, "");
@@ -2504,7 +2523,7 @@ class Main extends framework\Action
                                 if (!$issue->$changed_methodname())
                                     return $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => false));
 
-                                return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d', (int) $request->getRawParameter("{$key}_value")))));
+                                return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => date('Y-m-d' . ($customdatatype->getType() == entities\CustomDatatype::DATETIME_PICKER ? ' H:i' : ''), (int) $request->getRawParameter("{$key}_value")))));
                             default:
                                 if ($customdatatypeoption_value == '')
                                 {
@@ -2521,7 +2540,7 @@ class Main extends framework\Action
                                 return ($customdatatypeoption_value == '') ? $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('id' => 0))) : $this->renderJSON(array('issue_id' => $issue->getID(), 'changed' => true, 'field' => array('value' => $key, 'name' => (filter_var($customdatatypeoption_value, FILTER_VALIDATE_URL) !== false) ? "<a href=\"{$customdatatypeoption_value}\">{$customdatatypeoption_value}</a>" : $customdatatypeoption_value)));
                         }
                     }
-                    $customdatatypeoption = ($customdatatypeoption_value) ? entities\CustomDatatypeOption::getB2DBTable()->selectById($customdatatypeoption_value) : null;
+                    $customdatatypeoption = ($customdatatypeoption_value) ? tables\CustomFieldOptions::getTable()->selectById($customdatatypeoption_value) : null;
                     if ($customdatatypeoption instanceof entities\CustomDatatypeOption)
                     {
                         $issue->setCustomField($key, $customdatatypeoption->getID());
@@ -2554,7 +2573,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -2607,8 +2626,9 @@ class Main extends framework\Action
                 $field = ($issue->getReproducability() instanceof entities\Reproducability) ? array('id' => $issue->getReproducability()->getID(), 'name' => $issue->getReproducability()->getName()) : array('id' => 0);
                 break;
             case 'priority':
+                framework\Context::loadLibrary('ui');
                 $issue->revertPriority();
-                $field = ($issue->getPriority() instanceof entities\Priority) ? array('id' => $issue->getPriority()->getID(), 'name' => $issue->getPriority()->getName()) : array('id' => 0);
+                $field = ($issue->getPriority() instanceof entities\Priority) ? array('id' => $issue->getPriority()->getID(), 'name' => fa_image_tag($this->issue->getPriority()->getFontAwesomeIcon(), [], $this->issue->getPriority()->getFontAwesomeIconStyle()) . $issue->getPriority()->getName()) : array('id' => 0);
                 break;
             case 'percent_complete':
                 $issue->revertPercentCompleted();
@@ -2632,9 +2652,9 @@ class Main extends framework\Action
                 break;
             case 'issuetype':
                 $issue->revertIssuetype();
-                $field = ($issue->getIssuetype() instanceof entities\Issuetype) ? array('id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(framework\Context::getWebroot() . 'images/' . $issue->getIssuetype()->getIcon() . '_small.png')) : array('id' => 0);
+                $field = ($issue->getIssuetype() instanceof entities\Issuetype) ? ['id' => $issue->getIssuetype()->getID(), 'name' => $issue->getIssuetype()->getName(), 'src' => htmlspecialchars(framework\Context::getWebroot() . 'images/' . $issue->getIssuetype()->getIcon() . '_small.png'), 'fa_icon' => $issue->getIssueType()->getFontAwesomeIcon()] : array('id' => 0);
                 $visible_fields = ($issue->getIssuetype() instanceof entities\Issuetype) ? $issue->getProject()->getVisibleFieldsArray($issue->getIssuetype()->getID()) : array();
-                return $this->renderJSON(array('ok' => true, 'issue_id' => $issue->getID(), 'field' => $field, 'visible_fields' => $visible_fields));
+                return $this->renderJSON(['ok' => true, 'issue_id' => $issue->getID(), 'field' => $field, 'visible_fields' => $visible_fields]);
                 break;
             case 'milestone':
                 $issue->revertMilestone();
@@ -2710,7 +2730,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -2754,7 +2774,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -2799,7 +2819,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -2832,7 +2852,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -2865,7 +2885,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -2897,7 +2917,7 @@ class Main extends framework\Action
         $issue->save();
 
         framework\Context::setMessage('issue_deleted', true);
-        $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '?referer=' . $request_referer);
+        $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())) . '?referer=' . $request_referer);
     }
 
     /**
@@ -2961,15 +2981,15 @@ class Main extends framework\Action
         framework\Logging::log('status was: ' . (int) $status['finished'] . ', pct: ' . (int) $status['percent']);
         if (array_key_exists('file_id', $status) && $request['mode'] == 'issue')
         {
-            $file = entities\File::getB2DBTable()->selectById($status['file_id']);
+            $file = tables\Files::getTable()->selectById($status['file_id']);
             $status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'uploaded_files', 'mode' => 'issue', 'issue_id' => $request['issue_id'], 'file' => $file));
             $status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'viewissue_files', 'mode' => 'issue', 'issue_id' => $request['issue_id'], 'file' => $file));
-            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            $issue = tables\Issues::getTable()->selectById($request['issue_id']);
             $status['attachmentcount'] = count($issue->getFiles()) + count($issue->getLinks());
         }
         elseif (array_key_exists('file_id', $status) && $request['mode'] == 'article')
         {
-            $file = entities\File::getB2DBTable()->selectById($status['file_id']);
+            $file = tables\Files::getTable()->selectById($status['file_id']);
             $status['content_uploader'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_' . mb_strtolower($request['article_name']) . '_files', 'mode' => 'article', 'article_name' => $request['article_name'], 'file' => $file));
             $status['content_inline'] = $this->getComponentHTML('main/attachedfile', array('base_id' => 'article_' . mb_strtolower($request['article_name']) . '_files', 'mode' => 'article', 'article_name' => $request['article_name'], 'file' => $file));
             $article = \thebuggenie\modules\publish\entities\Article::getByName($request['article_name']);
@@ -2984,7 +3004,7 @@ class Main extends framework\Action
         switch ($request['target'])
         {
             case 'issue':
-                $target = entities\Issue::getB2DBTable()->selectById($request['target_id']);
+                $target = tables\Issues::getTable()->selectById($request['target_id']);
                 $base_id = 'viewissue_files';
                 $container_id = 'viewissue_uploaded_files';
                 $target_identifier = 'issue_id';
@@ -3003,7 +3023,7 @@ class Main extends framework\Action
         $comments = '';
         foreach ($request['file_description'] ?: array() as $file_id => $description)
         {
-            $file = entities\File::getB2DBTable()->selectById($file_id);
+            $file = tables\Files::getTable()->selectById($file_id);
 
             if (! $file instanceof entities\File) continue;
 
@@ -3035,7 +3055,7 @@ class Main extends framework\Action
         }
         $attachmentcount = ($request['target'] == 'issue') ? $target->countFiles() + $target->countLinks() : $target->countFiles();
 
-        return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_merge($files, $image_files), 'attachmentcount' => $attachmentcount, 'comments' => $comments));
+        return $this->renderJSON(array('attached' => 'ok', 'container_id' => $container_id, 'files' => array_reverse(array_merge($files, $image_files)), 'attachmentcount' => $attachmentcount, 'comments' => $comments));
     }
 
     public function runUploadFile(framework\Request $request)
@@ -3072,10 +3092,10 @@ class Main extends framework\Action
                 $content_type = entities\File::getMimeType($filename);
                 if (framework\Settings::getUploadStorage() == 'database')
                 {
-                    $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type, null, file_get_contents($filename));
+                    $file_object_id = tables\Files::getTable()->saveFile($new_filename, basename($file['name']), $content_type, null, file_get_contents($filename));
                 }
                 else {
-                    $file_object_id = entities\File::getB2DBTable()->saveFile($new_filename, basename($file['name']), $content_type);
+                    $file_object_id = tables\Files::getTable()->saveFile($new_filename, basename($file['name']), $content_type);
                 }
                 return $this->renderJSON(array('file_id' => $file_object_id));
             }
@@ -3097,7 +3117,7 @@ class Main extends framework\Action
 
         if ($request['mode'] == 'issue')
         {
-            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            $issue = tables\Issues::getTable()->selectById($request['issue_id']);
             $canupload = (bool) ($issue instanceof entities\Issue && $issue->hasAccess() && $issue->canAttachFiles());
         }
         elseif ($request['mode'] == 'article')
@@ -3107,7 +3127,7 @@ class Main extends framework\Action
         }
         else
         {
-            $event = \thebuggenie\core\framework\Event::createNew('core', 'upload', $request['mode']);
+            $event = framework\Event::createNew('core', 'upload', $request['mode']);
             $event->triggerUntilProcessed();
 
             $canupload = ($event->isProcessed()) ? (bool) $event->getReturnValue() : true;
@@ -3158,13 +3178,13 @@ class Main extends framework\Action
                     if (!$issue instanceof entities\Issue)
                         break;
 
-                    $this->forward(framework\Context::getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
+                    $this->forward($this->getRouting()->generate('viewissue', array('project_key' => $issue->getProject()->getKey(), 'issue_no' => $issue->getFormattedIssueNo())));
                     break;
                 case 'article':
                     if (!$article instanceof \thebuggenie\modules\publish\entities\Article)
                         break;
 
-                    $this->forward(framework\Context::getRouting()->generate('publish_article_attachments', array('article_name' => $article->getName())));
+                    $this->forward($this->getRouting()->generate('publish_article_attachments', array('article_name' => $article->getName())));
                     break;
             }
         }
@@ -3177,11 +3197,11 @@ class Main extends framework\Action
     {
         try
         {
-            $file = entities\File::getB2DBTable()->selectById((int) $request['file_id']);
+            $file = tables\Files::getTable()->selectById((int) $request['file_id']);
             switch ($request['mode'])
             {
                 case 'issue':
-                    $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                    $issue = tables\Issues::getTable()->selectById($request['issue_id']);
                     if ($issue instanceof entities\Issue && $issue->canRemoveAttachments() && (int) $request->getParameter('file_id', 0))
                     {
                         $issue->detachFile($file);
@@ -3267,7 +3287,7 @@ class Main extends framework\Action
 
     public function runAttachLinkToIssue(framework\Request $request)
     {
-        $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+        $issue = tables\Issues::getTable()->selectById($request['issue_id']);
         if ($issue instanceof entities\Issue && $issue->canAttachLinks())
         {
             if ($request['link_url'] != '')
@@ -3284,7 +3304,7 @@ class Main extends framework\Action
 
     public function runRemoveLinkFromIssue(framework\Request $request)
     {
-        $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+        $issue = tables\Issues::getTable()->selectById($request['issue_id']);
         if ($issue instanceof entities\Issue && $issue->canRemoveAttachments())
         {
             if ($request['link_id'] != 0)
@@ -3332,7 +3352,7 @@ class Main extends framework\Action
 
     public function runDeleteComment(framework\Request $request)
     {
-        $comment = entities\Comment::getB2DBTable()->selectById($request['comment_id']);
+        $comment = tables\Comments::getTable()->selectById($request['comment_id']);
         if ($comment instanceof entities\Comment)
         {
             if (!$comment->canUserDelete(framework\Context::getUser()))
@@ -3343,7 +3363,7 @@ class Main extends framework\Action
             else
             {
                 unset($comment);
-                $comment = entities\Comment::getB2DBTable()->selectById((int) $request['comment_id']);
+                $comment = tables\Comments::getTable()->selectById((int) $request['comment_id']);
                 $comment->delete();
                 return $this->renderJSON(array('title' => framework\Context::getI18n()->__('Comment deleted!')));
             }
@@ -3358,7 +3378,7 @@ class Main extends framework\Action
     public function runUpdateComment(framework\Request $request)
     {
         framework\Context::loadLibrary('ui');
-        $comment = entities\Comment::getB2DBTable()->selectById($request['comment_id']);
+        $comment = tables\Comments::getTable()->selectById($request['comment_id']);
         if ($comment instanceof entities\Comment)
         {
             if (!$comment->canUserEdit(framework\Context::getUser()))
@@ -3397,13 +3417,13 @@ class Main extends framework\Action
         }
     }
 
-    public function listenIssueSaveAddComment(\thebuggenie\core\framework\Event $event)
+    public function listenIssueSaveAddComment(framework\Event $event)
     {
         $this->comment_lines = $event->getParameter('comment_lines');
         $this->comment = $event->getParameter('comment');
     }
 
-    public function listenViewIssuePostError(\thebuggenie\core\framework\Event $event)
+    public function listenViewIssuePostError(framework\Event $event)
     {
         if (framework\Context::hasMessage('comment_error'))
         {
@@ -3441,7 +3461,7 @@ class Main extends framework\Action
 
             if ($comment_applies_type == entities\Comment::TYPE_ISSUE)
             {
-                $issue = entities\Issue::getB2DBTable()->selectById((int) $request['comment_applies_id']);
+                $issue = tables\Issues::getTable()->selectById((int) $request['comment_applies_id']);
                 if (!$request->isAjaxCall() || $request['comment_save_changes'])
                 {
                     $issue->setSaveComment($comment);
@@ -3449,26 +3469,26 @@ class Main extends framework\Action
                 }
                 else
                 {
-                    \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::createNew', $comment, compact('issue'))->trigger();
+                    framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::createNew', $comment, compact('issue'))->trigger();
                 }
             }
             elseif ($comment_applies_type == entities\Comment::TYPE_ARTICLE)
             {
                 $article = \thebuggenie\modules\publish\entities\tables\Articles::getTable()->selectById((int) $request['comment_applies_id']);
-                \thebuggenie\core\framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::createNew', $comment, compact('article'))->trigger();
+                framework\Event::createNew('core', 'thebuggenie\core\entities\Comment::createNew', $comment, compact('article'))->trigger();
             }
 
+            $component_name = ($comment->isReply()) ? 'main/comment' : 'main/commentwrapper';
             switch ($comment_applies_type)
             {
                 case entities\Comment::TYPE_ISSUE:
-                    $issue = entities\Issue::getB2DBTable()->selectById($request['comment_applies_id']);
+                    $issue = tables\Issues::getTable()->selectById($request['comment_applies_id']);
 
                     framework\Context::setCurrentProject($issue->getProject());
-
-                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'issue' => $issue, 'mentionable_target_type' => 'issue', 'comment_count_div' => 'viewissue_comment_count'));
+                    $comment_html = $this->getComponentHTML($component_name, array('comment' => $comment, 'issue' => $issue, 'options' => ['issue' => $issue], 'mentionable_target_type' => 'issue', 'comment_count_div' => 'viewissue_comment_count'));
                     break;
                 case entities\Comment::TYPE_ARTICLE:
-                    $comment_html = $this->getComponentHTML('main/comment', array('comment' => $comment, 'mentionable_target_type' => 'article', 'comment_count_div' => 'article_comment_count'));
+                    $comment_html = $this->getComponentHTML($component_name, array('comment' => $comment, 'mentionable_target_type' => 'article', 'options' => [], 'comment_count_div' => 'article_comment_count'));
                     break;
                 default:
                     $comment_html = 'OH NO!';
@@ -3489,7 +3509,7 @@ class Main extends framework\Action
             }
         }
         if ($request->isAjaxCall())
-            return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'continue_url' => $request['forward_url'], 'commentcount' => entities\Comment::countComments($request['comment_applies_id'], $request['comment_applies_type']/* , $request['comment_module'] */)));
+            return $this->renderJSON(array('title' => $i18n->__('Comment added!'), 'comment_data' => $comment_html, 'comment_id' => $comment->getID(), 'continue_url' => $request['forward_url'], 'commentcount' => entities\Comment::countComments($request['comment_applies_id'], $request['comment_applies_type']/* , $request['comment_module'] */)));
         if (isset($comment) && $comment instanceof entities\Comment)
             $this->forward($request['forward_url'] . "#comment_{$request['comment_applies_type']}_{$request['comment_applies_id']}_{$comment->getID()}");
         else
@@ -3614,7 +3634,7 @@ class Main extends framework\Action
             $template_name = null;
             if ($request->hasParameter('issue_id'))
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                $issue = tables\Issues::getTable()->selectById($request['issue_id']);
                 $options = array('issue' => $issue);
             }
             else
@@ -3627,7 +3647,7 @@ class Main extends framework\Action
                     $template_name = 'main/usercard';
                     if ($user_id = $request['user_id'])
                     {
-                        $user = entities\User::getB2DBTable()->selectById($user_id);
+                        $user = tables\Users::getTable()->selectById($user_id);
                         $options['user'] = $user;
                     }
                     break;
@@ -3645,16 +3665,13 @@ class Main extends framework\Action
                 case 'attachlink':
                     $template_name = 'main/attachlink';
                     break;
-                case 'openid':
-                    $template_name = 'main/openid';
-                    break;
                 case 'notifications':
                     $template_name = 'main/notifications';
                     $options['first_notification_id'] = $request['first_notification_id'];
                     $options['last_notification_id'] = $request['last_notification_id'];
                     break;
                 case 'workflow_transition':
-                    $transition = entities\WorkflowTransition::getB2DBTable()->selectById($request['transition_id']);
+                    $transition = tables\WorkflowTransitions::getTable()->selectById($request['transition_id']);
                     $template_name = $transition->getTemplate();
                     $options['transition'] = $transition;
                     if ($request->hasParameter('issue_ids'))
@@ -3713,17 +3730,17 @@ class Main extends framework\Action
                     break;
                 case 'project_build':
                     $template_name = 'project/build';
-                    $options['project'] = entities\Project::getB2DBTable()->selectById($request['project_id']);
+                    $options['project'] = tables\Projects::getTable()->selectById($request['project_id']);
                     if ($request->hasParameter('build_id'))
-                        $options['build'] = entities\Build::getB2DBTable()->selectById($request['build_id']);
+                        $options['build'] = tables\Builds::getTable()->selectById($request['build_id']);
                     break;
                 case 'project_icons':
                     $template_name = 'project/projecticons';
-                    $options['project'] = entities\Project::getB2DBTable()->selectById($request['project_id']);
+                    $options['project'] = tables\Projects::getTable()->selectById($request['project_id']);
                     break;
                 case 'project_workflow':
                     $template_name = 'project/projectworkflow';
-                    $options['project'] = entities\Project::getB2DBTable()->selectById($request['project_id']);
+                    $options['project'] = tables\Projects::getTable()->selectById($request['project_id']);
                     break;
                 case 'permissions':
                     $options['key'] = $request['permission_key'];
@@ -3752,28 +3769,30 @@ class Main extends framework\Action
                     $template_name = 'configuration/siteicons';
                     break;
                 case 'project_config':
-                    $template_name = 'project/projectconfig_container';
+                    $template_name = 'project/editproject';
                     if ($request['project_id']) {
-                        $project = entities\Project::getB2DBTable()->selectById($request['project_id']);
+                        $project = tables\Projects::getTable()->selectById($request['project_id']);
                     } else {
                         $project = new entities\Project();
                         framework\Context::setCurrentProject($project);
                     }
+                    $options['assignee_type'] = $request['assignee_type'];
+                    $options['assignee_id'] = $request['assignee_id'];
                     $options['project'] = $project;
                     $options['section'] = $request->getParameter('section', 'info');
                     if ($request->hasParameter('edition_id'))
                     {
-                        $edition = entities\Edition::getB2DBTable()->selectById($request['edition_id']);
+                        $edition = tables\Editions::getTable()->selectById($request['edition_id']);
                         $options['edition'] = $edition;
                         $options['selected_section'] = $request->getParameter('section', 'general');
                     }
                     break;
                 case 'issue_add_item':
-                    $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+                    $issue = tables\Issues::getTable()->selectById($request['issue_id']);
                     $template_name = 'main/issueadditem';
                     break;
                 case 'client_users':
-                    $options['client'] = entities\Client::getB2DBTable()->selectById($request['client_id']);
+                    $options['client'] = tables\Clients::getTable()->selectById($request['client_id']);
                     $template_name = 'main/clientusers';
                     break;
                 case 'dashboard_config':
@@ -3781,28 +3800,6 @@ class Main extends framework\Action
                     $options['tid'] = $request['tid'];
                     $options['target_type'] = $request['target_type'];
                     $options['previous_route'] = $request['previous_route'];
-                    $options['mandatory'] = true;
-                    break;
-                case 'archived_projects':
-                    $template_name = 'main/archivedprojects';
-                    $options['mandatory'] = true;
-                    break;
-                case 'team_archived_projects':
-                    $template_name = 'main/archivedprojects';
-                    $options['target'] = 'team';
-                    $options['id'] = $request['tid'];
-                    $options['mandatory'] = true;
-                    break;
-                case 'client_archived_projects':
-                    $template_name = 'main/archivedprojects';
-                    $options['target'] = 'client';
-                    $options['id'] = $request['cid'];
-                    $options['mandatory'] = true;
-                    break;
-                case 'project_archived_projects':
-                    $template_name = 'main/archivedprojects';
-                    $options['target'] = 'project';
-                    $options['id'] = $request['pid'];
                     $options['mandatory'] = true;
                     break;
                 case 'bulk_workflow':
@@ -3830,7 +3827,7 @@ class Main extends framework\Action
                         $options['milestone'] = \thebuggenie\core\entities\tables\Milestones::getTable()->selectById($request['milestone_id']);
                     break;
                 default:
-                    $event = new \thebuggenie\core\framework\Event('core', 'get_backdrop_partial', $request['key']);
+                    $event = new framework\Event('core', 'get_backdrop_partial', $request['key']);
                     $event->triggerUntilProcessed();
                     $options = $event->getReturnList();
                     $template_name = $event->getReturnValue();
@@ -3852,92 +3849,174 @@ class Main extends framework\Action
         return $this->renderJSON(array('error' => $error));
     }
 
-    public function runFindIssue(framework\Request $request)
+    /**
+     * Find issues that might be related to selected issue.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runFindRelatedIssues(framework\Request $request)
     {
-        $status = 200;
-        $message = null;
-        if ($issue_id = $request['issue_id'])
-        {
-            try
-            {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-            }
-            catch (\Exception $e)
-            {
-                $status = 400;
-                $message = framework\Context::getI18n()->__('Could not find this issue');
-            }
-        }
-        elseif ($request->hasParameter('issue_id'))
-        {
-            $status = 400;
-            $message = framework\Context::getI18n()->__('Please provide an issue number');
-        }
+        $issue_id = $request['issue_id'];
+        $searchfor = trim($request['searchfor']);
 
-        $searchfor = $request['searchfor'];
-
-        if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor) && mb_substr($searchfor, 0, 1) != '#')
+        // Verify request parameters.
+        if ($issue_id === null)
         {
-//                $status = 400;
-//                $message = framework\Context::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor', array('searchfor' => $searchfor));
-            $issues = array();
-            $count = 0;
+            return $this->return400(framework\Context::getI18n()->__('Please provide an issue number'));
+        }
+        else if ($searchfor === null or $searchfor === "")
+        {
+            return $this->return400(framework\Context::getI18n()->__('Please provide search text'));
+        }
+        // Valid project has been referenced, user has permissions
+        // to access it (preExecute performs access check already).
+        else if ($this->selected_project instanceof entities\Project)
+        {
+            $issue = tables\Issues::getTable()->selectById($issue_id);
+
+            if ($issue instanceof entities\Issue && $issue->hasAccess($this->getUser()))
+            {
+                // Try to get both exact match and text-based search.
+                $exact_match = entities\Issue::getIssue($searchfor);
+                $found_issues = entities\Issue::findIssuesByText($searchfor, null);
+
+                // Exclude selected issue from search results.
+                if ($exact_match == $issue)
+                {
+                    $exact_match = null;
+                }
+
+                if (($key = array_search($issue, $found_issues)) !== false)
+                {
+                    unset($found_issues[$key]);
+                }
+
+                // Exclude exact match from general search results.
+                if (($key = array_search($exact_match, $found_issues)) !== false)
+                {
+                    unset($found_issues[$key]);
+                }
+
+                // Sort issues by project. Selected project at top.
+                usort($found_issues, array($this, 'compareIssuesByProject'));
+
+                // Group issues, exact match first, followed by
+                // current project, then other projects.
+                $grouped_issues = [];
+
+                foreach ($found_issues as $found_issue)
+                {
+                    $project_name = $found_issue->getProject()->getName();
+
+                    if (!array_key_exists($project_name, $found_issues))
+                    {
+                        $grouped_issues[$project_name] = [];
+                    }
+
+                    $grouped_issues[$project_name][] = $found_issue;
+                }
+
+                if ($exact_match instanceof entities\Issue)
+                {
+                    $grouped_issues = [$this->getI18n()->__('Exact match') => [$exact_match]] + $grouped_issues;
+                }
+            }
+            else
+            {
+                return $this->return404(framework\Context::getI18n()->__('Could not find this issue'));
+            }
         }
         else
         {
-            $this->getResponse()->setHttpStatus($status);
-            if ($status == 400)
-            {
-                return $this->renderJSON(array('error' => $message));
-            }
-
-            list ($issues, $count) = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
+            return $this->return404(framework\Context::getI18n()->__('This project does not exist'));
         }
-        $options = array('project' => $this->selected_project, 'issues' => $issues, 'count' => $count);
-        if (isset($issue))
-            $options['issue'] = $issue;
 
-        return $this->renderJSON(array('content' => $this->getComponentHTML('main/find' . $request['type'] . 'issues', $options)));
+        // Prepare response and return it.
+        $this->getResponse()->setHttpStatus(framework\Response::HTTP_STATUS_OK);
+
+        $parameters = [
+            'selected_project' => $this->selected_project,
+            'issue' => $issue,
+            'grouped_issues' => $grouped_issues
+        ];
+
+        return $this->renderJSON(array('content' => $this->getComponentHTML('main/findrelatedissues', $parameters)));
     }
 
-    public function runFindDuplicateIssue(framework\Request $request)
+    /**
+     * Find issues that might be duplicates of selected issue.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runFindDuplicatedIssue(framework\Request $request)
     {
-        $status = 200;
-        $message = null;
-        if ($issue_id = $request['issue_id'])
+        $issue_id = $request['issue_id'];
+        $searchfor = trim($request['searchfor']);
+
+        // Verify request parameters.
+        if ($issue_id === null)
         {
-            try
+            return $this->return400(framework\Context::getI18n()->__('Please provide an issue number'));
+        }
+        else if ($searchfor === null or $searchfor === "")
+        {
+            return $this->return400(framework\Context::getI18n()->__('Please provide search text'));
+        }
+        // Valid project has been referenced, user has permissions
+        // to access it (preExecute performs access check already).
+        else if ($this->selected_project instanceof entities\Project)
+        {
+            $issue = tables\Issues::getTable()->selectById($issue_id);
+
+            if ($issue instanceof entities\Issue && $issue->hasAccess($this->getUser()))
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                // Try to get both exact match and text-based search.
+                $exact_match = entities\Issue::getIssue($searchfor);
+                $matched_issues = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
+
+                // Exclude selected issue from search results.
+                if ($exact_match == $issue)
+                {
+                    $exact_match = null;
+                }
+
+                if (($key = array_search($issue, $matched_issues)) !== false)
+                {
+                    unset($matched_issues[$key]);
+                }
+
+                // Exclude exact match from general search results.
+                if (($key = array_search($exact_match, $matched_issues)) !== false)
+                {
+                    unset($matched_issues[$key]);
+                }
+
+                // Add exact match to top of the list.
+                if ($exact_match instanceof entities\Issue)
+                {
+                    array_unshift($matched_issues, $exact_match);
+                }
             }
-            catch (\Exception $e)
+            else
             {
-                $status = 400;
-                $message = framework\Context::getI18n()->__('Could not find this issue');
+                return $this->return404(framework\Context::getI18n()->__('Could not find this issue'));
             }
         }
         else
         {
-            $status = 400;
-            $message = framework\Context::getI18n()->__('Please provide an issue number');
+            return $this->return404(framework\Context::getI18n()->__('This project does not exist'));
         }
 
-        $searchfor = $request['searchfor'];
+        // Prepare response and return it.
+        $this->getResponse()->setHttpStatus(framework\Response::HTTP_STATUS_OK);
 
-        if (mb_strlen(trim($searchfor)) < 3 && !is_numeric($searchfor))
-        {
-            $status = 400;
-            $message = framework\Context::getI18n()->__('Please enter something to search for (3 characters or more) %searchfor', array('searchfor' => $searchfor));
-        }
+        $parameters = [
+            'selected_project' => $this->selected_project,
+            'issue' => $issue,
+            'matched_issues' => $matched_issues
+        ];
 
-        $this->getResponse()->setHttpStatus($status);
-        if ($status == 400)
-        {
-            return $this->renderJSON(array('error' => $message));
-        }
-
-        list ($issues, $count) = entities\Issue::findIssuesByText($searchfor, $this->selected_project);
-        return $this->renderJSON(array('content' => $this->getComponentHTML('main/findduplicateissues', array('issue' => $issue, 'issues' => $issues, 'count' => $count))));
+        return $this->renderJSON(array('content' => $this->getComponentHTML('main/findduplicateissues', $parameters)));
     }
 
     public function runRemoveRelatedIssue(framework\Request $request)
@@ -3952,8 +4031,8 @@ class Main extends framework\Action
                 $related_issue = null;
                 if ($issue_id && $related_issue_id)
                 {
-                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                    $related_issue = entities\Issue::getB2DBTable()->selectById($related_issue_id);
+                    $issue = tables\Issues::getTable()->selectById($issue_id);
+                    $related_issue = tables\Issues::getTable()->selectById($related_issue_id);
                 }
                 if (!$issue instanceof entities\Issue || !$related_issue instanceof entities\Issue)
                 {
@@ -3986,8 +4065,8 @@ class Main extends framework\Action
                 $duplicated_issue = null;
                 if ($issue_id && $duplicated_issue_id)
                 {
-                    $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
-                    $duplicated_issue = entities\Issue::getB2DBTable()->selectById($duplicated_issue_id);
+                    $issue = tables\Issues::getTable()->selectById($issue_id);
+                    $duplicated_issue = tables\Issues::getTable()->selectById($duplicated_issue_id);
                 }
                 if (!$issue instanceof entities\Issue || !$duplicated_issue instanceof entities\Issue || !$duplicated_issue->isDuplicate() || $duplicated_issue->getDuplicateOf()->getID() != $issue_id)
                 {
@@ -4017,7 +4096,7 @@ class Main extends framework\Action
         {
             try
             {
-                $issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -4055,7 +4134,7 @@ class Main extends framework\Action
             {
                 try
                 {
-                    $related_issue = entities\Issue::getB2DBTable()->selectById((int) $issue_id);
+                    $related_issue = tables\Issues::getTable()->selectById((int) $issue_id);
                     if ($mode == 'relate_children')
                     {
                         $issue->addChildIssue($related_issue);
@@ -4096,7 +4175,7 @@ class Main extends framework\Action
         {
             try
             {
-                $this->issue = entities\Issue::getB2DBTable()->selectById($issue_id);
+                $this->issue = tables\Issues::getTable()->selectById($issue_id);
             }
             catch (\Exception $e)
             {
@@ -4108,7 +4187,7 @@ class Main extends framework\Action
     public function runVoteForIssue(framework\Request $request)
     {
         $i18n = framework\Context::getI18n();
-        $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+        $issue = tables\Issues::getTable()->selectById($request['issue_id']);
         $vote_direction = $request['vote'];
         if ($issue instanceof entities\Issue && !$issue->hasUserVoted($this->getUser()->getID(), ($vote_direction == 'up')))
         {
@@ -4121,7 +4200,7 @@ class Main extends framework\Action
     {
         try
         {
-            $friend_user = entities\User::getB2DBTable()->selectById($request['user_id']);
+            $friend_user = tables\Users::getTable()->selectById($request['user_id']);
             $mode = $request['mode'];
             if ($mode == 'add')
             {
@@ -4149,7 +4228,7 @@ class Main extends framework\Action
     {
         try
         {
-            $state = entities\Userstate::getB2DBTable()->selectById($request['state_id']);
+            $state = tables\Userstates::getTable()->selectById($request['state_id']);
             $this->getUser()->setState($state);
             $this->getUser()->save();
             return $this->renderJSON(array('userstate' => $this->getI18n()->__($state->getName())));
@@ -4165,7 +4244,7 @@ class Main extends framework\Action
     {
         try
         {
-            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            $issue = tables\Issues::getTable()->selectById($request['issue_id']);
             $itemtype = $request['affected_type'];
 
             if (!(($itemtype == 'build' && $issue->canEditAffectedBuilds()) || ($itemtype == 'component' && $issue->canEditAffectedComponents()) || ($itemtype == 'edition' && $issue->canEditAffectedEditions())))
@@ -4271,7 +4350,7 @@ class Main extends framework\Action
         framework\Context::loadLibrary('ui');
         try
         {
-            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            $issue = tables\Issues::getTable()->selectById($request['issue_id']);
 
             if (!$issue->canEditIssue())
             {
@@ -4371,8 +4450,8 @@ class Main extends framework\Action
         framework\Context::loadLibrary('ui');
         try
         {
-            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
-            $status = entities\Status::getB2DBTable()->selectById($request['status_id']);
+            $issue = tables\Issues::getTable()->selectById($request['issue_id']);
+            $status = tables\ListTypes::getTable()->selectById($request['status_id']);
             if (!$issue->canEditIssue())
             {
                 $this->getResponse()->setHttpStatus(400);
@@ -4432,7 +4511,7 @@ class Main extends framework\Action
         framework\Context::loadLibrary('ui');
         try
         {
-            $issue = entities\Issue::getB2DBTable()->selectById($request['issue_id']);
+            $issue = tables\Issues::getTable()->selectById($request['issue_id']);
             $statuses = entities\Status::getAll();
 
             switch ($request['item_type'])
@@ -4449,7 +4528,7 @@ class Main extends framework\Action
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
                     }
 
-                    $edition = entities\Edition::getB2DBTable()->selectById($request['which_item_edition']);
+                    $edition = tables\Editions::getTable()->selectById($request['which_item_edition']);
 
                     if (tables\IssueAffectsEdition::getTable()->getByIssueIDandEditionID($issue->getID(), $edition->getID()))
                     {
@@ -4482,7 +4561,7 @@ class Main extends framework\Action
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
                     }
 
-                    $component = entities\Component::getB2DBTable()->selectById($request['which_item_component']);
+                    $component = tables\Components::getTable()->selectById($request['which_item_component']);
 
                     if (tables\IssueAffectsComponent::getTable()->getByIssueIDandComponentID($issue->getID(), $component->getID()))
                     {
@@ -4515,7 +4594,7 @@ class Main extends framework\Action
                         return $this->renderJSON(array('error' => framework\Context::getI18n()->__('You are not allowed to do this')));
                     }
 
-                    $build = entities\Build::getB2DBTable()->selectById($request['which_item_build']);
+                    $build = tables\Builds::getTable()->selectById($request['which_item_build']);
 
                     if (tables\IssueAffectsBuild::getTable()->getByIssueIDandBuildID($issue->getID(), $build->getID()))
                     {
@@ -4604,7 +4683,7 @@ class Main extends framework\Action
                                 $user->save();
                                 framework\Context::setMessage('login_message', $i18n->__('Your password has been reset. Please log in.'));
                                 framework\Context::setMessage('login_referer', $this->getRouting()->generate('home'));
-                                return $this->forward(framework\Context::getRouting()->generate('login_page'));
+                                return $this->forward($this->getRouting()->generate('login_page'));
                             }
                             else
                             {
@@ -4635,7 +4714,7 @@ class Main extends framework\Action
         catch (\Exception $e)
         {
             framework\Context::setMessage('login_message_err', $i18n->__($e->getMessage()));
-            return $this->forward(framework\Context::getRouting()->generate('login_page'));
+            return $this->forward($this->getRouting()->generate('login_page'));
         }
     }
 
@@ -4681,12 +4760,12 @@ class Main extends framework\Action
             case 'assigned_to':
                 if ($request['identifiable_type'] == 'user')
                 {
-                    $identifiable = entities\User::getB2DBTable()->selectById($request['value']);
+                    $identifiable = tables\Users::getTable()->selectById($request['value']);
                     $content = $this->getComponentHTML('main/userdropdown', array('user' => $identifiable));
                 }
                 elseif ($request['identifiable_type'] == 'team')
                 {
-                    $identifiable = entities\Team::getB2DBTable()->selectById($request['value']);
+                    $identifiable = tables\Teams::getTable()->selectById($request['value']);
                     $content = $this->getComponentHTML('main/teamdropdown', array('team' => $identifiable));
                 }
                 else
@@ -4702,7 +4781,7 @@ class Main extends framework\Action
     {
         if ($request['desired_username'] && entities\User::isUsernameAvailable($request['desired_username']))
         {
-            return $this->renderJSON(array('available' => true, 'url' => framework\Context::getRouting()->generate('get_partial_for_backdrop', array('key' => 'confirm_username', 'username' => $request['desired_username']))));
+            return $this->renderJSON(array('available' => true, 'url' => $this->getRouting()->generate('get_partial_for_backdrop', array('key' => 'confirm_username', 'username' => $request['desired_username']))));
         }
         else
         {
@@ -4714,14 +4793,24 @@ class Main extends framework\Action
     {
         if (entities\User::isUsernameAvailable($request['selected_username']))
         {
+            $authentication_backend = framework\Settings::getAuthenticationBackend();
+
             $user = $this->getUser();
             $user->setUsername($request['selected_username']);
             $user->setOpenIdLocked(false);
             $user->setPassword(entities\User::createPassword());
             $user->save();
 
-            $this->getResponse()->setCookie('tbg3_username', $user->getUsername());
-            $this->getResponse()->setCookie('tbg3_password', $user->getPassword());
+            if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN)
+            {
+                $this->getResponse()->setCookie('username', $user->getUsername());
+                $this->getResponse()->setCookie('session_token', $user->createUserSession()->getToken());
+            }
+            else
+            {
+                $this->getResponse()->setCookie('username', $user->getUsername());
+                $this->getResponse()->setCookie('password', $user->getHashPassword());
+            }
 
             framework\Context::setMessage('username_chosen', true);
             $this->forward($this->getRouting()->generate('account'));
@@ -4733,7 +4822,7 @@ class Main extends framework\Action
 
     public function runDashboardView(framework\Request $request)
     {
-        $view = entities\DashboardView::getB2DBTable()->selectById($request['view_id']);
+        $view = tables\DashboardViews::getTable()->selectById($request['view_id']);
         if (!$view instanceof entities\DashboardView)
         {
             return $this->renderJSON(array('content' => 'invalid view'));
@@ -4745,19 +4834,6 @@ class Main extends framework\Action
         }
 
         return $this->renderJSON(array('content' => $this->returnComponentHTML($view->getTemplate(), array('view' => $view))));
-    }
-
-    public function runRemoveOpenIDIdentity(framework\Request $request)
-    {
-        $identity = tables\OpenIdAccounts::getTable()->getIdentityFromID($request['openid']);
-        if ($identity && $this->getUser()->hasOpenIDIdentity($identity))
-        {
-            tables\OpenIdAccounts::getTable()->doDeleteById($request['openid']);
-            return $this->renderJSON(array('message' => $this->getI18n()->__('The OpenID identity has been removed from this user account')));
-        }
-
-        $this->getResponse()->setHttpStatus(400);
-        return $this->renderJSON(array('error' => $this->getI18n()->__('Could not remove this OpenID account')));
     }
 
     public function runGetTempIdentifiable(framework\Request $request)
@@ -4773,10 +4849,10 @@ class Main extends framework\Action
         switch ($request['identifiable_type'])
         {
             case 'user':
-                $target = entities\User::getB2DBTable()->selectById((int) $request['identifiable_value']);
+                $target = tables\Users::getTable()->selectById((int) $request['identifiable_value']);
                 break;
             case 'team':
-                $target = entities\Team::getB2DBTable()->selectById((int) $request['identifiable_value']);
+                $target = tables\Teams::getTable()->selectById((int) $request['identifiable_value']);
                 break;
         }
 
@@ -4809,7 +4885,7 @@ class Main extends framework\Action
             $this->getUser()->addScope($scope, false);
             $this->getUser()->confirmScope($scope->getID());
             $route = (framework\Settings::getLoginReturnRoute() != 'referer') ? framework\Settings::getLoginReturnRoute() : 'home';
-            $this->forward(framework\Context::getRouting()->generate($route));
+            $this->forward($this->getRouting()->generate($route));
         }
     }
 
@@ -4833,7 +4909,7 @@ class Main extends framework\Action
         try
         {
             $issue = tables\Issues::getTable()->getIssueById((int) $request['issue_id']);
-            if ($request['board_id']) $board = agile\entities\AgileBoard::getB2DBTable()->selectById((int) $request['board_id']);
+            if ($request['board_id']) $board = agile\entities\tables\AgileBoards::getTable()->selectById((int) $request['board_id']);
 
             $times = (!isset($board) || $board->getType() != agile\entities\AgileBoard::TYPE_KANBAN);
             $estimator_mode = isset($request['estimator_mode']) ? $request['estimator_mode'] : null;
@@ -4851,7 +4927,7 @@ class Main extends framework\Action
         if (!$request['name'])
             throw new \Exception($this->getI18n()->__('You must provide a valid milestone name'));
 
-        if ($milestone === null) $milestone = new \thebuggenie\core\entities\Milestone();
+        if ($milestone === null) $milestone = new entities\Milestone();
         $milestone->setName($request['name']);
         $milestone->setProject($this->selected_project);
         $milestone->setStarting((bool) $request['is_starting']);
@@ -4859,8 +4935,8 @@ class Main extends framework\Action
         $milestone->setDescription($request['description']);
         $milestone->setVisibleRoadmap($request['visibility_roadmap']);
         $milestone->setVisibleIssues($request['visibility_issues']);
-        $milestone->setType($request->getParameter('milestone_type', \thebuggenie\core\entities\Milestone::TYPE_REGULAR));
-        $milestone->setPercentageType($request->getParameter('percentage_type', \thebuggenie\core\entities\Milestone::PERCENTAGE_TYPE_REGULAR));
+        $milestone->setType($request->getParameter('milestone_type', entities\Milestone::TYPE_REGULAR));
+        $milestone->setPercentageType($request->getParameter('percentage_type', entities\Milestone::PERCENTAGE_TYPE_REGULAR));
         if ($request->hasParameter('sch_month') && $request->hasParameter('sch_day') && $request->hasParameter('sch_year'))
         {
             $scheduled_date = mktime(23, 59, 59, framework\Context::getRequest()->getParameter('sch_month'), framework\Context::getRequest()->getParameter('sch_day'), framework\Context::getRequest()->getParameter('sch_year'));
@@ -4890,7 +4966,7 @@ class Main extends framework\Action
     public function runMilestone(framework\Request $request)
     {
         $milestone_id = ($request['milestone_id']) ? $request['milestone_id'] : null;
-        $milestone = new \thebuggenie\core\entities\Milestone($milestone_id);
+        $milestone = new entities\Milestone($milestone_id);
         $action_option = str_replace($this->selected_project->getKey().'/milestone/'.$request['milestone_id'].'/', '', $request['url']);
 
         try
@@ -4903,7 +4979,7 @@ class Main extends framework\Action
                 case $request->isDelete():
                     $milestone->delete();
 
-                    $no_milestone = new \thebuggenie\core\entities\Milestone(0);
+                    $no_milestone = new entities\Milestone(0);
                     $no_milestone->setProject($milestone->getProject());
                     return $this->renderJSON(array('issue_count' => $no_milestone->countIssues(), 'hours' => $no_milestone->getHoursEstimated(), 'points' => $no_milestone->getPointsEstimated()));
                 case $request->isPost():
@@ -4912,7 +4988,7 @@ class Main extends framework\Action
                     if ($request->hasParameter('issues') && $request['include_selected_issues'])
                         \thebuggenie\core\entities\tables\Issues::getTable()->assignMilestoneIDbyIssueIDs($milestone->getID(), $request['issues']);
 
-                    $event = \thebuggenie\core\framework\Event::createNew('project', 'runMilestone::post', $milestone);
+                    $event = framework\Event::createNew('project', 'runMilestone::post', $milestone);
                     $event->triggerUntilProcessed();
 
                     if ($event->isProcessed()) {
@@ -5030,5 +5106,184 @@ class Main extends framework\Action
         {
             framework\Context::setPermission('canviewissue', $issue->getID(), 'core', 0, 0, $tid, true);
         }
+    }
+
+    /**
+     * @param framework\Request $request
+     * @return mixed|string
+     * @throws \Exception
+     */
+    protected function _getLoginForwardUrl(framework\Request $request)
+    {
+        $forward_url = $this->getRouting()->generate('home');
+
+        if ($request->hasParameter('return_to'))
+        {
+            $forward_url = $request['return_to'];
+        }
+        else
+        {
+            if (framework\Settings::get('returnfromlogin') == 'referer')
+            {
+                $forward_url = $request->getParameter('referer', $this->getRouting()->generate('dashboard'));
+            }
+            else
+            {
+                $forward_url = $this->getRouting()->generate(framework\Settings::get('returnfromlogin'));
+            }
+        }
+
+        $forward_url = htmlentities($forward_url, ENT_COMPAT, framework\Context::getI18n()->getCharset());
+
+        return $forward_url;
+    }
+
+    /**
+     * @param $authentication_backend
+     * @param $user
+     * @param $persist
+     */
+    protected function _persistLogin($authentication_backend, $user, $persist)
+    {
+        if ($authentication_backend->getAuthenticationMethod() == framework\AuthenticationBackend::AUTHENTICATION_TYPE_TOKEN) {
+            $token = $user->createUserSession();
+            $authentication_backend->persistTokenSession($user, $token, $persist);
+        } else {
+            $password = $user->getHashPassword();
+            $authentication_backend->persistPasswordSession($user, $password, $persist);
+        }
+    }
+
+    /**
+     * Delete an issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runDeleteTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = tables\Issues::getTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        $this->forward403unless(($request['comment_id'] == 0 && $issue->canEditDescription()) || ($request['comment_id'] != 0 && $issue->getComments()[$request['comment_id']]->canUserEditComment()));
+
+        if (! isset($request['todo']) || $request['todo'] == '')
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->deleteTodo($request['comment_id'], $request['todo']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Toggle done for issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runToggleDoneTodo(framework\Request $request)
+    {
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = tables\Issues::getTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (! isset($request['comment_id']) || ! is_numeric($request['comment_id']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "comment_id" parameter')));
+        }
+
+        if (! isset($request['todo']) || $request['todo'] == '')
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo" parameter')));
+        }
+
+        if (! isset($request['mark']) || ! in_array($request['mark'], array('done', 'not_done')))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "mark" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->markTodo($request['comment_id'], $request['todo'], $request['mark']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
+    }
+
+    /**
+     * Add an issue todos item.
+     *
+     * @param \thebuggenie\core\framework\Request $request
+     */
+    public function runAddTodo(framework\Request $request)
+    {
+        // If todos item is submitted via form and not ajax forward 403 error.
+        $this->forward403unless($request->isAjaxCall());
+
+        if ($issue_id = $request['issue_id'])
+        {
+            try
+            {
+                $issue = tables\Issues::getTable()->selectById($issue_id);
+            }
+            catch (\Exception $e)
+            {
+                return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+            }
+        }
+        else
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('This issue does not exist')));
+        }
+
+        if (!$issue->canEditDescription())
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('You do not have permission to perform this action')));
+        }
+
+        if (! isset($request['todo_body']) || !trim($request['todo_body']))
+        {
+            return $this->renderJSON(array('failed' => true, 'error' => framework\Context::getI18n()->__('Invalid "todo_body" parameter')));
+        }
+
+        framework\Context::loadLibrary('common');
+        $issue->addTodo($request['todo_body']);
+
+        return $this->renderJSON(array(
+            'content' => $this->getComponentHTML('todos', compact('issue'))
+        ));
     }
 }

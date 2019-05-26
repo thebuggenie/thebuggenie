@@ -18,7 +18,7 @@
      * @package thebuggenie
      * @subpackage core
      */
-    class Releaseable extends Ownable
+    abstract class Releaseable extends Ownable
     {
 
         /**

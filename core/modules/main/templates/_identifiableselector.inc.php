@@ -1,13 +1,17 @@
-<ul class="rounded_box white<?php if (isset($absolute) && $absolute): ?> shadowed<?php endif; ?><?php if (isset($classes)): echo ' '.$classes; endif; ?> popup_box more_actions_dropdown identifiable_selector" id="<?php echo $html_id; ?>" style="<?php if (isset($absolute) && $absolute): ?>position: absolute;<?php else: ?>margin: 5px 0 5px 0; clear: both;<?php endif; ?> <?php if (!isset($hidden) || $hidden): ?>display: none;<?php endif; ?> z-index: 10001; <?php if (isset($style)): foreach ($style as $key => $val): echo ' ' . $key . ': ' . $val . ';'; endforeach; endif; ?>">
+<ul class="rounded_box white<?php if (isset($classes)): echo ' '.$classes; endif; ?> popup_box more_actions_dropdown identifiable_selector with-header" id="<?php echo $html_id; ?>" style="<?php if (isset($absolute) && $absolute): ?>position: absolute;<?php else: ?>margin: 5px 0 5px 0; clear: both;<?php endif; ?> z-index: 10001; <?php if (isset($style)): foreach ($style as $key => $val): echo ' ' . $key . ': ' . $val . ';'; endforeach; endif; ?>">
     <li class="header"><?php echo $header; ?></li>
     <?php if ($allow_clear): ?>
         <li>
-            <a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value'), array(0, 0), $callback); ?>"><?php echo $clear_link_text; ?></a>
+            <a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value'), array(0, 0), $callback); ?>"><?php echo fa_image_tag('times') . $clear_link_text; ?></a>
         </li>
         <li class="separator"></li>
     <?php endif; ?>
     <li class="dropdown_content nohover form_container">
-        <form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+        <?php if (!$use_form): ?>
+            <div id="<?php echo $base_id; ?>_form">
+        <?php else: ?>
+            <form id="<?php echo $base_id; ?>_form" accept-charset="<?php echo \thebuggenie\core\framework\Context::getI18n()->getCharset(); ?>" method="post" action="" onsubmit="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+        <?php endif; ?>
             <?php if ($include_teams && $include_users): ?>
                 <label for="<?php echo $base_id; ?>_input"><?php echo __('Find a user or team'); ?>:</label><br>
             <?php elseif ($include_teams): ?>
@@ -28,8 +32,13 @@
             <input type="hidden" name="include_teams" value="<?php echo (int) $include_teams; ?>">
             <input type="hidden" name="include_clients" value="<?php echo (int) $include_clients; ?>">
             <input type="search" class="identifiable_lookup" name="find_identifiable_by" id="<?php echo $base_id; ?>_input" placeholder="<?php echo $text_title; ?>">
-            <input type="submit" value="<?php echo __('Find'); ?>"></input>
-        </form>
+        <?php if ($use_form): ?>
+                <input type="submit" style="width: 60px;" value="<?php echo __('Find'); ?>">
+            </form>
+        <?php else: ?>
+                <input type="button" style="width: 60px;" value="<?php echo __('Find'); ?>" onclick="TBG.Main.findIdentifiable('<?php echo make_url('main_find_identifiable'); ?>', '<?php echo $base_id; ?>');return false;">
+            </div>
+        <?php endif; ?>
     </li>
     <li class="dropdown_content nohover" id="<?php echo $base_id; ?>_results_container" style="display: none;">
         <ul id="<?php echo $base_id; ?>_results"></ul>
@@ -40,6 +49,7 @@
             <label><?php echo __('Select yourself or a friend below'); ?></label>
         </li>
         <li><a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value', urlencode('%identifiable_type'), '%identifiable_type'), array($tbg_user->getID(), $tbg_user->getID(), 'user', "'user'"), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a></li>
+        <li class="separator"></li>
         <?php if (count($tbg_user->getFriends()) == 0): ?>
             <li class="disabled"><?php echo __("Your friends will appear here"); ?></li>
         <?php else: ?>

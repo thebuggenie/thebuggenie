@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use thebuggenie\core\entities\SavedSearch;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -29,21 +30,30 @@
         const IS_PUBLIC = 'savedsearches.is_public';
         const UID = 'savedsearches.uid';
 
+        /**
+         * @param $user_id
+         * @param int $project_id
+         * @return SavedSearch[][]
+         */
         public function getAllSavedSearchesByUserIDAndPossiblyProjectID($user_id, $project_id = 0)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $ctn = $crit->returnCriterion(self::UID, $user_id);
-            $ctn->addOr(self::UID, 0);
-            $crit->addWhere($ctn);
-            if ($project_id !== 0 )
-            {
-                $crit->addWhere(self::APPLIES_TO_PROJECT, $project_id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+
+            $criteria = new Criteria();
+            $criteria->where(self::UID, $user_id);
+            $criteria->or(self::UID, 0);
+            $query->and($criteria);
+
+            if ($project_id !== 0) {
+                $query->where(self::APPLIES_TO_PROJECT, $project_id);
+            } else {
+                $query->where(self::APPLIES_TO_PROJECT, 0);
             }
 
             $retarr = array('user' => array(), 'public' => array());
 
-            if ($res = $this->select($crit, 'none'))
+            if ($res = $this->select($query, 'none'))
             {
                 foreach ($res as $id => $search)
                 {

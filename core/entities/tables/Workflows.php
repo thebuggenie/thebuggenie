@@ -41,37 +41,37 @@
         {
             $scope_id = ($scope_id === null) ? framework\Context::getScope()->getID() : $scope_id;
             $scope_id = (is_object($scope_id)) ? $scope_id->getID() : $scope_id;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $crit->addOrderBy(self::ID, Criteria::SORT_ASC);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope_id);
+            $query->addOrderBy(self::ID, \b2db\QueryColumnSort::SORT_ASC);
 
-            return $this->select($crit);
+            return $this->select($query);
         }
 
         public function getByID($id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $row = $this->doSelectById($id, $crit, false);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $row = $this->rawSelectById($id, $query, false);
             return $row;
         }
 
         public function countWorkflows($scope = null)
         {
             $scope = ($scope === null) ? framework\Context::getScope()->getID() : $scope;
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, $scope);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, $scope);
 
-            return $this->doCount($crit);
+            return $this->count($query);
         }
 
         public function getFirstIdByScope($scope_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ID, 'id');
-            $crit->addWhere(self::SCOPE, $scope_id);
-            $crit->addOrderBy(self::ID);
-            $row = $this->doSelectOne($crit);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ID, 'id');
+            $query->where(self::SCOPE, $scope_id);
+            $query->addOrderBy(self::ID);
+            $row = $this->rawSelectOne($query);
             return ($row) ? $row->get('id') : 0;
         }
 

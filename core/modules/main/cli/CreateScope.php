@@ -75,7 +75,7 @@
 				$admin_user = $this->getProvidedArgument('scope_admin');
 				if ($admin_user)
 				{
-					$user = entities\User::getByUsername($admin_user);
+					$user = entities\tables\Users::getTable()->selectById($admin_user);
 					if ($user instanceof entities\User)
 					{
 						$this->cliEcho("Adding user {$admin_user} to scope\n");

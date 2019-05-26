@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework;
 
     /**
@@ -33,44 +34,44 @@
         const PROJECT_ID = 'projectassignedteams.project_id';
         const ROLE_ID = 'projectassignedteams.role_id';
         
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addForeignKeyColumn(self::PROJECT_ID, Projects::getTable());
-            parent::_addForeignKeyColumn(self::ROLE_ID, ListTypes::getTable());
-            parent::_addForeignKeyColumn(self::TEAM_ID, Teams::getTable());
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addForeignKeyColumn(self::PROJECT_ID, Projects::getTable());
+            parent::addForeignKeyColumn(self::ROLE_ID, ListTypes::getTable());
+            parent::addForeignKeyColumn(self::TEAM_ID, Teams::getTable());
         }
         
         public function deleteByProjectID($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
+            $res = $this->rawDelete($query);
             return $res;
         }
 
         public function deleteByRoleID($role_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ROLE_ID, $role_id);
+            $res = $this->rawDelete($query);
             return $res;
         }
 
         public function addTeamToProject($project_id, $team_id, $role_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::TEAM_ID, $team_id);
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            if (!$this->doCount($crit))
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::TEAM_ID, $team_id);
+            $query->where(self::ROLE_ID, $role_id);
+            if (!$this->count($query))
             {
-                $crit = $this->getCriteria();
-                $crit->addInsert(self::PROJECT_ID, $project_id);
-                $crit->addInsert(self::TEAM_ID, $team_id);
-                $crit->addInsert(self::ROLE_ID, $role_id);
-                $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-                $this->doInsert($crit);
+                $insertion = new Insertion();
+                $insertion->add(self::PROJECT_ID, $project_id);
+                $insertion->add(self::TEAM_ID, $team_id);
+                $insertion->add(self::ROLE_ID, $role_id);
+                $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+                $this->rawInsert($insertion);
                 return true;
             }
             return false;
@@ -78,14 +79,14 @@
 
         public function getTeamByProjectIDTeamIDRoleID($project_id, $team_id, $role_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::TEAM_ID, 'tid');
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::TEAM_ID, $team_id);
-            $crit->addWhere(self::ROLE_ID, $role_id);
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::TEAM_ID, 'tid');
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::TEAM_ID, $team_id);
+            $query->where(self::ROLE_ID, $role_id);
             $teams = array();
 
-            if ($res = $this->doSelect($crit, 'none'))
+            if ($res = $this->rawSelect($query, 'none'))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -102,18 +103,18 @@
 
         public function removeTeamFromProject($project_id, $team)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::TEAM_ID, $team);
-            $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::TEAM_ID, $team);
+            $this->rawDelete($query);
         }
         
         public function getProjectsByTeamID($team)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::TEAM_ID, $team);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::TEAM_ID, $team);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawSelect($query);
             
             $projects = array();
             if ($res)
@@ -130,9 +131,9 @@
 
         public function getRolesForProject($project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::PROJECT_ID, $project_id);
+            $res = $this->rawSelect($query);
 
             $roles = array();
             if ($res)
@@ -148,13 +149,13 @@
 
         public function getTeamsByRoleID($role_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::TEAM_ID, 'tid');
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::TEAM_ID, 'tid');
+            $query->where(self::ROLE_ID, $role_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
             $teams = array();
 
-            if ($res = $this->doSelect($crit, 'none'))
+            if ($res = $this->rawSelect($query, 'none'))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -169,14 +170,14 @@
 
         public function getTeamsByRoleIDAndProjectID($role_id, $project_id)
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::TEAM_ID, 'tid');
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            $crit->addWhere(self::PROJECT_ID, $project_id);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::TEAM_ID, 'tid');
+            $query->where(self::ROLE_ID, $role_id);
+            $query->where(self::PROJECT_ID, $project_id);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
             $teams = array();
 
-            if ($res = $this->doSelect($crit, 'none'))
+            if ($res = $this->rawSelect($query, 'none'))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -201,9 +202,9 @@
         {
             $assignments = array();
 
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ROLE_ID, $role_id);
-            if ($res = $this->doSelect($crit))
+            $query = $this->getQuery();
+            $query->where(self::ROLE_ID, $role_id);
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {

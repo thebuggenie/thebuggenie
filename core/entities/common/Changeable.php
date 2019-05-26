@@ -21,7 +21,7 @@
      * @package thebuggenie
      * @subpackage main
      */
-    class Changeable extends Ownable
+    abstract class Changeable extends Ownable
     {
 
         /**
@@ -111,7 +111,7 @@
          */
         protected function _addChangedProperty($property, $value)
         {
-            if ($this->_id)
+            if ($this->_id && !defined('TBG_CLI'))
             {
                 if (property_exists($this, $property))
                 {

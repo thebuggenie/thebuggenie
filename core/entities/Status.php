@@ -3,6 +3,7 @@
     namespace thebuggenie\core\entities;
 
     /**
+     * @method static Status getByKeyish($key)
      * @Table(name="\thebuggenie\core\entities\tables\ListTypes")
      */
     class Status extends common\Colorizable
@@ -14,7 +15,7 @@
         
         protected $_itemtype = Datatype::STATUS;
         
-        public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
+        public static function loadFixtures(Scope $scope)
         {
             $statuses = array();
             $statuses['New'] = '#FFFFFF';
@@ -32,7 +33,7 @@
 
             foreach ($statuses as $name => $itemdata)
             {
-                $status = new \thebuggenie\core\entities\Status();
+                $status = new Status();
                 $status->setName($name);
                 $status->setItemdata($itemdata);
                 $status->setScope($scope);

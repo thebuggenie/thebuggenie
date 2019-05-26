@@ -1661,8 +1661,8 @@ Folgender Kommentar wurde hinzugefügt: %comment</target>
                 <target>The Bug Genie ist nicht mehr aktuell</target>
             </trans-unit>
             <trans-unit id="ddfff062a36b47d8bb6d81d1d25bf602">
-                <source>The latest version is %ver. Update now from www.thebuggenie.com.</source>
-                <target>Die aktuellste Version ist %ver. Updaten Sie nun: www.thebuggenie.com</target>
+                <source>The latest version is %ver. Update now from thebuggenie.com.</source>
+                <target>Die aktuellste Version ist %ver. Updaten Sie nun: thebuggenie.com</target>
             </trans-unit>
             <trans-unit id="fdc710799453874a6aac1ba5f0fbc591">
                 <source>Please provide a valid setting for highlighting interval</source>
@@ -8104,24 +8104,24 @@ Folgender Kommentar wurde hinzugefügt: %comment</target>
                 <target>Artikelname</target>
             </trans-unit>
             <trans-unit id="89a36c9d6a7508f642992cbd8746d9b7">
-                <source>Enter the name of the article to link to here, along with an (optional) description, and press &quot;%add_link&quot; to add it to the menu.</source>
-                <target>Bitte geben Sie einen Namen, sowie eine Beschreibung (optional) des Artikels ein und bestätigen Sie mit einem Klick auf &quot;%add_link&quot;</target>
+                <source>Enter the name of the article to link to here, along with an (optional) description, and press &quot;%add_item&quot; to add it to the menu.</source>
+                <target>Bitte geben Sie einen Namen, sowie eine Beschreibung (optional) des Artikels ein und bestätigen Sie mit einem Klick auf &quot;%add_item&quot;</target>
             </trans-unit>
             <trans-unit id="32210b37e4d23029d6ee2f5149e9c3e1">
                 <source>Add link</source>
                 <target>Link hinzufügen</target>
             </trans-unit>
             <trans-unit id="7d0c0cd95a3245aba95a57bedfb6406e">
-                <source>Enter the link URL here, along with an (optional) description, and press &quot;%add_link&quot; to add it to the menu.</source>
-                <target>Geben Sie hier die Link-URL ein, sowie eine optionale Beschreibung und klicken Sie auf &quot;%add_link&quot; um diesen hinzuzufügen..</target>
+                <source>Enter the link URL here, along with an (optional) description, and press &quot;%add_item&quot; to add it to the menu.</source>
+                <target>Geben Sie hier die Link-URL ein, sowie eine optionale Beschreibung und klicken Sie auf &quot;%add_item&quot; um diesen hinzuzufügen..</target>
             </trans-unit>
             <trans-unit id="fb45735a0ac6c52c953f4be031ebed46">
-                <source>To add free text, just enter text in the description - without any url - and press the &quot;%add_link&quot; button (Text will be parsed according to the %wiki_formatting).</source>
-                <target>Um einen Freitext hinzuzufügen, klicken Sie in die Beschreibung - ohne einen Link - und klicken Sie auf &quot;%add_link&quot; (Der Text wird mit %wiki_formatting formatiert).</target>
+                <source>To add free text, just enter text in the description - without any url - and press the &quot;%add_item&quot; button (Text will be parsed according to the %wiki_formatting).</source>
+                <target>Um einen Freitext hinzuzufügen, klicken Sie in die Beschreibung - ohne einen Link - und klicken Sie auf &quot;%add_item&quot; (Der Text wird mit %wiki_formatting formatiert).</target>
             </trans-unit>
             <trans-unit id="643daeb01ab2b7330646f80e43f87a34">
-                <source>To add a spacer, just press &quot;%add_link&quot;, without any url or description.</source>
-                <target>Um eine Zwischenraum hinzuzufügen, lassen Sie alle Felder frei und klicken auf &quot;%add_link&quot;.</target>
+                <source>To add a spacer, just press &quot;%add_item&quot;, without any url or description.</source>
+                <target>Um eine Zwischenraum hinzuzufügen, lassen Sie alle Felder frei und klicken auf &quot;%add_item&quot;.</target>
             </trans-unit>
             <trans-unit id="296580eedc2c4f68d401fc1ec7e8e161">
                 <source>%cancel or %attach_link</source>
@@ -10103,7 +10103,7 @@ Folgender Kommentar wurde hinzugefügt: %comment</target>
             </trans-unit>
             <trans-unit id="4623ffe0a44ba918a2b65142f01308f0">
                 <source>Data that has been changed is highlighted in red below. Undo your changes to see the updated information</source>
-                <target>Geänderte Daten werden in rot gekennzeichnet.</target>
+                <target>Geänderte Daten werden in rot gekennzeichnet. Machen Sie Ihre Änderungungen rückgängig, um die aktualisierten Informationen zu sehen.</target>
             </trans-unit>
             <trans-unit id="7ff980d8d1d9c3d5c12d67215b5ffd1c">
                 <source>Add comment and save changes</source>
@@ -10271,8 +10271,8 @@ Folgender Kommentar wurde hinzugefügt: %comment</target>
                 <target>Gültigen sprint-Namen eingeben</target>
             </trans-unit>
             <trans-unit id="15fcdeb0bfe7999726b0d7265f484abc">
-                <source>The libraries to generate images are not installed. Please see http://www.thebuggenie.com for more information</source>
-                <target>Die Programmbibliotheken zur Bilderstellung sind nicht installiert. Bitte besuchen Sie http://www.thebuggenie.com für weitere Informationen</target>
+                <source>The libraries to generate images are not installed. Please see https://thebuggenie.com for more information</source>
+                <target>Die Programmbibliotheken zur Bilderstellung sind nicht installiert. Bitte besuchen Sie https://thebuggenie.com für weitere Informationen</target>
             </trans-unit>
             <trans-unit id="03f4f2bb69a38628b3392f1dd51eff41">
                 <source>Open issues</source>

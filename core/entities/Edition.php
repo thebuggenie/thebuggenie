@@ -99,14 +99,14 @@
         {
             if ($this->_components === null)
             {
-                $this->_b2dbLazyload('_components');
+                $this->_b2dbLazyLoad('_components');
             }
         }
 
         /**
          * Returns an array with all components
          *
-         * @return array|\thebuggenie\core\entities\Component
+         * @return \thebuggenie\core\entities\Component[]
          */
         public function getComponents()
         {
@@ -206,14 +206,14 @@
         {
             if ($this->_builds === null)
             {
-                $this->_b2dbLazyload('_builds');
+                $this->_b2dbLazyLoad('_builds');
             }
         }
 
         /**
          * Returns an array with all builds
          *
-         * @return array|\thebuggenie\core\entities\Build
+         * @return \thebuggenie\core\entities\Build[]
          */
         public function getBuilds()
         {
@@ -239,7 +239,7 @@
          */
         public function getProject()
         {
-            return $this->_b2dbLazyload('_project');
+            return $this->_b2dbLazyLoad('_project');
         }
 
         public function setProject($project)

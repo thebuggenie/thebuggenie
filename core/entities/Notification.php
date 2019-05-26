@@ -112,6 +112,11 @@
             }
         }
 
+        public function getName()
+        {
+            return '';
+        }
+
         /**
          * Returns the object which the notification is for
          *
@@ -185,7 +190,7 @@
 
         public function getTriggeredByUser()
         {
-            return $this->_b2dbLazyload('_triggered_by_user_id');
+            return $this->_b2dbLazyLoad('_triggered_by_user_id');
         }
 
         public function setTriggeredByUser($uid)
@@ -195,7 +200,7 @@
 
         public function getUser()
         {
-            return $this->_b2dbLazyload('_user_id');
+            return $this->_b2dbLazyLoad('_user_id');
         }
 
         public function setUser($uid)

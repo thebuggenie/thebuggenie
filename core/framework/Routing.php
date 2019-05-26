@@ -4,6 +4,7 @@
 
     use b2db\AnnotationSet,
         b2db\Annotation;
+    use thebuggenie\core\framework\exceptions\RoutingException;
 
     /**
      * Routing class
@@ -198,11 +199,10 @@
             return $this->component_override_map[$component];
         }
 
-        public function loadRoutes($module_name, $module_type = null)
+        public function loadRoutes($module_name)
         {
-            if ($module_type === null) $module_type = (Context::isInternalModule($module_name)) ? 'internal' : 'external';
-
-            $module_routes_filename = (($module_type == 'internal') ? \THEBUGGENIE_INTERNAL_MODULES_PATH : \THEBUGGENIE_MODULES_PATH) . $module_name . DS . 'configuration' . DS . 'routes.yml';
+            $module_path_prefix = (Context::isInternalModule($module_name)) ? \THEBUGGENIE_INTERNAL_MODULES_PATH : \THEBUGGENIE_MODULES_PATH;
+            $module_routes_filename = $module_path_prefix . $module_name . DS . 'configuration' . DS . 'routes.yml';
             if (file_exists($module_routes_filename))
             {
                 $this->loadYamlRoutes($module_routes_filename, $module_name);
@@ -337,9 +337,10 @@
                     $actionName = substr($method->name, 3);
                     $action = $controller . '::' . $actionName;
                     $name = $route_name_prefix . (($route_annotation->hasProperty('name')) ? $route_annotation->getProperty('name') : strtolower($actionName));
-                    $route = $route_url_prefix . $route_annotation->getProperty('url');
+                    $route = rtrim($route_url_prefix . $route_annotation->getProperty('url'), '/');
                     $options['csrf_enabled'] = $annotationset->hasAnnotation('CsrfProtected');
                     $options['anonymous_route'] = $annotationset->hasAnnotation('AnonymousRoute');
+                    $options['authentication_method'] = ($annotationset->hasAnnotation('AuthenticationMethod')) ? $annotationset->getAnnotation('AuthenticationMethod') : '';
                     $http_methods = $route_annotation->getProperty('methods', array());
                     $params = ($annotationset->hasAnnotation('Parameters')) ? $annotationset->getAnnotation('Parameters')->getProperties() : array();
 
@@ -350,7 +351,7 @@
                     }
                     elseif ($this->hasRoute($name))
                     {
-                        throw new exceptions\RoutingException('A route that overrides another route must have an @Override annotation');
+                        throw new exceptions\RoutingException("Trying to override route '{$name}' in {$module}/{$action}. A route that overrides another route must have an @Override annotation");
                     }
                     else
                     {
@@ -374,8 +375,9 @@
                 $options = array();
                 $route = $details['route'];
                 $params = (array_key_exists('parameters', $details)) ? $details['parameters'] : array();
-                $options['csrf_enabled'] = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : array();
-                $options['anonymous_route'] = (array_key_exists('anonymous_route', $details)) ? $details['anonymous_route'] : array();
+                $options['csrf_enabled'] = (array_key_exists('csrf_enabled', $details)) ? $details['csrf_enabled'] : false;
+                $options['anonymous_route'] = (array_key_exists('anonymous_route', $details)) ? $details['anonymous_route'] : false;
+                $options['authentication_method'] = (array_key_exists('authentication_method', $details)) ? $details['authentication_method'] : false;
                 $methods = (array_key_exists('methods', $details)) ? $details['methods'] : array();
 
                 $this->addRoute($name, $route, $module, $action, $params, $options, $methods);
@@ -403,6 +405,7 @@
             $names = array();
             $names_hash = array();
             $r = null;
+            $has_catch_all_parameter = false;
             $methods = (!is_array($allowed_methods)) ? array_filter(explode(',', $allowed_methods), function($element) { return trim(strtolower($element)); }) : $allowed_methods;
 
             if (($route == '') || ($route == '/'))
@@ -469,6 +472,7 @@
                     }
                     elseif (preg_match('/^\*$/', $element, $r))
                     {
+                        $has_catch_all_parameter = true;
                         $parsed[] = '(?:\/(.*))?';
                     }
                     else
@@ -477,6 +481,10 @@
                     }
                 }
                 $regexp = '#^'.join('', $parsed).$regexp_suffix.'$#';
+
+//                if ($options['csrf_enabled'] && !array_key_exists('csrf_token', $names_hash) && !$has_catch_all_parameter) {
+//                    throw new RoutingException("Route '{$name}' is marked as csrf protected, but does not have a :csrf_token route parameter'");
+//                }
 
                 $this->routes[$name] = array($route, $regexp, $names, $names_hash, $module, $action, $params, $options, $methods, $overridden);
             }
@@ -742,6 +750,15 @@
             return (bool)$this->_getCurrentRouteOption('csrf_enabled');
         }
 
+        public function getCurrentRouteAuthenticationMethod(Action $action)
+        {
+            if ($this->_getCurrentRouteOption('authentication_method') != '') {
+                return constant('\thebuggenie\core\framework\Action::'.$this->_getCurrentRouteOption('authentication_method'));
+            }
+
+            return $action->getAuthenticationMethodForAction($this->getCurrentRouteAction());
+        }
+
         /**
          * Set the current route as anonymous route
          *
@@ -973,7 +990,7 @@
                     }
                 default :
                     $args = func_get_args();
-                    $args[1] = sfToolkit::arrayDeepMerge($args[0], $args[1]);
+                    $args[1] = self::arrayDeepMerge($args[0], $args[1]);
                     array_shift($args);
                     return call_user_func_array(array('self', 'arrayDeepMerge'), $args);
                     break;

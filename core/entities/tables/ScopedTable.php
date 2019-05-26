@@ -2,8 +2,10 @@
 
     namespace thebuggenie\core\entities\tables;
 
-    use thebuggenie\core\framework;
+    use b2db\Criteria;
+    use b2db\Query;
     use b2db\Table;
+    use thebuggenie\core\framework;
 
     /**
      * B2DB class that all  class extends, implementing scope access
@@ -17,6 +19,8 @@
 
     /**
      * B2DB class that all  class extends, implementing scope access
+     *
+     * @method static static getTable()
      *
      * @package thebuggenie
      * @subpackage mvc
@@ -35,24 +39,32 @@
         {
             if (defined('static::SCOPE'))
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(static::SCOPE, $this->getCurrentScopeID());
-                $row = $this->doSelectById($id, $crit);
+                $query = $this->getQuery();
+                $query->where(static::SCOPE, $this->getCurrentScopeID());
+                $row = $this->rawSelectById($id, $query);
             }
             else
             {
-                $row = $this->doSelectById($id);
+                $row = $this->rawSelectById($id);
             }
             return $row;
+        }
+
+        public function selectById($id, Query $query = null, $join = 'all')
+        {
+            $query = ($query instanceof Query) ? $query : $this->getQuery();
+            $query->where(static::SCOPE, $this->getCurrentScopeID());
+
+            return parent::selectById($id, $query, $join);
         }
 
         public function selectAll()
         {
             if (defined('static::SCOPE'))
             {
-                $crit = $this->getCriteria();
-                $crit->addWhere(static::SCOPE, $this->getCurrentScopeID());
-                $results = $this->select($crit);
+                $query = $this->getQuery();
+                $query->where(static::SCOPE, $this->getCurrentScopeID());
+                $results = $this->select($query);
             }
             else
             {
@@ -61,20 +73,20 @@
             return $results;
         }
 
-        protected function _setup($b2db_name, $id_column)
+        protected function setup($b2db_name, $id_column)
         {
-            parent::_setup($b2db_name, $id_column);
-            parent::_addForeignKeyColumn(static::SCOPE, \thebuggenie\core\entities\tables\Scopes::getTable(), \thebuggenie\core\entities\tables\Scopes::ID);
+            parent::setup($b2db_name, $id_column);
+            parent::addForeignKeyColumn(static::SCOPE, Scopes::getTable(), Scopes::ID);
         }
 
         public function deleteFromScope($scope)
         {
-            $crit = $this->getCriteria();
+            $query = $this->getQuery();
             if (defined('static::SCOPE'))
             {
-                $crit->addWhere(static::SCOPE, $scope);
+                $query->where(static::SCOPE, $scope);
             }
-            $res = $this->doDelete($crit);
+            $res = $this->rawDelete($query);
             return $res;
         }
 

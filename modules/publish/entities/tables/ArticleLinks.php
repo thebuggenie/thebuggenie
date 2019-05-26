@@ -2,6 +2,7 @@
 
     namespace thebuggenie\modules\publish\entities\tables;
 
+    use b2db\Insertion;
     use thebuggenie\core\framework,
         thebuggenie\core\entities\tables\ScopedTable;
 
@@ -18,59 +19,59 @@
         const LINK_ARTICLE_NAME = 'articlelinks.link_article_name';
         const SCOPE = 'articlelinks.scope';
 
-        protected function _initialize()
+        protected function initialize()
         {
-            parent::_setup(self::B2DBNAME, self::ID);
-            parent::_addVarchar(self::ARTICLE_NAME, 300);
-            parent::_addVarchar(self::LINK_ARTICLE_NAME, 300);
+            parent::setup(self::B2DBNAME, self::ID);
+            parent::addVarchar(self::ARTICLE_NAME, 300);
+            parent::addVarchar(self::LINK_ARTICLE_NAME, 300);
         }
 
         public function deleteLinksByArticle($article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawDelete($query);
         }
 
         public function addArticleLink($article_name, $linked_article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addInsert(self::ARTICLE_NAME, $article_name);
-            $crit->addInsert(self::LINK_ARTICLE_NAME, $linked_article_name);
-            $crit->addInsert(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doInsert($crit);
+            $insertion = new Insertion();
+            $insertion->add(self::ARTICLE_NAME, $article_name);
+            $insertion->add(self::LINK_ARTICLE_NAME, $linked_article_name);
+            $insertion->add(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawInsert($insertion);
         }
 
         public function getArticleLinks($article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::ARTICLE_NAME, $article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::ARTICLE_NAME, $article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawSelect($query);
 
             return $res;
         }
 
         public function getLinkingArticles($linked_article_name)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::LINK_ARTICLE_NAME, $linked_article_name);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $res = $this->doSelect($crit);
+            $query = $this->getQuery();
+            $query->where(self::LINK_ARTICLE_NAME, $linked_article_name);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $res = $this->rawSelect($query);
 
             return $res;
         }
 
         public function getUniqueArticleNames()
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::ARTICLE_NAME);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->setDistinct();
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::ARTICLE_NAME);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->setIsDistinct();
 
             $names = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -84,13 +85,13 @@
 
         public function getUniqueLinkedArticleNames()
         {
-            $crit = $this->getCriteria();
-            $crit->addSelectionColumn(self::LINK_ARTICLE_NAME);
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->setDistinct();
+            $query = $this->getQuery();
+            $query->addSelectionColumn(self::LINK_ARTICLE_NAME);
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->setIsDistinct();
 
             $names = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {

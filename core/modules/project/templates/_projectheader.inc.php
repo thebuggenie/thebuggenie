@@ -17,6 +17,7 @@
             <span id="project_name_span">
                 <?php echo $selected_project->getName(); ?>
             </span>
+            <?php \thebuggenie\core\framework\Event::createNew('core', 'project/templates/projectheader/namelabel', $selected_project)->trigger(); ?>
             <span id="project_sub_page"><?php echo $subpage; ?></span>
         </div>
         <?php if ($tbg_response->getPage() == 'project_dashboard' && $tbg_user->canEditProjectDetails($selected_project)): ?>

@@ -1,13 +1,13 @@
 .article_list { list-style-type: none; margin: 10px 0 0 5px; padding: 0; font-size: 1em; line-height: 1.6; }
 .article_list img { float: left; margin: 0 5px 0 0; }
 .article_list span { font-size: 0.9em; }
-.article_list span a { font-size: 0.8em; font-weight: normal; }
+.article_list span a { font-size: 0.8em; font-weight: 300; }
 .article_list .more_news { margin: 10px 0 0 0; }
 .article_list li { margin: 0 5px 8px 0; }
 .article_list.special_pages a { font-size: 1.1em; }
 .article_list.special_pages img { margin-top: 1px; }
 
-.toc .publish_toc_1 { margin: 10px 0 3px 2px; font-size: 1.2em; font-weight: bold; }
+.toc .publish_toc_1 { margin: 10px 0 3px 2px; font-size: 1.2em; font-weight: 500; }
 .toc .publish_toc_2 { margin: 0 0 3px 7px; font-size: 1.1em; }
 .toc .publish_toc_3 { margin: 0 0 3px 13px; font-size: 1.05em; }
 .toc .publish_toc_4 { margin: 0 0 3px 20px; font-size: 1em; }
@@ -20,7 +20,7 @@
     padding: 5px 0;
     color: #777;
     border-bottom: none;
-    font-weight: normal;
+    font-weight: 300;
 }
 .article h1:first-child, .article h2:first-child, .article h3:first-child, .article h4:first-child, .article h5:first-child, .article h6:first-child {
     margin-top: 5px;
@@ -51,7 +51,23 @@
 .article h6:target { color: #77B; background-color: #F6F6F6; }
 .article .no_articles { color: #AAA; margin: 10px 0; }
 
-.article pre { border: 1px dotted #AAA; background-color: #F1F1F1; padding: 3px; margin: 5px 0 5px 0; font-family: "Droid Sans Mono", monospace; font-size: 12px; }
+.article pre {
+    padding: 3px;
+    margin: 5px 0 5px 0;
+    line-height: 1.4;
+    background-color: #F1F1F1;
+    border: 1px solid #B4B4B4;
+    border-radius: 3px;
+    font-family: "Fira Mono", monospace;
+    font-size: 12px;
+}
+
+/* Undo some of the default styling done for code tag if it is nested
+   with pre tag. */
+.article pre code {
+    padding: 0px;
+    border: none;
+}
 
 .article .publish_article_actions {
     display: block;
@@ -81,7 +97,7 @@
 .article.edit.at-manual #manual_name { display: inline-block; }
 .article.edit.at-manual .parent_article_selector_menu_entry { display: block; }
 .article.edit label[for=article-type-selector] {
-    font-weight: normal;
+    font-weight: 300;
     color: #888;
     font-size: 1.3em;
     text-transform: uppercase;
@@ -101,7 +117,7 @@
 .article.edit label.small { font-size: 1em; }
 .article.edit input[type="text"] { font-size: 1.2em; padding: 5px; }
 .article.edit textarea {
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Fira Mono", monospace;
     border: none;
     padding: 15px;
     box-sizing: border-box;
@@ -137,10 +153,9 @@
 }
 
 .article.edit .markItUpHeader { border-bottom: 1px solid rgba(100, 100, 100, 0.3); }
-.article.edit .button.syntax_picker, .article.edit .button.syntax_picker:hover { margin-right: 4px; margin-top: -4px; }
 .article.edit .button.syntax_picker:hover, .article.edit .button.syntax_picker.button-pressed { opacity: 1; }
 .article.edit .more_actions_dropdown { margin-top: 12px; }
-.article.edit .syntax_picker_container .more_actions_dropdown { margin-top: 9px; margin-right: 4px; font-size: 1em;}
+.article.edit .syntax_picker_container .more_actions_dropdown { font-size: 1em;}
 
 .article.edit .markItUpHeader ul li {
     float: none;
@@ -158,15 +173,17 @@
 
 .article.edit .header { margin: 10px 0 5px 10px; }
 .article.edit .editor_header { margin: 0 10px; }
-.article .header, #article_attachments > h4, #article_comments > h4 { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: normal; font-size: 21px; border-bottom: none; }
+.article .header, #article_attachments > h4, #article_comments > h4 { margin: 0 0 5px 0; padding: 2px 3px 3px 0; font-weight: 300; font-size: 21px; border-bottom: none; }
 #article_attachments > h4, #article_comments > h4 { font-size: 17px; border-bottom: 1px dotted #CCC; }
 .article > .header .title_left_images:first-child img { margin-left: 0; }
 .article > .header { border: none; margin-bottom: 0; font-size: 1.8em; }
-.article .header .button-group { float: right; font-size:13px; vertical-align: middle; margin-top: 3px; }
+.article .header .button-group { float: right; font-size: 0.55em; vertical-align: middle; margin-top: 3px; }
+.article .header.edit .button-group { font-size: 0.7em; }
 .article .header .button-group .button { padding: 3px 7px; }
-.article .header .title_left_images { font-size: 0.6em; font-weight: normal; display: inline-block; height: 26px; width: auto; margin-right: 5px; vertical-align: middle; }
+.article .header .title_left_images { font-size: 0.6em; font-weight: 100; display: inline-block; height: 26px; width: auto; margin-right: 5px; vertical-align: middle; }
+.article .header .title_left_images .fa { font-size: 1.4rem; }
 
-.article .header.edit .parent_article_name { font-size: 0.7em; font-weight: normal; }
+.article .header.edit .parent_article_name { font-size: 0.7em; font-weight: 300; }
 .article .header.edit input[type=text] {
     font-size: 0.9em;
     padding: 7px;
@@ -185,9 +202,9 @@
 
 .article .toc { float: right; margin: 3px 0 15px 25px; width: 350px; box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2); padding: 5px; font-size: 12px; position: relative; overflow: visible; background-color: rgba(247, 247, 247, 0.85); }
 .article .toc.fixed { position: fixed; right: 10px; }
-.article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: bold; font-size: 16px; color: #555; border-bottom: 1px dotted #CCC; margin-bottom: 10px; }
+.article .toc .header { margin: 0; padding: 2px 3px 3px 0; font-weight: 500; font-size: 16px; color: #555; border-bottom: 1px dotted #CCC; margin-bottom: 10px; }
 .article .toc .header .button-group { float: right; }
-.article .toc .header .button-group button { float: left; font-size: 0.9em !important; font-weight: normal !important; padding: 2px !important; width: 22px; }
+.article .toc .header .button-group button { float: left; font-size: 0.9em !important; font-weight: 300 !important; padding: 2px !important; width: 22px; }
 .article .toc .faded_out { display: none; }
 .article .content .toc a, .article .content .toc a:hover { border-bottom: 0; }
 .article.edit .editor_container {
@@ -207,10 +224,10 @@
 .category_list li { margin-left: 10px; float: left; font-size: 1em; width: 33%; }
 .category_list div { font-size: 1em; }
 
-#wiki_menu .header { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; }
+#wiki_menu .header { font-size: 1.1em; font-weight: 500; margin-bottom: 5px; }
 #wiki_menu .content ul { list-style-type: none; margin: 0; padding: 0; }
 #wiki_menu .content ul li { font-size: 0.9em; }
-#wiki_menu .content ul li a { font-weight: bold; }
+#wiki_menu .content ul li a { font-weight: 500; }
 
 #article_history, #article_diff { border: 0; width: 100%; margin-top: 10px; }
 #article_diff { margin-left: 5px; }
@@ -222,11 +239,10 @@
 #article_diff tr:hover { background-color: #EEE; }
 INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { display: inline; text-decoration: line-through; background-color: #D88; color: white; }
 
-.article .more_actions_dropdown { position: absolute; margin-top: 28px; width: auto; white-space: nowrap; top: 12px; right: 0; z-index: 1000; font-size: 1.1em; }
-.article .more_actions_dropdown li { padding: 2px; }
+.article .more_actions_dropdown { position: absolute; margin-top: 9px; width: auto; white-space: nowrap; top: 12px; right: 0; z-index: 1000; font-size: 1.1em; }
 .article .more_actions_dropdown li.separator { padding: 0 7px; }
 .article .content ul.simple_list li { padding: 5px 0; margin-bottom: 15px; }
-.article ul.simple_list li div.namespace_header { font-size: 1.15em; font-weight: bold; margin-bottom: 5px; }
+.article ul.simple_list li div.namespace_header { font-size: 1.15em; font-weight: 500; margin-bottom: 5px; }
 .article ul.simple_list li div.namespace_header span.namespace { text-decoration: underline; }
 
 .article .icleft { float: left; }
@@ -238,8 +254,18 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .article .image_container a:hover { border-bottom: 1px dotted #AAA !important; }
 
 #article_comments, #article_attachments { margin: 20px 0 0 5px; }
-#article_comments h4, #article_attachments h4 { color: #888; padding: 5px 5px 5px 0; }
-#article_comments button, #article_attachments button { float: right; font-weight: normal !important; padding: 4px 8px !important; font-size: 0.8em !important; }
+#article_comments h4, #article_attachments h4 {
+    color: #777;
+    font-size: 1.2em;
+    font-weight: 300;
+    padding: 30px 0 5px;
+    width: 100%;
+    border-bottom: 1px dotted #CCC;
+    text-transform: uppercase;
+    display: flex; align-items: baseline;
+}
+#article_comments h4 .header-text, #article_attachments h4 .header-text { flex: 1 1 auto; }
+#article_comments button, #article_attachments button { float: right; font-weight: 300 !important; padding: 4px 8px !important; font-size: 0.8em !important; }
 #article_attachments a.downloadlink { width: initial; }
 #article_attachments .removelink { margin-top: 4px; position: absolute; }
 
@@ -252,14 +278,17 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 .side_bar .no_items { font-size: 1.1em; }
 #manual_sidebar ul { list-style: none; margin: 0 0 0 5px; padding: 0; }
 #manual_sidebar > ul { margin-top: 15px; }
-#manual_sidebar ul li { font-style: normal; font-weight: normal; }
-#manual_sidebar.single_parent > ul > li.parent > a, #manual_sidebar.single_parent > ul > li.parent.selected > a, #manual_sidebar.single_parent > ul > li.parent.parent > a { font-style: normal; font-weight: normal; font-size: 1.2em; }
+#manual_sidebar ul li { font-style: normal; font-weight: 300; }
+#manual_sidebar.single_parent > ul > li.parent > a, #manual_sidebar.single_parent > ul > li.parent.selected > a, #manual_sidebar.single_parent > ul > li.parent.parent > a { font-style: normal; font-weight: 300; font-size: 1.2em; }
 #manual_sidebar ul li > ul { margin-left: 0; }
 #manual_sidebar ul li > ul li.child { padding-left: 18px; }
 #manual_sidebar ul li > ul li.child.level_1 { padding-left: 0; }
-#manual_sidebar li.selected { font-weight: bold; }
-#manual_sidebar li.parent { font-style: italic; font-weight: normal; }
-#manual_sidebar li img { display: inline-block; vertical-align: middle; margin: 2px 3px 6px 0; }
+#manual_sidebar li.selected { font-weight: 500; }
+#manual_sidebar li.parent { font-style: italic; font-weight: 300; }
+#manual_sidebar li a { color: #333; padding: 5px; border: none; display: block; }
+#manual_sidebar li a:hover { color: #333; background-color: rgba(200, 200, 200, .2); border: none; }
+#manual_sidebar li img { display: inline-block; vertical-align: middle; margin: 0 3px 0 0; }
+#manual_sidebar li span { display: inline-block; vertical-align: middle; }
 /*#manual_sidebar.single_parent > ul > li.parent > img { display: none; }*/
 #manual_sidebar li img.branch { margin-right: 0; }
 
@@ -345,11 +374,8 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
     bottom: 104px;
 }
 #main_container.distraction-free .syntax_picker_container {
-    position: absolute;
-    width: 900px;
-    left: 50%;
-    margin-left: -450px;
-    top: -50px;
+    top: 25px;
+    z-index: 100;
 }
 #main_container.distraction-free .syntax_picker_container .button.syntax_picker {
     opacity: 0.1;
@@ -457,9 +483,6 @@ INS { display: inline; background-color: #8D8; text-decoration: none; } DEL { di
 #viewissue_comments .article ul li a
 {
     word-break: break-all;
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -o-pre-wrap;
     word-wrap: break-word;
     -ms-word-break: break-all;
 }

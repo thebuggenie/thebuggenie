@@ -2,7 +2,7 @@
     <?php echo __('%module_name version %version by %author', array(
         '%module_name' => '<h1>'.$module->getLongName().'</h1>',
         '%version' => '<span class="version">'.$module->getVersion().'</span>',
-        '%author' => '<a href="http://www.thebuggenie.com" class="author-link">zegenie Studios</a>'
+        '%author' => '<a href="https://thebuggenie.com" class="author-link">zegenie Studios</a>'
     )); ?>
     <p class="description"><?php echo __($module->getDescription()); ?></p>
     <?php if ($module->getType() == \thebuggenie\core\entities\Module::MODULE_AUTH): ?>
@@ -30,15 +30,16 @@
     <?php if ($module->getID() && $is_default_scope): ?>
         <div id="update_module_help_<?php echo $module->getID(); ?>" class="fullpage_backdrop" style="display: none;">
             <div class="backdrop_box medium">
-                <h1><?php echo __('Install downloaded module update file'); ?></h1>
-                <p>
+                <div class="backdrop_detail_header">
+                    <span><?php echo __('Install downloaded module update file'); ?></span>
+                    <a href="javascript:void(0);" class="closer" onclick="TBG.Core.cancelManualUpdatePoller();$('update_module_help_<?php echo $module->getID(); ?>').hide();"><?php echo image_tag('times'); ?></a>
+                </div>
+                <div class="backdrop_detail_content">
                     <?php echo __('Please click the download link below and download the update file. Place the downloaded file in the cache folder (%cache_folder) on this server. As soon as the file has been verified, the %update button below will be enabled, and you can press the button to update the module.',
                         array('%cache_folder' => '<span class="command_box">'.THEBUGGENIE_CACHE_PATH.$module->getName().'.zip</span>', '%update' => '"'.__('Update').'"'));
                     ?>
-                </p>
+                </div>
                 <form id="module_<?php echo $module->getName(); ?>_perform_update" style="display: inline-block; float: right; padding: 10px;" action="<?php echo make_url('configuration_module_update', array('module_key' => $module->getName())); ?>">
-                    <a href="javascript:void(0);" onclick="TBG.Core.cancelManualUpdatePoller();$('update_module_help_<?php echo $module->getID(); ?>').hide();"><?php echo __('Cancel'); ?></a>
-                    <?php echo __('%cancel or %update_module', array('%cancel' => '', '%update_module' => '')); ?>
                     <input type="submit" disabled value="<?php echo __('Update module'); ?>" class="button button-lightblue">
                 </form>
                 <div style="display: inline-block; float: none; padding: 10px;">
@@ -51,15 +52,21 @@
         <?php if ($module->getID()): ?>
             <?php if ($is_default_scope): ?>
                 <button class="button button-lightblue update-button dropper" id="module_<?php echo $module->getID(); ?>_update" data-key="<?php echo $module->getName(); ?>"><?php echo __('Update'); ?></button>
-                <ul id="module_<?php echo $module->getID(); ?>_update_dropdown" style="font-size: 1.1em;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
-                    <?php if ($module->isOutdated()): ?>
+                <ul id="module_<?php echo $module->getID(); ?>_update_dropdown" style="font-size: 1.1em; overflow: visible;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
+                    <?php if (!$license_ok): ?>
+                        <li class="disabled"><a href="javascript:void(0);"><?= __('Update to latest version'); ?></a><div class="tooltip rightie"><?php echo __('Automatic updates are available with a valid subscription'); ?></div></li>
+                        <li class="disabled"><a href="javascript:void(0);"><?= __('Install latest version'); ?></a><div class="tooltip rightie"><?php echo __('Automatic updates are available with a valid subscription'); ?></div></li>
+                    <?php else: ?>
+                        <?php if ($module->isOutdated()): ?>
+                            <li>
+                                <?php echo link_tag(make_url('configuration_module_update', array('module_key' => $module->getName())), __('Update to latest version')); ?>
+                            </li>
+                        <?php endif; ?>
                         <li>
-                            <?php echo link_tag(make_url('configuration_module_update', array('module_key' => $module->getName())), __('Update to latest version')); ?>
+                            <?php echo link_tag(make_url('configuration_download_module_update', array('module_key' => $module->getName())), __('Install latest version')); ?>
                         </li>
                     <?php endif; ?>
-                    <li>
-                        <?php echo link_tag(make_url('configuration_download_module_update', array('module_key' => $module->getName())), __('Install latest version')); ?>
-                    </li>
+                    <li class="separator"></li>
                     <li><a href="javascript:void(0);" class="update-module-menu-item"><?php echo __('Manual update'); ?></a></li>
                 </ul>
             <?php endif; ?>

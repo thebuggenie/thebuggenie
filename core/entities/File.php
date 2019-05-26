@@ -106,7 +106,7 @@
 
         public function getUploadedBy()
         {
-            return $this->_b2dbLazyload('_uid');
+            return $this->_b2dbLazyLoad('_uid');
         }
 
         public function setUploadedBy($uploaded_by)
@@ -136,12 +136,22 @@
 
         public function getOriginalFilename()
         {
+            return $this->getName();
+        }
+
+        public function getName()
+        {
             return $this->_name;
+        }
+
+        public function setName($name)
+        {
+            $this->_name = $name;
         }
 
         public function setOriginalFilename($original_filename)
         {
-            $this->_name = $original_filename;
+            $this->setName($original_filename);
         }
 
         public function getContent()
@@ -174,6 +184,7 @@
 
         protected function _preSave($is_new)
         {
+            parent::_preSave($is_new);
             if ($this->doesFileExistOnDisk()) {
                 $this->_size = filesize($this->getFullpath());
             }

@@ -68,7 +68,7 @@
          */
         public static function createToken($application_password)
         {
-            return hash("sha256", $application_password);
+            return password_hash($application_password, PASSWORD_DEFAULT);
         }
         
         protected function _preSave($is_new)
@@ -128,8 +128,7 @@
          */
         public function setPassword($newpassword)
         {
-            $token = self::createToken($newpassword);
-            $this->_password = \thebuggenie\core\entities\User::hashPassword($token, $this->getUser()->getSalt());
+            $this->_password = password_hash($newpassword, PASSWORD_DEFAULT);
         }
 
         public function getCreatedAt()
@@ -157,6 +156,15 @@
             $this->_last_used_at = $last_used_at;
         }
 
+        public function verify()
+        {
+            $password = User::createPassword(30);
+            $this->_password = password_hash($password, PASSWORD_DEFAULT);
+            $this->useOnce();
+
+            return $password;
+        }
+
         public function useOnce()
         {
             $this->_last_used_at = time();
@@ -164,7 +172,7 @@
 
         public function getUser()
         {
-            return $this->_b2dbLazyload('_user_id');
+            return $this->_b2dbLazyLoad('_user_id');
         }
 
         public function setUser($uid)

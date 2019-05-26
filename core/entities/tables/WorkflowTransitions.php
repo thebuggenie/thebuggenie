@@ -2,6 +2,7 @@
 
     namespace thebuggenie\core\entities\tables;
 
+    use b2db\Update;
     use thebuggenie\core\framework;
     use b2db\Core,
         b2db\Criteria,
@@ -41,28 +42,28 @@
 
         protected function _deleteByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
-            return $this->doDelete($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
+            return $this->rawDelete($query);
         }
 
         protected function _countByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
-            return $this->doCount($crit);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
+            return $this->count($query);
         }
 
         protected function _getByTypeID($type, $id)
         {
-            $crit = $this->getCriteria();
-            $crit->addWhere(self::SCOPE, framework\Context::getScope()->getID());
-            $crit->addWhere((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
+            $query = $this->getQuery();
+            $query->where(self::SCOPE, framework\Context::getScope()->getID());
+            $query->where((($type == 'step') ? self::OUTGOING_STEP_ID : self::WORKFLOW_ID), $id);
 
             $return_array = array();
-            if ($res = $this->doSelect($crit))
+            if ($res = $this->rawSelect($query))
             {
                 while ($row = $res->getNextRow())
                 {
@@ -97,35 +98,15 @@
         {
             foreach ($mapper_array as $old_step_id => $new_step_id)
             {
-                $crit = $this->getCriteria();
-                $crit->addUpdate(self::OUTGOING_STEP_ID, $new_step_id);
-                $crit->addWhere(self::OUTGOING_STEP_ID, $old_step_id);
-                $crit->addWhere(self::WORKFLOW_ID, $workflow_id);
-                $this->doUpdate($crit);
-            }
-        }
+                $query = $this->getQuery();
+                $update = new Update();
 
-        public function upgradeFrom3dot1()
-        {
-            $wcrit = Settings::getTable()->getCriteria();
-            $wcrit->addWhere(Settings::NAME, \thebuggenie\core\framework\Settings::SETTING_DEFAULT_WORKFLOW);
+                $update->add(self::OUTGOING_STEP_ID, $new_step_id);
 
-            $workflows = array();
-            if ($res = Settings::getTable()->doSelect($wcrit))
-            {
-                while ($row = $res->getNextRow())
-                {
-                    $workflow_id = (int) $row->get(Settings::VALUE);
-                    $workflows[$workflow_id] = $workflow_id;
-                }
-            }
-            if (count($workflows))
-            {
-                $crit = $this->getCriteria();
-                $crit->addWhere(self::NAME, '%reject%', \b2db\Criteria::DB_LIKE);
-                $crit->addWhere(self::WORKFLOW_ID, $workflows, \b2db\Criteria::DB_IN);
-                $crit->addUpdate(self::TEMPLATE, 'main/updateissueproperties');
-                $this->doUpdate($crit);
+                $query->where(self::OUTGOING_STEP_ID, $old_step_id);
+                $query->where(self::WORKFLOW_ID, $workflow_id);
+
+                $this->rawUpdate($update, $query);
             }
         }
 

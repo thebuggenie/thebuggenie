@@ -1,4 +1,6 @@
-* <?php echo $issue->getFormattedTitle(true); ?> *
+* <?php use thebuggenie\core\entities\LogItem;
+
+echo $issue->getFormattedTitle(true); ?> *
 <?php echo __('Updated by %name', array('%name' => $updated_by->getNameWithUsername()));?>
 
 <?php echo '(' . __('Created by %name', array('%name' => $issue->getPostedBy()->getNameWithUsername())); ?>
@@ -14,73 +16,73 @@
 <?php
             switch ($item->getChangeType())
             {
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CREATED:
-                case \thebuggenie\core\entities\tables\Log::LOG_COMMENT:
+                case LogItem::ACTION_ISSUE_CREATED:
+                case LogItem::ACTION_COMMENT_CREATED:
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CLOSE:
+                case LogItem::ACTION_ISSUE_CLOSE:
                     echo ' * ' . __('Issue closed');
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REOPEN:
+                case LogItem::ACTION_ISSUE_REOPEN:
                     echo ' * ' . __('Issue reopened');
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_UPDATE:
+                case LogItem::ACTION_ISSUE_UPDATE_FREE_TEXT:
                     echo ' * ' . $item->getText();
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PAIN_BUG_TYPE:
+                case LogItem::ACTION_ISSUE_UPDATE_PAIN_BUG_TYPE:
                     echo ' * ' . __('Triaged bug type: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PAIN_LIKELIHOOD:
+                case LogItem::ACTION_ISSUE_UPDATE_PAIN_LIKELIHOOD:
                     echo ' * ' . __('Triaged likelihood: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PAIN_EFFECT:
+                case LogItem::ACTION_ISSUE_UPDATE_PAIN_EFFECT:
                     echo ' * ' . __('Triaged effect: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PAIN_CALCULATED:
+                case LogItem::ACTION_ISSUE_UPDATE_PAIN_SCORE:
                     echo ' * ' . __('Calculated user pain: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CATEGORY:
+                case LogItem::ACTION_ISSUE_UPDATE_CATEGORY:
                     echo ' * ' . __('Category changed: %text', array('%text' => str_replace("&rArr;", '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_CUSTOMFIELD_CHANGED:
+                case LogItem::ACTION_ISSUE_UPDATE_CUSTOMFIELD:
                     echo ' * ' . __('Custom field changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_STATUS:
+                case LogItem::ACTION_ISSUE_UPDATE_STATUS:
                     echo ' * ' . __('Status changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_REPRODUCABILITY:
+                case LogItem::ACTION_ISSUE_UPDATE_REPRODUCABILITY:
                     echo ' * ' . __('Reproducability changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PRIORITY:
+                case LogItem::ACTION_ISSUE_UPDATE_PRIORITY:
                     echo ' * ' . __('Priority changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_SEVERITY:
+                case LogItem::ACTION_ISSUE_UPDATE_SEVERITY:
                     echo ' * ' . __('Severity changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_RESOLUTION:
+                case LogItem::ACTION_ISSUE_UPDATE_RESOLUTION:
                     echo ' * ' . __('Resolution changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_PERCENT:
+                case LogItem::ACTION_ISSUE_UPDATE_PERCENT_COMPLETE:
                     echo ' * ' . __('Percent completed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_MILESTONE:
+                case LogItem::ACTION_ISSUE_UPDATE_MILESTONE:
                     echo ' * ' . __('Target milestone changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ISSUETYPE:
+                case LogItem::ACTION_ISSUE_UPDATE_ISSUETYPE:
                     echo ' * ' . __('Issue type changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_ESTIMATED:
+                case LogItem::ACTION_ISSUE_UPDATE_ESTIMATED_TIME:
                     echo ' * ' . __('Estimation changed: %text', array('%text' => str_replace('&rArr;', '->', \thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true))));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_TIME_SPENT:
+                case LogItem::ACTION_ISSUE_UPDATE_TIME_SPENT:
                     echo ' * ' . __('Time spent: %text', array('%text' => str_replace('&rArr;', '->', \thebuggenie\core\entities\common\Timeable::formatTimeableLog($item->getText(), $item->getPreviousValue(), $item->getCurrentValue(), true, true))));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_ASSIGNED:
+                case LogItem::ACTION_ISSUE_UPDATE_ASSIGNEE:
                     echo ' * ' . __('Assignee changed: %text', array('%text' => $item->getText()));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_OWNED:
+                case LogItem::ACTION_ISSUE_UPDATE_OWNER:
                     echo ' * ' . __('Owner changed: %text', array('%text' => $item->getText()));
                     break;
-                case \thebuggenie\core\entities\tables\Log::LOG_ISSUE_POSTED:
+                case LogItem::ACTION_ISSUE_UPDATE_POSTED_BY:
                     echo ' * ' . __('Posted by changed: %text', array('%text' => str_replace('&rArr;', '->', $item->getText())));
                     break;
                 default:

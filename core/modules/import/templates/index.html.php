@@ -11,7 +11,7 @@
                 <h3><?php echo __('Import data'); ?></h3>
                 <div style="margin-top: 15px;" class="tab_menu inset">
                     <ul id="import_menu">
-                        <li id="tab_csv" class="selected"><?php echo javascript_link_tag(fa_image_tag('sign-in') . '<span>'.__('Import from CSV').'</span>', array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_csv', 'import_menu');")); ?></li>
+                        <li id="tab_csv" class="selected"><?php echo javascript_link_tag(fa_image_tag('sign-in-alt') . '<span>'.__('Import from CSV').'</span>', array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_csv', 'import_menu');")); ?></li>
                         <li id="tab_sample"><?php echo javascript_link_tag(fa_image_tag('gift') . '<span>'.__('Sample data').'</span>', array('onclick' => "TBG.Main.Helpers.tabSwitcher('tab_sample', 'import_menu');")); ?></li>
                     </ul>
                 </div>
