@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 22 -->
-<!-- Number of Strings: 179 -->
-<!-- Keys extracted from sources on: 2017 Nov 13. -->
+<!-- Number of Strings: 178 -->
+<!-- Keys extracted from sources on: 2019 May 27. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -40,11 +40,11 @@
             <trans-unit id="01a569ddc6cf67ddec2a683f0a5f5956">
                 <source>Forgot your password?</source>
             </trans-unit>
-            <trans-unit id="d0bcd38c77602b5db10697502d93c9ec">
-                <source>Test email</source>
-            </trans-unit>
             <trans-unit id="082c399d4770724de425e7faac9cf8d3">
                 <source>The email module is not configured for outgoing emails</source>
+            </trans-unit>
+            <trans-unit id="d0bcd38c77602b5db10697502d93c9ec">
+                <source>Test email</source>
             </trans-unit>
             <trans-unit id="2558d0d93911b330782c4da80b3a589d">
                 <source>Notify when there are updates to my subscribed issues</source>
@@ -124,6 +124,9 @@
             <trans-unit id="45e5b12d39fb1610fed484dc0cddc739">
                 <source>Issue tracker URL</source>
             </trans-unit>
+            <trans-unit id="73c530bf7e803383fb9eb88f52b9885d">
+                <source>e.g.: %example</source>
+            </trans-unit>
             <trans-unit id="a00eb448dd0dd5ef2184ecd81086dcc8">
                 <source>This is the full URL to the issue tracker, used when sending outgoing emails. If this isn't configured, you will not be able to use the outgoing email feature.</source>
             </trans-unit>
@@ -135,12 +138,6 @@
             </trans-unit>
             <trans-unit id="e5cf6c1f255598d70e4a11eaab280789">
                 <source>Queue emails for batch processing</source>
-            </trans-unit>
-            <trans-unit id="27c289db65e00444c2feb35e5c90dd00">
-                <source>Send email notifications instantly</source>
-            </trans-unit>
-            <trans-unit id="51f6caf4c4ac0988acae13c93daafea2">
-                <source>Use email queueing</source>
             </trans-unit>
             <trans-unit id="83d2b75a792dcf5ffa6edb093f2d4892">
                 <source>If you're using a queue, outgoing emails will not slow down the system. Read more about how to set up email queueing in %email_queueing</source>
@@ -450,6 +447,15 @@
             <trans-unit id="0d4f0ede0c7d5ceafeec3b8e45a0ce1f">
                 <source>Enter a short, descriptive name for this incoming email account</source>
             </trans-unit>
+            <trans-unit id="51bdfc4588e299668d9478a2293e7eff">
+                <source>Account type</source>
+            </trans-unit>
+            <trans-unit id="37943dcd977feff18858525f0b15513d">
+                <source>Microsoft Exchange / Outlook / Gmail / IMAP</source>
+            </trans-unit>
+            <trans-unit id="0e82c5054c0125cd6b574f570abcccf8">
+                <source>POP3</source>
+            </trans-unit>
             <trans-unit id="b4a2f699da1c6654a4ac886b66f5380b">
                 <source>Server name:</source>
             </trans-unit>
@@ -458,6 +464,24 @@
             </trans-unit>
             <trans-unit id="9d29decfc6e7827d31454c783f366c2b">
                 <source>Port number:</source>
+            </trans-unit>
+            <trans-unit id="3a410eba0cadd44ced13f16476490492">
+                <source>Email username:</source>
+            </trans-unit>
+            <trans-unit id="b4c87a2eb9227b390f167615d03c365b">
+                <source>Email password:</source>
+            </trans-unit>
+            <trans-unit id="a0d46a21e78a63e091144b5aa35ec93d">
+                <source>Use plaintext authentication</source>
+            </trans-unit>
+            <trans-unit id="b884a3b8f647ec7be132835d82c25fff">
+                <source>Use secure connection (SSL)</source>
+            </trans-unit>
+            <trans-unit id="679ee05cf01984132b4dd4f02eb32fab">
+                <source>Ignore certificate errors</source>
+            </trans-unit>
+            <trans-unit id="384bb7d5bb204b3a9bcc04145a71db52">
+                <source>Select this to ignore certificate validation error messages</source>
             </trans-unit>
             <trans-unit id="b6fe613c26e0c3d4de63628b8498a204">
                 <source>Email folder name:</source>
@@ -471,32 +495,8 @@
             <trans-unit id="2f40bbbbd011ced5c1ba0893b919197d">
                 <source>Select whether emails should be kept or removed from the account after being downloaded</source>
             </trans-unit>
-            <trans-unit id="3a410eba0cadd44ced13f16476490492">
-                <source>Email username:</source>
-            </trans-unit>
-            <trans-unit id="b4c87a2eb9227b390f167615d03c365b">
-                <source>Email password:</source>
-            </trans-unit>
-            <trans-unit id="a0d46a21e78a63e091144b5aa35ec93d">
-                <source>Use plaintext authentication</source>
-            </trans-unit>
-            <trans-unit id="51bdfc4588e299668d9478a2293e7eff">
-                <source>Account type</source>
-            </trans-unit>
-            <trans-unit id="663e0f10c4c991a224c4f993aa9ba9ea">
-                <source>Microsoft Exchange / IMAP</source>
-            </trans-unit>
-            <trans-unit id="0e82c5054c0125cd6b574f570abcccf8">
-                <source>POP3</source>
-            </trans-unit>
-            <trans-unit id="b884a3b8f647ec7be132835d82c25fff">
-                <source>Use secure connection (SSL)</source>
-            </trans-unit>
-            <trans-unit id="679ee05cf01984132b4dd4f02eb32fab">
-                <source>Ignore certificate errors</source>
-            </trans-unit>
-            <trans-unit id="384bb7d5bb204b3a9bcc04145a71db52">
-                <source>Select this to ignore certificate validation error messages</source>
+            <trans-unit id="7c84ce2aa1a9c032d5ed6a40be46959a">
+                <source>Prefer HTML content</source>
             </trans-unit>
             <trans-unit id="0d0f9acd49a9fb4adf87d5b02a66927c">
                 <source>Issuetype</source>
@@ -515,9 +515,6 @@
             </trans-unit>
             <trans-unit id="ea60dd0dd5e4278aa90a3f4905f77a19">
                 <source>Add account</source>
-            </trans-unit>
-            <trans-unit id="36bb30728378548334ab33f1d5b2c2c8">
-                <source>Close popup</source>
             </trans-unit>
         </body>
     </file>

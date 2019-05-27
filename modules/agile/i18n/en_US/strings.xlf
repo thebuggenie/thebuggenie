@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 25 -->
-<!-- Number of Strings: 208 -->
-<!-- Keys extracted from sources on: 2017 Nov 13. -->
+<!-- Number of Strings: 206 -->
+<!-- Keys extracted from sources on: 2019 May 27. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -258,12 +258,6 @@
             <trans-unit id="f508aa8a2c264becb95bae29ec4c39bb">
                 <source>Specify which custom issue fields should also be visible for issue.</source>
             </trans-unit>
-            <trans-unit id="827e1baff2fd19587d3c6f251eb8d1a8">
-                <source>%cancel or %save_board</source>
-            </trans-unit>
-            <trans-unit id="ea4788705e6873b424c65e91c2846b19">
-                <source>Cancel</source>
-            </trans-unit>
             <trans-unit id="8f54ddc00864c8c3e4131e4b2d6d79f3">
                 <source>Save board</source>
             </trans-unit>
@@ -326,6 +320,9 @@
 
     <file source-language="en" datatype="php" original="templates/_headermenuprojectlinks.inc.php">
         <body>
+            <trans-unit id="5d12791f29907c2ed2bc14f89c16590c">
+                <source>Planning &amp; boards</source>
+            </trans-unit>
             <trans-unit id="b12900ec6f3fc8df634f92e54ab38e98">
                 <source>Manage boards</source>
             </trans-unit>
@@ -383,6 +380,9 @@
             <trans-unit id="3ba1dca54b66931ed0c0b299039a4a51">
                 <source>Filter issues by title</source>
             </trans-unit>
+            <trans-unit id="ea4788705e6873b424c65e91c2846b19">
+                <source>Cancel</source>
+            </trans-unit>
             <trans-unit id="b61b8f498d489f2e2b916b887b7062bc">
                 <source>Add column</source>
             </trans-unit>
@@ -424,6 +424,12 @@
             <trans-unit id="a6176a6ef340b6b3ef139cf7de46987b">
                 <source>There are no active sprints. Why not add one?</source>
             </trans-unit>
+            <trans-unit id="069a04a54fd9ca89f3c997def4fa812e">
+                <source>There are no issues in the backlog</source>
+            </trans-unit>
+            <trans-unit id="7b184583424eed138235282f8ecec05e">
+                <source>No issues in the backlog matches selected filters</source>
+            </trans-unit>
             <trans-unit id="d50ae403cb49a205bdf789f377f5cfe6">
                 <source>Releases</source>
             </trans-unit>
@@ -441,12 +447,6 @@
             </trans-unit>
             <trans-unit id="9c5c3f14416b614e509de58e3d8fe6de">
                 <source>Adding sprint, please wait</source>
-            </trans-unit>
-            <trans-unit id="069a04a54fd9ca89f3c997def4fa812e">
-                <source>There are no issues in the backlog</source>
-            </trans-unit>
-            <trans-unit id="7b184583424eed138235282f8ecec05e">
-                <source>No issues in the backlog matches selected filters</source>
             </trans-unit>
         </body>
     </file>
@@ -671,9 +671,6 @@
             <trans-unit id="2b49b3f90d5978a99510d33417e5ab6e">
                 <source>Select sprint...</source>
             </trans-unit>
-            <trans-unit id="fe40ee83d34cc3f2f0d716240056f951">
-                <source>%cancel or %mark_milestone_finished</source>
-            </trans-unit>
             <trans-unit id="10ac3d04253ef7e1ddc73e6091c0cd55">
                 <source>Next</source>
             </trans-unit>
@@ -698,9 +695,6 @@
             </trans-unit>
             <trans-unit id="9c8b48e1273257ce6e65399268dc189c">
                 <source>Please select which transition to apply</source>
-            </trans-unit>
-            <trans-unit id="59a6101b8c4a733b204dbf5790056fa2">
-                <source>Cancel and close this pop-up</source>
             </trans-unit>
         </body>
     </file>

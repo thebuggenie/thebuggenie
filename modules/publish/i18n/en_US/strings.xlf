@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 37 -->
-<!-- Number of Strings: 239 -->
-<!-- Keys extracted from sources on: 2017 Nov 13. -->
+<!-- Number of Strings: 244 -->
+<!-- Keys extracted from sources on: 2019 May 27. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -230,20 +230,23 @@
 
     <file source-language="en" datatype="php" original="templates/_menustriplinks.inc.php">
         <body>
-            <trans-unit id="5d41d4308923e87c09b0513be0cb2c54">
-                <source>Project wiki frontpage</source>
+            <trans-unit id="7298e4abc5483d6bfd7a0ec46ba8bdd6">
+                <source>Quick links</source>
             </trans-unit>
-            <trans-unit id="5251014c27cdbf7dfb2e12ce3033a50d">
-                <source>Find project article (press enter to search)</source>
-            </trans-unit>
-            <trans-unit id="08cab6f65f1a43b6c901f13264046666">
-                <source>Global content</source>
+            <trans-unit id="dd663f77eef0eca1772482e2a13ba759">
+                <source>Project wikis</source>
             </trans-unit>
             <trans-unit id="522624d779b54b7e6cc0270b74d31887">
                 <source>Find any article (press enter to search)</source>
             </trans-unit>
-            <trans-unit id="dd663f77eef0eca1772482e2a13ba759">
-                <source>Project wikis</source>
+            <trans-unit id="08cab6f65f1a43b6c901f13264046666">
+                <source>Global content</source>
+            </trans-unit>
+            <trans-unit id="b91aeb41e84ca8c422760b2c74e91f2b">
+                <source>Project content</source>
+            </trans-unit>
+            <trans-unit id="79aad29fcc90e132be40eedcb50057c6">
+                <source>Search disabled on external wiki</source>
             </trans-unit>
         </body>
     </file>
@@ -309,11 +312,11 @@
             <trans-unit id="150dd7ef5bce38a663ed29d94b27fb5c">
                 <source>Article type</source>
             </trans-unit>
-            <trans-unit id="0ceca3cdba5fa864bc2aeb52349e5785">
-                <source>Classic wiki page</source>
-            </trans-unit>
             <trans-unit id="8d0c5a35ff800eb5990b06a82aabcf70">
                 <source>Page in a handbook</source>
+            </trans-unit>
+            <trans-unit id="0ceca3cdba5fa864bc2aeb52349e5785">
+                <source>Classic wiki page</source>
             </trans-unit>
             <trans-unit id="c8f0e263aa988bd9c655931f97e3b158">
                 <source>Choose this article type for pages that are organised like a traditional wiki. These pages will have be loosely coupled by links, and have a classic wiki sidebar.</source>
@@ -422,6 +425,9 @@
             <trans-unit id="ef558ce33db3b419d05b2df1d2ae161c">
                 <source>Forgotten password introduction header</source>
             </trans-unit>
+            <trans-unit id="5d41d4308923e87c09b0513be0cb2c54">
+                <source>Project wiki frontpage</source>
+            </trans-unit>
             <trans-unit id="360d275e5693f7d451077f0ef03ec538">
                 <source>Wiki maintenance</source>
             </trans-unit>
@@ -488,6 +494,9 @@
             </trans-unit>
             <trans-unit id="24205fcfc9a2b950d0c2aef0cbb9ba5c">
                 <source>Article comments (%count)</source>
+            </trans-unit>
+            <trans-unit id="dae8ace18bdcbcc6ae5aece263e14fe8">
+                <source>Options</source>
             </trans-unit>
             <trans-unit id="56b73d40b8615281b30dc6b88d2b6726">
                 <source>Sort comments in opposite direction</source>
@@ -854,6 +863,12 @@
             </trans-unit>
             <trans-unit id="749c21ce20f65fc2f1d739f21119ddee">
                 <source>The article was saved</source>
+            </trans-unit>
+            <trans-unit id="6a83c724da4e95ece8a08aa468e33e8c">
+                <source>Article ID not specified</source>
+            </trans-unit>
+            <trans-unit id="547dfe43ec5ca0c245e68844bad78b59">
+                <source>User ID not specified</source>
             </trans-unit>
         </body>
     </file>

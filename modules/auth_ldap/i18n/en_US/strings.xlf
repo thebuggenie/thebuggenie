@@ -4,9 +4,9 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 4 -->
+<!-- Number of Sections: 5 -->
 <!-- Number of Strings: 72 -->
-<!-- Keys extracted from sources on: 2017 Nov 13. -->
+<!-- Keys extracted from sources on: 2019 May 27. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -202,9 +202,6 @@
             <trans-unit id="a62ed15b40b1f0e9c47e6e0c72b13d9a">
                 <source>HTTP header field must be specified if HTTP Integrated Authentication is enabled.</source>
             </trans-unit>
-            <trans-unit id="8ef4cf361d228053184d1d2d294c91c3">
-                <source>HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.</source>
-            </trans-unit>
             <trans-unit id="ab29362e09f807cc6f5b48d2ff2f1808">
                 <source>LDAP connection URL has invalid syntax.</source>
             </trans-unit>
@@ -237,6 +234,14 @@
             </trans-unit>
             <trans-unit id="02f59ff6ee0c4296bec3ba92cd6055e8">
                 <source>LDAP module has not been configured correctly. Please check your settings and test connection.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="LdapAuthenticationBackend.php">
+        <body>
+            <trans-unit id="8ef4cf361d228053184d1d2d294c91c3">
+                <source>HTTP integrated authentication is enabled but the HTTP header has not been provided by the web server.</source>
             </trans-unit>
             <trans-unit id="e612e804607a524cc7605a4fb22f570e">
                 <source>This user was found multiple times in the directory, please contact your administrator</source>
