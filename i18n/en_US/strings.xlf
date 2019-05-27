@@ -4,9 +4,9 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 275 -->
-<!-- Number of Strings: 3118 -->
-<!-- Keys extracted from sources on: 2017 Nov 13. -->
+<!-- Number of Sections: 304 -->
+<!-- Number of Strings: 3155 -->
+<!-- Keys extracted from sources on: 2019 May 27. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -27,6 +27,9 @@
             </trans-unit>
             <trans-unit id="857fd12642085226abf6804697aa7fd1">
                 <source>Automatically subscribe to new issues in selected categories</source>
+            </trans-unit>
+            <trans-unit id="34187a2957f15419782d29b85a344e23">
+                <source>Automatically subscribe to issues I get assigned to</source>
             </trans-unit>
             <trans-unit id="2558d0d93911b330782c4da80b3a589d">
                 <source>Notify when there are updates to my subscribed issues</source>
@@ -52,17 +55,20 @@
             <trans-unit id="2698011f90efbae9031f4732cbcd5ccb">
                 <source>Notify when issues are created in selected categories</source>
             </trans-unit>
-            <trans-unit id="157cc2b42a7565f57ebd38f173ddbf50">
+            <trans-unit id="9e20f42e7879df0ec2c1e1f0f32a6dae">
                 <source>Group similar notifications together if they are related</source>
-            </trans-unit>
-            <trans-unit id="15df2d7099a07b59fc6adb166c74e4b6">
-                <source>Don't send email notification if I'm currently logged in and active</source>
             </trans-unit>
             <trans-unit id="48b26d57c14af0500090800c2cdd0d58">
                 <source>Scopes</source>
             </trans-unit>
             <trans-unit id="54aebeac39024b74c21f564b26c3f33a">
                 <source>Scopes are self-contained Bug Genie environments. Configure them here.</source>
+            </trans-unit>
+            <trans-unit id="794df3791a8c800841516007427a2aa3">
+                <source>License</source>
+            </trans-unit>
+            <trans-unit id="1dd002982773f21d48b5b4db2379b4f4">
+                <source>Configure the license in this section</source>
             </trans-unit>
             <trans-unit id="f4f70727dc34561dfde1a3c529b6205c">
                 <source>Settings</source>
@@ -191,9 +197,6 @@
 
     <file source-language="en" datatype="php" original="core/framework/Context.php">
         <body>
-            <trans-unit id="246e7625ce94a209c8ee3cd7f141a504">
-                <source>Can see issues reported by other users</source>
-            </trans-unit>
             <trans-unit id="c3d2a0dc75c0cf3c3ba700e7381294b2">
                 <source>Can see issues reported by users in the same group</source>
             </trans-unit>
@@ -301,6 +304,9 @@
             </trans-unit>
             <trans-unit id="421113cd569d57e6bfb0d00ab48d4e38">
                 <source>Can access all clients</source>
+            </trans-unit>
+            <trans-unit id="246e7625ce94a209c8ee3cd7f141a504">
+                <source>Can see issues reported by other users</source>
             </trans-unit>
             <trans-unit id="eb340ed90bb1e0ca79d3cca8b1fe552d">
                 <source>Has access to the project</source>
@@ -479,6 +485,9 @@
             <trans-unit id="5fbe48072f78981d459a9aac5fcf31d8">
                 <source>Can delete issue</source>
             </trans-unit>
+            <trans-unit id="0b55ea30f58f44fd7c55fdf8399077cc">
+                <source>Can edit custom fields for issues</source>
+            </trans-unit>
             <trans-unit id="38b344da37d9903af5e22cfa8783f1eb">
                 <source>Can change custom field "%field_name"</source>
             </trans-unit>
@@ -578,6 +587,9 @@
             <trans-unit id="4a66bb70af3f6ad629030f2a0e975974">
                 <source>This project does not exist</source>
             </trans-unit>
+            <trans-unit id="5f7379e6e92235e70969f5fdd3ae8997">
+                <source>There are no more issues in that direction.</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -595,6 +607,9 @@
             <trans-unit id="09d1ab2ccf43df3223903012287670d9">
                 <source>Open file in new window</source>
             </trans-unit>
+            <trans-unit id="03f4a47830f97377a35321051685071e">
+                <source>Closed</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -605,6 +620,41 @@
             </trans-unit>
             <trans-unit id="51a86cf2722f1be8670a091910017425">
                 <source>You are not logged in</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/templates/headermainmenu.inc.php">
+        <body>
+            <trans-unit id="4b888724b1497ebc2d02f9e79456082d">
+                <source>Predefined searches</source>
+            </trans-unit>
+            <trans-unit id="b3a6d00bcbbc30a4cdb4e4f4cbd22005">
+                <source>Issues reported by me</source>
+            </trans-unit>
+            <trans-unit id="86fb6fd70809a36ccd67e001c05a8a59">
+                <source>Open issues assigned to me</source>
+            </trans-unit>
+            <trans-unit id="66c4255bad231dd5d05adbaae50ff48c">
+                <source>Open issues owned by me</source>
+            </trans-unit>
+            <trans-unit id="04cf918b101cc8c80a7959bc0be78178">
+                <source>Open issues assigned to my teams</source>
+            </trans-unit>
+            <trans-unit id="8f539b81d82236bcc672cf86864b0879">
+                <source>Saved searches</source>
+            </trans-unit>
+            <trans-unit id="58116ae34b33a208f96ecc6cce76ae9e">
+                <source>This is a saved search only visible to you</source>
+            </trans-unit>
+            <trans-unit id="12c06dd9e190a32ecfabb720a7939a73">
+                <source>You have no saved searches</source>
+            </trans-unit>
+            <trans-unit id="93b63b3b2be445209389cc688e519f14">
+                <source>Recently watched issues</source>
+            </trans-unit>
+            <trans-unit id="1fc3490a687b8b6d4ba75764f6effbeb">
+                <source>No recent issues</source>
             </trans-unit>
         </body>
     </file>
@@ -632,11 +682,8 @@
             <trans-unit id="59cf289e1164ffed6bd21090bd238e25">
                 <source>Issues reported last 30 days</source>
             </trans-unit>
-            <trans-unit id="93b63b3b2be445209389cc688e519f14">
-                <source>Recently watched issues</source>
-            </trans-unit>
-            <trans-unit id="1fc3490a687b8b6d4ba75764f6effbeb">
-                <source>No recent issues</source>
+            <trans-unit id="53631b7f81e33ef23a53e215e2bff764">
+                <source>No saved searches for this project</source>
             </trans-unit>
             <trans-unit id="1ed0e75eff9abebaaab606a416c58707">
                 <source>Report an issue</source>
@@ -672,9 +719,6 @@
             <trans-unit id="1945e5ccc0bd89812560b30f7c48639d">
                 <source>Your notifications</source>
             </trans-unit>
-            <trans-unit id="2aa06b32c64bcfff2ccf9ca6b0f97b6b">
-                <source>Mark all read</source>
-            </trans-unit>
             <trans-unit id="fb739d5576efc52bf211f5ccd2bfddb5">
                 <source>Your dashboard</source>
             </trans-unit>
@@ -693,20 +737,11 @@
             <trans-unit id="5b6074ed0e11165dc64fe18f8a67dc14">
                 <source>Help for this page</source>
             </trans-unit>
-            <trans-unit id="0323de4f66a1700e2173e9bcdce02715">
-                <source>Logout</source>
-            </trans-unit>
             <trans-unit id="39f61f272f9b2278f467157c04e6f02e">
                 <source>Your issues</source>
             </trans-unit>
-            <trans-unit id="b3a6d00bcbbc30a4cdb4e4f4cbd22005">
-                <source>Issues reported by me</source>
-            </trans-unit>
-            <trans-unit id="86fb6fd70809a36ccd67e001c05a8a59">
-                <source>Open issues assigned to me</source>
-            </trans-unit>
-            <trans-unit id="04cf918b101cc8c80a7959bc0be78178">
-                <source>Open issues assigned to my teams</source>
+            <trans-unit id="0323de4f66a1700e2173e9bcdce02715">
+                <source>Logout</source>
             </trans-unit>
         </body>
     </file>
@@ -749,7 +784,7 @@
             <trans-unit id="cb9712766fa398af53298526ce439ec1">
                 <source>The Bug Genie is out of date</source>
             </trans-unit>
-            <trans-unit id="ddfff062a36b47d8bb6d81d1d25bf602">
+            <trans-unit id="a8a0196b0ae8ac8ff81b4d45ba462067">
                 <source>The latest version is %ver. Update now from thebuggenie.com.</source>
             </trans-unit>
             <trans-unit id="cae247767e57e8da2a241b44f2a6121d">
@@ -927,17 +962,28 @@
             <trans-unit id="6134aa9c07c8618c8c244916df22e42b">
                 <source>Save my changes with this comment</source>
             </trans-unit>
-            <trans-unit id="7dad90fb2cc9fafc7501adf045d37f29">
-                <source>%create_comment or %cancel</source>
-            </trans-unit>
             <trans-unit id="9aa7c8cfdd38e7bc576f56e65687ea42">
                 <source>Create comment</source>
             </trans-unit>
-            <trans-unit id="10aec35353f9c4096a71c38654c3d402">
-                <source>cancel</source>
-            </trans-unit>
             <trans-unit id="3a396ee87e9089565a70f5ae6f937b5b">
                 <source>There are no comments</source>
+            </trans-unit>
+            <trans-unit id="7c60dff77704a78df4c43b99b031af50">
+                <source>Issue created</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_logitemuser.inc.php">
+        <body>
+            <trans-unit id="14457207f0eebbf2a22de156b0281365">
+                <source>%user said</source>
+            </trans-unit>
+            <trans-unit id="553e010757418a1638e78b7a17eeff3d">
+                <source>Unknown user</source>
+            </trans-unit>
+            <trans-unit id="6247573ed254c62521fb092d92372d79">
+                <source>Unknown user said</source>
             </trans-unit>
         </body>
     </file>
@@ -1019,125 +1065,6 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/main/templates/_issuelogitem.inc.php">
-        <body>
-            <trans-unit id="a4fd751626e9d9b89388e34c827cfd08">
-                <source>The issue was created</source>
-            </trans-unit>
-            <trans-unit id="ebb3c0988b4a3371ed3981cb21f7dba1">
-                <source>The issue was closed</source>
-            </trans-unit>
-            <trans-unit id="113f9b92fface2c17258fe1865311abe">
-                <source>The issue was reopened</source>
-            </trans-unit>
-            <trans-unit id="4e22deb842e4c4ac8b8fc52244c8430f">
-                <source>The issues dependency changed: %change</source>
-            </trans-unit>
-            <trans-unit id="c5330983914ce6895b1d370135d3f75b">
-                <source>The issue was updated: %change</source>
-            </trans-unit>
-            <trans-unit id="0879fb00eef558693b1fbd314deb0dbd">
-                <source>Title updated: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="9de0f0a15ae7dedb3c46830926900364">
-                <source>Description updated: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="88183b946cc5f0e8c96b2e66e1c74a7e">
-                <source>Unknown</source>
-            </trans-unit>
-            <trans-unit id="083b021a4e92dbb5f70381e2fb771e3c">
-                <source>Not determined</source>
-            </trans-unit>
-            <trans-unit id="76ecddc8871ff4bf7df7ed76f0f621da">
-                <source>Status changed: %previous_value =&gt; %new_value by  %who_value</source>
-            </trans-unit>
-            <trans-unit id="0f6b172580d4fcbbfb4118f0c3ed14cb">
-                <source>Resolution changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="80e17f233d659f3cc4e34b43f3c98caa">
-                <source>Priority changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="831116c904db28f1236514cd81abcf96">
-                <source>Severity changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="6c963ce8a9811eb5d9e149ad05a6c607">
-                <source>Reproducability changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="cb48432158ad120643c9290cb0442239">
-                <source>Issuetype changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="2ab6ab162a0ef7d5f3876036dd795fa9">
-                <source>Category changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="87b241acc9d8b84faf07ce09e929557e">
-                <source>Milestone changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="e46784ce5ce8eaf564aae2f302873a8d">
-                <source>Owned by changed to %user</source>
-            </trans-unit>
-            <trans-unit id="33a55d5e88c7b3f329cb0c7b9ee87d43">
-                <source>Posted by changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="90b03a44457739634400a1db2db30c3b">
-                <source>%field_name changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="011ea064584c6fd0a7109603513f0597">
-                <source>Custom field changed</source>
-            </trans-unit>
-            <trans-unit id="9b96748ab275876f3317285b06cf9ec9">
-                <source>Pain bug type on issue changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="d28342d8285c55380b66be447ba30ae2">
-                <source>Pain effect on issue changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="e297c6aab6def4669de239149e7ab11a">
-                <source>Likelihood on issue changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="8d3ef69f7eae51137070528f8f9cff12">
-                <source>Calculated pain on issue changed: %value</source>
-            </trans-unit>
-            <trans-unit id="c97dcfb919067de6438f90fc01124dd1">
-                <source>User working on issue changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="31b867009824b5b9a57925c887b96c99">
-                <source>Assignee changed to %new_value</source>
-            </trans-unit>
-            <trans-unit id="977221374dec3c9f1587f1581641ac5d">
-                <source>Time spent changed: %value</source>
-            </trans-unit>
-            <trans-unit id="ce97e40bf4e239c599782a6e31860f56">
-                <source>Percent complete changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="ae6f525747e04fda1b17397c10979dd4">
-                <source>Blocking status changed: %value</source>
-            </trans-unit>
-            <trans-unit id="894b61f6d062e58a2c97bf3e6f23ec8e">
-                <source>This issue is blocking the next release</source>
-            </trans-unit>
-            <trans-unit id="b87075cf5ff5f4c3776150b6beabba1b">
-                <source>This issue is no more blocking the next release</source>
-            </trans-unit>
-            <trans-unit id="c88ca751f02fcd7bec2409f2cb7fd969">
-                <source>Estimated time changed: %value</source>
-            </trans-unit>
-            <trans-unit id="0c96b206bd90d4fbeb6c6279ef091721">
-                <source>Affected item added: %value</source>
-            </trans-unit>
-            <trans-unit id="732a0c024536708cd9bf236d6e42798e">
-                <source>Affected item updated: %value</source>
-            </trans-unit>
-            <trans-unit id="07cf5a609ccc61a6c36d32a77d59d1e2">
-                <source>Affected time removed: %value</source>
-            </trans-unit>
-            <trans-unit id="c968d4a8d8d1eeee366f61fa25703f6e">
-                <source>Reproduction steps changed: %previous_value =&gt; %new_value</source>
-            </trans-unit>
-            <trans-unit id="fe04fac99274b3e4cf43911cf2aab2d7">
-                <source>Unknown change</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="core/modules/main/templates/_issuemaincustomfields.inc.php">
         <body>
             <trans-unit id="c4484bcbd3c60986a9ac78d5b7db99a9">
@@ -1152,6 +1079,9 @@
             <trans-unit id="e4c8338e09323cf5029b43a88e722720">
                 <source>%save or %cancel</source>
             </trans-unit>
+            <trans-unit id="10aec35353f9c4096a71c38654c3d402">
+                <source>cancel</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -1163,186 +1093,28 @@
             <trans-unit id="7de1e8aa571f318863d73fec3b99f3df">
                 <source>Project information</source>
             </trans-unit>
-            <trans-unit id="4b888724b1497ebc2d02f9e79456082d">
-                <source>Predefined searches</source>
-            </trans-unit>
-            <trans-unit id="8f539b81d82236bcc672cf86864b0879">
-                <source>Saved searches</source>
-            </trans-unit>
             <trans-unit id="2026dc426b202cc081bc392f9ba47c90">
                 <source>Show a list of issues matching the saved search %searchname</source>
-            </trans-unit>
-            <trans-unit id="f92965e2c8a7afb3c1b9a5c09a263636">
-                <source>Done</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/main/templates/viewissue.html.php">
-        <body>
-            <trans-unit id="03f4a47830f97377a35321051685071e">
-                <source>Closed</source>
-            </trans-unit>
-            <trans-unit id="c3bf447eabe632720a3aa1a7ce401274">
-                <source>Open</source>
-            </trans-unit>
-            <trans-unit id="d58fea6d874bac8d3aa81120a10a698c">
-                <source>Please wait while updating issue type</source>
-            </trans-unit>
-            <trans-unit id="44d45960263e6cb76af3c30aaf4fefba">
-                <source>Go to the previous open issue</source>
-            </trans-unit>
-            <trans-unit id="2d831963bf080de99a2b4af954cd8e45">
-                <source>Go to the previous issue (open or closed)</source>
-            </trans-unit>
-            <trans-unit id="00e52d949fc1f0e6bd81efd3111c338b">
-                <source>Please log in to bookmark issues</source>
-            </trans-unit>
-            <trans-unit id="dfd97c07a6a97362370072f8bc30c4c0">
-                <source>Click the star to toggle whether you want to be notified whenever this issue updates or changes</source>
-            </trans-unit>
-            <trans-unit id="ec043185fec714b2fcd5dd1bd8569f7b">
-                <source>If you have the proper permissions, you can manage issue subscribers via the "%more_actions" button to the right.</source>
-            </trans-unit>
-            <trans-unit id="284716247b12b363fd6b6a71bff0918e">
-                <source>More actions</source>
-            </trans-unit>
-            <trans-unit id="ba5b1ff0f3ccc7cd893ec62500d95442">
-                <source>%cancel or %save</source>
-            </trans-unit>
-            <trans-unit id="8c3560971347019d5f97199e943831f0">
-                <source>Votes</source>
-            </trans-unit>
-            <trans-unit id="4ca4e9a9ce6da16222b79034c2d28466">
-                <source>This is the user pain value for this issue</source>
-            </trans-unit>
-            <trans-unit id="430a230819a64ce04d5a9383fe883242">
-                <source>Go to the next issue (open or closed)</source>
-            </trans-unit>
-            <trans-unit id="27708ba47ccb92ac5c8d9539ca5f496d">
-                <source>Go to the next open issue</source>
-            </trans-unit>
-            <trans-unit id="1cbb2bce941e717960ad9147564fe259">
-                <source>Could not save your changes</source>
-            </trans-unit>
-            <trans-unit id="64f8199bc35f9873eaa8211e81f41ea9">
-                <source>This issue has been changed since you started editing it</source>
-            </trans-unit>
-            <trans-unit id="4623ffe0a44ba918a2b65142f01308f0">
-                <source>Data that has been changed is highlighted in red below. Undo your changes to see the updated information</source>
-            </trans-unit>
-            <trans-unit id="daa6b483e9f6ca081ec7e0b4a352f9e9">
-                <source>Save changes</source>
-            </trans-unit>
-            <trans-unit id="7ff980d8d1d9c3d5c12d67215b5ffd1c">
-                <source>Add comment and save changes</source>
-            </trans-unit>
-            <trans-unit id="a7048a7e7655e9810334bb088b49ee79">
-                <source>You have changed this issue, but haven't saved your changes yet. To save it, press the %save_changes button to the right</source>
-            </trans-unit>
-            <trans-unit id="802e7a17f9f1b69fd6dc81698b7c71d2">
-                <source>There was an error trying to move this issue to the next step in the workflow</source>
-            </trans-unit>
-            <trans-unit id="a051743d000f8ff94cf4e5d4ab1a886c">
-                <source>There was an error trying to save changes to this issue</source>
-            </trans-unit>
-            <trans-unit id="9f236e4dcd565769bb0dbd048de7d476">
-                <source>No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.</source>
-            </trans-unit>
-            <trans-unit id="0e5792624043c28776513b384295b8dc">
-                <source>Your changes have been saved</source>
-            </trans-unit>
-            <trans-unit id="e0aa021e21dddbd6d8cecec71e9cf564">
-                <source>OK</source>
-            </trans-unit>
-            <trans-unit id="5be338c3999c53a07ba4dbbd56f2733a">
-                <source>The file was attached to this issue</source>
-            </trans-unit>
-            <trans-unit id="fcb20a1ba64a9d7e284d8bbcfe5243dd">
-                <source>You have been working on this issue since %time</source>
-            </trans-unit>
-            <trans-unit id="4ae678ebc081b7c0c2afaada873802f1">
-                <source>%teamname has been working on this issue since %time</source>
-            </trans-unit>
-            <trans-unit id="dda14ffc781e97d3fec402148569a969">
-                <source>%user has been working on this issue since %time</source>
-            </trans-unit>
-            <trans-unit id="928f96078e29b3f047a7b4cac8c0d6a6">
-                <source>This issue is a duplicate of issue %link_to_duplicate_issue</source>
-            </trans-unit>
-            <trans-unit id="c5dbb6f3acf83903365beb7261ecdf1d">
-                <source>This issue has been closed with status "%status_name" and resolution "%resolution".</source>
-            </trans-unit>
-            <trans-unit id="30d17b8422515b4d85625e96e3b8def6">
-                <source>The project this issue belongs to has been archived, and so this issue is now read only</source>
-            </trans-unit>
-            <trans-unit id="06df33001c1d7187fdd81ea1f5b277aa">
-                <source>Actions</source>
-            </trans-unit>
-            <trans-unit id="2ef2cd61b19455279bee8ab5c61414e0">
-                <source>Click here to edit description</source>
-            </trans-unit>
-            <trans-unit id="b5a7adde1af5c87d7fd797b6245c2a39">
-                <source>Description</source>
-            </trans-unit>
-            <trans-unit id="ea4788705e6873b424c65e91c2846b19">
-                <source>Cancel</source>
-            </trans-unit>
-            <trans-unit id="3ef0a76e8b313b9c7a756a9dbcf0b5d4">
-                <source>Click here to edit reproduction steps</source>
-            </trans-unit>
-            <trans-unit id="7177ade500eee8e168ee36b3f27ba7f0">
-                <source>Steps to reproduce this issue</source>
-            </trans-unit>
-            <trans-unit id="4f0503efa6917b1da382d25f21edd214">
-                <source>Comments (%count)</source>
-            </trans-unit>
-            <trans-unit id="16d2b386b2034b9488996466aaae0b57">
-                <source>History</source>
-            </trans-unit>
-            <trans-unit id="229ec46731493cc42812bc834b51ffcd">
-                <source>Toggle system-generated comments</source>
-            </trans-unit>
-            <trans-unit id="56b73d40b8615281b30dc6b88d2b6726">
-                <source>Sort comments in opposite direction</source>
-            </trans-unit>
-            <trans-unit id="6726d20ec8e08625bf633e423d6b387e">
-                <source>This issue has been deleted</source>
-            </trans-unit>
-            <trans-unit id="a03ae702be865c1e785444fb4ce6fa4c">
-                <source>This message will disappear when you reload the page.</source>
-            </trans-unit>
-            <trans-unit id="1b0c43305ba4ad08acc48c49117de5b0">
-                <source>This issue can not be displayed</source>
-            </trans-unit>
-            <trans-unit id="2de189ace9a68c06bb3b2e65a95e80bf">
-                <source>This issue either does not exist, has been deleted or you do not have permission to view it.</source>
             </trans-unit>
         </body>
     </file>
 
     <file source-language="en" datatype="php" original="core/modules/main/templates/_findrelatedissues.inc.php">
         <body>
-            <trans-unit id="cf4ee9ec8c73c91b7b95d296ef57d43b">
-                <source>The following issues matched your search</source>
+            <trans-unit id="e67ecbf15481abdc8517edd4047694fa">
+                <source>Current project</source>
             </trans-unit>
-            <trans-unit id="aa0b58ddafa810265fa27e825ce383c4">
-                <source>Either use the checkboxes and press the "%relate_these_issues"-button below or click any issues in the list, and select an action.</source>
-            </trans-unit>
-            <trans-unit id="d34327c528e8d4d0a94563642243fd48">
-                <source>Relate these issues</source>
-            </trans-unit>
-            <trans-unit id="a38bd5138bf35514df41a1795ebbf5c3">
-                <source>OPEN</source>
-            </trans-unit>
-            <trans-unit id="110ccf2f5d2ff4eda1fd1a494293467d">
-                <source>CLOSED</source>
+            <trans-unit id="c3bf447eabe632720a3aa1a7ce401274">
+                <source>Open</source>
             </trans-unit>
             <trans-unit id="bf6cf0b039ceedcd84afaf63b40f4f77">
                 <source>Add checked issues as children</source>
             </trans-unit>
             <trans-unit id="0e9b32e904f3e48c4d8ed926c0a10803">
                 <source>Set selected issue as parent</source>
+            </trans-unit>
+            <trans-unit id="d34327c528e8d4d0a94563642243fd48">
+                <source>Relate these issues</source>
             </trans-unit>
             <trans-unit id="f873dce7b2ad29aca2fa1a9e613c5558">
                 <source>No issues matched your search. Please try again with different search terms.</source>
@@ -1364,11 +1136,11 @@
             <trans-unit id="0b27918290ff5323bea1e3b78a9cf04e">
                 <source>File</source>
             </trans-unit>
+            <trans-unit id="b5a7adde1af5c87d7fd797b6245c2a39">
+                <source>Description</source>
+            </trans-unit>
             <trans-unit id="5337dcf2aad01ffd4f169effcff17c12">
                 <source>Enter a short file description here</source>
-            </trans-unit>
-            <trans-unit id="90785b9f9aefe0f95806199612c5751d">
-                <source>%cancel or %save_attachments</source>
             </trans-unit>
             <trans-unit id="c5f317491e25d02e5f284c084eda64bd">
                 <source>Save attachments</source>
@@ -1378,26 +1150,8 @@
 
     <file source-language="en" datatype="php" original="core/modules/main/templates/index.html.php">
         <body>
-            <trans-unit id="131129f807db0e229703e67dff2c4cbd">
-                <source>Only using The Bug Genie to track issues for one project?</source>
-            </trans-unit>
             <trans-unit id="7298e4abc5483d6bfd7a0ec46ba8bdd6">
                 <source>Quick links</source>
-            </trans-unit>
-            <trans-unit id="7e94fd31ac489c6edc9b9ee8820b5500">
-                <source>Create project</source>
-            </trans-unit>
-            <trans-unit id="f727cac0ddae92d9de3567e9a3b11511">
-                <source>Manage projects</source>
-            </trans-unit>
-            <trans-unit id="095a6e6329dcce7db39cae7230255712">
-                <source>Show archived projects</source>
-            </trans-unit>
-            <trans-unit id="e4af4e3c68640fcb17c5851e757e6a46">
-                <source>There are no projects. Get started by clicking the "%create_project" button</source>
-            </trans-unit>
-            <trans-unit id="5634c38e003625e623ae677a69c1cf99">
-                <source>You don't have access to any projects yet.</source>
             </trans-unit>
         </body>
     </file>
@@ -1444,9 +1198,6 @@
 
     <file source-language="en" datatype="php" original="core/modules/main/templates/_issuesubscribers.inc.php">
         <body>
-            <trans-unit id="1dab057ddc4cf188939abb2ad8167642">
-                <source>Add a user</source>
-            </trans-unit>
             <trans-unit id="95324a055bb724f59c4bde5a7bcb150b">
                 <source>Manage issue subscribers</source>
             </trans-unit>
@@ -1469,9 +1220,6 @@
             </trans-unit>
             <trans-unit id="628e91daa4afd4cb32ea24195e903608">
                 <source>There are no users assigned to this client</source>
-            </trans-unit>
-            <trans-unit id="d3d2e617335f08df83599665eef8a418">
-                <source>Close</source>
             </trans-unit>
         </body>
     </file>
@@ -1712,9 +1460,6 @@
             <trans-unit id="45c30c2167d8b25b58e06424f40ace27">
                 <source>Don't show this again</source>
             </trans-unit>
-            <trans-unit id="8a4279bb76dc806240c7bc87a4e0ad89">
-                <source>Updating, please wait ...</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -1752,9 +1497,6 @@
             </trans-unit>
             <trans-unit id="c67ce3a3d5aad6f77309f236f7497652">
                 <source>Click to change status</source>
-            </trans-unit>
-            <trans-unit id="6729f7f9e88354cee8d933b0922fbd3c">
-                <source>Set status</source>
             </trans-unit>
             <trans-unit id="e53a5d2673a56eb1b89e43d5c080b196">
                 <source>Status not determined</source>
@@ -1918,6 +1660,15 @@
             <trans-unit id="2bd0279bee2ce8f140514d139b0b59de">
                 <source>Clear currently selected client</source>
             </trans-unit>
+            <trans-unit id="a76d4ef5f3f6a672bbfab2865563e530">
+                <source>Time</source>
+            </trans-unit>
+            <trans-unit id="083b021a4e92dbb5f70381e2fb771e3c">
+                <source>Not determined</source>
+            </trans-unit>
+            <trans-unit id="88183b946cc5f0e8c96b2e66e1c74a7e">
+                <source>Unknown</source>
+            </trans-unit>
             <trans-unit id="9ba66a9f92056682b7d86a38b4bc18c0">
                 <source>Not set</source>
             </trans-unit>
@@ -2053,6 +1804,9 @@
             <trans-unit id="feef9192726c9d5dd4429698c96017c9">
                 <source>Noone else can see this issue</source>
             </trans-unit>
+            <trans-unit id="daa6b483e9f6ca081ec7e0b4a352f9e9">
+                <source>Save changes</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -2066,83 +1820,8 @@
 
     <file source-language="en" datatype="php" original="core/modules/main/templates/_logitem.inc.php">
         <body>
-            <trans-unit id="14457207f0eebbf2a22de156b0281365">
-                <source>%user said</source>
-            </trans-unit>
-            <trans-unit id="553e010757418a1638e78b7a17eeff3d">
-                <source>Unknown user</source>
-            </trans-unit>
-            <trans-unit id="6247573ed254c62521fb092d92372d79">
-                <source>Unknown user said</source>
-            </trans-unit>
-            <trans-unit id="7c60dff77704a78df4c43b99b031af50">
-                <source>Issue created</source>
-            </trans-unit>
-            <trans-unit id="02d9af9b1921db87d9e171f0c4bb2aa2">
-                <source>Issue closed %text</source>
-            </trans-unit>
-            <trans-unit id="750f236fc304a0eed6bf9a10bcc445ec">
-                <source>Issue reopened</source>
-            </trans-unit>
-            <trans-unit id="0eafcaa9a848711db111415f2b51de36">
-                <source>Triaged bug type: %text</source>
-            </trans-unit>
-            <trans-unit id="08850b1572fab4f581109d09853cdf2e">
-                <source>Triaged likelihood: %text</source>
-            </trans-unit>
-            <trans-unit id="b9d70c46aae1f53f0138277a278a2b49">
-                <source>Triaged effect: %text</source>
-            </trans-unit>
-            <trans-unit id="31f999f506a29900877dee8537d50668">
-                <source>Calculated user pain: %text</source>
-            </trans-unit>
-            <trans-unit id="11cc7baa22dd214ce3a7e84f069a385a">
-                <source>Category changed: %text</source>
-            </trans-unit>
-            <trans-unit id="55eeab309f01529dd65d35e87e2be017">
-                <source>Custom field changed: %text</source>
-            </trans-unit>
-            <trans-unit id="eb710455a7d5e3408910ef4e2a4bbeb9">
-                <source>Status changed: %text</source>
-            </trans-unit>
-            <trans-unit id="361a33e3ed7e46d244181667ea58e2fe">
-                <source>Reproducability changed: %text</source>
-            </trans-unit>
-            <trans-unit id="78d524154cf989984887f24d0eea9464">
-                <source>Priority changed: %text</source>
-            </trans-unit>
-            <trans-unit id="ae255fa3d1c511788baa8a491fa6c37f">
-                <source>Severity changed: %text</source>
-            </trans-unit>
-            <trans-unit id="4b51629799d44d1d40daf53510fb579f">
-                <source>Resolution changed: %text</source>
-            </trans-unit>
-            <trans-unit id="bc0bed9458fb03e381cd1df94cfa9005">
-                <source>Percent completed: %text</source>
-            </trans-unit>
-            <trans-unit id="6c277c1999413564a394f85774df5f9b">
-                <source>Target milestone changed: %text</source>
-            </trans-unit>
-            <trans-unit id="9a9e93ae2bf16c4bbcf80665f02fd7e2">
-                <source>Issue type changed: %text</source>
-            </trans-unit>
-            <trans-unit id="aa15e8b782023846227e379a9edf95c7">
-                <source>Estimation changed: %text</source>
-            </trans-unit>
-            <trans-unit id="159935d84fca8f72e2e40454a0bb8f97">
-                <source>Time spent: %text</source>
-            </trans-unit>
-            <trans-unit id="63a6a20fb70f1fda536a09a4d66641c7">
-                <source>Assignee changed: %text</source>
-            </trans-unit>
-            <trans-unit id="1d474ad8d0fe8f3b2ccadf628cc0982c">
-                <source>Owner changed: %text</source>
-            </trans-unit>
-            <trans-unit id="6bce228e41cae4e60043253c9cc0371e">
-                <source>Posted by changed: %text</source>
-            </trans-unit>
-            <trans-unit id="be366b83d6b2939f436725b71870416d">
-                <source>Issue updated</source>
+            <trans-unit id="444e06380e74f250781c883055025ba0">
+                <source>Unknown log item type</source>
             </trans-unit>
         </body>
     </file>
@@ -2154,6 +1833,41 @@
             </trans-unit>
             <trans-unit id="3af0e63ff45f01cd770ac63c854503fb">
                 <source>You are not allowed to access this page</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/projectlist.html.php">
+        <body>
+            <trans-unit id="2f1d44c158b85d55649e16276a7d2bb1">
+                <source>There are no archived projects. You can archive a project from the settings menu inside the project.</source>
+            </trans-unit>
+            <trans-unit id="e4af4e3c68640fcb17c5851e757e6a46">
+                <source>There are no projects. Get started by clicking the "%create_project" button</source>
+            </trans-unit>
+            <trans-unit id="7e94fd31ac489c6edc9b9ee8820b5500">
+                <source>Create project</source>
+            </trans-unit>
+            <trans-unit id="c5044a8a934b3d47530e36b568ff04c3">
+                <source>There are no archived projects.</source>
+            </trans-unit>
+            <trans-unit id="5634c38e003625e623ae677a69c1cf99">
+                <source>You don't have access to any projects yet.</source>
+            </trans-unit>
+            <trans-unit id="f5a80b5b50165c5934d767d9b58d00b3">
+                <source>There are no projects linked to this team. Get started by clicking the "%create_project" button</source>
+            </trans-unit>
+            <trans-unit id="46dd37474e4f31048e60deb0c31a3a51">
+                <source>There are no archived projects for this team.</source>
+            </trans-unit>
+            <trans-unit id="2f0a9c8e32b00c7f95a0abdd532f8dbc">
+                <source>There are no projects linked to this team.</source>
+            </trans-unit>
+            <trans-unit id="6bf9b7a834197ee5058f6a86ae7aabed">
+                <source>There are no projects linked to this client. Get started by clicking the "%create_project" button</source>
+            </trans-unit>
+            <trans-unit id="fcc151710102e47bf6300001e0ede614">
+                <source>There are no projects linked to this client.</source>
             </trans-unit>
         </body>
     </file>
@@ -2207,8 +1921,8 @@
             <trans-unit id="165e3eeb5e4f7b4e0699b4fdf90a7661">
                 <source>Code samples are best presented between two "~~~~"-lines.</source>
             </trans-unit>
-            <trans-unit id="29fc60dd1d8ac66a275ee3b25c21e677">
-                <source>The Bug Genie uses %geshi for syntax highlighting with support for over 100 languages!</source>
+            <trans-unit id="ea7bdabda7a41c29a83ab8981c77dadc">
+                <source>The Bug Genie can automatically apply syntax highlighting with support for over 100 languages!</source>
             </trans-unit>
             <trans-unit id="4c33521837054a908c0a9a5c03bef202">
                 <source>To specify bold text put text between two stars, and for underlines put text between two underscores.</source>
@@ -2245,6 +1959,14 @@
             </trans-unit>
             <trans-unit id="08b28780d89b2bcff420c8aa664b2bb4">
                 <source>See more formatting tips in %wiki_formatting.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_editcomment.inc.php">
+        <body>
+            <trans-unit id="ea4788705e6873b424c65e91c2846b19">
+                <source>Cancel</source>
             </trans-unit>
         </body>
     </file>
@@ -2327,6 +2049,12 @@
             <trans-unit id="ca4aad5816206adf65641520c7491faf">
                 <source>Click %done when you have uploaded the files you want to attach</source>
             </trans-unit>
+            <trans-unit id="f92965e2c8a7afb3c1b9a5c09a263636">
+                <source>Done</source>
+            </trans-unit>
+            <trans-unit id="d3d2e617335f08df83599665eef8a418">
+                <source>Close</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -2337,6 +2065,24 @@
             </trans-unit>
             <trans-unit id="686caa2ff9c9ffafb02e88739ee0740e">
                 <source>Client dashboard</source>
+            </trans-unit>
+            <trans-unit id="06df33001c1d7187fdd81ea1f5b277aa">
+                <source>Actions</source>
+            </trans-unit>
+            <trans-unit id="dbcbbe994141ba880805cd8551ecd001">
+                <source>Add member(s) to this client</source>
+            </trans-unit>
+            <trans-unit id="2d094a99026b5f5cd0126c6acfab42ce">
+                <source>Delete this client</source>
+            </trans-unit>
+            <trans-unit id="cca95f3345f7fbde355caddcaf32d0b9">
+                <source>Do you really want to delete this client?</source>
+            </trans-unit>
+            <trans-unit id="30978e2e05050c3e6e88b8e2b9c09fde">
+                <source>If you delete this client, then all users in this client will be lose the permissions given via this client</source>
+            </trans-unit>
+            <trans-unit id="68fb980708f3a9365b2d5dc29f216e9f">
+                <source>Add a member to this client</source>
             </trans-unit>
             <trans-unit id="e5cb8489f57db7c15eed3258e48cd5f3">
                 <source>Website:</source>
@@ -2353,26 +2099,8 @@
             <trans-unit id="0e2fb5b02182fd28b9b96e86ed27838f">
                 <source>Fax:</source>
             </trans-unit>
-            <trans-unit id="0598cd830e26293c14981c6f2989d270">
-                <source>Projects for %client</source>
-            </trans-unit>
-            <trans-unit id="108fd4290283f1b2feeab3f7bc497897">
-                <source>Milestones / sprints</source>
-            </trans-unit>
-            <trans-unit id="fe2ead5a2e6ec5bcfaf8cda0effdd020">
-                <source>There are no upcoming milestones for any of this client's associated projects</source>
-            </trans-unit>
-            <trans-unit id="d576294dfc6a01cba75b17133edd00dc">
-                <source>There are no projects assigned to this client</source>
-            </trans-unit>
             <trans-unit id="771bb8f133f624862ed72aa66d2b57e6">
                 <source>Members of %client</source>
-            </trans-unit>
-            <trans-unit id="b9648a7f02018550d0b882c26ec79566">
-                <source>This client has no members</source>
-            </trans-unit>
-            <trans-unit id="ff929832244d0bc539ab229e5e01b234">
-                <source>This client does not exist</source>
             </trans-unit>
         </body>
     </file>
@@ -2417,6 +2145,9 @@
             <trans-unit id="d32dfce202fd9b645631e05a5936d75a">
                 <source>If you want to mark this issue as duplicate of another, existing issue, find the issue by entering details to search for, in the box above.</source>
             </trans-unit>
+            <trans-unit id="fd46656e4643a18e61e7081aea51c6c3">
+                <source>Duplicate search is not available when applying a transition to multiple issues</source>
+            </trans-unit>
             <trans-unit id="5717c05c06463c4487e20475610b9714">
                 <source>Priority isn't visible for this issuetype / product combination</source>
             </trans-unit>
@@ -2444,9 +2175,6 @@
             <trans-unit id="5185c398dbdf91adfce5cb80b396f507">
                 <source>Write a comment if you want it to be added</source>
             </trans-unit>
-            <trans-unit id="7b75daca62fecd0f792e90aab7c6893f">
-                <source>%cancel or %submit</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -2463,12 +2191,6 @@
             </trans-unit>
             <trans-unit id="bffe9a3c9a7e00ba00a11749e022d911">
                 <source>Log in</source>
-            </trans-unit>
-            <trans-unit id="10f10cab769291a858d49f90a18468e7">
-                <source>%regular_login or %persona_or_openid_login</source>
-            </trans-unit>
-            <trans-unit id="a9c4e8ce8ec4c7fb3186b02dda5d15f0">
-                <source>Sign in with OpenID</source>
             </trans-unit>
             <trans-unit id="1d84c02f00e54f4a979377da7132bbcb">
                 <source>%login or %signup</source>
@@ -2557,9 +2279,6 @@
             <trans-unit id="b3ce9b73a300d873b0647aa9974343d7">
                 <source>Move issue</source>
             </trans-unit>
-            <trans-unit id="2060d14e64d8904c28d1478169aadb71">
-                <source>%move_issue or %cancel</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -2567,9 +2286,6 @@
         <body>
             <trans-unit id="89430e7e6c2c81b7212f4b01ddb87e66">
                 <source>Issue time tracking - edit time spent entry</source>
-            </trans-unit>
-            <trans-unit id="43c33224f80b98f02ee2320090163b02">
-                <source>Edit entry</source>
             </trans-unit>
             <trans-unit id="2393c77310837bbcda16932ad5b008ef">
                 <source>Time logged at</source>
@@ -2607,8 +2323,13 @@
             <trans-unit id="870b5a9ceadbb7ae249580bbd34345ab">
                 <source>Update entry</source>
             </trans-unit>
-            <trans-unit id="0557fa923dcee4d0f86b1409f5c2167f">
-                <source>Back</source>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_findduplicateissues.inc.php">
+        <body>
+            <trans-unit id="cf4ee9ec8c73c91b7b95d296ef57d43b">
+                <source>The following issues matched your search</source>
             </trans-unit>
         </body>
     </file>
@@ -2659,6 +2380,17 @@
         </body>
     </file>
 
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_todos.inc.php">
+        <body>
+            <trans-unit id="85b60e8715326e9a36a6bbf997610f93">
+                <source>Todos (%count_done / %count_total)</source>
+            </trans-unit>
+            <trans-unit id="5e7d5ede65d1623fb431e88fbbe060d8">
+                <source>Add todo</source>
+            </trans-unit>
+        </body>
+    </file>
+
     <file source-language="en" datatype="php" original="core/modules/main/templates/_notifications.inc.php">
         <body>
             <trans-unit id="f478d19b8f322ebaf7f826c353200af8">
@@ -2703,22 +2435,115 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/main/templates/_archivedprojects.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_logitemtext.inc.php">
         <body>
-            <trans-unit id="3a8049ca4ad0ca3e6b63006f4385900a">
-                <source>Archived projects</source>
+            <trans-unit id="a4fd751626e9d9b89388e34c827cfd08">
+                <source>The issue was created</source>
             </trans-unit>
-            <trans-unit id="a3f2cfebb8833a95277443c0e9a8711d">
-                <source>Displaying archived projects for %item</source>
+            <trans-unit id="ebb3c0988b4a3371ed3981cb21f7dba1">
+                <source>The issue was closed</source>
             </trans-unit>
-            <trans-unit id="26ae2aa0c3d79c206cb4d28d063a9007">
-                <source>Displaying archived subprojects for %project</source>
+            <trans-unit id="113f9b92fface2c17258fe1865311abe">
+                <source>The issue was reopened</source>
             </trans-unit>
-            <trans-unit id="055274665c0db9f9ea30c5fd4e9b7071">
-                <source>This project has no archived subprojects</source>
+            <trans-unit id="4e22deb842e4c4ac8b8fc52244c8430f">
+                <source>The issues dependency changed: %change</source>
             </trans-unit>
-            <trans-unit id="af014f538320650ae7eca7fa354952d0">
-                <source>There are no top-level archived projects</source>
+            <trans-unit id="c5330983914ce6895b1d370135d3f75b">
+                <source>The issue was updated: %change</source>
+            </trans-unit>
+            <trans-unit id="07cf5aa5f66295db4f7ced330fee642e">
+                <source>Title updated from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="971431d829c479664afeb7c021486100">
+                <source>Description updated</source>
+            </trans-unit>
+            <trans-unit id="770e2e1f6f999948b6f5cfa5e1b94a3b">
+                <source>Status changed from %previous_value to %new_value by  %who_value</source>
+            </trans-unit>
+            <trans-unit id="e9fdfdeb615c12557253efff7a285a10">
+                <source>Resolution changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="53f2c7503d021fb79bbdfcaabd361f27">
+                <source>Priority changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="c801515154259272a70d78e26d91cb10">
+                <source>Severity changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="17ef75e68c2995cfdaead889485f7f25">
+                <source>Reproducability changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="6f50f46ad0376180c3024b3553120fef">
+                <source>Issuetype changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="a5c32a3c21ac8025eb5e8a1c22437300">
+                <source>Category changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="fafb9fccd4af1c1278a716e945c9b393">
+                <source>Milestone changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="e46784ce5ce8eaf564aae2f302873a8d">
+                <source>Owned by changed to %user</source>
+            </trans-unit>
+            <trans-unit id="a0882ff645b1e8d356f369aa6e70fa89">
+                <source>Posted by changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="ab436f82f0035bb37a68e6f012f76274">
+                <source>%field_name changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="011ea064584c6fd0a7109603513f0597">
+                <source>Custom field changed</source>
+            </trans-unit>
+            <trans-unit id="d11235f524bb7fb01a03d1451668c545">
+                <source>Pain bug type on issue changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="0af25f295899616d414f64bb80f06d9c">
+                <source>Pain effect on issue changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="ab7619a867f13d8cdfe1ac6baa8131e4">
+                <source>Likelihood on issue changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="8d3ef69f7eae51137070528f8f9cff12">
+                <source>Calculated pain on issue changed: %value</source>
+            </trans-unit>
+            <trans-unit id="5deea2476a1b1865cd01c36c6a48fa4c">
+                <source>User working on issue changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="31b867009824b5b9a57925c887b96c99">
+                <source>Assignee changed to %new_value</source>
+            </trans-unit>
+            <trans-unit id="977221374dec3c9f1587f1581641ac5d">
+                <source>Time spent changed: %value</source>
+            </trans-unit>
+            <trans-unit id="2d9e9484e5d6a71d189cda163430b92e">
+                <source>Percent complete changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="ae6f525747e04fda1b17397c10979dd4">
+                <source>Blocking status changed: %value</source>
+            </trans-unit>
+            <trans-unit id="894b61f6d062e58a2c97bf3e6f23ec8e">
+                <source>This issue is blocking the next release</source>
+            </trans-unit>
+            <trans-unit id="b87075cf5ff5f4c3776150b6beabba1b">
+                <source>This issue is no more blocking the next release</source>
+            </trans-unit>
+            <trans-unit id="c88ca751f02fcd7bec2409f2cb7fd969">
+                <source>Estimated time changed: %value</source>
+            </trans-unit>
+            <trans-unit id="0c96b206bd90d4fbeb6c6279ef091721">
+                <source>Affected item added: %value</source>
+            </trans-unit>
+            <trans-unit id="732a0c024536708cd9bf236d6e42798e">
+                <source>Affected item updated: %value</source>
+            </trans-unit>
+            <trans-unit id="07cf5a609ccc61a6c36d32a77d59d1e2">
+                <source>Affected time removed: %value</source>
+            </trans-unit>
+            <trans-unit id="7bf345e333a1c4c6fafe41c5d93f94f9">
+                <source>Reproduction steps changed from %previous_value to %new_value</source>
+            </trans-unit>
+            <trans-unit id="fe04fac99274b3e4cf43911cf2aab2d7">
+                <source>Unknown change</source>
             </trans-unit>
         </body>
     </file>
@@ -2745,6 +2570,14 @@
         </body>
     </file>
 
+    <file source-language="en" datatype="php" original="core/modules/main/templates/http400.json.php">
+        <body>
+            <trans-unit id="ce308eca0af94b6688cfedce56a17c64">
+                <source>You have sent an invalid request.</source>
+            </trans-unit>
+        </body>
+    </file>
+
     <file source-language="en" datatype="php" original="core/modules/main/templates/_teamdropdown.inc.php">
         <body>
             <trans-unit id="e725ce0edc6abaf2d1772e53d3400d1b">
@@ -2758,9 +2591,6 @@
             </trans-unit>
             <trans-unit id="16dcd3fbba62498b27af8f286c7b2c6b">
                 <source>Show team dashboard</source>
-            </trans-unit>
-            <trans-unit id="56b8cf7636349a851179c5a561575cf9">
-                <source>Close this menu</source>
             </trans-unit>
         </body>
     </file>
@@ -2793,28 +2623,25 @@
             <trans-unit id="f45250cc7394b5aeab8424074b17ad17">
                 <source>Add menu item</source>
             </trans-unit>
-            <trans-unit id="083f62fcae98023532c130f6c6506bd5">
-                <source>Add a link</source>
-            </trans-unit>
             <trans-unit id="120a9463b3333e10145c852e9adc8622">
                 <source>Article name</source>
             </trans-unit>
             <trans-unit id="e6b391a8d2c4d45902a23a8b6585703d">
                 <source>URL</source>
             </trans-unit>
-            <trans-unit id="89a36c9d6a7508f642992cbd8746d9b7">
+            <trans-unit id="88df2dfa00060acdcc74742bba114595">
                 <source>Enter the name of the article to link to here, along with an (optional) description, and press "%add_item" to add it to the menu.</source>
             </trans-unit>
-            <trans-unit id="32210b37e4d23029d6ee2f5149e9c3e1">
-                <source>Add link</source>
+            <trans-unit id="ff19c966036b4a0c7350b2fc7e2861c2">
+                <source>Add item</source>
             </trans-unit>
-            <trans-unit id="7d0c0cd95a3245aba95a57bedfb6406e">
+            <trans-unit id="f0f607a49a6ea57c0b6d66821f83f2bd">
                 <source>Enter the link URL here, along with an (optional) description, and press "%add_item" to add it to the menu.</source>
             </trans-unit>
-            <trans-unit id="fb45735a0ac6c52c953f4be031ebed46">
+            <trans-unit id="f4023f3931951674a87ee70537f3b0cd">
                 <source>To add free text, just enter text in the description - without any url - and press the "%add_item" button (Text will be parsed according to the %wiki_formatting).</source>
             </trans-unit>
-            <trans-unit id="643daeb01ab2b7330646f80e43f87a34">
+            <trans-unit id="6341915b95f3ba3bc018cd8e164ea30d">
                 <source>To add a spacer, just press "%add_item", without any url or description.</source>
             </trans-unit>
             <trans-unit id="296580eedc2c4f68d401fc1ec7e8e161">
@@ -2837,9 +2664,6 @@
             <trans-unit id="5c82b3b40f34a39d5d4031809af2b622">
                 <source>Attach link</source>
             </trans-unit>
-            <trans-unit id="37a63d1c3334a7837eb30ef45349b039">
-                <source>%attach_link or %cancel</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -2851,20 +2675,23 @@
             <trans-unit id="ed2016a26d6ff8f95679e4e15fb9d770">
                 <source>Team dashboard</source>
             </trans-unit>
-            <trans-unit id="58e7c224434ecb4b5aaadddfc065fea1">
-                <source>Projects for %team</source>
+            <trans-unit id="f4028da16be4c0d6e9094e464a1b7f52">
+                <source>Add member(s) to this team</source>
             </trans-unit>
-            <trans-unit id="fb8ae380504c4cd8068b0277e752477c">
-                <source>There are no upcoming milestones for any of this team's associated projects</source>
+            <trans-unit id="48faabe55867aaccd341588c82d293cb">
+                <source>Delete this team</source>
             </trans-unit>
-            <trans-unit id="792db95f1efe4929bb58214a7694f8d4">
-                <source>There are no projects linked to this team</source>
+            <trans-unit id="ba8437de77306bbe6cb66373d850eb73">
+                <source>Do you really want to delete this team?</source>
+            </trans-unit>
+            <trans-unit id="4d81d03898d3e4beb9873a8cfd505280">
+                <source>If you delete this team, then all users in this team will be lose the permissions given via this team</source>
+            </trans-unit>
+            <trans-unit id="7d789af3b0e986bdbd523702db918fc9">
+                <source>Add a member to this team</source>
             </trans-unit>
             <trans-unit id="31151f794e5089240a74c217254bac05">
                 <source>Members of %team</source>
-            </trans-unit>
-            <trans-unit id="6e7bd015dfe046ea81626911578d7583">
-                <source>This team has no members</source>
             </trans-unit>
         </body>
     </file>
@@ -2886,6 +2713,9 @@
             <trans-unit id="57f16ad343b8987d929673931eeedd02">
                 <source>Confirm e-mail</source>
             </trans-unit>
+            <trans-unit id="0557fa923dcee4d0f86b1409f5c2167f">
+                <source>Back</source>
+            </trans-unit>
             <trans-unit id="0ba7583639a274c434bbe6ef797115a4">
                 <source>Register</source>
             </trans-unit>
@@ -2897,59 +2727,6 @@
             </trans-unit>
             <trans-unit id="a0bfb8e59e6c13fc8d990781f77694fe">
                 <source>Continue</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/main/templates/_openidbuttons.inc.php">
-        <body>
-            <trans-unit id="b6d4223e60986fa4c9af77ee5f7149c5">
-                <source>Sign in</source>
-            </trans-unit>
-            <trans-unit id="4b98ef8df42520890e270cd1fc6cfa87">
-                <source>Regular signin</source>
-            </trans-unit>
-            <trans-unit id="77fe45ffe40b725b8a0dab524f48b144">
-                <source>Enter your OpenID</source>
-            </trans-unit>
-            <trans-unit id="108848f67410f2f67ca167724dfeb41d">
-                <source>Enter your Wordpress.com username</source>
-            </trans-unit>
-            <trans-unit id="67c5ff512143d3998cd3142e22a2f492">
-                <source>Your Launchpad username</source>
-            </trans-unit>
-            <trans-unit id="bfe84b36de7781a46eb41400e3929960">
-                <source>Enter your Livejournal username</source>
-            </trans-unit>
-            <trans-unit id="7469cc5a180cbe10bd0530f19d0b580b">
-                <source>Enter your AOL screenname</source>
-            </trans-unit>
-            <trans-unit id="e2d98c759a4d362e98f2825884beed26">
-                <source>Enter your Flickr username</source>
-            </trans-unit>
-            <trans-unit id="b0c1cab10b0cbd033952d5309dc60a18">
-                <source>Your Technorati username</source>
-            </trans-unit>
-            <trans-unit id="695483be3c88e171d1aa093f5164419a">
-                <source>Your Blogger account</source>
-            </trans-unit>
-            <trans-unit id="8a7e825eb7183cb9146eda34ed4a2402">
-                <source>Your Verisign username</source>
-            </trans-unit>
-            <trans-unit id="a14e8b2b94ed7f6d17c232c9b20a197b">
-                <source>Your Vidoop username</source>
-            </trans-unit>
-            <trans-unit id="459a8e6dd31aa3245c3e1589c36b7df7">
-                <source>Your ClaimID username</source>
-            </trans-unit>
-            <trans-unit id="514388fc6247cb5aacf640d805b45619">
-                <source>Enter your ClickPass username</source>
-            </trans-unit>
-            <trans-unit id="696cc38090de8806e9785dda192409dc">
-                <source>Enter your Google Profile username</source>
-            </trans-unit>
-            <trans-unit id="8418d0391c11badd8ebf35c849e873a8">
-                <source>Log in with %openid_provider_name</source>
             </trans-unit>
         </body>
     </file>
@@ -2967,6 +2744,28 @@
             </trans-unit>
             <trans-unit id="35745938301986596fdb2d8bea1aa064">
                 <source>Do you really want to remove this item from the menu?</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_replycomment.inc.php">
+        <body>
+            <trans-unit id="65eda3eaf5185c45ebe2b86d971ead7b">
+                <source>Enter your reply here...</source>
+            </trans-unit>
+            <trans-unit id="ac5aa89de7f9ac9629d77ffcae09ac0c">
+                <source>Post reply</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_projectlist.inc.php">
+        <body>
+            <trans-unit id="c08ae6ce20c900f23c527e9939454065">
+                <source>Active projects</source>
+            </trans-unit>
+            <trans-unit id="3a8049ca4ad0ca3e6b63006f4385900a">
+                <source>Archived projects</source>
             </trans-unit>
         </body>
     </file>
@@ -3234,6 +3033,14 @@
         </body>
     </file>
 
+    <file source-language="en" datatype="php" original="core/modules/main/templates/http400.html.php">
+        <body>
+            <trans-unit id="07892bf93f0e2c6ee4a5c8098de1e5f8">
+                <source>400 - Bad Request</source>
+            </trans-unit>
+        </body>
+    </file>
+
     <file source-language="en" datatype="php" original="core/modules/main/templates/_relateissue.inc.php">
         <body>
             <trans-unit id="14f5e9e183cb7dddcab5280520f8c803">
@@ -3242,12 +3049,6 @@
             <trans-unit id="cd3e5ef74fd31de27a6176cdf26453e5">
                 <source>Please enter some details to search for, and then select the matching issues to relate them</source>
             </trans-unit>
-            <trans-unit id="a12c9860d2d658970773c63b657c0075">
-                <source>%find or %cancel</source>
-            </trans-unit>
-            <trans-unit id="59a6101b8c4a733b204dbf5790056fa2">
-                <source>Cancel and close this pop-up</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -3255,14 +3056,6 @@
         <body>
             <trans-unit id="5de89bc87eff10ed35200ee0b090bdde">
                 <source>This issue does not have any duplicates</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/main/templates/_reportissuecontainer.inc.php">
-        <body>
-            <trans-unit id="c0527b647719760977a5471244f239f5">
-                <source>Close this popup</source>
             </trans-unit>
         </body>
     </file>
@@ -3569,14 +3362,6 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/main/templates/_openid.inc.php">
-        <body>
-            <trans-unit id="a93190d591c4376d0c87109c2d9675ac">
-                <source>Add external login</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="core/modules/main/templates/_confirmusername.inc.php">
         <body>
             <trans-unit id="d9c38a1d43bd5c3251aed1d622c5b49f">
@@ -3587,9 +3372,6 @@
             </trans-unit>
             <trans-unit id="423adc960686f4d72fcc2e1ea56d3a7c">
                 <source>You cannot change the username after you have picked it. Please confirm that you want to use the following username: %username</source>
-            </trans-unit>
-            <trans-unit id="91f92c4ac94e96ae5c01f3bc0ef59fce">
-                <source>%yes or %no</source>
             </trans-unit>
         </body>
     </file>
@@ -3614,20 +3396,11 @@
             <trans-unit id="8cf3e504e01b6f5f9ebc4755332cbe55">
                 <source>New password (repeat it)</source>
             </trans-unit>
-            <trans-unit id="dd4f27ab4bb1718a7acdf1286e51c277">
-                <source>%change_password or %cancel</source>
-            </trans-unit>
             <trans-unit id="e6c83d22a26107dcfa22b205002923ba">
                 <source>Picking a username</source>
             </trans-unit>
             <trans-unit id="33bcaa6b9aa4e9cdf16e82dea2669703">
                 <source>Since this account was created via an OpenID login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your OpenID login, so this is only if you want to pick a username for your account.</source>
-            </trans-unit>
-            <trans-unit id="73f33761a7adc3d442230348b3d6ea81">
-                <source>Click "%check_availability" to see if your desired username is available.</source>
-            </trans-unit>
-            <trans-unit id="42c2114783dee70f46b0c9aeb697a4c6">
-                <source>Check availability</source>
             </trans-unit>
             <trans-unit id="141a7ce2564f55b8fd441169829a262d">
                 <source>Type desired username</source>
@@ -3635,8 +3408,11 @@
             <trans-unit id="1a06f92dc758f854ff14ba93c5402795">
                 <source>This username is not available</source>
             </trans-unit>
-            <trans-unit id="87f60d1f694013b9047d4ce657b50a4c">
-                <source>%check_availability or %cancel</source>
+            <trans-unit id="73f33761a7adc3d442230348b3d6ea81">
+                <source>Click "%check_availability" to see if your desired username is available.</source>
+            </trans-unit>
+            <trans-unit id="42c2114783dee70f46b0c9aeb697a4c6">
+                <source>Check availability</source>
             </trans-unit>
             <trans-unit id="95ee3e05b6ed05bfa7886732a8553e4b">
                 <source>Add application-specific password</source>
@@ -3649,9 +3425,6 @@
             </trans-unit>
             <trans-unit id="1cb3019611bdb3aaac5ad567d3772b4f">
                 <source>Add application password</source>
-            </trans-unit>
-            <trans-unit id="f5b0e5815c24779d026c41ef11ecc727">
-                <source>%add_application_password or %cancel</source>
             </trans-unit>
             <trans-unit id="4ef900436f646822c7c94501697b8d6f">
                 <source>Application password generated</source>
@@ -3920,45 +3693,6 @@
             <trans-unit id="06e5b21be33f0e13fe9d3a98b447a2c6">
                 <source>never used</source>
             </trans-unit>
-            <trans-unit id="4a618914421a843ddb2b567bc182eb01">
-                <source>Linked OpenID accounts</source>
-            </trans-unit>
-            <trans-unit id="fcd0c09d8931dbd2713cf69ecfdb19d2">
-                <source>Link an OpenID account</source>
-            </trans-unit>
-            <trans-unit id="a92446fa8abcc7f33bf14c87ce2e79da">
-                <source>Via %openid you can log in to The Bug Genie by authenticating via Google, Wordpress and a lot of other websites. This means you don't have to register an account specifically for The Bug Genie, but authenticate with your existing Google, Wordpress, etc. user account instead. The Bug Genie will not receive or store your external usernames or passwords.</source>
-            </trans-unit>
-            <trans-unit id="58ccabd46bcfb64fd4f85b834a438383">
-                <source>You have not linked your account with any external authentication providers.</source>
-            </trans-unit>
-            <trans-unit id="474a406454091e8ee72c2e76350e97d9">
-                <source>Remove this account link?</source>
-            </trans-unit>
-            <trans-unit id="8ae95766d1d307b32ae05070cc72c419">
-                <source>Do you really want to remove the link to this external account?</source>
-            </trans-unit>
-            <trans-unit id="84ee07b77963fde5ddc025e71ce7c0e9">
-                <source>By doing this, it will not be possible to log into this account via this authentication provider</source>
-            </trans-unit>
-            <trans-unit id="0222b067afa0b450bf5a868f5bf83dfb">
-                <source>Google account</source>
-            </trans-unit>
-            <trans-unit id="ae28ee2be50ff087c3de397d1f3928a0">
-                <source>Yahoo account</source>
-            </trans-unit>
-            <trans-unit id="f7fb68753bf7e97aa2adf6affe33c8e8">
-                <source>Blogger (google) account</source>
-            </trans-unit>
-            <trans-unit id="66a3a9de0f242aabdf37bb14da1e9a3e">
-                <source>Wordpress account</source>
-            </trans-unit>
-            <trans-unit id="7417cb8c96dfa18b715c1a4c25c81873">
-                <source>Launchpad account</source>
-            </trans-unit>
-            <trans-unit id="3361351b3e0cef6487ad758175553fa7">
-                <source>Other OpenID provider</source>
-            </trans-unit>
             <trans-unit id="baab006b26b7dfe77376fa77643f1fda">
                 <source>Pending memberships</source>
             </trans-unit>
@@ -3988,6 +3722,34 @@
             </trans-unit>
             <trans-unit id="03c5c9ae93a006061dec8b3b087dd5a9">
                 <source>Someone is already using this identity. Check to see if you have already added this account.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_commentwrapper.inc.php">
+        <body>
+            <trans-unit id="a98fa4b5ff63e9c7ab823248199aaa55">
+                <source>Reply ...</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_todo.inc.php">
+        <body>
+            <trans-unit id="6ebffd74642d4375dc7e3ff44765335b">
+                <source>Click to mark todo item as not done</source>
+            </trans-unit>
+            <trans-unit id="3b62c53ce2e9dac98214364750600fd3">
+                <source>Click to mark todo item as done</source>
+            </trans-unit>
+            <trans-unit id="67e2d50fefd5f56a85aa86394081eec0">
+                <source>Do you really want to delete this todo?</source>
+            </trans-unit>
+            <trans-unit id="96ca5dd38212c33d8cca94f9a7bce901">
+                <source>Please confirm that you want to delete this todo.</source>
+            </trans-unit>
+            <trans-unit id="cd389fa59d6c858ff9466532dbe1d58c">
+                <source>from comment %comment_number by %user</source>
             </trans-unit>
         </body>
     </file>
@@ -4061,25 +3823,19 @@
             <trans-unit id="e5473b160ec2e9ab503a4b16a3f8f1ba">
                 <source>Time logged</source>
             </trans-unit>
-            <trans-unit id="7dce122004969d56ae2e0245cb754d35">
-                <source>Edit</source>
-            </trans-unit>
             <trans-unit id="b6f0e8cece09a3c00711d2371debdfba">
                 <source>Do you really want to remove this time entry?</source>
             </trans-unit>
             <trans-unit id="c887e9eea005fc7ce90c6137a315b0bd">
                 <source>Removing this entry will change the number of points, minutes, hours, days, weeks or months spent on this issue.</source>
             </trans-unit>
-            <trans-unit id="1063e38cb53d94d386f21227fcd84717">
-                <source>Remove</source>
-            </trans-unit>
         </body>
     </file>
 
     <file source-language="en" datatype="php" original="core/modules/main/templates/_dashboardviewloggedactions.inc.php">
         <body>
-            <trans-unit id="63052a5126d3c7f4b4cad0f5dbc314e2">
-                <source>You haven't done anything recently</source>
+            <trans-unit id="968a12bb4e3e7cf91bc668232a23ad92">
+                <source>Changes to issues, commits and other actions show up here</source>
             </trans-unit>
         </body>
     </file>
@@ -4094,6 +3850,14 @@
             </trans-unit>
             <trans-unit id="2c431f79c65413ecc043b95d637debdb">
                 <source>What's the issue?</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_hideableInfoBox.inc.php">
+        <body>
+            <trans-unit id="8a4279bb76dc806240c7bc87a4e0ad89">
+                <source>Updating, please wait ...</source>
             </trans-unit>
         </body>
     </file>
@@ -4125,17 +3889,11 @@
             <trans-unit id="433d8d0f133444655d3315ae9d14fd29">
                 <source>...Select a view...</source>
             </trans-unit>
-            <trans-unit id="fe7597e140f1cda3c7a35299f76deb3c">
-                <source>Add a view to dashboard</source>
-            </trans-unit>
             <trans-unit id="a5713992e19a5e2216053ccda4e8a53c">
                 <source>When you're happy, save your changes</source>
             </trans-unit>
             <trans-unit id="c4ad1cdcf8c30092fc6df6969e375a5d">
                 <source>Save dashboard</source>
-            </trans-unit>
-            <trans-unit id="e9e0a451292c8fa5ad3b5f884fe9904a">
-                <source>Close and reload</source>
             </trans-unit>
         </body>
     </file>
@@ -4182,12 +3940,6 @@
             <trans-unit id="fd9ce4cc0913e7c89e519a01ab41e2b2">
                 <source>Access to this comment is restricted</source>
             </trans-unit>
-            <trans-unit id="75997ed27bc4a4d7127ceb40f7f3fcc9">
-                <source>%comment_date, in reply to comment %replied_comment_number</source>
-            </trans-unit>
-            <trans-unit id="25d8df6e580905091a0d5ef5b9e05bf0">
-                <source>Reply</source>
-            </trans-unit>
             <trans-unit id="efe6f2da2ec26d457c5a322c614594c9">
                 <source>Do you really want to delete this comment?</source>
             </trans-unit>
@@ -4196,24 +3948,6 @@
             </trans-unit>
             <trans-unit id="82753ede827aecf54f0f72256cff0fa7">
                 <source>Changes: %list_of_changes</source>
-            </trans-unit>
-            <trans-unit id="c0abdee0cff2fb55fff205198f539fc5">
-                <source>Edit comment %comment_number</source>
-            </trans-unit>
-            <trans-unit id="3347cfee8e372aa6e58ff62cadc80e2a">
-                <source>%save_changes or %cancel</source>
-            </trans-unit>
-            <trans-unit id="c09709c4e8ffdd41abfccdbd74cb68c4">
-                <source>Reply to comment %comment_number</source>
-            </trans-unit>
-            <trans-unit id="c31236c3cf98964fdca9a5aaa3c02066">
-                <source>%user wrote:</source>
-            </trans-unit>
-            <trans-unit id="f80030f68052017f51331c97450620ea">
-                <source>%post_reply or %cancel</source>
-            </trans-unit>
-            <trans-unit id="ac5aa89de7f9ac9629d77ffcae09ac0c">
-                <source>Post reply</source>
             </trans-unit>
         </body>
     </file>
@@ -4234,13 +3968,24 @@
         </body>
     </file>
 
+    <file source-language="en" datatype="php" original="core/modules/main/templates/_profilebuttons.inc.php">
+        <body>
+            <trans-unit id="b5dc6281e49709fbf0896e6b05d61e6d">
+                <source>Since this account was created via an external login, you will have to pick a username to be able to log in with a username or password. You can continue to use your account with your external login, so this is only if you want to pick a username for your account.</source>
+            </trans-unit>
+            <trans-unit id="87f60d1f694013b9047d4ce657b50a4c">
+                <source>%check_availability or %cancel</source>
+            </trans-unit>
+        </body>
+    </file>
+
     <file source-language="en" datatype="php" original="core/modules/main/controllers/Main.php">
         <body>
-            <trans-unit id="5f7379e6e92235e70969f5fdd3ae8997">
-                <source>There are no more issues in that direction.</source>
-            </trans-unit>
             <trans-unit id="edbc1803e050b2fabfb855de396e5ed5">
                 <source>Cannot find the issue specified</source>
+            </trans-unit>
+            <trans-unit id="3f4c8b50f94585ef5b7d7357f262dc8e">
+                <source>You don't have permission to move this issue</source>
             </trans-unit>
             <trans-unit id="02d2ee22aff897ea62c784072eaa0e23">
                 <source>Cannot find the project specified</source>
@@ -4254,26 +3999,23 @@
             <trans-unit id="765766c15094d0b87c0f01fe54404505">
                 <source>The module could not be downloaded</source>
             </trans-unit>
+            <trans-unit id="8c0d7db2d7170258e83a1fa347e2e31d">
+                <source>Error extracting module zip</source>
+            </trans-unit>
+            <trans-unit id="f282712b2b1476be5c4b8860df92a26c">
+                <source>Could not extract the module into the destination folder. Please check permissions.</source>
+            </trans-unit>
             <trans-unit id="4d25335cc7eefe62c0e7a56eb92359d5">
                 <source>An error occured when trying to install the module</source>
+            </trans-unit>
+            <trans-unit id="ff929832244d0bc539ab229e5e01b234">
+                <source>This client does not exist</source>
             </trans-unit>
             <trans-unit id="2cd19d4eb842e2615100aec06f25b2ba">
                 <source>This team does not exist</source>
             </trans-unit>
             <trans-unit id="46056563483123f186ffbe0ee10d9b55">
                 <source>Incorrect password</source>
-            </trans-unit>
-            <trans-unit id="5eaa634f67fd7f6311f82f2abea86fcf">
-                <source>OpenID authentication cancelled</source>
-            </trans-unit>
-            <trans-unit id="f291fcd4469e74478f2c37d9971c4f8f">
-                <source>Didn't recognize this OpenID. Please log in using your username and password, associate it with your user account in your account settings and try again.</source>
-            </trans-unit>
-            <trans-unit id="9f1c0a0d16ddcbc4751c1280ad348720">
-                <source>Could not validate against the OpenID provider</source>
-            </trans-unit>
-            <trans-unit id="eacad7feb28f621bb45bcfeb9d15e47a">
-                <source>Could not validate against the OpenID provider: %message</source>
             </trans-unit>
             <trans-unit id="22d5a067551ca8ff57ed304940efdf7e">
                 <source>Invalid login details</source>
@@ -4488,14 +4230,17 @@
             <trans-unit id="ee20400af065fab25d2292f0822389f0">
                 <source>Could not show the requested popup</source>
             </trans-unit>
-            <trans-unit id="a5c0d1e3f196b1260cc6cd58cd96f70e">
-                <source>Could not find this issue</source>
-            </trans-unit>
             <trans-unit id="3a936b2f5bd731b3a8db15703be7ac31">
                 <source>Please provide an issue number</source>
             </trans-unit>
-            <trans-unit id="a09ae268c9ccd4e082c5afa7f7686baa">
-                <source>Please enter something to search for (3 characters or more) %searchfor</source>
+            <trans-unit id="145bb4fd1808d746c112b9b92815d4df">
+                <source>Please provide search text</source>
+            </trans-unit>
+            <trans-unit id="161b4099bdadaaf991ec74835be8f329">
+                <source>Exact match</source>
+            </trans-unit>
+            <trans-unit id="a5c0d1e3f196b1260cc6cd58cd96f70e">
+                <source>Could not find this issue</source>
             </trans-unit>
             <trans-unit id="1aa3290d96f43bc69eee0131f018f53d">
                 <source>Please provide a valid issue number and a valid related issue number</source>
@@ -4587,12 +4332,6 @@
             <trans-unit id="74a11e4c6c502c9a5e22842088b3ef94">
                 <source>Could not pick the username "%username"</source>
             </trans-unit>
-            <trans-unit id="8dc4dbb10354158d988e5a2b161eeaf6">
-                <source>The OpenID identity has been removed from this user account</source>
-            </trans-unit>
-            <trans-unit id="0d35925895ad54e3c5e005c342fb1ff1">
-                <source>Could not remove this OpenID account</source>
-            </trans-unit>
             <trans-unit id="d6f5bffb207272b9ba407562b1c2e56b">
                 <source>Could not show permissions list</source>
             </trans-unit>
@@ -4605,6 +4344,321 @@
             <trans-unit id="0b0bb4cf1efaa6c3d5212f52e4af2190">
                 <source>Milestone saved</source>
             </trans-unit>
+            <trans-unit id="b0533ac2517bfe1520e3316849fcd4bb">
+                <source>Invalid "comment_id" parameter</source>
+            </trans-unit>
+            <trans-unit id="39f433c433294e3cd989bbfa516af2b6">
+                <source>Invalid "todo" parameter</source>
+            </trans-unit>
+            <trans-unit id="15dcb123d2a41baac0e73235d1a4e184">
+                <source>Invalid "mark" parameter</source>
+            </trans-unit>
+            <trans-unit id="5954c65ff20785bf73e4822b81a88f93">
+                <source>Invalid "todo_body" parameter</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_viewissue_commits.inc.php">
+        <body>
+            <trans-unit id="a6fda05ffbf14489419e9c3766103d79">
+                <source>There are no code checkins for this issue</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_projectconfig_tab.inc.php">
+        <body>
+            <trans-unit id="f7734f119b7530ebd9dad6eb3ee400ec">
+                <source>TBG Live Link</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_diff_summary.inc.php">
+        <body>
+            <trans-unit id="b3122d65c11c199a9225141c1f15827c">
+                <source>%num line(s) removed</source>
+            </trans-unit>
+            <trans-unit id="2ef012947b6d6ef2b9a113efabda4e34">
+                <source>%num line(s) added</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_notification_view_text.inc.php">
+        <body>
+            <trans-unit id="dbd18caed4e4cae3606abfec03efc046">
+                <source>%user_name mentioned you in commit %rev</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_commitrow.inc.php">
+        <body>
+            <trans-unit id="4515736d8246aad4e32489f9a4649cfa">
+                <source>Committed by %user %time</source>
+            </trans-unit>
+            <trans-unit id="3a642e597f6855d28be210351d559bf0">
+                <source>This commit has been imported and is missing some information</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_setupstep2.inc.php">
+        <body>
+            <trans-unit id="bc52abcfc7dacb3d00c4e991e051ce55">
+                <source>To continue, enter a github repository name, github url or git clone url below.</source>
+            </trans-unit>
+            <trans-unit id="a98dbeb227d053dea370d15ba98d7aea">
+                <source>Enter a github url, project name or clone url here</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_projectheaderbutton.inc.php">
+        <body>
+            <trans-unit id="a98df7359ac52361af81fa897d556a6a">
+                <source>Source code</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_commitbackdrop.inc.php">
+        <body>
+            <trans-unit id="f01a7e06c748e04f696f65489836fad4">
+                <source>Show commit details</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/projectcommit.html.php">
+        <body>
+            <trans-unit id="299ed74e144e014a9c2084dd995a74ea">
+                <source>"%project_name" commit %commit_sha</source>
+            </trans-unit>
+            <trans-unit id="cfd0756cb223f8c7587d4e3a6b272c0d">
+                <source>Project commits</source>
+            </trans-unit>
+            <trans-unit id="89f57144a65bda93f8d55f27cb60da4c">
+                <source>Commit details</source>
+            </trans-unit>
+            <trans-unit id="00387ab60f40bd6cd60196f393dc5349">
+                <source>Commit id</source>
+            </trans-unit>
+            <trans-unit id="bb59d3200d796dfe19c6b7b029fa27f2">
+                <source>Committed by</source>
+            </trans-unit>
+            <trans-unit id="6b024e5abe954a05c21d41eedd089666">
+                <source>Committed at</source>
+            </trans-unit>
+            <trans-unit id="a08b1d7856539f472b3a040aa6ddf553">
+                <source>Previous commit</source>
+            </trans-unit>
+            <trans-unit id="c3c4a5fa0cedf9cf66e1f3277e50fb01">
+                <source>Branch(es)</source>
+            </trans-unit>
+            <trans-unit id="d79a3f3f89fd1524fd897ebfcab0e8f1">
+                <source>Affected issues (%count)</source>
+            </trans-unit>
+            <trans-unit id="713e5b0e72111af5e923edaea082dcd1">
+                <source>No issues affected by this commit</source>
+            </trans-unit>
+            <trans-unit id="23e207d645b9e09fc234fb0e239c2200">
+                <source>Files committed (%count)</source>
+            </trans-unit>
+            <trans-unit id="d0aac4ce1ac97df2b4c6e456bbe3a061">
+                <source>Expand all</source>
+            </trans-unit>
+            <trans-unit id="ab3cc3868af33a9eb61a93bd0adec2a0">
+                <source>Collapse all</source>
+            </trans-unit>
+            <trans-unit id="ec64f080ee768afb947eae3618f279f1">
+                <source>This repository is still being imported and may not be fully up-to-date yet.</source>
+            </trans-unit>
+            <trans-unit id="2a81ed7bf2310ff25e44bb312b5ade52">
+                <source>This commit was imported and does not contain all information. Press the "%update_commit"-button to load details.</source>
+            </trans-unit>
+            <trans-unit id="3cec524987246f862296722d705d4d9f">
+                <source>Update commit</source>
+            </trans-unit>
+            <trans-unit id="481d4b493ba549724040b100425e1997">
+                <source>This commit has %num_additions_and_num_deletions across %num_files</source>
+            </trans-unit>
+            <trans-unit id="555b469360476ba22159b14419a94835">
+                <source>%num_a addition(s) and %num_d deletion(s)</source>
+            </trans-unit>
+            <trans-unit id="784a59bcc9286bc552b9d1d3d69044ae">
+                <source>%num file(s)</source>
+            </trans-unit>
+            <trans-unit id="56a578aeca10c690f5d3ac8b02f39d05">
+                <source>This commit has %num_additions across %num_files</source>
+            </trans-unit>
+            <trans-unit id="68b075a4a2211d2bf7935ade97b68eac">
+                <source>%num addition(s)</source>
+            </trans-unit>
+            <trans-unit id="9e0e82aedcd76aea53a29643e32760d6">
+                <source>This commit has %num_deletions across %num_files</source>
+            </trans-unit>
+            <trans-unit id="6be007db99f7495d30d30830032a585f">
+                <source>%num deletion(s)</source>
+            </trans-unit>
+            <trans-unit id="44290faa8bf16500e7d1ca5459bd6c67">
+                <source>This file was deleted in this commit</source>
+            </trans-unit>
+            <trans-unit id="71856c6c4edc475827d6440db8d954d1">
+                <source>Added in this commit</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_viewissue_tab.inc.php">
+        <body>
+            <trans-unit id="51bab8e2b3a781f0dd0034bdec6b45bd">
+                <source>Code checkins (%count)</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_diff.inc.php">
+        <body>
+            <trans-unit id="218d4e76611dd1f113153d049cb391ce">
+                <source>This diff is too long to be shown here</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_accountsettings.inc.php">
+        <body>
+            <trans-unit id="0785467c5d013432fe22c79fd305eae4">
+                <source>Configured services</source>
+            </trans-unit>
+            <trans-unit id="b05f7e2ee58951665b2986ce64396008">
+                <source>Link your external services (such as GitHub, GitLab, etc) from this page to enable linking projects via %tbg_live_link</source>
+            </trans-unit>
+            <trans-unit id="8c9e220e42fbf5ec72e59e9c0c2ab604">
+                <source>%tbg_live_link requires integration plugins. Download the integration plugins from %configure_modules or visit %thebuggenie_com to get started.</source>
+            </trans-unit>
+            <trans-unit id="d2cbd2f4b0e12724590336319188b507">
+                <source>Configuration center</source>
+            </trans-unit>
+            <trans-unit id="bf17ac149e2e7a530c677e9bd51d3fd2">
+                <source>Modules</source>
+            </trans-unit>
+            <trans-unit id="7b277018e43d41bc445731092b91547d">
+                <source>Not connected</source>
+            </trans-unit>
+            <trans-unit id="2ec0d16e4ca169baedb9b2d50ec5c6d7">
+                <source>Connected</source>
+            </trans-unit>
+            <trans-unit id="49ab28040dfa07f53544970c6d147e1e">
+                <source>Connect</source>
+            </trans-unit>
+            <trans-unit id="42ae25231906c83927831e0ef7c317ac">
+                <source>Disconnect</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_viewissue_activities_tab.inc.php">
+        <body>
+            <trans-unit id="75e786d55b32d8c931d13cb80a878845">
+                <source>Commits %count</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/projectcommits.html.php">
+        <body>
+            <trans-unit id="66148e95789bf59beea3e056a496c97b">
+                <source>"%project_name" commits</source>
+            </trans-unit>
+            <trans-unit id="649fdfc207df25011ea7cb22bbcdb2c5">
+                <source>Branch filters</source>
+            </trans-unit>
+            <trans-unit id="d19d0da9579ea26bb8e75aa24fb476f4">
+                <source>Last commit: %date</source>
+            </trans-unit>
+            <trans-unit id="c62aaa93a21121edf22a73248515721b">
+                <source>Choose branch on the left to filter commits for this project</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_projectcommitsbox.inc.php">
+        <body>
+            <trans-unit id="146ffe2fd9fa5bec3b63b52543793ec7">
+                <source>Show more</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_configureconnector.inc.php">
+        <body>
+            <trans-unit id="308e9ac74df437ab9f416b94983270ba">
+                <source>Github authentication details</source>
+            </trans-unit>
+            <trans-unit id="b9beafece3ec33742609541c57309a4d">
+                <source>Specify your Github login details here to enable github integration with your account.</source>
+            </trans-unit>
+            <trans-unit id="dc0ea1f1af380a1b47321ff74f881084">
+                <source>Github token</source>
+            </trans-unit>
+            <trans-unit id="4186b0859da14e6dc7066420d3ad2043">
+                <source>This is required to access private repositories, and features such as TBG Link.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/templates/_projectconfig_template.inc.php">
+        <body>
+            <trans-unit id="426789fe831965e23083048fc17bdf72">
+                <source>Import and/or link an existing project from %github, %gitlab, %bitbucket and more with %tbg_live_link.</source>
+            </trans-unit>
+            <trans-unit id="ae785957436b13100906dc6628f14597">
+                <source>Importing from %project_name</source>
+            </trans-unit>
+            <trans-unit id="aeb61c052aba46b418a930304302cf46">
+                <source>Linked to %project_name</source>
+            </trans-unit>
+            <trans-unit id="1063e38cb53d94d386f21227fcd84717">
+                <source>Remove</source>
+            </trans-unit>
+            <trans-unit id="fcfe9f31c6348380df4a01e3c2e89414">
+                <source>Linking / importing %project_name</source>
+            </trans-unit>
+            <trans-unit id="9e49c687d6726c6b14493be6b9f94b25">
+                <source>Only import the project</source>
+            </trans-unit>
+            <trans-unit id="8600b8f45c15c162aabba163da49aa23">
+                <source>Import project from GitHub and update issues when commits are pushed</source>
+            </trans-unit>
+            <trans-unit id="627634b853a3ae1598dd56061ca1835a">
+                <source>Import / link</source>
+            </trans-unit>
+            <trans-unit id="8cc62546efd313b0991a648edd91add5">
+                <source>Enter project details</source>
+            </trans-unit>
+            <trans-unit id="09e3f997e4ccf6146d7195a0274853d2">
+                <source>%import_with_livelink or create a project manually</source>
+            </trans-unit>
+            <trans-unit id="90bc479d3d3c86c056f75bbb6fe6a0ff">
+                <source>Remove TBG LiveLink?</source>
+            </trans-unit>
+            <trans-unit id="f0ca16931e2d43c4ee1893051d53a358">
+                <source>Are you sure you want to remove the LiveLink integration from this project? No issues or project details will be removed or affected by this, but you will no longer receive updates from the external repository.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/livelink/Livelink.php">
+        <body>
+            <trans-unit id="7b3e99499b99f8c89ac261493ee5c49c">
+                <source>Commits</source>
+            </trans-unit>
+            <trans-unit id="edeed74987acff8324d82d5ec974b8f9">
+                <source>This issue has been updated with the latest changes from the code repository.%commit_msg</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -4616,30 +4670,16 @@
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/project/templates/listissues.json.php">
-        <body>
-            <trans-unit id="580faae20eb12bf1b3987afacfbdbeb4">
-                <source>Noone</source>
-            </trans-unit>
-        </body>
-    </file>
-
     <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectrecentactivities.inc.php">
         <body>
+            <trans-unit id="d32457b8f130f075cb9e45524f1ada94">
+                <source>As soon as something important happens it will appear here.</source>
+            </trans-unit>
             <trans-unit id="efd6cfc1ed259c3f1188bb7bd18e39cf">
                 <source>Show complete timeline</source>
             </trans-unit>
-            <trans-unit id="146ffe2fd9fa5bec3b63b52543793ec7">
-                <source>Show more</source>
-            </trans-unit>
             <trans-unit id="01945c4f48c451695bef8be5a49bb7d8">
                 <source>Show timeline for important events</source>
-            </trans-unit>
-            <trans-unit id="bd6e09fc19537c774664a42febbb7f87">
-                <source>No recent activity registered for this project.</source>
-            </trans-unit>
-            <trans-unit id="d32457b8f130f075cb9e45524f1ada94">
-                <source>As soon as something important happens it will appear here.</source>
             </trans-unit>
         </body>
     </file>
@@ -4765,8 +4805,11 @@
 
     <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectupcoming.inc.php">
         <body>
-            <trans-unit id="75726743d6f1fe9b9f165735656677d5">
-                <source>This project has no upcoming milestones.</source>
+            <trans-unit id="3871157d310bf8514fb56c3fcef62837">
+                <source>Upcoming milestones appear here</source>
+            </trans-unit>
+            <trans-unit id="173c32e887ea3ee64a4830445057290f">
+                <source>Open project roadmap</source>
             </trans-unit>
         </body>
     </file>
@@ -4804,6 +4847,9 @@
 
     <file source-language="en" datatype="php" original="core/modules/project/templates/_editionbox.inc.php">
         <body>
+            <trans-unit id="7dce122004969d56ae2e0245cb754d35">
+                <source>Edit</source>
+            </trans-unit>
             <trans-unit id="af618d8d9c38c120a268fce4722e8f55">
                 <source>Edit edition</source>
             </trans-unit>
@@ -4842,9 +4888,6 @@
             <trans-unit id="2959ce8aed67d6b6e6f5cefd601f1091">
                 <source>Open in new window</source>
             </trans-unit>
-            <trans-unit id="db166d9cca06b246e099e4526e261bc2">
-                <source>Edit user story</source>
-            </trans-unit>
             <trans-unit id="ca02c33de3178e4752118a7987f15c72">
                 <source>Add a task to this user story</source>
             </trans-unit>
@@ -4857,8 +4900,240 @@
         </body>
     </file>
 
+    <file source-language="en" datatype="php" original="core/modules/project/templates/viewissue.html.php">
+        <body>
+            <trans-unit id="d58fea6d874bac8d3aa81120a10a698c">
+                <source>Please wait while updating issue type</source>
+            </trans-unit>
+            <trans-unit id="44d45960263e6cb76af3c30aaf4fefba">
+                <source>Go to the previous open issue</source>
+            </trans-unit>
+            <trans-unit id="2d831963bf080de99a2b4af954cd8e45">
+                <source>Go to the previous issue (open or closed)</source>
+            </trans-unit>
+            <trans-unit id="00e52d949fc1f0e6bd81efd3111c338b">
+                <source>Please log in to bookmark issues</source>
+            </trans-unit>
+            <trans-unit id="dfd97c07a6a97362370072f8bc30c4c0">
+                <source>Click the star to toggle whether you want to be notified whenever this issue updates or changes</source>
+            </trans-unit>
+            <trans-unit id="ec043185fec714b2fcd5dd1bd8569f7b">
+                <source>If you have the proper permissions, you can manage issue subscribers via the "%more_actions" button to the right.</source>
+            </trans-unit>
+            <trans-unit id="284716247b12b363fd6b6a71bff0918e">
+                <source>More actions</source>
+            </trans-unit>
+            <trans-unit id="ba5b1ff0f3ccc7cd893ec62500d95442">
+                <source>%cancel or %save</source>
+            </trans-unit>
+            <trans-unit id="8c3560971347019d5f97199e943831f0">
+                <source>Votes</source>
+            </trans-unit>
+            <trans-unit id="4ca4e9a9ce6da16222b79034c2d28466">
+                <source>This is the user pain value for this issue</source>
+            </trans-unit>
+            <trans-unit id="430a230819a64ce04d5a9383fe883242">
+                <source>Go to the next issue (open or closed)</source>
+            </trans-unit>
+            <trans-unit id="27708ba47ccb92ac5c8d9539ca5f496d">
+                <source>Go to the next open issue</source>
+            </trans-unit>
+            <trans-unit id="1cbb2bce941e717960ad9147564fe259">
+                <source>Could not save your changes</source>
+            </trans-unit>
+            <trans-unit id="64f8199bc35f9873eaa8211e81f41ea9">
+                <source>This issue has been changed since you started editing it</source>
+            </trans-unit>
+            <trans-unit id="4623ffe0a44ba918a2b65142f01308f0">
+                <source>Data that has been changed is highlighted in red below. Undo your changes to see the updated information</source>
+            </trans-unit>
+            <trans-unit id="7ff980d8d1d9c3d5c12d67215b5ffd1c">
+                <source>Add comment and save changes</source>
+            </trans-unit>
+            <trans-unit id="a7048a7e7655e9810334bb088b49ee79">
+                <source>You have changed this issue, but haven't saved your changes yet. To save it, press the %save_changes button to the right</source>
+            </trans-unit>
+            <trans-unit id="802e7a17f9f1b69fd6dc81698b7c71d2">
+                <source>There was an error trying to move this issue to the next step in the workflow</source>
+            </trans-unit>
+            <trans-unit id="a051743d000f8ff94cf4e5d4ab1a886c">
+                <source>There was an error trying to save changes to this issue</source>
+            </trans-unit>
+            <trans-unit id="9f236e4dcd565769bb0dbd048de7d476">
+                <source>No workflow step matches this issue after changes are saved. Please either use the workflow action buttons, or make sure your changes are valid within the current project workflow for this issue type.</source>
+            </trans-unit>
+            <trans-unit id="0e5792624043c28776513b384295b8dc">
+                <source>Your changes have been saved</source>
+            </trans-unit>
+            <trans-unit id="e0aa021e21dddbd6d8cecec71e9cf564">
+                <source>OK</source>
+            </trans-unit>
+            <trans-unit id="5be338c3999c53a07ba4dbbd56f2733a">
+                <source>The file was attached to this issue</source>
+            </trans-unit>
+            <trans-unit id="fcb20a1ba64a9d7e284d8bbcfe5243dd">
+                <source>You have been working on this issue since %time</source>
+            </trans-unit>
+            <trans-unit id="4ae678ebc081b7c0c2afaada873802f1">
+                <source>%teamname has been working on this issue since %time</source>
+            </trans-unit>
+            <trans-unit id="dda14ffc781e97d3fec402148569a969">
+                <source>%user has been working on this issue since %time</source>
+            </trans-unit>
+            <trans-unit id="928f96078e29b3f047a7b4cac8c0d6a6">
+                <source>This issue is a duplicate of issue %link_to_duplicate_issue</source>
+            </trans-unit>
+            <trans-unit id="c5dbb6f3acf83903365beb7261ecdf1d">
+                <source>This issue has been closed with status "%status_name" and resolution "%resolution".</source>
+            </trans-unit>
+            <trans-unit id="30d17b8422515b4d85625e96e3b8def6">
+                <source>The project this issue belongs to has been archived, and so this issue is now read only</source>
+            </trans-unit>
+            <trans-unit id="2ef2cd61b19455279bee8ab5c61414e0">
+                <source>Click here to edit description</source>
+            </trans-unit>
+            <trans-unit id="3ef0a76e8b313b9c7a756a9dbcf0b5d4">
+                <source>Click here to edit reproduction steps</source>
+            </trans-unit>
+            <trans-unit id="7177ade500eee8e168ee36b3f27ba7f0">
+                <source>Steps to reproduce this issue</source>
+            </trans-unit>
+            <trans-unit id="73c0fd053848a90850359ac2c1d1a275">
+                <source>Create a todo</source>
+            </trans-unit>
+            <trans-unit id="bc97e12414b8ea00107c66aa552029ae">
+                <source>Todo</source>
+            </trans-unit>
+            <trans-unit id="968eaecf4993dfacc6d22982177bd0de">
+                <source>Create todo</source>
+            </trans-unit>
+            <trans-unit id="0b01f8447f497556129b6ece6879a38c">
+                <source>Comments %count</source>
+            </trans-unit>
+            <trans-unit id="16d2b386b2034b9488996466aaae0b57">
+                <source>History</source>
+            </trans-unit>
+            <trans-unit id="dae8ace18bdcbcc6ae5aece263e14fe8">
+                <source>Options</source>
+            </trans-unit>
+            <trans-unit id="229ec46731493cc42812bc834b51ffcd">
+                <source>Toggle system-generated comments</source>
+            </trans-unit>
+            <trans-unit id="56b73d40b8615281b30dc6b88d2b6726">
+                <source>Sort comments in opposite direction</source>
+            </trans-unit>
+            <trans-unit id="6726d20ec8e08625bf633e423d6b387e">
+                <source>This issue has been deleted</source>
+            </trans-unit>
+            <trans-unit id="a03ae702be865c1e785444fb4ce6fa4c">
+                <source>This message will disappear when you reload the page.</source>
+            </trans-unit>
+            <trans-unit id="1b0c43305ba4ad08acc48c49117de5b0">
+                <source>This issue can not be displayed</source>
+            </trans-unit>
+            <trans-unit id="2de189ace9a68c06bb3b2e65a95e80bf">
+                <source>This issue either does not exist, has been deleted or you do not have permission to view it.</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_editproject.inc.php">
+        <body>
+            <trans-unit id="5bd456a76d69c9c1760a867e054d3927">
+                <source>Quick edit project</source>
+            </trans-unit>
+            <trans-unit id="56b2a5f0e178a43f91b9f856d6a59887">
+                <source>Create new project</source>
+            </trans-unit>
+            <trans-unit id="9cdde52ce9ba783cd522835daae95b57">
+                <source>More settings</source>
+            </trans-unit>
+            <trans-unit id="fd35b76b0728427dcd9a4edf55a6bacd">
+                <source>Only showing basic project details. More settings available in the main project configuration.</source>
+            </trans-unit>
+            <trans-unit id="7adea0d9c77aabccd8bb67ae0a832d59">
+                <source>Project name</source>
+            </trans-unit>
+            <trans-unit id="68ee71ae11ea8cf5fde0cb57faa66ab5">
+                <source>Project key</source>
+            </trans-unit>
+            <trans-unit id="cf096d4d98cec39e335c07a8ef4a4085">
+                <source>This is a part of all urls referring to this project</source>
+            </trans-unit>
+            <trans-unit id="949e7ad478624eccbec424fb7d8bce5f">
+                <source>Project description</source>
+            </trans-unit>
+            <trans-unit id="6c39745600593a3bef01ae88dd8812fa">
+                <source>No description set</source>
+            </trans-unit>
+            <trans-unit id="fe7cb2fde65d60b41e9a40d50da085b4">
+                <source>Select type of project</source>
+            </trans-unit>
+            <trans-unit id="186f165f6478379a2a9707ddb5fb578d">
+                <source>Classic software project</source>
+            </trans-unit>
+            <trans-unit id="1bd8d6bb79108d2458717d52bbdade59">
+                <source>Classic project template without specific settings</source>
+            </trans-unit>
+            <trans-unit id="49440574edd5346695200882ac89cc9a">
+                <source>Distributed teams project</source>
+            </trans-unit>
+            <trans-unit id="d34487b3ef9489f816b91694789dcdac">
+                <source>For projects with multiple teams, often distributed across locations</source>
+            </trans-unit>
+            <trans-unit id="2aeb51528794dd2c8f13747a54bab2b0">
+                <source>Classic open source</source>
+            </trans-unit>
+            <trans-unit id="6338771a85c44f1f8c11bf446790c448">
+                <source>For medium/small open source projects without multiple teams</source>
+            </trans-unit>
+            <trans-unit id="0f28e57ba0a8e76622b4b42e869730c9">
+                <source>Agile software project</source>
+            </trans-unit>
+            <trans-unit id="578f3413e023cb4d83faaa54d0396d5a">
+                <source>For projects with an agile methodology like e.g. scrum or kanban</source>
+            </trans-unit>
+            <trans-unit id="006df27c6b9fc47ed5520feb1e9a984b">
+                <source>Helpdesk / support</source>
+            </trans-unit>
+            <trans-unit id="3a94a0d10bce23eb66d4e78c9621572a">
+                <source>For helpdesk or support projects without a traditional software development cycle</source>
+            </trans-unit>
+            <trans-unit id="0d92c4959775e9931c9eb7e740905218">
+                <source>Personal todo-list</source>
+            </trans-unit>
+            <trans-unit id="904b1e859c43d4309e6bf7174f468a7f">
+                <source>A project acting like a personal todo-list. No fuzz, no headache.</source>
+            </trans-unit>
+            <trans-unit id="24ddb05bf1ec0b345082157c04ade7c7">
+                <source>Select the type of project you are creating. The type of project decides initial workflows, issue types, settings and more. You can always configure this later.</source>
+            </trans-unit>
+            <trans-unit id="7b06ffffa4e4224e29333aabac20e5bb">
+                <source>Project permissions</source>
+            </trans-unit>
+            <trans-unit id="35673dbf6d4f4de39edd511988e5c6cd">
+                <source>Choose the initial set of permissions and roles to apply. Permissions can be configured afterwards.</source>
+            </trans-unit>
+            <trans-unit id="6d35985f59a5ae2ec8dbe7a2dff8643e">
+                <source>Set myself as project owner</source>
+            </trans-unit>
+            <trans-unit id="dd03f108c19876130e71d78ecfa99f2f">
+                <source>%name has the following role in this project: %list_of_roles</source>
+            </trans-unit>
+            <trans-unit id="a8f3f8c5db04d482b1e025e393dec845">
+                <source>When you are done, click "%save" to save your changes</source>
+            </trans-unit>
+            <trans-unit id="f356d3261ea272a4f91089ade9bdf6f4">
+                <source>When you are done, click "%create_project"</source>
+            </trans-unit>
+        </body>
+    </file>
+
     <file source-language="en" datatype="php" original="core/modules/project/templates/_projectworkflow_table.inc.php">
         <body>
+            <trans-unit id="e2c5eec73463fc657f23685b792c0d22">
+                <source>Change workflow</source>
+            </trans-unit>
             <trans-unit id="f9f050ac7d9125905ed00c893d029bb7">
                 <source>Issues in the workflow step on the left will have their workflow step changed to the one on the right. This will change the issue's status to the one assigned to the new step.</source>
             </trans-unit>
@@ -4867,9 +5142,6 @@
             </trans-unit>
             <trans-unit id="199a3d16ed77ef10c19caac97f39ad6a">
                 <source>New: %new_workflow_name</source>
-            </trans-unit>
-            <trans-unit id="cb41dab553f0f7c55470d443927cab18">
-                <source>Choose a different workflow</source>
             </trans-unit>
             <trans-unit id="23d6929c90af7a3483fd6cc45fe28031">
                 <source>When you are done, click "%update_workflow" to switch to the new workflow</source>
@@ -4904,6 +5176,9 @@
             </trans-unit>
             <trans-unit id="63aafcf96c05b918f982042aa4851305">
                 <source>All timeline items</source>
+            </trans-unit>
+            <trans-unit id="bd6e09fc19537c774664a42febbb7f87">
+                <source>No recent activity registered for this project.</source>
             </trans-unit>
         </body>
     </file>
@@ -5001,9 +5276,6 @@
             <trans-unit id="a4d3fe654de3e8a9b56b60a724b08ddd">
                 <source>This project has no subprojects</source>
             </trans-unit>
-            <trans-unit id="53698a006a8fe26534683313892155d9">
-                <source>View archived subprojects</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -5028,15 +5300,6 @@
         <body>
             <trans-unit id="8d9e87a43e3b6c8d815d6b2df674ffbd">
                 <source>Save project settings</source>
-            </trans-unit>
-            <trans-unit id="7adea0d9c77aabccd8bb67ae0a832d59">
-                <source>Project name</source>
-            </trans-unit>
-            <trans-unit id="68ee71ae11ea8cf5fde0cb57faa66ab5">
-                <source>Project key</source>
-            </trans-unit>
-            <trans-unit id="cf096d4d98cec39e335c07a8ef4a4085">
-                <source>This is a part of all urls referring to this project</source>
             </trans-unit>
             <trans-unit id="a30e13eb583ed2bfe175a3751913cc9a">
                 <source>Project icons</source>
@@ -5082,12 +5345,6 @@
             </trans-unit>
             <trans-unit id="6c52c55d299ffc9f50244e3cb0f795f0">
                 <source>about issue prefixes</source>
-            </trans-unit>
-            <trans-unit id="949e7ad478624eccbec424fb7d8bce5f">
-                <source>Project description</source>
-            </trans-unit>
-            <trans-unit id="6c39745600593a3bef01ae88dd8812fa">
-                <source>No description set</source>
             </trans-unit>
             <trans-unit id="72a31ac75c8bd8e90ec8898884b7d6d6">
                 <source>No homepage set</source>
@@ -5155,6 +5412,9 @@
             </trans-unit>
             <trans-unit id="c102fa963762cfdf6d4405aa16d751b4">
                 <source>Set owned by noone</source>
+            </trans-unit>
+            <trans-unit id="580faae20eb12bf1b3987afacfbdbeb4">
+                <source>Noone</source>
             </trans-unit>
             <trans-unit id="5b456b69887dbf5828f654a32b1dcdbd">
                 <source>Lead by</source>
@@ -5264,6 +5524,18 @@
             <trans-unit id="8ed62b181d1a863b355fd07f0b77c232">
                 <source>"%project_name" releases</source>
             </trans-unit>
+            <trans-unit id="c935de0fb638ccf74ac13eab9de909dc">
+                <source>Release selection</source>
+            </trans-unit>
+            <trans-unit id="15d6d9744c493525b365706d91d8e465">
+                <source>All active releases</source>
+            </trans-unit>
+            <trans-unit id="a241a004a2a03a89d85a96f5a0e62af3">
+                <source>Archived releases</source>
+            </trans-unit>
+            <trans-unit id="43b7ff4807bd8e0c30cc9c03db078fa0">
+                <source>Manage project releases</source>
+            </trans-unit>
             <trans-unit id="70c6c80bc54ff9bb96909c090a9f1979">
                 <source>Active project releases</source>
             </trans-unit>
@@ -5287,15 +5559,6 @@
             </trans-unit>
             <trans-unit id="93fcc96f539962ca02b5bd437e771ecc">
                 <source>There are no archived releases for this edition</source>
-            </trans-unit>
-            <trans-unit id="c935de0fb638ccf74ac13eab9de909dc">
-                <source>Release selection</source>
-            </trans-unit>
-            <trans-unit id="15d6d9744c493525b365706d91d8e465">
-                <source>All active releases</source>
-            </trans-unit>
-            <trans-unit id="a241a004a2a03a89d85a96f5a0e62af3">
-                <source>Archived releases</source>
             </trans-unit>
         </body>
     </file>
@@ -5399,8 +5662,11 @@
 
     <file source-language="en" datatype="php" original="core/modules/project/templates/_dashboardviewprojectteam.inc.php">
         <body>
-            <trans-unit id="86dde1a1b1c662c9c2b9a546320f7cec">
-                <source>No users or teams assigned</source>
+            <trans-unit id="f694b881d4ec617a3a648df1b5039938">
+                <source>No users or teams assigned to this project</source>
+            </trans-unit>
+            <trans-unit id="eba855c1d0fc2da201b92322e26f20a4">
+                <source>Set up project team</source>
             </trans-unit>
         </body>
     </file>
@@ -5417,6 +5683,18 @@
         <body>
             <trans-unit id="6fddf02cefd40280c60466d2ecbde8fb">
                 <source>"%project_name" release center</source>
+            </trans-unit>
+            <trans-unit id="f3f43e30c8c7d78c6ac0173515e57a00">
+                <source>Filters</source>
+            </trans-unit>
+            <trans-unit id="66e574753455f8cdd8db33ca3458bf3c">
+                <source>Active releases</source>
+            </trans-unit>
+            <trans-unit id="7a30e4991583aac7667b6190f3bf1079">
+                <source>With downloads</source>
+            </trans-unit>
+            <trans-unit id="4ecdaa81be1a13d3b41c1807980b2cf5">
+                <source>Show all releases</source>
             </trans-unit>
             <trans-unit id="37454ca6029fe86bf092efbc844195a8">
                 <source>Add new project release</source>
@@ -5438,18 +5716,6 @@
             </trans-unit>
             <trans-unit id="b7232ceab32069125f3100c32a8c5a69">
                 <source>There are no releases for this edition</source>
-            </trans-unit>
-            <trans-unit id="f3f43e30c8c7d78c6ac0173515e57a00">
-                <source>Filters</source>
-            </trans-unit>
-            <trans-unit id="66e574753455f8cdd8db33ca3458bf3c">
-                <source>Active releases</source>
-            </trans-unit>
-            <trans-unit id="7a30e4991583aac7667b6190f3bf1079">
-                <source>With downloads</source>
-            </trans-unit>
-            <trans-unit id="4ecdaa81be1a13d3b41c1807980b2cf5">
-                <source>Show all releases</source>
             </trans-unit>
             <trans-unit id="7000951456042735b27b3f442fd21ab8">
                 <source>An error occured when adding or updating the release</source>
@@ -5555,6 +5821,60 @@
             <trans-unit id="48de2f20eae77a1ff4a73c7f33752a28">
                 <source>%project_name project timeline</source>
             </trans-unit>
+            <trans-unit id="02d9af9b1921db87d9e171f0c4bb2aa2">
+                <source>Issue closed %text</source>
+            </trans-unit>
+            <trans-unit id="750f236fc304a0eed6bf9a10bcc445ec">
+                <source>Issue reopened</source>
+            </trans-unit>
+            <trans-unit id="11cc7baa22dd214ce3a7e84f069a385a">
+                <source>Category changed: %text</source>
+            </trans-unit>
+            <trans-unit id="55eeab309f01529dd65d35e87e2be017">
+                <source>Custom field changed: %text</source>
+            </trans-unit>
+            <trans-unit id="eb710455a7d5e3408910ef4e2a4bbeb9">
+                <source>Status changed: %text</source>
+            </trans-unit>
+            <trans-unit id="361a33e3ed7e46d244181667ea58e2fe">
+                <source>Reproducability changed: %text</source>
+            </trans-unit>
+            <trans-unit id="78d524154cf989984887f24d0eea9464">
+                <source>Priority changed: %text</source>
+            </trans-unit>
+            <trans-unit id="ae255fa3d1c511788baa8a491fa6c37f">
+                <source>Severity changed: %text</source>
+            </trans-unit>
+            <trans-unit id="4b51629799d44d1d40daf53510fb579f">
+                <source>Resolution changed: %text</source>
+            </trans-unit>
+            <trans-unit id="bc0bed9458fb03e381cd1df94cfa9005">
+                <source>Percent completed: %text</source>
+            </trans-unit>
+            <trans-unit id="6c277c1999413564a394f85774df5f9b">
+                <source>Target milestone changed: %text</source>
+            </trans-unit>
+            <trans-unit id="9a9e93ae2bf16c4bbcf80665f02fd7e2">
+                <source>Issue type changed: %text</source>
+            </trans-unit>
+            <trans-unit id="aa15e8b782023846227e379a9edf95c7">
+                <source>Estimation changed: %text</source>
+            </trans-unit>
+            <trans-unit id="159935d84fca8f72e2e40454a0bb8f97">
+                <source>Time spent: %text</source>
+            </trans-unit>
+            <trans-unit id="63a6a20fb70f1fda536a09a4d66641c7">
+                <source>Assignee changed: %text</source>
+            </trans-unit>
+            <trans-unit id="1d474ad8d0fe8f3b2ccadf628cc0982c">
+                <source>Owner changed: %text</source>
+            </trans-unit>
+            <trans-unit id="6bce228e41cae4e60043253c9cc0371e">
+                <source>Posted by changed: %text</source>
+            </trans-unit>
+            <trans-unit id="be366b83d6b2939f436725b71870416d">
+                <source>Issue updated</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -5577,9 +5897,6 @@
 
     <file source-language="en" datatype="php" original="core/modules/project/templates/_projectworkflow.inc.php">
         <body>
-            <trans-unit id="e2c5eec73463fc657f23685b792c0d22">
-                <source>Change workflow</source>
-            </trans-unit>
             <trans-unit id="60c61091ee0692a1f852eb20375d29ab">
                 <source>New workflow scheme:</source>
             </trans-unit>
@@ -5634,6 +5951,15 @@
 
     <file source-language="en" datatype="php" original="core/modules/project/templates/_milestone.inc.php">
         <body>
+            <trans-unit id="e2dc079981badadef8c7eafc3073b6bd">
+                <source>Save milestone</source>
+            </trans-unit>
+            <trans-unit id="a54211975c6bba96a5dc4b4dbb5b4cf1">
+                <source>Milestone name</source>
+            </trans-unit>
+            <trans-unit id="2c98dcbc55d945711a3bb1e4953a818e">
+                <source>Enter a milestone name</source>
+            </trans-unit>
             <trans-unit id="bb36feee4d1359b49cdad9f44ec8f08e">
                 <source>Edit milestone details</source>
             </trans-unit>
@@ -5670,22 +5996,22 @@
             <trans-unit id="b6671925e1922de848565d754897af88">
                 <source>Planned end date</source>
             </trans-unit>
-            <trans-unit id="a4c02510fdf9fb9bcd1ef4a4a5a10324">
-                <source>%cancel or %save_milestone</source>
-            </trans-unit>
         </body>
     </file>
 
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_overview.inc.php">
+    <file source-language="en" datatype="php" original="core/modules/project/templates/_project.inc.php">
         <body>
-            <trans-unit id="176f475073acbdd6051a56098f464ba4">
-                <source>Go to project website</source>
+            <trans-unit id="0504ff6d5a8aecf8fe45e66bbafd1483">
+                <source>Subprojects</source>
+            </trans-unit>
+            <trans-unit id="15bbb9d0bbf25e8d2978de1168c749dc">
+                <source>Website</source>
+            </trans-unit>
+            <trans-unit id="5b6cf869265c13af8566f192b4ab3d2a">
+                <source>Documentation</source>
             </trans-unit>
             <trans-unit id="6cdac531da425dac31bbb3e3e007d707">
                 <source>New issue</source>
-            </trans-unit>
-            <trans-unit id="0504ff6d5a8aecf8fe45e66bbafd1483">
-                <source>Subprojects</source>
             </trans-unit>
             <trans-unit id="c69d5c8658c4d9802cb33f4f55b5e66e">
                 <source>%closed closed of %issues reported</source>
@@ -5714,26 +6040,6 @@
         <body>
             <trans-unit id="4dc3d0bc0e8108e779bbd2cef2c151c3">
                 <source>No issues of this type has been posted yet</source>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file source-language="en" datatype="php" original="core/modules/project/templates/_projectconfig_container.inc.php">
-        <body>
-            <trans-unit id="5bd456a76d69c9c1760a867e054d3927">
-                <source>Quick edit project</source>
-            </trans-unit>
-            <trans-unit id="56b2a5f0e178a43f91b9f856d6a59887">
-                <source>Create new project</source>
-            </trans-unit>
-            <trans-unit id="9cdde52ce9ba783cd522835daae95b57">
-                <source>More settings</source>
-            </trans-unit>
-            <trans-unit id="fd35b76b0728427dcd9a4edf55a6bacd">
-                <source>Only showing basic project details. More settings available in the main project configuration.</source>
-            </trans-unit>
-            <trans-unit id="a8f3f8c5db04d482b1e025e393dec845">
-                <source>When you are done, click "%save" to save your changes</source>
             </trans-unit>
         </body>
     </file>
@@ -5845,18 +6151,6 @@
             <trans-unit id="79400937b03fd22f560639496b6256cd">
                 <source>"%project_name" roadmap</source>
             </trans-unit>
-            <trans-unit id="650364c33272fecde30c54def4178070">
-                <source>New milestone</source>
-            </trans-unit>
-            <trans-unit id="80dd7bbb9b736478900dd5be6546aa92">
-                <source>Sort milestones</source>
-            </trans-unit>
-            <trans-unit id="db9d57a44715c55887ba5d1d1c34b53b">
-                <source>Done sorting</source>
-            </trans-unit>
-            <trans-unit id="532def69863501ead6fcda3704855a9a">
-                <source>There is no roadmap to be shown for this project, as it does not have any available milestones</source>
-            </trans-unit>
             <trans-unit id="7dbb08f40472319d94bb223cf1b9af30">
                 <source>Roadmap filters</source>
             </trans-unit>
@@ -5868,6 +6162,18 @@
             </trans-unit>
             <trans-unit id="f7a7c14d0e2d75a6198af356c42bbd86">
                 <source>Milestone details</source>
+            </trans-unit>
+            <trans-unit id="650364c33272fecde30c54def4178070">
+                <source>New milestone</source>
+            </trans-unit>
+            <trans-unit id="80dd7bbb9b736478900dd5be6546aa92">
+                <source>Sort milestones</source>
+            </trans-unit>
+            <trans-unit id="db9d57a44715c55887ba5d1d1c34b53b">
+                <source>Done sorting</source>
+            </trans-unit>
+            <trans-unit id="532def69863501ead6fcda3704855a9a">
+                <source>There is no roadmap to be shown for this project, as it does not have any available milestones</source>
             </trans-unit>
         </body>
     </file>
@@ -6003,9 +6309,6 @@
             <trans-unit id="9c4dfd82e95961f08a709a2b985dc53a">
                 <source>Show %fieldlabel</source>
             </trans-unit>
-            <trans-unit id="a60852f204ed8028c1c58808b746d115">
-                <source>Ok</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -6061,7 +6364,7 @@
             <trans-unit id="254a553df585a49b4e02d13640b363b6">
                 <source>Please specify a sprint name</source>
             </trans-unit>
-            <trans-unit id="15fcdeb0bfe7999726b0d7265f484abc">
+            <trans-unit id="6208b99cf1499a88adb38edc087d6327">
                 <source>The libraries to generate images are not installed. Please see https://thebuggenie.com for more information</source>
             </trans-unit>
             <trans-unit id="03f4f2bb69a38628b3392f1dd51eff41">
@@ -6120,18 +6423,6 @@
             </trans-unit>
             <trans-unit id="16e29047739ce94ab8eb6d7b4bc63f1c">
                 <source>unknown key '%key'</source>
-            </trans-unit>
-            <trans-unit id="eb4a566daa457aa5fda3269e856bf6f2">
-                <source>This issue is not valid for this project</source>
-            </trans-unit>
-            <trans-unit id="339707f8eef508d11aaa4170a35c95bc">
-                <source>Cannot find this issue</source>
-            </trans-unit>
-            <trans-unit id="36ed65ce17306e812fd68d9f634c0c57">
-                <source>Invalid title</source>
-            </trans-unit>
-            <trans-unit id="f5abd35192476be7c43c4c5c6f276682">
-                <source>Invalid field</source>
             </trans-unit>
             <trans-unit id="af59ada35f73493c423d5e3727e0d1a5">
                 <source>Invalid milestone</source>
@@ -6616,6 +6907,9 @@
 
     <file source-language="en" datatype="php" original="core/modules/configuration/templates/configureprojects.html.php">
         <body>
+            <trans-unit id="f727cac0ddae92d9de3567e9a3b11511">
+                <source>Manage projects</source>
+            </trans-unit>
             <trans-unit id="5e9d0d4418ed1e434608a35f24fa6e56">
                 <source>Configure projects</source>
             </trans-unit>
@@ -6636,9 +6930,6 @@
             </trans-unit>
             <trans-unit id="0dd5d9e07492a3808b5d4a9879aa561e">
                 <source>Issue type scheme</source>
-            </trans-unit>
-            <trans-unit id="c08ae6ce20c900f23c527e9939454065">
-                <source>Active projects</source>
             </trans-unit>
             <trans-unit id="2e1af418f8cbdb8bc71b4c4485cc425d">
                 <source>There are no projects available</source>
@@ -6662,44 +6953,50 @@
 
     <file source-language="en" datatype="php" original="core/modules/configuration/templates/_user.inc.php">
         <body>
-            <trans-unit id="bfbc9fffe2ef1c78301f4e0e0950e26c">
-                <source>Require re-authentication</source>
+            <trans-unit id="db1688361f2d918f919fad24fbe1d5df">
+                <source>Enable elevated login for configuration section</source>
             </trans-unit>
-            <trans-unit id="4289ee29e85b93297264cccaf9ccbdbf">
-                <source>You need to re-enter your password to access the configuration section</source>
+            <trans-unit id="f1ef0ced190ba8ddcd48d6e52a64845e">
+                <source>If this is turned on, users will have to re-enter their password to go to the configuration section</source>
             </trans-unit>
-            <trans-unit id="96729907b2873a9a27957873e3fdc15b">
-                <source>You don't need to re-enter your password</source>
+            <trans-unit id="7bd5cf1a3c8e828f0903cb5d1cf10ad5">
+                <source>Allow anonymous access</source>
             </trans-unit>
-            <trans-unit id="df43f990df287df0959e1beccb062f70">
-                <source>Anonymous access</source>
+            <trans-unit id="3c07df4dcf421a1103a4a6cbc0eae15f">
+                <source>If anonymous access is turned off, a valid user account is required to access any content in this installation</source>
             </trans-unit>
-            <trans-unit id="6ef3d0d018da37f6af807251d78ec06a">
-                <source>You need a valid user account to access any content</source>
+            <trans-unit id="7ac1ff6cdef3cd29cd32998b8867fc03">
+                <source>Enable %gravatar user icons</source>
             </trans-unit>
-            <trans-unit id="17ca1c429c9bf38b219b1bc7a8cd9201">
-                <source>Use the guest user account</source>
+            <trans-unit id="162533b26636413c3deeb04f2162b78b">
+                <source>Select whether to use the %gravatar.com user icon service for user avatars, or just use the default ones</source>
             </trans-unit>
-            <trans-unit id="f5cb42d1c4d7f642f5e103bb2ce6f816">
-                <source>Guest user is authenticated</source>
+            <trans-unit id="204e2e50715a320a55d1a8701a49ca40">
+                <source>Allow self-registration</source>
             </trans-unit>
-            <trans-unit id="a54c4f42ea1216db0ed8babbebe4f395">
-                <source>No, the default user is a guest account</source>
+            <trans-unit id="8e2f1ab732ac6577d8294e1e12cc7138">
+                <source>Registration domain whitelist</source>
             </trans-unit>
-            <trans-unit id="13887b6f5d4f820940a3b5a747231bf2">
-                <source>Yes, the default user is a normal account</source>
+            <trans-unit id="580b9f976ec3a72f2200cc9d64676597">
+                <source>Comma-separated list of allowed domains (ex: %example). Leave empty to allow all domains.</source>
             </trans-unit>
-            <trans-unit id="03c9f0603551ef4266399183d014a2ed">
-                <source>Select if the default user is a guest user or a normal user</source>
+            <trans-unit id="a6940478db585351399947ac28c2cb54">
+                <source>User's display name format</source>
+            </trans-unit>
+            <trans-unit id="29af5acf3baeb0d716cd584409e9ea59">
+                <source>Prefer nickname</source>
+            </trans-unit>
+            <trans-unit id="19ba6f10bdaa5bdd3611fc46ffd94f3f">
+                <source>Prefer full name</source>
             </trans-unit>
             <trans-unit id="f154808e37d634b883331dc0c0fd8120">
                 <source>Security policy</source>
             </trans-unit>
-            <trans-unit id="b351533598ed6f88cea50ee3dfdb11ca">
-                <source>Permissive</source>
-            </trans-unit>
             <trans-unit id="d5968c3c4a7942eff92342efab5f0799">
                 <source>Restrictive</source>
+            </trans-unit>
+            <trans-unit id="b351533598ed6f88cea50ee3dfdb11ca">
+                <source>Permissive</source>
             </trans-unit>
             <trans-unit id="f42e3ba8be8b5755a55b78c0a899b88b">
                 <source>%restrictive: With this security policy, users don't automatically get access to projects, modules, etc., but must be granted access specifically.</source>
@@ -6713,74 +7010,8 @@
             <trans-unit id="78694cf977c9fa5d314f1e52822f997b">
                 <source>Some permissions, such as configuration access are not affected by this setting, but must always be explicitly defined</source>
             </trans-unit>
-            <trans-unit id="a6940478db585351399947ac28c2cb54">
-                <source>User's display name format</source>
-            </trans-unit>
-            <trans-unit id="c62d8e065ff9d8da2752e6478858013c">
-                <source>Use user's real name instead of buddy name</source>
-            </trans-unit>
-            <trans-unit id="88518990d3cb5a17151d6b182f8b7d2b">
-                <source>Prefer buddy name instead of real name.</source>
-            </trans-unit>
-            <trans-unit id="826922e5140be1b54ebb130b9957d5d2">
-                <source>Change here how user's name is displayed.</source>
-            </trans-unit>
-            <trans-unit id="33acd17770fbe0b5c18bf1342853144c">
-                <source>Gravatar user icons</source>
-            </trans-unit>
-            <trans-unit id="10866736804717a0db2c891ee13d7343">
-                <source>Users icons will use the gravatar.com service</source>
-            </trans-unit>
-            <trans-unit id="8d87a348fe87ddeea8d584cf38060efa">
-                <source>Users will use default user icons</source>
-            </trans-unit>
-            <trans-unit id="162533b26636413c3deeb04f2162b78b">
-                <source>Select whether to use the %gravatar.com user icon service for user avatars, or just use the default ones</source>
-            </trans-unit>
-            <trans-unit id="5d2d9108cdedf1b20613657ef16f3cb2">
-                <source>New user accounts</source>
-            </trans-unit>
-            <trans-unit id="42a87b3af0dd6ff68f22d2e5f3a7e028">
-                <source>Users can register new accounts</source>
-            </trans-unit>
-            <trans-unit id="a8a92afb6eaee244be4523b4be64c2bc">
-                <source>All new user accounts will be created by an admin</source>
-            </trans-unit>
-            <trans-unit id="a8c79630415bfab6cc43e65bbf8bd724">
-                <source>Enable OpenID</source>
-            </trans-unit>
-            <trans-unit id="ac57438409073b822f6393a3d98285f2">
-                <source>Users can register with OpenID and link OpenID to existing accounts</source>
-            </trans-unit>
-            <trans-unit id="7776f4996c1eccc38a428431b2d2e484">
-                <source>Users can only link OpenID logins with existing accounts</source>
-            </trans-unit>
-            <trans-unit id="4c6de8121477e87bdd0730e848184713">
-                <source>OpenID authentication is disabled</source>
-            </trans-unit>
-            <trans-unit id="52e6eab5dd647d5422898db97e73a86d">
-                <source>OpenID support is not available when not using internal authentication</source>
-            </trans-unit>
-            <trans-unit id="8e2f1ab732ac6577d8294e1e12cc7138">
-                <source>Registration domain whitelist</source>
-            </trans-unit>
-            <trans-unit id="580b9f976ec3a72f2200cc9d64676597">
-                <source>Comma-separated list of allowed domains (ex: %example). Leave empty to allow all domains.</source>
-            </trans-unit>
             <trans-unit id="4051c34adbc1a588f65d2db195b44cb6">
                 <source>Default user group</source>
-            </trans-unit>
-            <trans-unit id="7bb69aaa80d25e9f3aff2cdabc3fd6df">
-                <source>New users will automatically be added to this group</source>
-            </trans-unit>
-            <trans-unit id="4f0fd041a5f717549cbf976f7d1f40d8">
-                <source>Redirect after login</source>
-            </trans-unit>
-            <trans-unit id="1f1361349f8075ea030729b418552bdd">
-                <source>Page before login</source>
-            </trans-unit>
-            <trans-unit id="752b3a7aec7c6d730997b0e4f832fe6c">
-                <source>Redirect after logout</source>
             </trans-unit>
         </body>
     </file>
@@ -6789,6 +7020,12 @@
         <body>
             <trans-unit id="f80da5058cb0b5457693a5d76b5e442f">
                 <source>%module_name version %version by %author</source>
+            </trans-unit>
+            <trans-unit id="059b8f452d1280705ce4ce05ee3d6b47">
+                <source>Add modules with one click</source>
+            </trans-unit>
+            <trans-unit id="695d736b158e33121f15118ecaf47431">
+                <source>With a valid subscription you can install modules straight from the control center</source>
             </trans-unit>
         </body>
     </file>
@@ -6967,14 +7204,11 @@
 
     <file source-language="en" datatype="php" original="core/modules/configuration/templates/_userscopes.inc.php">
         <body>
-            <trans-unit id="5cb3044bb2f4788548d750d558a0a283">
-                <source>Scopes available to this user</source>
+            <trans-unit id="0c97041f847181878a49189ef559e215">
+                <source>Editing scopes for user %username</source>
             </trans-unit>
             <trans-unit id="1e29d490d7c725aada52e062e7e87e73">
                 <source>The user can access the following scopes</source>
-            </trans-unit>
-            <trans-unit id="0c97041f847181878a49189ef559e215">
-                <source>Editing scopes for user %username</source>
             </trans-unit>
         </body>
     </file>
@@ -7024,9 +7258,6 @@
 
     <file source-language="en" datatype="php" original="core/modules/configuration/templates/_teambox.inc.php">
         <body>
-            <trans-unit id="f4028da16be4c0d6e9094e464a1b7f52">
-                <source>Add member(s) to this team</source>
-            </trans-unit>
             <trans-unit id="7f9b8360a6bd93d6f3f43eb1973f9d33">
                 <source>List users in this team</source>
             </trans-unit>
@@ -7038,12 +7269,6 @@
             </trans-unit>
             <trans-unit id="8811d81b6b1b5688956cd99ab6197860">
                 <source>Delete this user team</source>
-            </trans-unit>
-            <trans-unit id="ba8437de77306bbe6cb66373d850eb73">
-                <source>Do you really want to delete this team?</source>
-            </trans-unit>
-            <trans-unit id="4d81d03898d3e4beb9873a8cfd505280">
-                <source>If you delete this team, then all users in this team will be lose the permissions given via this team</source>
             </trans-unit>
             <trans-unit id="09e5e7f6c1d4cf78e8b5c08acb50e357">
                 <source>ID: %id</source>
@@ -7068,9 +7293,6 @@
             </trans-unit>
             <trans-unit id="eaea73dfa302b7394225d281744b9737">
                 <source>Cloning team, please wait</source>
-            </trans-unit>
-            <trans-unit id="7d789af3b0e986bdbd523702db918fc9">
-                <source>Add a member to this team</source>
             </trans-unit>
             <trans-unit id="b2e2d10083174a2b7887741a689f372b">
                 <source>Users in this team</source>
@@ -7183,9 +7405,6 @@
 
     <file source-language="en" datatype="php" original="core/modules/configuration/templates/index.html.php">
         <body>
-            <trans-unit id="d2cbd2f4b0e12724590336319188b507">
-                <source>Configuration center</source>
-            </trans-unit>
             <trans-unit id="784506b93e26846166816d5a0660cae3">
                 <source>Check for updates now</source>
             </trans-unit>
@@ -7212,11 +7431,14 @@
             <trans-unit id="cfadd4d0925fdd81bf7d6e3c842286ad">
                 <source>Configure modules</source>
             </trans-unit>
+            <trans-unit id="c095ba4d4a5a15db5bf1e645c93ae400">
+                <source>A valid subscription license enables additional features such as automatic module installation and upgrades.</source>
+            </trans-unit>
+            <trans-unit id="0f50b818d510ff4d64c203cb48b2ffc4">
+                <source>Purchase a subscription</source>
+            </trans-unit>
             <trans-unit id="07e46b4a0c21a0ce103a755647cb3e05">
                 <source>Manage existing or download and install new modules for The Bug Genie here.</source>
-            </trans-unit>
-            <trans-unit id="3603ead1df78cae75074bfe15f42416a">
-                <source>The modules folder (%modules_path) seems to not be writable. You may not be able to install new modules.</source>
             </trans-unit>
             <trans-unit id="84595812555ba88e8ae33e592df220b0">
                 <source>You have %count outdated modules. They have been disabled until you upgrade them, you can upgrade them on this page.</source>
@@ -7238,6 +7460,9 @@
             </trans-unit>
             <trans-unit id="2736456ed9e6534c868b5535ca024615">
                 <source>This is a list of modules that are available in the modules folder, but not currently installed on this system.</source>
+            </trans-unit>
+            <trans-unit id="766d23010ba03f0c1d1522bc191cb773">
+                <source>The modules folder %modules_path seems to not be writable. You may not be able to install new modules.</source>
             </trans-unit>
         </body>
     </file>
@@ -7268,12 +7493,6 @@
             <trans-unit id="657b7ee05f87dc31e83f5003aef438b0">
                 <source>Enabling this setting allows a malicious admin user to potentially insert harmful code</source>
             </trans-unit>
-            <trans-unit id="404c8da6b7332036629e7960c9085611">
-                <source>Yes, behave as tracker for a single project</source>
-            </trans-unit>
-            <trans-unit id="51227569f23eb6f3f1ffe8a78561c1eb">
-                <source>No, use regular index page</source>
-            </trans-unit>
             <trans-unit id="2f8f9d7e46fc92393d3c0c7d2c1e46b3">
                 <source>In single project tracker mode, The Bug Genie will display the homepage for the first project as the main page instead of the regular index page</source>
             </trans-unit>
@@ -7286,29 +7505,8 @@
             <trans-unit id="cefae5b8231859c3f941086c8ae50618">
                 <source>Whether the project overview list should appear on the frontpage or not</source>
             </trans-unit>
-            <trans-unit id="bd1e8263e296e464cc733588472fbbb8">
-                <source>Comment trail</source>
-            </trans-unit>
-            <trans-unit id="4d26332186948212eff331a8628e8432">
-                <source>Don't post system comments when an issue is updated</source>
-            </trans-unit>
-            <trans-unit id="99b452072e67b435a40544cbb9d7195e">
-                <source>Always post comments when an issue is updated</source>
-            </trans-unit>
-            <trans-unit id="708f1982231a1ce2b84eec6851c07149">
-                <source>To keep the comment trail clean in issues, you can select not to post system comments when an issue is updated.</source>
-            </trans-unit>
-            <trans-unit id="1ddbe6e7c185f117c2f45d288e0f20b4">
-                <source>The issue log will always be updated regardless of this setting.</source>
-            </trans-unit>
             <trans-unit id="3e59a85ac46de11215ecdec214a171eb">
                 <source>Preview images in comments</source>
-            </trans-unit>
-            <trans-unit id="e19e51e030d882f9c9b9333b31992478">
-                <source>Don't show image previews of attached images in comments</source>
-            </trans-unit>
-            <trans-unit id="3d716dc26bfe3393be65562b30ecce18">
-                <source>Show image previews of attached images in comments</source>
             </trans-unit>
             <trans-unit id="86c596de64d9f498f4fb8c0fea87474d">
                 <source>If you have problems with spam images, turn this off</source>
@@ -7440,8 +7638,8 @@
             <trans-unit id="2568d64749ee6f1a43cd3133d9d2d08a">
                 <source>Configure authentication</source>
             </trans-unit>
-            <trans-unit id="24accbc08b476837759defff5dac7cb7">
-                <source>Please remember to install and configure your chosen authentication backend before setting it here. Changing settings on this page will result in you being logged out.</source>
+            <trans-unit id="62d02d16eb083a6b4fa1ef1a170fe718">
+                <source>Please remember to install and configure your chosen authentication backend before setting it here. Changing settings on this page will result in you being logged out. If you find yourself unable to log in, use the %tbg_cli command line client to revert these settings.</source>
             </trans-unit>
             <trans-unit id="bc1f2941bd954e9cd3e499005504d389">
                 <source>Authentication backend</source>
@@ -7510,9 +7708,6 @@
             <trans-unit id="47a4566e1ef4e7a2093d72bf351e72ce">
                 <source>Please click the download link below and download the update file. Unpack the downloaded archive in the theme folder (%theme_folder), overwriting the current theme (%current_theme_folder) on this server, replacing the old contents. When you are done, refresh this page.</source>
             </trans-unit>
-            <trans-unit id="5652b9c7957e6772e9f1e99c56944258">
-                <source>%cancel or %download_update_file</source>
-            </trans-unit>
             <trans-unit id="dd98fc375bde1ff9e8c48eac7c3ff7f4">
                 <source>Download update file</source>
             </trans-unit>
@@ -7558,9 +7753,6 @@
 
     <file source-language="en" datatype="php" original="core/modules/configuration/templates/_permissionswarning.inc.php">
         <body>
-            <trans-unit id="0eaadb4fcb48a0a0ed7bc9868be9fbaa">
-                <source>Warning</source>
-            </trans-unit>
             <trans-unit id="7f05bda57cb24b0456692c834712af86">
                 <source>You are now editing permissions in advanced mode. This is usually not recommended unless you know what you are doing - you may want to look at team permissions and project roles instead. Proceed at your own risk.</source>
             </trans-unit>
@@ -7589,20 +7781,11 @@
 
     <file source-language="en" datatype="php" original="core/modules/configuration/templates/_clientbox.inc.php">
         <body>
-            <trans-unit id="dbcbbe994141ba880805cd8551ecd001">
-                <source>Add member(s) to this client</source>
-            </trans-unit>
             <trans-unit id="5c397720843da32d81689dee252cbdf4">
                 <source>List users in this client</source>
             </trans-unit>
             <trans-unit id="69cd500a735025126fec1ef81c76d8da">
                 <source>Edit this client</source>
-            </trans-unit>
-            <trans-unit id="2d094a99026b5f5cd0126c6acfab42ce">
-                <source>Delete this client</source>
-            </trans-unit>
-            <trans-unit id="cca95f3345f7fbde355caddcaf32d0b9">
-                <source>Do you really want to delete this client?</source>
             </trans-unit>
             <trans-unit id="5b3b99f23d3be22c417d2122d61576af">
                 <source>If you delete this client, any projects this client is assigned to will be set to having no client</source>
@@ -7616,23 +7799,11 @@
             <trans-unit id="643a860f992333b8600ea264aca7c4fc">
                 <source>Email Address</source>
             </trans-unit>
-            <trans-unit id="15bbb9d0bbf25e8d2978de1168c749dc">
-                <source>Website</source>
-            </trans-unit>
             <trans-unit id="7551cf1a985728fa2798db32c2ff7887">
                 <source>Telephone number</source>
             </trans-unit>
             <trans-unit id="2725587162417ef2cebaa01427638a55">
                 <source>Fax number</source>
-            </trans-unit>
-            <trans-unit id="543781ea5c41e862e5048c618237ce28">
-                <source>or cancel</source>
-            </trans-unit>
-            <trans-unit id="11f4a106ea2ff88247bf5e3b73d4a7c8">
-                <source>Saving, please wait</source>
-            </trans-unit>
-            <trans-unit id="68fb980708f3a9365b2d5dc29f216e9f">
-                <source>Add a member to this client</source>
             </trans-unit>
             <trans-unit id="d71ef9fdd656b65eebd79f687a69ecfd">
                 <source>Users in this client</source>
@@ -7747,9 +7918,6 @@
             </trans-unit>
             <trans-unit id="6d70df8ee4aa09453c54f9ac535ddb6a">
                 <source>Removing the user from this team will remove all automatically inherited permissions from the user. You can easily add the user back to the team in the future.</source>
-            </trans-unit>
-            <trans-unit id="40fe980d429f1f2ef27363c82344e118">
-                <source>Remove from team</source>
             </trans-unit>
         </body>
     </file>
@@ -7912,6 +8080,12 @@
             <trans-unit id="edd3753737123ebe228c99e4a8903e95">
                 <source>New password: %random_password</source>
             </trans-unit>
+            <trans-unit id="a0e479b9c4e4dfa957210a3f660111b3">
+                <source>This user cannot be edited</source>
+            </trans-unit>
+            <trans-unit id="8bb681cae9246e0e2e2f8d7e36e6806f">
+                <source>The user must confirm his membership in this scope before you can perform this action</source>
+            </trans-unit>
             <trans-unit id="500cab3cd841092be653e4dafffd00fd">
                 <source>Edit permissions for this user</source>
             </trans-unit>
@@ -7921,11 +8095,35 @@
             <trans-unit id="3fef98567f60952f48a3522f5db3b442">
                 <source>Delete this user</source>
             </trans-unit>
+            <trans-unit id="abe6a56240b2402d913caa789e06bae8">
+                <source>Permanently delete this user?</source>
+            </trans-unit>
+            <trans-unit id="7bfc602f28031e1b22986d30d9f552c5">
+                <source>Are you sure you want to remove this user? This will remove the users login data, as well as memberships in (and data in) any scopes the user is a member of.</source>
+            </trans-unit>
             <trans-unit id="48e843ddefa03aad93151c60dd487893">
                 <source>Remove user from this scope</source>
             </trans-unit>
+            <trans-unit id="99b698fb407e84ff49822f4ee0bc97b2">
+                <source>Remove this user?</source>
+            </trans-unit>
+            <trans-unit id="abde7282912d849a596d258c02474852">
+                <source>Are you sure you want to remove this user from the current scope? The users login is kept, and you can re-add the user later.</source>
+            </trans-unit>
             <trans-unit id="09a079e0dd829abf5ac4ef399fd10a0b">
                 <source>Cancel invitation</source>
+            </trans-unit>
+            <trans-unit id="a228b32a632f74e93797b006696fb6e4">
+                <source>Cancel membership in this scope?</source>
+            </trans-unit>
+            <trans-unit id="39ba098493cfa6eea26af4c54de1cb78">
+                <source>If you cancel the invitation to this scope, then this user will be notified and the unconfirmed membership removed from this scope.</source>
+            </trans-unit>
+            <trans-unit id="d962e99855920943887f7a391e403b47">
+                <source>This user cannot be removed</source>
+            </trans-unit>
+            <trans-unit id="e41a83fd0dfd1b7ccab17c805cbe22a4">
+                <source>This is a system user which cannot be removed</source>
             </trans-unit>
         </body>
     </file>
@@ -8130,9 +8328,6 @@
             <trans-unit id="26126351530af79dd3fe345099335047">
                 <source>Are you sure you want to completely delete this step? This action cannot be reverted.</source>
             </trans-unit>
-            <trans-unit id="16162bc0ca2a78f632a40be74a628dbe">
-                <source>Show step info</source>
-            </trans-unit>
             <trans-unit id="6135110b9e835b3151f11dd02f778bc8">
                 <source>Edit step</source>
             </trans-unit>
@@ -8197,14 +8392,14 @@
             <trans-unit id="0c9e6c0643f7728117c1dad9b1eea1e4">
                 <source>Please click the download link below and download the update file. Place the downloaded file in the cache folder (%cache_folder) on this server. As soon as the file has been verified, the %update button below will be enabled, and you can press the button to update the module.</source>
             </trans-unit>
-            <trans-unit id="51fa05fd2de5fd5bfdb06acf0ca5c762">
-                <source>%cancel or %update_module</source>
-            </trans-unit>
             <trans-unit id="9dbbb666fc626eb3ed5b6a364149ca12">
                 <source>Update module</source>
             </trans-unit>
             <trans-unit id="5a81a43112ba7fc24d153ff49e6ee9f6">
                 <source>Update to latest version</source>
+            </trans-unit>
+            <trans-unit id="546ae56676c2890eb1584bdb1b00391a">
+                <source>Automatic updates are available with a valid subscription</source>
             </trans-unit>
             <trans-unit id="6ba29216f217613f40982398b527568e">
                 <source>Configure module</source>
@@ -8241,6 +8436,23 @@
             </trans-unit>
             <trans-unit id="d3b71c0ad2537fb024613c8e0a2d3ac3">
                 <source>Available permissions</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/modules/configuration/templates/configurelicense.html.php">
+        <body>
+            <trans-unit id="7c122a6461c5728dfb9d62bc88d1c23b">
+                <source>Configure subscription license</source>
+            </trans-unit>
+            <trans-unit id="a77d1540925b8613ddf32b875e4c4685">
+                <source>License key</source>
+            </trans-unit>
+            <trans-unit id="71b2a67342a62f4d900aae3ef8cdf729">
+                <source>Copy the license key exactly as it is displayed on your account dashboard, and input it here.</source>
+            </trans-unit>
+            <trans-unit id="55800939f1edf081a60d28a514b26536">
+                <source>Click "%save" to save your license key</source>
             </trans-unit>
         </body>
     </file>
@@ -8317,9 +8529,6 @@
             </trans-unit>
             <trans-unit id="dd8f8de9d4ebbb54e4aed29807a3fbfa">
                 <source>Update user</source>
-            </trans-unit>
-            <trans-unit id="5fc3c718dec866d70fcc0ea902361519">
-                <source>or %cancel</source>
             </trans-unit>
         </body>
     </file>
@@ -8514,6 +8723,9 @@
             <trans-unit id="7fa3b767c460b54a2be4d49030b349c7">
                 <source>no</source>
             </trans-unit>
+            <trans-unit id="1dab057ddc4cf188939abb2ad8167642">
+                <source>Add a user</source>
+            </trans-unit>
             <trans-unit id="d2409fff913ca2c412ab687d3403d593">
                 <source>Enter details about the new user here</source>
             </trans-unit>
@@ -8531,9 +8743,6 @@
             </trans-unit>
             <trans-unit id="e7a7b2c6b3032d2fdacf9d1b61b95483">
                 <source>Create or add user</source>
-            </trans-unit>
-            <trans-unit id="bb9e7f1e330f8cfed13c5bf99d084223">
-                <source>%create_user or %cancel</source>
             </trans-unit>
             <trans-unit id="f6aeb8e5d2d78ed4fdd9a2405610a208">
                 <source>Create a new group</source>
@@ -8585,6 +8794,9 @@
             <trans-unit id="13050bc53eb599a9a63a219689b2632e">
                 <source>Module-specific permissions are also available from the "%configure_modules" configuration page</source>
             </trans-unit>
+            <trans-unit id="0eaadb4fcb48a0a0ed7bc9868be9fbaa">
+                <source>Warning</source>
+            </trans-unit>
             <trans-unit id="743e97e5b14b9598d466c34e80f74b2e">
                 <source>The recommended way to set project-specific permissions is to use roles. Assigning teams and users to projects with a specific role keeps all permissions synchronized with roles, whereas editing it from here should only be done in very specific scenarios.</source>
             </trans-unit>
@@ -8604,9 +8816,6 @@
             </trans-unit>
             <trans-unit id="9688c27c3b8ca1e6f1dbb7ac3a752913">
                 <source>Removing the user from this client will remove all automatically inherited permissions from the user. You can easily add the user back to the client in the future.</source>
-            </trans-unit>
-            <trans-unit id="b77c40e1a8b9b0e2e84d89cadef857ea">
-                <source>Remove from client</source>
             </trans-unit>
         </body>
     </file>
@@ -8630,9 +8839,6 @@
             </trans-unit>
             <trans-unit id="87e994afda6a841f97125d010ebe55a5">
                 <source>No workflow selected - will use default workflow</source>
-            </trans-unit>
-            <trans-unit id="8dc13a174a58ee203a188b6a67e65065">
-                <source>No workflow associated - will use "Default workflow"</source>
             </trans-unit>
             <trans-unit id="e6d1fd8d44b0523b4a47592037784931">
                 <source>Save workflow associations</source>
@@ -9144,6 +9350,12 @@
             <trans-unit id="179954b5ef345b570733352d114476fd">
                 <source>This module (%module_name) does not exist</source>
             </trans-unit>
+            <trans-unit id="9f4e5d41784b8e60ffd904f2c344693d">
+                <source>License key saved</source>
+            </trans-unit>
+            <trans-unit id="a1a3c720faa45e4e304388a2796ff5c7">
+                <source>Could not verify license key</source>
+            </trans-unit>
             <trans-unit id="353d8145fca14c8b14b391d7b52cfc5a">
                 <source>The module was updated</source>
             </trans-unit>
@@ -9164,6 +9376,9 @@
             </trans-unit>
             <trans-unit id="ddb4c75b84c39cd04dfda6e2ed70102a">
                 <source>An error occured when trying to retrieve the theme</source>
+            </trans-unit>
+            <trans-unit id="5ff5ce2b80f368be3a41993c60e41cc7">
+                <source>License key for automatic updates are missing</source>
             </trans-unit>
             <trans-unit id="10526bbb60eefd6ea07318a7c0968061">
                 <source>An error occured when trying to retrieve the module</source>
@@ -9440,6 +9655,9 @@
             <trans-unit id="9f6517c77c22b9eef372d23714c6a520">
                 <source>Date last updated</source>
             </trans-unit>
+            <trans-unit id="f8fcf2294cb23718207d3ab08d8b260e">
+                <source>Date time spent</source>
+            </trans-unit>
             <trans-unit id="7540dc323cdfd9e0e8fd8874cc7e67d4">
                 <source>Issue title</source>
             </trans-unit>
@@ -9451,6 +9669,9 @@
             </trans-unit>
             <trans-unit id="0f2898ac15073825a5c5d88723264685">
                 <source>Number of comments</source>
+            </trans-unit>
+            <trans-unit id="c3a125e1a9d7eaf65710174e9f0ff1d2">
+                <source>Time spent at</source>
             </trans-unit>
             <trans-unit id="9e727fdd3aec8274f46685441900280d">
                 <source>Project</source>
@@ -9502,6 +9723,27 @@
             <trans-unit id="8c3efdd558ebe3b9e0a72b091e43f748">
                 <source>Not blocker issues</source>
             </trans-unit>
+            <trans-unit id="671dec8fc4e3dc847c1b0d7b67b4e6e1">
+                <source>Relation</source>
+            </trans-unit>
+            <trans-unit id="6d90e1af7c30053718ae847743965896">
+                <source>Filter on relation</source>
+            </trans-unit>
+            <trans-unit id="1201252dfb88ff1529d2482536ee6537">
+                <source>Only child issues</source>
+            </trans-unit>
+            <trans-unit id="82ad82bb04ed3104c4de59f5b276d778">
+                <source>Without child issues</source>
+            </trans-unit>
+            <trans-unit id="8c55c31fb72e919d6d5db86097d0bd8b">
+                <source>Only parent issues</source>
+            </trans-unit>
+            <trans-unit id="deff0b6ad2a4b93b638ee7fe22acfb73">
+                <source>Without parent issues</source>
+            </trans-unit>
+            <trans-unit id="52f8ce81cb6f34b0cb57163b9cc62c16">
+                <source>Neither child nor parent issues</source>
+            </trans-unit>
         </body>
     </file>
 
@@ -9552,6 +9794,9 @@
             </trans-unit>
             <trans-unit id="dab60d6b3a4ed13860ea9e01efb277b0">
                 <source>Last updated before / after</source>
+            </trans-unit>
+            <trans-unit id="bf59fcbb8f440b86d61794dc5c733d3c">
+                <source>Time spent before / after</source>
             </trans-unit>
             <trans-unit id="b11d3cf4aed4f1edc2e22a90fe26bd09">
                 <source>Project detail filters</source>
@@ -9643,17 +9888,11 @@
             <trans-unit id="d4e48dd0235ed18dff1077238273cdcd">
                 <source>Update this saved search</source>
             </trans-unit>
-            <trans-unit id="1729a56cfc89021478498fe0c89a843a">
-                <source>Visibility</source>
-            </trans-unit>
             <trans-unit id="814863b70b506161aa842cf3d01cb45a">
                 <source>Only visible for me</source>
             </trans-unit>
             <trans-unit id="7401538d6988be50e453856e8a38bf56">
                 <source>Shared with others</source>
-            </trans-unit>
-            <trans-unit id="a66622170b9bfdd18f2bb43e539adbb5">
-                <source>%cancel or %save_search</source>
             </trans-unit>
             <trans-unit id="61fcf6479d20b4b584463803c4500320">
                 <source>Save search</source>
@@ -9805,9 +10044,6 @@
             <trans-unit id="a4db0eee4609427e771accb67c15ddaf">
                 <source>Project wishlist</source>
             </trans-unit>
-            <trans-unit id="66c4255bad231dd5d05adbaae50ff48c">
-                <source>Open issues owned by me</source>
-            </trans-unit>
             <trans-unit id="9f806b1c7a4f7ae059b30b54933e4caf">
                 <source>Your saved searches for this project</source>
             </trans-unit>
@@ -9907,6 +10143,9 @@
 
     <file source-language="en" datatype="php" original="core/modules/search/templates/_results_normal.inc.php">
         <body>
+            <trans-unit id="2f379ca734a21b7cc9539e24fa23ba27">
+                <source>Unknown priority</source>
+            </trans-unit>
             <trans-unit id="a50cf76c4fc9a490584e8f45168c9f8d">
                 <source>% completed</source>
             </trans-unit>
@@ -10096,6 +10335,9 @@
             <trans-unit id="4706725b303c9441f3c18dc433ec5863">
                 <source>Filter on last updated date</source>
             </trans-unit>
+            <trans-unit id="ed4d96d1c051f4ab78e4902b93605cc9">
+                <source>Filter on time spent date</source>
+            </trans-unit>
             <trans-unit id="1dd1c5fb7f25cd41b291d43a89e3aefd">
                 <source>Today</source>
             </trans-unit>
@@ -10121,6 +10363,9 @@
             </trans-unit>
             <trans-unit id="af4c4e359d25fd8b79659e95680d8796">
                 <source>Assign to milestone</source>
+            </trans-unit>
+            <trans-unit id="6729f7f9e88354cee8d933b0922fbd3c">
+                <source>Set status</source>
             </trans-unit>
             <trans-unit id="3e9e85aac3d83fb62149c77e4a7e8b41">
                 <source>Set category</source>
@@ -10309,6 +10554,9 @@
             </trans-unit>
             <trans-unit id="cdf08326d784f1f01fef2ad29baa2e55">
                 <source>Find and pick a client</source>
+            </trans-unit>
+            <trans-unit id="2f0c8cb1ac2744cf0912776577356407">
+                <source>Datetime picker</source>
             </trans-unit>
             <trans-unit id="aae10e7cd86934e09406a82f64f5f377">
                 <source>This field key already exists</source>
@@ -10506,9 +10754,6 @@
             <trans-unit id="0ed30ff9be711452ec6f65ff7048d76b">
                 <source>Issue label updated</source>
             </trans-unit>
-            <trans-unit id="971431d829c479664afeb7c021486100">
-                <source>Description updated</source>
-            </trans-unit>
             <trans-unit id="cc63e35ba72400c1f7f8f8769cae3fd5">
                 <source>Reproduction steps updated</source>
             </trans-unit>
@@ -10608,6 +10853,17 @@
             </trans-unit>
             <trans-unit id="358732977a13ab1120f0ce0e139373a9">
                 <source>Not scheduled</source>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file source-language="en" datatype="php" original="core/entities/Comment.php">
+        <body>
+            <trans-unit id="de2482c388614993fd9016ed878031f3">
+                <source>Commit pushed</source>
+            </trans-unit>
+            <trans-unit id="13f94a3feba542b905ca549f187d3e1d">
+                <source>Article created</source>
             </trans-unit>
         </body>
     </file>

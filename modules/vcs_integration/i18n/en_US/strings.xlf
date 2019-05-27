@@ -5,8 +5,8 @@
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
 <!-- Number of Sections: 14 -->
-<!-- Number of Strings: 72 -->
-<!-- Keys extracted from sources on: 2017 Nov 13. -->
+<!-- Number of Strings: 71 -->
+<!-- Keys extracted from sources on: 2019 May 27. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -225,9 +225,6 @@
             <trans-unit id="f01a7e06c748e04f696f65489836fad4">
                 <source>Show commit details</source>
             </trans-unit>
-            <trans-unit id="d3d2e617335f08df83599665eef8a418">
-                <source>Close</source>
-            </trans-unit>
         </body>
     </file>
 
@@ -241,8 +238,8 @@
 
     <file source-language="en" datatype="php" original="templates/_viewissue_activities_tab.inc.php">
         <body>
-            <trans-unit id="63472150e70f25ffe3ae2be23a250069">
-                <source>Commits (%count)</source>
+            <trans-unit id="75e786d55b32d8c931d13cb80a878845">
+                <source>Commits %count</source>
             </trans-unit>
         </body>
     </file>
