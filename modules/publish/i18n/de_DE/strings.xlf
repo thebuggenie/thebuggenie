@@ -4,387 +4,95 @@
 <!-- If you would like to help translating TBG, -->
 <!-- please visit https://www.transifex.com/projects/p/tbg -->
 
-<!-- Number of Sections: 34 -->
-<!-- Number of Strings: 218 -->
+<!-- Number of Sections: 37 -->
+<!-- Number of Strings: 244 -->
 
-<!-- Keys extracted from sources on: 2015 Oct 17. -->
-<!-- Translations extracted from Transifex on: 2016 Mar 06.-->
+<!-- Keys extracted from sources on: 2019 May 27. -->
+<!-- Translations extracted from Transifex on: 2019 May 29. -->
 
 <xliff version="1.2">
-
-    <file datatype="php" original="controllers/Main.php" source-language="en" target-language="de-DE">
+    <file datatype="php" original="templates/_specialcontributions.inc.php" source-language="en" target-language="de-DE">
         <body>
-            <trans-unit id="271a2ede29e65409778d6043f2e107dc">
-                <source>You don't have access to read this article</source>
-                <target>Sie haben keine Berechtigung um den Artikel zu lesen</target>
+            <trans-unit id="1e7d13c1ba7dea7e0be3057c4c4793c3">
+                <source>Special:Contributions to %namespace namespace</source>
+                <target>Spezial:Beiträge zu %namespace Namensraum</target>
             </trans-unit>
-            <trans-unit id="a11c9853f629530400e484f5deff2099">
-                <source>There was an error trying to show this revision</source>
-                <target>Beim Versuch die Revision anzuzeigen trat ein Fehler auf</target>
+            <trans-unit id="9c70933aff6b2a6d08c687a6cbb6b765">
+                <source>global</source>
+                <target>Global</target>
             </trans-unit>
-            <trans-unit id="d39695f1bd169429d02cdf69c5ee31d6">
-                <source>Please specify a from- and to-revision to compare</source>
-                <target>Bitte wählen Sie eine Von- und eine Zu-Revision zum Vergleich</target>
+            <trans-unit id="91ef928b19b8957f1d62ea989009fb5a">
+                <source>There are no contributions to this namespace or you are not allowed to access any of the articles in the namespace.</source>
+                <target>Es gibt keine Beiträge zu diesem Namensraum oder Sie haben zu keinem der Artikel die benötigten Zugriffsrechte.</target>
             </trans-unit>
-            <trans-unit id="1ddaf5f0cebad627055224ed25151ca2">
-                <source>You do not have permission to edit this article</source>
-                <target>Sie haben keine Berechtigung um diesen Artikel zu bearbeiten</target>
+            <trans-unit id="eef1869ea11289148d3b1aebce28c79c">
+                <source>Below is a listing of all contributions made to %namespace namespace. Contributions are listed only for articles you are allowed to access.</source>
+                <target>Untenstehend eine Auflistung aller zum Namensraum %namespace erstellten Beiträge. Es werden nur die Beiträge aufgelsitet, zu denen Sie Zugriffsrechte haben.</target>
             </trans-unit>
-            <trans-unit id="ab55ea9d79711cf92ca156c9817bf816">
-                <source>This article does not exist</source>
-                <target>Dieser Artikel existiert nicht</target>
+            <trans-unit id="be37105cf25c80684fcdda9673d4d738">
+                <source>Special:Contributions to %namespace namespace created via initial fixtures</source>
+                <target>Spezial:Beiträge zu %namespace Namensraum erstellt durch initiale Installation</target>
             </trans-unit>
-            <trans-unit id="363fd9063452c05a14ee97612c2fc8d7">
-                <source>You do not have permission to delete this article</source>
-                <target>Sie haben keine Berechtigung um diesen Artikel zu löschen</target>
+            <trans-unit id="fd35bf470dda4b09c173843bceb8cf89">
+                <source>Below is a listing of all contributions made via initial fixtures to %namespace namespace. Contributions are listed only for articles you are allowed to access.</source>
+                <target>Untenstehend eine Liste aller Beiträge, die per initialier Installation zum Namensraum %namespace erstellt wurden. Beiträge werden nur für Artikel aufgelistet, wenn Sie die benötigten Zugriffsrechte haben.</target>
             </trans-unit>
-            <trans-unit id="887663e34493d9a68f46c69eb236e60a">
-                <source>Please specify an article name</source>
-                <target>Bitte geben Sie einen Artikelnamen an</target>
+            <trans-unit id="8049edc55e01ba53ba1d62527114c30c">
+                <source>Special:Contributions - No such user %username</source>
+                <target>Spezial:Beiträge - Benutzer %username existiert nicht</target>
             </trans-unit>
-            <trans-unit id="a43ea1b90ce285ee18c9f6fcee0bafad">
-                <source>An error occured</source>
-                <target>Ein Fehler ist aufgetreten</target>
+            <trans-unit id="18ba80d39153498d19858ff415056fe0">
+                <source>User with specified username does not exist.</source>
+                <target>Der Benutzer mit dem angegebenen Benutzernamen existiert nicht.</target>
             </trans-unit>
-            <trans-unit id="a3267f073c03c65b2b4b9a6d38b0cd78">
-                <source>The article was deleted</source>
-                <target>Der Artikel wurde gelöscht</target>
+            <trans-unit id="0c95a78d626d86dea35d49dabeda8d08">
+                <source>Special:Contributions to %namespace namespace by %user_full_name</source>
+                <target>Spezial: Beiträge zu Namensraum %namespace von %user_full_name</target>
             </trans-unit>
-            <trans-unit id="071f0dadc94a99bbe074b9150b2aae9a">
-                <source>You need to specify a valid article name</source>
-                <target>Sie müssen einen gültigen Artikelnamen eingeben</target>
+            <trans-unit id="182c0e6453c87dd0cb33a1a4022f0931">
+                <source>This user has made no contributions to the wiki or you are not allowed to access any of the articles the user has contributed to.</source>
+                <target>Der Benutzer hat im Wiki keine Beiträge erstellt oder Sie haben nicht die benötigten Rechte, um die vom Benutzer erstellten Artikel anzusehen.</target>
             </trans-unit>
-            <trans-unit id="99b496309f8f4256de005e5e75fdacc2">
-                <source>You have to provide a reason for the changes</source>
-                <target>Sie müssen einen Grund für die Änderungen angeben</target>
+            <trans-unit id="63a3a68bc43fcfe7225c32bda74ecdba">
+                <source>Below is a listing of all contributions made by this user to %namespace namespace. Contributions are listed only for articles you are allowed to access.</source>
+                <target>Untenstehend eine Liste aller vom Benutzer erstellten Beiträge im %namespace Namensraum. Beiträge werden nur für Artikel aufgelistet, bei denen Sie die benötigten Zugriffsrechte haben.</target>
             </trans-unit>
-            <trans-unit id="940583dfa4398e5db30ea717806c69bd">
-                <source>The file has been modified since you last opened it</source>
-                <target>Die Datei wurde seit Ihrem letzten Öffnen geändert</target>
+            <trans-unit id="44749712dbec183e983dcd78a7736c41">
+                <source>Date</source>
+                <target>Datum</target>
             </trans-unit>
-            <trans-unit id="f1e5b749bed70f5288ed0b7d36f7c165">
-                <source>An article with that name already exists. Please choose a different article name</source>
-                <target>Ein Artikel mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Artikelnamen</target>
+            <trans-unit id="3ec365dd533ddb7ef3d1c111186ce872">
+                <source>Details</source>
+                <target>Details</target>
             </trans-unit>
-            <trans-unit id="749c21ce20f65fc2f1d739f21119ddee">
-                <source>The article was saved</source>
-                <target>Der Artikel wurde gespeichert</target>
+            <trans-unit id="5e2f8ee473fdebc99fef4dc9e7ee3146">
+                <source>Article</source>
+                <target>Artikel</target>
+            </trans-unit>
+            <trans-unit id="a517747c3d12f99244ae598910d979c5">
+                <source>Author</source>
+                <target>Autor</target>
+            </trans-unit>
+            <trans-unit id="fffcb4d1e12c96b2f571f77ad25878b8">
+                <source>Reason</source>
+                <target>Grund</target>
+            </trans-unit>
+            <trans-unit id="1d41b28ed9005be763362a7b39e45f60">
+                <source>no author</source>
+                <target>Kein Autor</target>
             </trans-unit>
         </body>
     </file>
 
-    <file datatype="php" original="entities/Article.php" source-language="en" target-language="de-DE">
+    <file datatype="php" original="templates/_specialuncategorizedpages.inc.php" source-language="en" target-language="de-DE">
         <body>
-            <trans-unit id="b1a1ee03f768be82a41f9b27c6823108">
-                <source>Another article with this name already exists</source>
-                <target>Ein anderer Artikel mit diesem Namen existiert bereits.</target>
+            <trans-unit id="6a1fcfa4a67809e6564b95b61ca9fff7">
+                <source>Note: This page lists all articles without categories in &quot;%project_name&quot;. For a list of global articles with no categories, see %uncategorized_pages</source>
+                <target>Notiz: Diese Seite listet alle Artikel ohne Kategorien in &quot;%project_name&quot; auf. Für eine Liste aller globalen Artikel ohne Kategorien, siehe %uncategorized_pages</target>
             </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="Publish.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="cdc7932f474adddaed2dce5ff885347f">
-                <source>%number_of_articles articles imported successfully</source>
-                <target>%number_of_articles Artikel erfolgreich importiert</target>
-            </trans-unit>
-            <trans-unit id="ecc877947bbda2824dc53292eb9ef105">
-                <source>Project archive</source>
-                <target>Projekt-Archiv</target>
-            </trans-unit>
-            <trans-unit id="e727b00944f81e1d0a95c12886ac4641">
-                <source>Archive</source>
-                <target>Archiv</target>
-            </trans-unit>
-            <trans-unit id="902e683dcef3f50a58e7f8d16dd2983f">
-                <source>Project documentation</source>
-                <target>Projekt-Dokumentation</target>
-            </trans-unit>
-            <trans-unit id="5b6cf869265c13af8566f192b4ab3d2a">
-                <source>Documentation</source>
-                <target>Dokumentation</target>
-            </trans-unit>
-            <trans-unit id="e7d22769b8f43bc84faaea586ce80158">
-                <source>Project documents</source>
-                <target>Projekt-Dokumente</target>
-            </trans-unit>
-            <trans-unit id="f28128b38efbc6134dc40751ee21fd29">
-                <source>Documents</source>
-                <target>Dokumente</target>
-            </trans-unit>
-            <trans-unit id="b17695c685b2977c35ea4e6e52dfaa68">
-                <source>Project help</source>
-                <target>Projekt-Hilfe</target>
-            </trans-unit>
-            <trans-unit id="6a26f548831e6a8c26bfbbd9f6ec61e0">
-                <source>Help</source>
-                <target>Hilfe</target>
-            </trans-unit>
-            <trans-unit id="b3e5cf692e6cbe060bf0fa114af7bd07">
-                <source>Project wiki</source>
-                <target>Projekt-Wiki</target>
-            </trans-unit>
-            <trans-unit id="bf111e3622a72a3b5dc784b5903983ca">
-                <source>Wiki</source>
-                <target>Wiki</target>
-            </trans-unit>
-            <trans-unit id="3399db9c9cd1e8a9b1c39cf2b49035f3">
-                <source>Can edit the wiki lefthand menu</source>
-                <target>Kann das Wiki-Menu bearbeiten</target>
-            </trans-unit>
-            <trans-unit id="2ebc8ed0812c4a25a24b60546feeac4f">
-                <source>Can access the project wiki</source>
-                <target>Kann auf die Projekt-Wiki zugreifen</target>
-            </trans-unit>
-            <trans-unit id="4cee212b179858f5d51dd9654c034f18">
-                <source>Can write articles in project wiki</source>
-                <target>Kann Artikel im Projekt-Wiki erstellen</target>
-            </trans-unit>
-            <trans-unit id="b09e543f58c571a65b80ee5a7c966220">
-                <source>Can delete articles from project wiki</source>
-                <target>Kann Artikel im Projekt-Wiki löschen</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_articledisplay.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="22015bb0186700ead2502795d0c6a7be">
-                <source>Redirected from %article_name</source>
-                <target>Weitergeleitet von %article_name</target>
-            </trans-unit>
-            <trans-unit id="33dbb00c2c4d4ff09f19b878487aff66">
-                <source>Last updated at %time, by %user</source>
-                <target>Letzte Aktualisierung am %time, durch %user</target>
-            </trans-unit>
-            <trans-unit id="a45da96d0bf6575970f2d27af22be28a">
-                <source>System</source>
-                <target>System</target>
-            </trans-unit>
-            <trans-unit id="f73cc399b5ce12735a57f03414f09ef9">
-                <source>Subcategories</source>
-                <target>Unterkategorien</target>
-            </trans-unit>
-            <trans-unit id="9f987a8ed36c927adc34638f6104a38d">
-                <source>This category doesn't have any subcategories</source>
-                <target>Die Kategorie hat keine Unterkategorien.</target>
-            </trans-unit>
-            <trans-unit id="cc4fbd30d676ea2f9994b7063a8ada15">
-                <source>Pages in this category</source>
-                <target>Seiten in dieser Kategorie</target>
-            </trans-unit>
-            <trans-unit id="72d1a6750ba37e6db6811acbcd60dd8f">
-                <source>There are no pages in this category</source>
-                <target>Es gibt keine Seiten für die Kategorie.</target>
-            </trans-unit>
-            <trans-unit id="8c38776925f7cf41c090646a43157024">
-                <source>Categories:</source>
-                <target>Kategorien:</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_articleslist.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="510c0b4a3bd4b819ec3929f8646f1914">
-                <source>This list is empty.</source>
-                <target>Diese Liste ist leer.</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_attachments.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="9cdee890406a3474e86b95fcee2ca6c9">
-                <source>There are no file attached to this article</source>
-                <target>Es gibt keine angehängten Dateien für den Artikel.</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_header.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="6fa6fb782e544a23474bc50f54fa8efd">
-                <source>Please log in to subscribe to updates for this article</source>
-                <target>Bitte einloggen um über Updates zu diesem Artikel automatisch informiert zu werden.</target>
-            </trans-unit>
-            <trans-unit id="47a567e1ece58f8e3cc53ba224abe257">
-                <source>Click the star to toggle whether you want to be notified whenever this article updates or changes</source>
-                <target>Den Stern klicken um ein-/auszuschalten ob sie über Artikelaktualisierungen oder -änderungen informiert werden wollen.</target>
-            </trans-unit>
-            <trans-unit id="498f79c4c5bbde77f1bceb6c86fd0f6d">
-                <source>Show</source>
-                <target>Zeigen</target>
-            </trans-unit>
-            <trans-unit id="7dce122004969d56ae2e0245cb754d35">
-                <source>Edit</source>
-                <target>Bearbeiten</target>
-            </trans-unit>
-            <trans-unit id="f5736a9c83cfe230893d01ad1bff861d">
-                <source>Create new article</source>
-                <target>Neuen Artikel erstellen</target>
-            </trans-unit>
-            <trans-unit id="284716247b12b363fd6b6a71bff0918e">
-                <source>More actions</source>
-                <target>Weitere Aktionen</target>
-            </trans-unit>
-            <trans-unit id="1baf7b02add938a5e196babf4ffab7e0">
-                <source>Toggle distraction-free writing</source>
-                <target>Verzögerungsfreies schreiben ein-/ausschalten</target>
-            </trans-unit>
-            <trans-unit id="cb9745f82a4a90f2f9d515bd8c592f8f">
-                <source>Select parent article</source>
-                <target>Übergeordneten Artikel auswählen</target>
-            </trans-unit>
-            <trans-unit id="16d2b386b2034b9488996466aaae0b57">
-                <source>History</source>
-                <target>History</target>
-            </trans-unit>
-            <trans-unit id="159f404a63b6f3b28bfda77307324731">
-                <source>Attach a file</source>
-                <target>Datei anhängen</target>
-            </trans-unit>
-            <trans-unit id="d08ccf52b4cdd08e41cfb99ec42e0b29">
-                <source>Permissions</source>
-                <target>Berechtigungen</target>
-            </trans-unit>
-            <trans-unit id="86d26660661555adc149b761f1e8e2fd">
-                <source>Create new article here</source>
-                <target>Hier neuen Artikel erstellen</target>
-            </trans-unit>
-            <trans-unit id="3d07bc01ee751515f7105357da248be8">
-                <source>Delete this article</source>
-                <target>Diesen Artikel löschen</target>
-            </trans-unit>
-            <trans-unit id="184eb855a38f789b734815a80e309d24">
-                <source>Please confirm</source>
-                <target>Bitte bestätigen</target>
-            </trans-unit>
-            <trans-unit id="26cc969ad1f17e6c3a9060f94a746ef6">
-                <source>Do you really want to delete this article?</source>
-                <target>Möchten Sie diesen Artikel wirklich entfernen?</target>
-            </trans-unit>
-            <trans-unit id="118e8fd27a1b0136af52e8be0893ccbc">
-                <source>No parent article</source>
-                <target>Kein übergeordneter Artikel</target>
-            </trans-unit>
-            <trans-unit id="c329d534a22617744fb5f577c21d9e58">
-                <source>%article_name ~ Edit</source>
-                <target>%article_name ~ Bearbeiten</target>
-            </trans-unit>
-            <trans-unit id="f7cfb0e28d7a32ef7a7b7ebff5115959">
-                <source>%article_name ~ History</source>
-                <target>%article_name ~ History</target>
-            </trans-unit>
-            <trans-unit id="bc61e8a81b22b6711984e4c8373795c2">
-                <source>%article_name ~ Permissions</source>
-                <target>%article_name ~ Berechtigungen</target>
-            </trans-unit>
-            <trans-unit id="07b27af48ed55939b5df50c8a2f3c92b">
-                <source>%article_name ~ Attachments</source>
-                <target>%article_name ~ Anhänge</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_latestArticles.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="90e5f22a5da204e15b9d06f75bf79b18">
-                <source>Recently edited pages here</source>
-                <target>Zuletzt geänderte Seiten</target>
-            </trans-unit>
-            <trans-unit id="4d2077da17f63e3b92a3f077ea3130ce">
-                <source>Click the header to show / hide</source>
-                <target>Auf die Kopfzeile klicken um ein- / auszublenden</target>
-            </trans-unit>
-            <trans-unit id="b6387eabd05775c749c817baf1579f41">
-                <source>%time, by %user</source>
-                <target>%time, von %user</target>
-            </trans-unit>
-            <trans-unit id="606df4709391e9cd4ad47b005811524d">
-                <source>There are no recent pages here</source>
-                <target>Es gibt hier keine zuletzt besuchte Seiten</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_leftmenu.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="af0ffc120b21ea659714ced2d6eaa58a">
-                <source>Wiki menu</source>
-                <target>Wiki-Menü</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_menustriplinks.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="5d41d4308923e87c09b0513be0cb2c54">
-                <source>Project wiki frontpage</source>
-                <target>Projektwiki Startseite</target>
-            </trans-unit>
-            <trans-unit id="5251014c27cdbf7dfb2e12ce3033a50d">
-                <source>Find project article (press enter to search)</source>
-                <target>Projektartikel finden (Zum Suchen bitte Enter drücken)</target>
-            </trans-unit>
-            <trans-unit id="08cab6f65f1a43b6c901f13264046666">
-                <source>Global content</source>
-                <target>Globaler Inhalt</target>
-            </trans-unit>
-            <trans-unit id="522624d779b54b7e6cc0270b74d31887">
-                <source>Find any article (press enter to search)</source>
-                <target>Alle Artikel finden (Zum Suchen bitte Enter drücken)</target>
-            </trans-unit>
-            <trans-unit id="dd663f77eef0eca1772482e2a13ba759">
-                <source>Project wikis</source>
-                <target>Projekt-Wikis</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_placeholder.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="00da18b63de73a42b72644222f7976a2">
-                <source>This article has not been created yet.</source>
-                <target>Der Artikel wurde noch nicht erstellt.</target>
-            </trans-unit>
-            <trans-unit id="06f0fb33badc4ee51edaa12c74a2fc27">
-                <source>You can create this article by clicking %create_this_article below.</source>
-                <target>Sie können den Artikel erstellen durchs Anklicken des Buttons %create_this_article.</target>
-            </trans-unit>
-            <trans-unit id="db9c8a770f3a204c3ef5f75319d01ac4">
-                <source>Create this article</source>
-                <target>Artikel erstellen</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_quicksearch_dropdown_firstitems.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="ccdacd8f3dd579258559ca23af4e0aa5">
-                <source>Select this to search the wiki for this term</source>
-                <target>Dies auswählen und im Wiki dannach suchen</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_quicksearch_dropdown_founditems.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="ac5ca9c91f7e0c9d1fb611b0d7f3450e">
-                <source>%num article(s) found</source>
-                <target>%num Artikel gefunden</target>
-            </trans-unit>
-            <trans-unit id="adb517bfed6a827bf15680c31fb4371b">
-                <source>Last updated %updated_at</source>
-                <target>Letzte Aktualisierung %updated_at</target>
-            </trans-unit>
-            <trans-unit id="c0b71cf230870767b487efacac1de0de">
-                <source>See %num more articles ...</source>
-                <target>%num weitere Artikel zeigen ...</target>
-            </trans-unit>
-            <trans-unit id="274967bb87bca2b2b90b99cc2db1fa2c">
-                <source>No articles found matching your query</source>
-                <target>Keinen Artikel gefunden, der mit Ihrer Abfrage übereinstimmt.</target>
+            <trans-unit id="3fb9ac8066a4a7b3fb32ee371065bc61">
+                <source>Below is a listing of pages that have no categories.</source>
+                <target>Untenstehend eine Auflistung aller Seiten welche keine Kategorien haben.</target>
             </trans-unit>
         </body>
     </file>
@@ -398,6 +106,22 @@
             <trans-unit id="0058f8dce491725393ac84788114ecd1">
                 <source>Import wiki articles</source>
                 <target>Wiki-Artikel importieren</target>
+            </trans-unit>
+            <trans-unit id="bc3eed888b4b3a52759fa458a92b5327">
+                <source>Enable wiki</source>
+                <target>Wiki aktivieren</target>
+            </trans-unit>
+            <trans-unit id="93cba07454f06a4a960172bbd6e2a435">
+                <source>Yes</source>
+                <target>Ja</target>
+            </trans-unit>
+            <trans-unit id="bafd7322c6e97d25b6299b5d6fe8920b">
+                <source>No</source>
+                <target>Nein</target>
+            </trans-unit>
+            <trans-unit id="303c578f173ee4b17fc1f2f7d3e345e1">
+                <source>Setting this to &quot;%no&quot; will hide all &quot;Wiki&quot; tabs and links</source>
+                <target>Wenn diese Einstellung auf &quot;%no&quot; gesetzt wird, werden alle &quot;Wiki&quot;-Tabs und -Links ausgeblendet</target>
             </trans-unit>
             <trans-unit id="befa9a640d6cde27a2b15fdd92d5fd27">
                 <source>Menu title</source>
@@ -431,14 +155,6 @@
                 <source>Allow &quot;CamelCased&quot; links</source>
                 <target>Erlaube &quot;CamelCase&quot; Links</target>
             </trans-unit>
-            <trans-unit id="93cba07454f06a4a960172bbd6e2a435">
-                <source>Yes</source>
-                <target>Ja</target>
-            </trans-unit>
-            <trans-unit id="bafd7322c6e97d25b6299b5d6fe8920b">
-                <source>No</source>
-                <target>Nein</target>
-            </trans-unit>
             <trans-unit id="7fc1bb433dd9339e7c2f84655b28b017">
                 <source>Traditionally, %CamelCasing has been used to specify links between documents in Wikis. If you want to keep this turned on, specify so here. Make sure you read the %wikiformatting wiki article if you are unsure how to use this feature.</source>
                 <target>Normalerweise wird %CamelCasing benützt, um Links zwischen Dokumenten in den Wikis zu definieren. Wenn Sie das beibehalten wollen, spezifizieren Sie es hier. Lesen Sie den %wikiformatting Wiki Artikel wenn Sie nicht sicher sind wie dieses Feature einzusetzen ist.</target>
@@ -446,14 +162,6 @@
             <trans-unit id="5df8efd563f277f6357ebf12d3d1645b">
                 <source>CamelCasing</source>
                 <target>CamelCasing</target>
-            </trans-unit>
-            <trans-unit id="3edf4a82c00336ce9b85767062704fe7">
-                <source>Show &quot;Wiki&quot; links</source>
-                <target>Zeige &quot;Wiki&quot; Links</target>
-            </trans-unit>
-            <trans-unit id="303c578f173ee4b17fc1f2f7d3e345e1">
-                <source>Setting this to &quot;%no&quot; will hide all &quot;Wiki&quot; tabs and links</source>
-                <target>Wenn diese Einstellung auf &quot;%no&quot; gesetzt wird, werden alle &quot;Wiki&quot;-Tabs und -Links ausgeblendet.</target>
             </trans-unit>
             <trans-unit id="3f782c5d50d36aa0c3518c22c6b8c4de">
                 <source>Require change reason</source>
@@ -526,325 +234,89 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/_specialallcategories.inc.php" source-language="en" target-language="de-DE">
+    <file datatype="php" original="templates/_articledisplay.inc.php" source-language="en" target-language="de-DE">
         <body>
-            <trans-unit id="9ab931ca4c25a2a54f3aabdd2d802c6d">
-                <source>Note: This page lists all categories for &quot;%project_name&quot;. For a list of global categories, see %all_categories</source>
-                <target>Notiz: Diese Seite listet alle Kategorien für &quot;%project_name&quot; auf. Für eine Liste aller globalen Kategorien, siehe %all_categories</target>
+            <trans-unit id="22015bb0186700ead2502795d0c6a7be">
+                <source>Redirected from %article_name</source>
+                <target>Weitergeleitet von %article_name</target>
             </trans-unit>
-            <trans-unit id="79b16c21856458ff37d1f5573779fa2f">
-                <source>Below is a listing of all categories.</source>
-                <target>Untenstehend eine Auflistung aller Kategorien.</target>
+            <trans-unit id="33dbb00c2c4d4ff09f19b878487aff66">
+                <source>Last updated at %time, by %user</source>
+                <target>Letzte Aktualisierung am %time, durch %user</target>
+            </trans-unit>
+            <trans-unit id="a45da96d0bf6575970f2d27af22be28a">
+                <source>System</source>
+                <target>System</target>
+            </trans-unit>
+            <trans-unit id="f73cc399b5ce12735a57f03414f09ef9">
+                <source>Subcategories</source>
+                <target>Unterkategorien</target>
+            </trans-unit>
+            <trans-unit id="9f987a8ed36c927adc34638f6104a38d">
+                <source>This category doesn't have any subcategories</source>
+                <target>Die Kategorie hat keine Unterkategorien.</target>
+            </trans-unit>
+            <trans-unit id="cc4fbd30d676ea2f9994b7063a8ada15">
+                <source>Pages in this category</source>
+                <target>Seiten in dieser Kategorie</target>
+            </trans-unit>
+            <trans-unit id="72d1a6750ba37e6db6811acbcd60dd8f">
+                <source>There are no pages in this category</source>
+                <target>Es gibt keine Seiten für die Kategorie.</target>
+            </trans-unit>
+            <trans-unit id="8c38776925f7cf41c090646a43157024">
+                <source>Categories:</source>
+                <target>Kategorien:</target>
             </trans-unit>
         </body>
     </file>
 
-    <file datatype="php" original="templates/_specialallpages.inc.php" source-language="en" target-language="de-DE">
+    <file datatype="php" original="templates/_latestArticles.inc.php" source-language="en" target-language="de-DE">
         <body>
-            <trans-unit id="0722f9b14b93cbc34e85f69cd009246a">
-                <source>Note: This page lists all articles for &quot;%project_name&quot;. For a list of global articles, see %all_pages</source>
-                <target>Notiz: Diese Seite listet alle Artikel für &quot;%project_name&quot; auf. Für eine Liste aller globalen Artikel, siehe %all_pages</target>
+            <trans-unit id="90e5f22a5da204e15b9d06f75bf79b18">
+                <source>Recently edited pages here</source>
+                <target>Zuletzt geänderte Seiten</target>
             </trans-unit>
-            <trans-unit id="36b8fc8276745b59c854e643887a67f7">
-                <source>Note: This page lists all articles in the global scope. For a list of project articles, see the corresponding &quot;All pages&quot; for that specific project</source>
-                <target>Notiz: Diese Seite listet alle Artikel im globalen Bereich auf. Um eine Liste aller Projektartikel zu erhalten, suchen Sie unter &quot;Alle Seiten&quot; nach dem spezifischen Projekt.</target>
+            <trans-unit id="4d2077da17f63e3b92a3f077ea3130ce">
+                <source>Click the header to show / hide</source>
+                <target>Auf die Kopfzeile klicken um ein- / auszublenden</target>
             </trans-unit>
-            <trans-unit id="006ef2d9461b3e676c439fe50d026ba9">
-                <source>Below is a listing of all pages.</source>
-                <target>Untenstehend eine Auflistung aller Seiten.</target>
+            <trans-unit id="b6387eabd05775c749c817baf1579f41">
+                <source>%time, by %user</source>
+                <target>%time, von %user</target>
+            </trans-unit>
+            <trans-unit id="606df4709391e9cd4ad47b005811524d">
+                <source>There are no recent pages here</source>
+                <target>Es gibt hier keine zuletzt besuchte Seiten</target>
             </trans-unit>
         </body>
     </file>
 
-    <file datatype="php" original="templates/_specialalltemplates.inc.php" source-language="en" target-language="de-DE">
+    <file datatype="php" original="templates/_menustriplinks.inc.php" source-language="en" target-language="de-DE">
         <body>
-            <trans-unit id="ab47634e92161ef3ebeb2b2c8ebd87f8">
-                <source>Note: This page lists all templates for &quot;%project_name&quot;. For a list of global templates, see %all_templates</source>
-                <target>Notiz: Diese Seite listet alle Vorlagen für &quot;%project_name&quot; auf. Für eine Liste aller globalen Vorlagen, siehe %all_templates</target>
+            <trans-unit id="7298e4abc5483d6bfd7a0ec46ba8bdd6">
+                <source>Quick links</source>
+                <target>Quick-Links</target>
             </trans-unit>
-            <trans-unit id="f6f2a812dfbd9da3533b7b34488c30cb">
-                <source>Below is a listing of all templates.</source>
-                <target>Untenstehend eine Auflistung aller Vorlagen.</target>
+            <trans-unit id="dd663f77eef0eca1772482e2a13ba759">
+                <source>Project wikis</source>
+                <target>Projekt-Wikis</target>
             </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_specialdeadendpages.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="7eb90ad98c7ad3ba773475f440f7548d">
-                <source>Note: This page lists all dead end articles for &quot;%project_name&quot;. For a list of global articles with no links, see %dead_end_pages</source>
-                <target>Notiz: Diese Seite listet alle Sackgassenartikel für &quot;%project_name&quot; auf. Für eine Liste aller globalen Sackgassenartikel, siehe %dead_end_pages</target>
+            <trans-unit id="522624d779b54b7e6cc0270b74d31887">
+                <source>Find any article (press enter to search)</source>
+                <target>Alle Artikel finden (Zum Suchen bitte Enter drücken)</target>
             </trans-unit>
-            <trans-unit id="860b33bd8b15ac47ab09b0462518cd4d">
-                <source>Below is a listing of pages that have no links to other pages.</source>
-                <target>Untenstehend eine Auflistung der Seiten welche keine Links zu anderen Seiten haben.</target>
+            <trans-unit id="08cab6f65f1a43b6c901f13264046666">
+                <source>Global content</source>
+                <target>Globaler Inhalt</target>
             </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_specialorphanedpages.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="4f8f960494c939fb4c65deb2e087957a">
-                <source>Note: This page lists all articles that are not linked to for &quot;%project_name&quot;. For a list of global articles that are not linked to, see %orphaned_pages</source>
-                <target>Notiz: Diese Seite listet alle Artikel für &quot;%project_name&quot; auf, welche nicht verlinkt sind. Für eine Liste aller globalen nicht verlinkten Artikel, siehe %orphaned_pages</target>
+            <trans-unit id="b91aeb41e84ca8c422760b2c74e91f2b">
+                <source>Project content</source>
+                <target>Projektinhalt</target>
             </trans-unit>
-            <trans-unit id="46dbd69856ab2225848f843f4cffeab6">
-                <source>Below is a listing of pages that are not linked to by other pages.</source>
-                <target>Untenstehend eine Auflistung von Seiten welche nicht von anderen Seiten verlinkt werden.</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_specialspecialpages.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="f4d04bf531159488566d57d44f88d0a1">
-                <source>Wiki special pages</source>
-                <target>Wiki Spezialseiten</target>
-            </trans-unit>
-            <trans-unit id="e72433127fb8ecaf1f4200d7409f16f3">
-                <source>Note: This page lists all project-specific special pages for &quot;%project_name&quot;. For a list of global special pages, see %special_pages</source>
-                <target>Notiz: Diese Seite listet alle projektspezifischen Spezialseiten für &quot;%project_name&quot; auf. Für eine Liste aller globalen Spezialseiten, siehe %special_pages</target>
-            </trans-unit>
-            <trans-unit id="32bf49881ebb0a1889d45aff598d6fbb">
-                <source>Special pages</source>
-                <target>Spezielle Seiten</target>
-            </trans-unit>
-            <trans-unit id="e12342c4d0d3ff8506a15e62c6170b96">
-                <source>This is a list of all the &quot;special pages&quot; available in The Bug Genie wiki. These are generated automatically and cannot be edited via the builtin wiki-editor.</source>
-                <target>Dies ist eine Liste aller in The Bug Genie Wiki vorhandenen &quot;Spezialseiten&quot;. Diese werden automatisch generiert und können über den integrierten Wiki-Editor nicht bearbeitet werden.</target>
-            </trans-unit>
-            <trans-unit id="b19081d107d0a594fe0a4b0f8956ea05">
-                <source>Automatic pages</source>
-                <target>Automatische Seiten</target>
-            </trans-unit>
-            <trans-unit id="e498548d75124859d5b91dd7ad4f5352">
-                <source>Frontpage article</source>
-                <target>Startseitenartikel</target>
-            </trans-unit>
-            <trans-unit id="b9087ab27b6a807dc3164597b41f4b00">
-                <source>Frontpage left menu footer</source>
-                <target>Fusszeile des Startseitenmenüs links</target>
-            </trans-unit>
-            <trans-unit id="10f13a8de711f3c0e1819de96d56065e">
-                <source>Login introduction header</source>
-                <target>Kopfzeile der Loginseite</target>
-            </trans-unit>
-            <trans-unit id="67f49d0a2b2e886e60e588a3abf6c04d">
-                <source>OpenID login introduction header</source>
-                <target>Kopfzeile der OpenID Loginseite</target>
-            </trans-unit>
-            <trans-unit id="4683ef9055a0464b93a45a7ba1ea94f3">
-                <source>Registration introduction header</source>
-                <target>Kopfzeile der Benutzerregistrierungsseite</target>
-            </trans-unit>
-            <trans-unit id="ef558ce33db3b419d05b2df1d2ae161c">
-                <source>Forgotten password introduction header</source>
-                <target>Kopfzeile der Seite &quot;Passwort vergessen&quot;</target>
-            </trans-unit>
-            <trans-unit id="360d275e5693f7d451077f0ef03ec538">
-                <source>Wiki maintenance</source>
-                <target>Wiki Wartungsarbeiten</target>
-            </trans-unit>
-            <trans-unit id="e22ea903debefc0be104260b4e6562cb">
-                <source>Dead end pages</source>
-                <target>Sackgassenseiten</target>
-            </trans-unit>
-            <trans-unit id="86ad17fb057e8026504bd1c3efaddc1b">
-                <source>Uncategorized pages</source>
-                <target>Unkategorisierte Seiten</target>
-            </trans-unit>
-            <trans-unit id="6f9a371fcf6a4c188484ec6a54dbc20c">
-                <source>Orphaned pages</source>
-                <target>Verwaiste Seiten</target>
-            </trans-unit>
-            <trans-unit id="71cb502d66628c63505eabe62061dd2d">
-                <source>Uncategorized categories</source>
-                <target>Unkategorisierte Kategorien</target>
-            </trans-unit>
-            <trans-unit id="00fe2838a6fa7472d6bcc0b977a4c7db">
-                <source>Page lists</source>
-                <target>Seitenlisten</target>
-            </trans-unit>
-            <trans-unit id="ffe61bebc32cf64ade7789514bd34f88">
-                <source>All pages</source>
-                <target>Alle Zeiten</target>
-            </trans-unit>
-            <trans-unit id="62f5d708d6ad1fa1ddd9429a65cccbea">
-                <source>All categories</source>
-                <target>Alle Kategorien</target>
-            </trans-unit>
-            <trans-unit id="d4e3a3afd7f0073d8b3967cf2995edc9">
-                <source>All templates</source>
-                <target>Alle Vorlagen</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_specialuncategorizedcategories.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="04bfbdf788d5dfda6bfc0e15c9e01408">
-                <source>Note: This page lists all categories without any parent categories in &quot;%project_name&quot;. For a list of global categories with no parent categories, see %uncategorized_categories</source>
-                <target>Notiz: Diese Seite listet alle Kategorien ohne übergeordnete Kategorien &quot;%project_name&quot; auf. Für eine Liste aller globalen Kategorien ohne übergeordnete Kategorien, siehe %uncategorized_categories</target>
-            </trans-unit>
-            <trans-unit id="80821c17c196c166e3d0dc040615d265">
-                <source>Below is a listing of categories that have no parent categories.</source>
-                <target>Untenstehend eine Auflistung aller Kategorien welche keine übergeordneten Kategorien haben.</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_specialuncategorizedpages.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="6a1fcfa4a67809e6564b95b61ca9fff7">
-                <source>Note: This page lists all articles without categories in &quot;%project_name&quot;. For a list of global articles with no categories, see %uncategorized_pages</source>
-                <target>Notiz: Diese Seite listet alle Artikel ohne Kategorien in &quot;%project_name&quot; auf. Für eine Liste aller globalen Artikel ohne Kategorien, siehe %uncategorized_pages</target>
-            </trans-unit>
-            <trans-unit id="3fb9ac8066a4a7b3fb32ee371065bc61">
-                <source>Below is a listing of pages that have no categories.</source>
-                <target>Untenstehend eine Auflistung aller Seiten welche keine Kategorien haben.</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_specialwhatlinkshere.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="5ee4bf4c500e761c0adb4aa78cb4ec4d">
-                <source>Below is a listing of all pages that links to this pages.</source>
-                <target>Untenstehend eine Auflistung aller Seiten welche auf diese Seite verweisen.</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_toc.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="598b8ae10dfce818e73d3218daddbdae">
-                <source>Table of contents</source>
-                <target>Inhaltsverzeichnis</target>
-            </trans-unit>
-            <trans-unit id="d27532d90ecd513e97ab811c0f34dbfd">
-                <source>Minimize</source>
-                <target>Minimieren</target>
-            </trans-unit>
-            <trans-unit id="96e2b8f6bc1b07266c2ff8b5303ccca8">
-                <source>Stick to top</source>
-                <target>Im Vordergrund behalten</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_tools.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="ef88578bfb69247960caefc1c1e4385d">
-                <source>Wiki tools</source>
-                <target>Wiki Tools</target>
-            </trans-unit>
-            <trans-unit id="790f491df177c283c83dbfdf3ba80841">
-                <source>What links here</source>
-                <target>Links hierhin</target>
-            </trans-unit>
-            <trans-unit id="e61c5ccf90581d534aa798eba64ff66c">
-                <source>Project special pages</source>
-                <target>Projekt Spezialseiten</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_whatlinkshere.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="73f7cb783e00061625a0f85a4796b1ed">
-                <source>Links to this article</source>
-                <target>Verknüpfungen zu diesem Artikel</target>
-            </trans-unit>
-            <trans-unit id="f3f02e84642f00f9cff5a2ec6592b841">
-                <source>No other articles links to this article</source>
-                <target>Keine anderen Artikel sind mit diesem Artikel verlinkt</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/_wikibreadcrumbs.inc.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="af1b98adf7f686b84cd0b443e022b7a0">
-                <source>Categories</source>
-                <target>Kategorien</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/articleattachments.html.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="1598dec9d4f7b6122464dfaca05212cb">
-                <source>%article_name attachments</source>
-                <target>%article_name Anhänge</target>
-            </trans-unit>
-            <trans-unit id="e6795e6dc7c8f4e2ce9e7787f8463f10">
-                <source>File uploads are not enabled</source>
-                <target>Dateiupload nicht aktiv</target>
-            </trans-unit>
-        </body>
-    </file>
-
-    <file datatype="php" original="templates/articlehistory.html.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="36c93410868f1b100fafe89bf5f3001e">
-                <source>%article_name history</source>
-                <target>%article_name History</target>
-            </trans-unit>
-            <trans-unit id="ff0a3b7f3daef040faf89a88fdac01b7">
-                <source>Updated</source>
-                <target>Aktualisiert</target>
-            </trans-unit>
-            <trans-unit id="a517747c3d12f99244ae598910d979c5">
-                <source>Author</source>
-                <target>Autor</target>
-            </trans-unit>
-            <trans-unit id="0be8406951cdfda82f00f79328cf4efc">
-                <source>Comment</source>
-                <target>Kommentar</target>
-            </trans-unit>
-            <trans-unit id="7eece51cf3938103677db7a5051ef8f5">
-                <source>Compare</source>
-                <target>Vergleichen</target>
-            </trans-unit>
-            <trans-unit id="06df33001c1d7187fdd81ea1f5b277aa">
-                <source>Actions</source>
-                <target>Aktionen</target>
-            </trans-unit>
-            <trans-unit id="a7687f898007693948f4c701604781c3">
-                <source>Initial import</source>
-                <target>Import beginnen</target>
-            </trans-unit>
-            <trans-unit id="5b66e3c9d6ff3f461c58d8b198dbff66">
-                <source>Restore this version</source>
-                <target>Diese Version wiederherstellen</target>
-            </trans-unit>
-            <trans-unit id="b63ba7dc03f301d9b772372a934916a2">
-                <source>Are you sure you want to restore this revision?</source>
-                <target>Sind Sie sicher, dass Sie die Änderung wiederherstellen wollen?</target>
-            </trans-unit>
-            <trans-unit id="d5b4b469b98817c285613db2b2247e7b">
-                <source>If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number</source>
-                <target>Wenn Sie bestätigen, werden alle Änderungen nach der Revision verloren gehen, und der Artikel zurück auf den Status gesetzt, welcher gültig war in Revision %revision_number</target>
-            </trans-unit>
-            <trans-unit id="cc74f333f87786b0cdf604148b3ca9b7">
-                <source>%yes or %cancel</source>
-                <target>%yes oder %cancel</target>
-            </trans-unit>
-            <trans-unit id="10aec35353f9c4096a71c38654c3d402">
-                <source>cancel</source>
-                <target>abbrechen</target>
-            </trans-unit>
-            <trans-unit id="f6931c15e5ba4f966119d085159e2a6a">
-                <source>Showing the difference between revisions: %from_revision &amp;rArr; %to_revision</source>
-                <target>Zeige den Unterschied zwischen den Revisionen: %from_revision &amp;rArr; %to_revision</target>
-            </trans-unit>
-            <trans-unit id="a0cc23e4d17b25ef815887c21758a277">
-                <source>%revision_number, by %author [%date]</source>
-                <target>%revision_number, von %author [%date]</target>
-            </trans-unit>
-            <trans-unit id="72a70002f08d9348ec498b8c2e0f61d3">
-                <source>Back to history</source>
-                <target>Zurück zur History</target>
+            <trans-unit id="79aad29fcc90e132be40eedcb50057c6">
+                <source>Search disabled on external wiki</source>
+                <target>Suche im externen Wiki deaktiviert</target>
             </trans-unit>
         </body>
     </file>
@@ -928,13 +400,13 @@
                 <source>Article type</source>
                 <target>Artikeltyp</target>
             </trans-unit>
-            <trans-unit id="0ceca3cdba5fa864bc2aeb52349e5785">
-                <source>Classic wiki page</source>
-                <target>Klassische Wiki Seite</target>
-            </trans-unit>
             <trans-unit id="8d0c5a35ff800eb5990b06a82aabcf70">
                 <source>Page in a handbook</source>
                 <target>Seite in einem Handbuch</target>
+            </trans-unit>
+            <trans-unit id="0ceca3cdba5fa864bc2aeb52349e5785">
+                <source>Classic wiki page</source>
+                <target>Klassische Wiki Seite</target>
             </trans-unit>
             <trans-unit id="c8f0e263aa988bd9c655931f97e3b158">
                 <source>Choose this article type for pages that are organised like a traditional wiki. These pages will have be loosely coupled by links, and have a classic wiki sidebar.</source>
@@ -947,6 +419,10 @@
             <trans-unit id="eb83a44a3b561b4f826bb414ecf4ecbc">
                 <source>Manual entry name</source>
                 <target>Manueller Eintragsname</target>
+            </trans-unit>
+            <trans-unit id="0be8406951cdfda82f00f79328cf4efc">
+                <source>Comment</source>
+                <target>Kommentar</target>
             </trans-unit>
             <trans-unit id="d0ed74e46fefedd2d068a81d9a1df71a">
                 <source>Reason for the change (max. 255 characters)</source>
@@ -972,6 +448,10 @@
                 <source>Create article</source>
                 <target>Artikel erstellen</target>
             </trans-unit>
+            <trans-unit id="cb9745f82a4a90f2f9d515bd8c592f8f">
+                <source>Select parent article</source>
+                <target>Übergeordneten Artikel auswählen</target>
+            </trans-unit>
             <trans-unit id="4cfa6c981549e990fe2344e4c805405e">
                 <source>Find</source>
                 <target>Suchen</target>
@@ -983,6 +463,393 @@
             <trans-unit id="458385af278a025015eef5d82c7a806e">
                 <source>Please provide a comment describing the edit.</source>
                 <target>Bitte einen Kommentar eingeben, welcher die Änderung beschreibt.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialuncategorizedcategories.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="04bfbdf788d5dfda6bfc0e15c9e01408">
+                <source>Note: This page lists all categories without any parent categories in &quot;%project_name&quot;. For a list of global categories with no parent categories, see %uncategorized_categories</source>
+                <target>Notiz: Diese Seite listet alle Kategorien ohne übergeordnete Kategorien &quot;%project_name&quot; auf. Für eine Liste aller globalen Kategorien ohne übergeordnete Kategorien, siehe %uncategorized_categories</target>
+            </trans-unit>
+            <trans-unit id="80821c17c196c166e3d0dc040615d265">
+                <source>Below is a listing of categories that have no parent categories.</source>
+                <target>Untenstehend eine Auflistung aller Kategorien welche keine übergeordneten Kategorien haben.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_attachments.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="9cdee890406a3474e86b95fcee2ca6c9">
+                <source>There are no file attached to this article</source>
+                <target>Es gibt keine angehängten Dateien für den Artikel.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_projectlinks.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="bf111e3622a72a3b5dc784b5903983ca">
+                <source>Wiki</source>
+                <target>Wiki</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialspecialpages.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="f4d04bf531159488566d57d44f88d0a1">
+                <source>Wiki special pages</source>
+                <target>Wiki Spezialseiten</target>
+            </trans-unit>
+            <trans-unit id="e72433127fb8ecaf1f4200d7409f16f3">
+                <source>Note: This page lists all project-specific special pages for &quot;%project_name&quot;. For a list of global special pages, see %special_pages</source>
+                <target>Notiz: Diese Seite listet alle projektspezifischen Spezialseiten für &quot;%project_name&quot; auf. Für eine Liste aller globalen Spezialseiten, siehe %special_pages</target>
+            </trans-unit>
+            <trans-unit id="32bf49881ebb0a1889d45aff598d6fbb">
+                <source>Special pages</source>
+                <target>Spezielle Seiten</target>
+            </trans-unit>
+            <trans-unit id="e12342c4d0d3ff8506a15e62c6170b96">
+                <source>This is a list of all the &quot;special pages&quot; available in The Bug Genie wiki. These are generated automatically and cannot be edited via the builtin wiki-editor.</source>
+                <target>Dies ist eine Liste aller in The Bug Genie Wiki vorhandenen &quot;Spezialseiten&quot;. Diese werden automatisch generiert und können über den integrierten Wiki-Editor nicht bearbeitet werden.</target>
+            </trans-unit>
+            <trans-unit id="b19081d107d0a594fe0a4b0f8956ea05">
+                <source>Automatic pages</source>
+                <target>Automatische Seiten</target>
+            </trans-unit>
+            <trans-unit id="e498548d75124859d5b91dd7ad4f5352">
+                <source>Frontpage article</source>
+                <target>Startseitenartikel</target>
+            </trans-unit>
+            <trans-unit id="b9087ab27b6a807dc3164597b41f4b00">
+                <source>Frontpage left menu footer</source>
+                <target>Fusszeile des Startseitenmenüs links</target>
+            </trans-unit>
+            <trans-unit id="10f13a8de711f3c0e1819de96d56065e">
+                <source>Login introduction header</source>
+                <target>Kopfzeile der Loginseite</target>
+            </trans-unit>
+            <trans-unit id="67f49d0a2b2e886e60e588a3abf6c04d">
+                <source>OpenID login introduction header</source>
+                <target>Kopfzeile der OpenID Loginseite</target>
+            </trans-unit>
+            <trans-unit id="4683ef9055a0464b93a45a7ba1ea94f3">
+                <source>Registration introduction header</source>
+                <target>Kopfzeile der Benutzerregistrierungsseite</target>
+            </trans-unit>
+            <trans-unit id="ef558ce33db3b419d05b2df1d2ae161c">
+                <source>Forgotten password introduction header</source>
+                <target>Kopfzeile der Seite &quot;Passwort vergessen&quot;</target>
+            </trans-unit>
+            <trans-unit id="5d41d4308923e87c09b0513be0cb2c54">
+                <source>Project wiki frontpage</source>
+                <target>Projektwiki Startseite</target>
+            </trans-unit>
+            <trans-unit id="360d275e5693f7d451077f0ef03ec538">
+                <source>Wiki maintenance</source>
+                <target>Wiki Wartungsarbeiten</target>
+            </trans-unit>
+            <trans-unit id="96858cb143562346b7f065e32c403f30">
+                <source>Contributors</source>
+                <target>Mitwirkende</target>
+            </trans-unit>
+            <trans-unit id="4504e115ba62f77bb8bc8f44070e9b41">
+                <source>Contributions</source>
+                <target>Beiträge</target>
+            </trans-unit>
+            <trans-unit id="e22ea903debefc0be104260b4e6562cb">
+                <source>Dead end pages</source>
+                <target>Sackgassenseiten</target>
+            </trans-unit>
+            <trans-unit id="86ad17fb057e8026504bd1c3efaddc1b">
+                <source>Uncategorized pages</source>
+                <target>Unkategorisierte Seiten</target>
+            </trans-unit>
+            <trans-unit id="6f9a371fcf6a4c188484ec6a54dbc20c">
+                <source>Orphaned pages</source>
+                <target>Verwaiste Seiten</target>
+            </trans-unit>
+            <trans-unit id="71cb502d66628c63505eabe62061dd2d">
+                <source>Uncategorized categories</source>
+                <target>Unkategorisierte Kategorien</target>
+            </trans-unit>
+            <trans-unit id="00fe2838a6fa7472d6bcc0b977a4c7db">
+                <source>Page lists</source>
+                <target>Seitenlisten</target>
+            </trans-unit>
+            <trans-unit id="ffe61bebc32cf64ade7789514bd34f88">
+                <source>All pages</source>
+                <target>Alle Seiten</target>
+            </trans-unit>
+            <trans-unit id="62f5d708d6ad1fa1ddd9429a65cccbea">
+                <source>All categories</source>
+                <target>Alle Kategorien</target>
+            </trans-unit>
+            <trans-unit id="d4e3a3afd7f0073d8b3967cf2995edc9">
+                <source>All templates</source>
+                <target>Alle Vorlagen</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/articleattachments.html.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="1598dec9d4f7b6122464dfaca05212cb">
+                <source>%article_name attachments</source>
+                <target>%article_name Anhänge</target>
+            </trans-unit>
+            <trans-unit id="159f404a63b6f3b28bfda77307324731">
+                <source>Attach a file</source>
+                <target>Datei anhängen</target>
+            </trans-unit>
+            <trans-unit id="e6795e6dc7c8f4e2ce9e7787f8463f10">
+                <source>File uploads are not enabled</source>
+                <target>Dateiupload nicht aktiv</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/showarticle.html.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="4c88e78877f31634f47f3223ede1c043">
+                <source>You are now viewing a previous revision of this article - revision %revision_number %date, by %author</source>
+                <target>Sie sehen hier eine frühere Revision dieses Artikels - Revision %revision_number %date, von %author</target>
+            </trans-unit>
+            <trans-unit id="851a5765d44ef81a0328990baae87b64">
+                <source>Show current version</source>
+                <target>Zeige aktuelle Version</target>
+            </trans-unit>
+            <trans-unit id="db9c8a770f3a204c3ef5f75319d01ac4">
+                <source>Create this article</source>
+                <target>Artikel erstellen</target>
+            </trans-unit>
+            <trans-unit id="ed3cac9425a3b2039cc3f3162a974b65">
+                <source>Article attachments</source>
+                <target>Artikelanhänge</target>
+            </trans-unit>
+            <trans-unit id="24205fcfc9a2b950d0c2aef0cbb9ba5c">
+                <source>Article comments (%count)</source>
+                <target>Artikelkommentare (%count)</target>
+            </trans-unit>
+            <trans-unit id="dae8ace18bdcbcc6ae5aece263e14fe8">
+                <source>Options</source>
+                <target>Optionen</target>
+            </trans-unit>
+            <trans-unit id="56b73d40b8615281b30dc6b88d2b6726">
+                <source>Sort comments in opposite direction</source>
+                <target>Kommentare in gegenteiliger Reihenfolge sortieren</target>
+            </trans-unit>
+            <trans-unit id="5f94404bf7a236db3599df0135a590ac">
+                <source>Post comment</source>
+                <target>Kommentieren</target>
+            </trans-unit>
+            <trans-unit id="eb2c92dbbe71df490cc55e095f48b3fd">
+                <source>This article can not be displayed</source>
+                <target>Dieser Artikel kann nicht angezeigt werden</target>
+            </trans-unit>
+            <trans-unit id="8945896a0827d4dbee2eac7137a71394">
+                <source>This article either does not exist, has been deleted or you do not have permission to view it.</source>
+                <target>Dieser Artikel existiert nicht, wurde gelöscht oder Sie haben keine Berechtigung ihn einzusehen</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_placeholder.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="00da18b63de73a42b72644222f7976a2">
+                <source>This article has not been created yet.</source>
+                <target>Der Artikel wurde noch nicht erstellt.</target>
+            </trans-unit>
+            <trans-unit id="06f0fb33badc4ee51edaa12c74a2fc27">
+                <source>You can create this article by clicking %create_this_article below.</source>
+                <target>Sie können den Artikel erstellen durchs Anklicken des Buttons %create_this_article.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_header.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="6fa6fb782e544a23474bc50f54fa8efd">
+                <source>Please log in to subscribe to updates for this article</source>
+                <target>Bitte einloggen um über Updates zu diesem Artikel automatisch informiert zu werden.</target>
+            </trans-unit>
+            <trans-unit id="47a567e1ece58f8e3cc53ba224abe257">
+                <source>Click the star to toggle whether you want to be notified whenever this article updates or changes</source>
+                <target>Den Stern klicken um ein-/auszuschalten ob sie über Artikelaktualisierungen oder -änderungen informiert werden wollen.</target>
+            </trans-unit>
+            <trans-unit id="498f79c4c5bbde77f1bceb6c86fd0f6d">
+                <source>Show</source>
+                <target>Zeigen</target>
+            </trans-unit>
+            <trans-unit id="7dce122004969d56ae2e0245cb754d35">
+                <source>Edit</source>
+                <target>Bearbeiten</target>
+            </trans-unit>
+            <trans-unit id="f5736a9c83cfe230893d01ad1bff861d">
+                <source>Create new article</source>
+                <target>Neuen Artikel erstellen</target>
+            </trans-unit>
+            <trans-unit id="284716247b12b363fd6b6a71bff0918e">
+                <source>More actions</source>
+                <target>Weitere Aktionen</target>
+            </trans-unit>
+            <trans-unit id="1baf7b02add938a5e196babf4ffab7e0">
+                <source>Toggle distraction-free writing</source>
+                <target>Verzögerungsfreies schreiben ein-/ausschalten</target>
+            </trans-unit>
+            <trans-unit id="16d2b386b2034b9488996466aaae0b57">
+                <source>History</source>
+                <target>History</target>
+            </trans-unit>
+            <trans-unit id="d08ccf52b4cdd08e41cfb99ec42e0b29">
+                <source>Permissions</source>
+                <target>Berechtigungen</target>
+            </trans-unit>
+            <trans-unit id="86d26660661555adc149b761f1e8e2fd">
+                <source>Create new article here</source>
+                <target>Hier neuen Artikel erstellen</target>
+            </trans-unit>
+            <trans-unit id="3d07bc01ee751515f7105357da248be8">
+                <source>Delete this article</source>
+                <target>Diesen Artikel löschen</target>
+            </trans-unit>
+            <trans-unit id="184eb855a38f789b734815a80e309d24">
+                <source>Please confirm</source>
+                <target>Bitte bestätigen</target>
+            </trans-unit>
+            <trans-unit id="26cc969ad1f17e6c3a9060f94a746ef6">
+                <source>Do you really want to delete this article?</source>
+                <target>Möchten Sie diesen Artikel wirklich entfernen?</target>
+            </trans-unit>
+            <trans-unit id="118e8fd27a1b0136af52e8be0893ccbc">
+                <source>No parent article</source>
+                <target>Kein übergeordneter Artikel</target>
+            </trans-unit>
+            <trans-unit id="c329d534a22617744fb5f577c21d9e58">
+                <source>%article_name ~ Edit</source>
+                <target>%article_name ~ Bearbeiten</target>
+            </trans-unit>
+            <trans-unit id="f7cfb0e28d7a32ef7a7b7ebff5115959">
+                <source>%article_name ~ History</source>
+                <target>%article_name ~ History</target>
+            </trans-unit>
+            <trans-unit id="bc61e8a81b22b6711984e4c8373795c2">
+                <source>%article_name ~ Permissions</source>
+                <target>%article_name ~ Berechtigungen</target>
+            </trans-unit>
+            <trans-unit id="07b27af48ed55939b5df50c8a2f3c92b">
+                <source>%article_name ~ Attachments</source>
+                <target>%article_name ~ Anhänge</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_toc.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="598b8ae10dfce818e73d3218daddbdae">
+                <source>Table of contents</source>
+                <target>Inhaltsverzeichnis</target>
+            </trans-unit>
+            <trans-unit id="d27532d90ecd513e97ab811c0f34dbfd">
+                <source>Minimize</source>
+                <target>Minimieren</target>
+            </trans-unit>
+            <trans-unit id="96e2b8f6bc1b07266c2ff8b5303ccca8">
+                <source>Stick to top</source>
+                <target>Im Vordergrund behalten</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_tools.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="ef88578bfb69247960caefc1c1e4385d">
+                <source>Wiki tools</source>
+                <target>Wiki Tools</target>
+            </trans-unit>
+            <trans-unit id="790f491df177c283c83dbfdf3ba80841">
+                <source>What links here</source>
+                <target>Links hierhin</target>
+            </trans-unit>
+            <trans-unit id="e61c5ccf90581d534aa798eba64ff66c">
+                <source>Project special pages</source>
+                <target>Projekt Spezialseiten</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialallpages.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="0722f9b14b93cbc34e85f69cd009246a">
+                <source>Note: This page lists all articles for &quot;%project_name&quot;. For a list of global articles, see %all_pages</source>
+                <target>Notiz: Diese Seite listet alle Artikel für &quot;%project_name&quot; auf. Für eine Liste aller globalen Artikel, siehe %all_pages</target>
+            </trans-unit>
+            <trans-unit id="36b8fc8276745b59c854e643887a67f7">
+                <source>Note: This page lists all articles in the global scope. For a list of project articles, see the corresponding &quot;All pages&quot; for that specific project</source>
+                <target>Notiz: Diese Seite listet alle Artikel im globalen Bereich auf. Um eine Liste aller Projektartikel zu erhalten, suchen Sie unter &quot;Alle Seiten&quot; nach dem spezifischen Projekt.</target>
+            </trans-unit>
+            <trans-unit id="006ef2d9461b3e676c439fe50d026ba9">
+                <source>Below is a listing of all pages.</source>
+                <target>Untenstehend eine Auflistung aller Seiten.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialorphanedpages.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="4f8f960494c939fb4c65deb2e087957a">
+                <source>Note: This page lists all articles that are not linked to for &quot;%project_name&quot;. For a list of global articles that are not linked to, see %orphaned_pages</source>
+                <target>Notiz: Diese Seite listet alle Artikel für &quot;%project_name&quot; auf, welche nicht verlinkt sind. Für eine Liste aller globalen nicht verlinkten Artikel, siehe %orphaned_pages</target>
+            </trans-unit>
+            <trans-unit id="46dbd69856ab2225848f843f4cffeab6">
+                <source>Below is a listing of pages that are not linked to by other pages.</source>
+                <target>Untenstehend eine Auflistung von Seiten welche nicht von anderen Seiten verlinkt werden.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialcontributors.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="1463e3e1243c73866b7619ba0bfd4d31">
+                <source>Special:Contributors for %namespace namespace</source>
+                <target>Spezial: Mitwirkende für %namespace Namensraum</target>
+            </trans-unit>
+            <trans-unit id="4c308527bfef6c24a63d022299f7dd53">
+                <source>Below is a listing of all contributors in %namespace namespace</source>
+                <target>Untenstehend eine Auflistung aller Mitwirkenden im Namensraum %namespace</target>
+            </trans-unit>
+            <trans-unit id="1a36dfb713595adde2390d3b4433f741">
+                <source>No contributors have made any changes in the %namespace namespace</source>
+                <target>Kein Mitwirkender hat im Namensraum %namespace Änderungen vorgenommen</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialalltemplates.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="ab47634e92161ef3ebeb2b2c8ebd87f8">
+                <source>Note: This page lists all templates for &quot;%project_name&quot;. For a list of global templates, see %all_templates</source>
+                <target>Notiz: Diese Seite listet alle Vorlagen für &quot;%project_name&quot; auf. Für eine Liste aller globalen Vorlagen, siehe %all_templates</target>
+            </trans-unit>
+            <trans-unit id="f6f2a812dfbd9da3533b7b34488c30cb">
+                <source>Below is a listing of all templates.</source>
+                <target>Untenstehend eine Auflistung aller Vorlagen.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialallcategories.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="9ab931ca4c25a2a54f3aabdd2d802c6d">
+                <source>Note: This page lists all categories for &quot;%project_name&quot;. For a list of global categories, see %all_categories</source>
+                <target>Notiz: Diese Seite listet alle Kategorien für &quot;%project_name&quot; auf. Für eine Liste aller globalen Kategorien, siehe %all_categories</target>
+            </trans-unit>
+            <trans-unit id="79b16c21856458ff37d1f5573779fa2f">
+                <source>Below is a listing of all categories.</source>
+                <target>Untenstehend eine Auflistung aller Kategorien.</target>
             </trans-unit>
         </body>
     </file>
@@ -1001,6 +868,10 @@
                 <source>Found %num article(s)</source>
                 <target>%num Artikel gefunden</target>
             </trans-unit>
+            <trans-unit id="adb517bfed6a827bf15680c31fb4371b">
+                <source>Last updated %updated_at</source>
+                <target>Letzte Aktualisierung %updated_at</target>
+            </trans-unit>
             <trans-unit id="39b031f1a8505a7556fadf4cd39ca3fd">
                 <source>No articles found</source>
                 <target>Kein Artikel gefunden</target>
@@ -1012,44 +883,291 @@
         </body>
     </file>
 
-    <file datatype="php" original="templates/showarticle.html.php" source-language="en" target-language="de-DE">
-        <body>
-            <trans-unit id="4c88e78877f31634f47f3223ede1c043">
-                <source>You are now viewing a previous revision of this article - revision %revision_number %date, by %author</source>
-                <target>Sie sehen hier eine frühere Revision dieses Artikels - Revision %revision_number %date, von %author</target>
-            </trans-unit>
-            <trans-unit id="851a5765d44ef81a0328990baae87b64">
-                <source>Show current version</source>
-                <target>Zeige aktuelle Version</target>
-            </trans-unit>
-            <trans-unit id="ed3cac9425a3b2039cc3f3162a974b65">
-                <source>Article attachments</source>
-                <target>Artikelanhänge</target>
-            </trans-unit>
-            <trans-unit id="24205fcfc9a2b950d0c2aef0cbb9ba5c">
-                <source>Article comments (%count)</source>
-                <target>Artikelkommentare (%count)</target>
-            </trans-unit>
-            <trans-unit id="5f94404bf7a236db3599df0135a590ac">
-                <source>Post comment</source>
-                <target>Kommentieren</target>
-            </trans-unit>
-            <trans-unit id="eb2c92dbbe71df490cc55e095f48b3fd">
-                <source>This article can not be displayed</source>
-                <target>Dieser Artikel kann nicht angezeigt werden</target>
-            </trans-unit>
-            <trans-unit id="8945896a0827d4dbee2eac7137a71394">
-                <source>This article either does not exist, has been deleted or you do not have permission to view it.</source>
-                <target>Dieser Artikel existiert nicht, wurde gelöscht oder Sie haben keine Berechtigung ihn einzusehen</target>
-            </trans-unit>
-        </body>
-    </file>
-
     <file datatype="php" original="templates/specialarticle.html.php" source-language="en" target-language="de-DE">
         <body>
             <trans-unit id="ca0027dcec8866e2725b6df2d1b2d23b">
                 <source>This special page does not exist</source>
                 <target>Diese Spezialseite existiert nicht</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/deletearticle.html.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="a3267f073c03c65b2b4b9a6d38b0cd78">
+                <source>The article was deleted</source>
+                <target>Der Artikel wurde gelöscht.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_quicksearch_dropdown_founditems.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="ac5ca9c91f7e0c9d1fb611b0d7f3450e">
+                <source>%num article(s) found</source>
+                <target>%num Artikel gefunden</target>
+            </trans-unit>
+            <trans-unit id="c0b71cf230870767b487efacac1de0de">
+                <source>See %num more articles ...</source>
+                <target>%num weitere Artikel zeigen ...</target>
+            </trans-unit>
+            <trans-unit id="274967bb87bca2b2b90b99cc2db1fa2c">
+                <source>No articles found matching your query</source>
+                <target>Keinen Artikel gefunden, der mit Ihrer Abfrage übereinstimmt.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_articleslist.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="510c0b4a3bd4b819ec3929f8646f1914">
+                <source>This list is empty.</source>
+                <target>Diese Liste ist leer.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/articlehistory.html.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="36c93410868f1b100fafe89bf5f3001e">
+                <source>%article_name history</source>
+                <target>%article_name History</target>
+            </trans-unit>
+            <trans-unit id="ff0a3b7f3daef040faf89a88fdac01b7">
+                <source>Updated</source>
+                <target>Aktualisiert</target>
+            </trans-unit>
+            <trans-unit id="7eece51cf3938103677db7a5051ef8f5">
+                <source>Compare</source>
+                <target>Vergleichen</target>
+            </trans-unit>
+            <trans-unit id="06df33001c1d7187fdd81ea1f5b277aa">
+                <source>Actions</source>
+                <target>Aktionen</target>
+            </trans-unit>
+            <trans-unit id="a7687f898007693948f4c701604781c3">
+                <source>Initial import</source>
+                <target>Import beginnen</target>
+            </trans-unit>
+            <trans-unit id="5b66e3c9d6ff3f461c58d8b198dbff66">
+                <source>Restore this version</source>
+                <target>Diese Version wiederherstellen</target>
+            </trans-unit>
+            <trans-unit id="b63ba7dc03f301d9b772372a934916a2">
+                <source>Are you sure you want to restore this revision?</source>
+                <target>Sind Sie sicher, dass Sie die Änderung wiederherstellen wollen?</target>
+            </trans-unit>
+            <trans-unit id="d5b4b469b98817c285613db2b2247e7b">
+                <source>If you confirm, all changes after this revision will be lost, and the article reverted back to the state it was in revision %revision_number</source>
+                <target>Wenn Sie bestätigen, werden alle Änderungen nach der Revision verloren gehen, und der Artikel zurück auf den Status gesetzt, welcher gültig war in Revision %revision_number</target>
+            </trans-unit>
+            <trans-unit id="cc74f333f87786b0cdf604148b3ca9b7">
+                <source>%yes or %cancel</source>
+                <target>%yes oder %cancel</target>
+            </trans-unit>
+            <trans-unit id="10aec35353f9c4096a71c38654c3d402">
+                <source>cancel</source>
+                <target>abbrechen</target>
+            </trans-unit>
+            <trans-unit id="f6931c15e5ba4f966119d085159e2a6a">
+                <source>Showing the difference between revisions: %from_revision &amp;rArr; %to_revision</source>
+                <target>Zeige den Unterschied zwischen den Revisionen: %from_revision &amp;rArr; %to_revision</target>
+            </trans-unit>
+            <trans-unit id="a0cc23e4d17b25ef815887c21758a277">
+                <source>%revision_number, by %author [%date]</source>
+                <target>%revision_number, von %author [%date]</target>
+            </trans-unit>
+            <trans-unit id="72a70002f08d9348ec498b8c2e0f61d3">
+                <source>Back to history</source>
+                <target>Zurück zur History</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialwhatlinkshere.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="5ee4bf4c500e761c0adb4aa78cb4ec4d">
+                <source>Below is a listing of all pages that links to this pages.</source>
+                <target>Untenstehend eine Auflistung aller Seiten welche auf diese Seite verweisen.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_whatlinkshere.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="73f7cb783e00061625a0f85a4796b1ed">
+                <source>Links to this article</source>
+                <target>Verknüpfungen zu diesem Artikel</target>
+            </trans-unit>
+            <trans-unit id="f3f02e84642f00f9cff5a2ec6592b841">
+                <source>No other articles links to this article</source>
+                <target>Keine anderen Artikel sind mit diesem Artikel verlinkt</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_leftmenu.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="af0ffc120b21ea659714ced2d6eaa58a">
+                <source>Wiki menu</source>
+                <target>Wiki-Menü</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_specialdeadendpages.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="7eb90ad98c7ad3ba773475f440f7548d">
+                <source>Note: This page lists all dead end articles for &quot;%project_name&quot;. For a list of global articles with no links, see %dead_end_pages</source>
+                <target>Notiz: Diese Seite listet alle Sackgassenartikel für &quot;%project_name&quot; auf. Für eine Liste aller globalen Sackgassenartikel, siehe %dead_end_pages</target>
+            </trans-unit>
+            <trans-unit id="860b33bd8b15ac47ab09b0462518cd4d">
+                <source>Below is a listing of pages that have no links to other pages.</source>
+                <target>Untenstehend eine Auflistung der Seiten welche keine Links zu anderen Seiten haben.</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="templates/_wikibreadcrumbs.inc.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="af1b98adf7f686b84cd0b443e022b7a0">
+                <source>Categories</source>
+                <target>Kategorien</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="controllers/Main.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="271a2ede29e65409778d6043f2e107dc">
+                <source>You don't have access to read this article</source>
+                <target>Sie haben keine Berechtigung um den Artikel zu lesen</target>
+            </trans-unit>
+            <trans-unit id="a11c9853f629530400e484f5deff2099">
+                <source>There was an error trying to show this revision</source>
+                <target>Beim Versuch die Revision anzuzeigen trat ein Fehler auf</target>
+            </trans-unit>
+            <trans-unit id="d39695f1bd169429d02cdf69c5ee31d6">
+                <source>Please specify a from- and to-revision to compare</source>
+                <target>Bitte wählen Sie eine Von- und eine Zu-Revision zum Vergleich</target>
+            </trans-unit>
+            <trans-unit id="1ddaf5f0cebad627055224ed25151ca2">
+                <source>You do not have permission to edit this article</source>
+                <target>Sie haben keine Berechtigung um diesen Artikel zu bearbeiten</target>
+            </trans-unit>
+            <trans-unit id="ab55ea9d79711cf92ca156c9817bf816">
+                <source>This article does not exist</source>
+                <target>Dieser Artikel existiert nicht</target>
+            </trans-unit>
+            <trans-unit id="363fd9063452c05a14ee97612c2fc8d7">
+                <source>You do not have permission to delete this article</source>
+                <target>Sie haben keine Berechtigung um diesen Artikel zu löschen</target>
+            </trans-unit>
+            <trans-unit id="887663e34493d9a68f46c69eb236e60a">
+                <source>Please specify an article name</source>
+                <target>Bitte geben Sie einen Artikelnamen an</target>
+            </trans-unit>
+            <trans-unit id="a43ea1b90ce285ee18c9f6fcee0bafad">
+                <source>An error occured</source>
+                <target>Ein Fehler ist aufgetreten</target>
+            </trans-unit>
+            <trans-unit id="071f0dadc94a99bbe074b9150b2aae9a">
+                <source>You need to specify a valid article name</source>
+                <target>Sie müssen einen gültigen Artikelnamen eingeben</target>
+            </trans-unit>
+            <trans-unit id="99b496309f8f4256de005e5e75fdacc2">
+                <source>You have to provide a reason for the changes</source>
+                <target>Sie müssen einen Grund für die Änderungen angeben</target>
+            </trans-unit>
+            <trans-unit id="940583dfa4398e5db30ea717806c69bd">
+                <source>The file has been modified since you last opened it</source>
+                <target>Die Datei wurde seit Ihrem letzten Öffnen geändert</target>
+            </trans-unit>
+            <trans-unit id="f1e5b749bed70f5288ed0b7d36f7c165">
+                <source>An article with that name already exists. Please choose a different article name</source>
+                <target>Ein Artikel mit diesem Namen existiert bereits. Bitte wählen Sie einen anderen Artikelnamen</target>
+            </trans-unit>
+            <trans-unit id="749c21ce20f65fc2f1d739f21119ddee">
+                <source>The article was saved</source>
+                <target>Der Artikel wurde gespeichert</target>
+            </trans-unit>
+            <trans-unit id="6a83c724da4e95ece8a08aa468e33e8c">
+                <source>Article ID not specified</source>
+                <target>Artikel-ID nicht angegeben</target>
+            </trans-unit>
+            <trans-unit id="547dfe43ec5ca0c245e68844bad78b59">
+                <source>User ID not specified</source>
+                <target>Benutzer-ID nicht angegeben</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="Publish.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="cdc7932f474adddaed2dce5ff885347f">
+                <source>%number_of_articles articles imported successfully</source>
+                <target>%number_of_articles Artikel erfolgreich importiert</target>
+            </trans-unit>
+            <trans-unit id="ecc877947bbda2824dc53292eb9ef105">
+                <source>Project archive</source>
+                <target>Projekt-Archiv</target>
+            </trans-unit>
+            <trans-unit id="e727b00944f81e1d0a95c12886ac4641">
+                <source>Archive</source>
+                <target>Archiv</target>
+            </trans-unit>
+            <trans-unit id="902e683dcef3f50a58e7f8d16dd2983f">
+                <source>Project documentation</source>
+                <target>Projekt-Dokumentation</target>
+            </trans-unit>
+            <trans-unit id="5b6cf869265c13af8566f192b4ab3d2a">
+                <source>Documentation</source>
+                <target>Dokumentation</target>
+            </trans-unit>
+            <trans-unit id="e7d22769b8f43bc84faaea586ce80158">
+                <source>Project documents</source>
+                <target>Projekt-Dokumente</target>
+            </trans-unit>
+            <trans-unit id="f28128b38efbc6134dc40751ee21fd29">
+                <source>Documents</source>
+                <target>Dokumente</target>
+            </trans-unit>
+            <trans-unit id="b17695c685b2977c35ea4e6e52dfaa68">
+                <source>Project help</source>
+                <target>Projekt-Hilfe</target>
+            </trans-unit>
+            <trans-unit id="6a26f548831e6a8c26bfbbd9f6ec61e0">
+                <source>Help</source>
+                <target>Hilfe</target>
+            </trans-unit>
+            <trans-unit id="b3e5cf692e6cbe060bf0fa114af7bd07">
+                <source>Project wiki</source>
+                <target>Projekt-Wiki</target>
+            </trans-unit>
+            <trans-unit id="3399db9c9cd1e8a9b1c39cf2b49035f3">
+                <source>Can edit the wiki lefthand menu</source>
+                <target>Kann das Wiki-Menu bearbeiten</target>
+            </trans-unit>
+            <trans-unit id="2ebc8ed0812c4a25a24b60546feeac4f">
+                <source>Can access the project wiki</source>
+                <target>Kann auf die Projekt-Wiki zugreifen</target>
+            </trans-unit>
+            <trans-unit id="4cee212b179858f5d51dd9654c034f18">
+                <source>Can write articles in project wiki</source>
+                <target>Kann Artikel im Projekt-Wiki erstellen</target>
+            </trans-unit>
+            <trans-unit id="b09e543f58c571a65b80ee5a7c966220">
+                <source>Can delete articles from project wiki</source>
+                <target>Kann Artikel im Projekt-Wiki löschen</target>
+            </trans-unit>
+        </body>
+    </file>
+
+    <file datatype="php" original="entities/Article.php" source-language="en" target-language="de-DE">
+        <body>
+            <trans-unit id="b1a1ee03f768be82a41f9b27c6823108">
+                <source>Another article with this name already exists</source>
+                <target>Ein anderer Artikel mit diesem Namen existiert bereits.</target>
             </trans-unit>
         </body>
     </file>
