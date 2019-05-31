@@ -1493,7 +1493,7 @@ class Main extends helpers\ProjectActions
             }
         }
         $this->getResponse()->setHttpStatus(400);
-        return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify edition")));
+        return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify editions")));
     }
 
     public function runConfigureProjectEdition(framework\Request $request)
@@ -1564,7 +1564,7 @@ class Main extends helpers\ProjectActions
             }
         }
         $this->getResponse()->setHttpStatus(400);
-        return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify edition")));
+        return $this->renderJSON(array("error" => $this->getI18n()->__("You don't have access to modify editions")));
     }
 
     public function runConfigureProject(framework\Request $request)
