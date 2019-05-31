@@ -5,6 +5,7 @@ dist: trusty
 php:
   - 7.1
   - 7.2
+  - 7.3
   - nightly
 
 matrix:
@@ -16,6 +17,6 @@ env:
   - DB=pgsql
 
 before_script:
-  - composer update
+  - composer update --ignore-platform-reqs
 
 script: vendor/phpunit/phpunit/phpunit --coverage-text tests/
