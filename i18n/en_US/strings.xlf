@@ -6,7 +6,7 @@
 
 <!-- Number of Sections: 304 -->
 <!-- Number of Strings: 3155 -->
-<!-- Keys extracted from sources on: 2019 May 27. -->
+<!-- Keys extracted from sources on: 2019 May 31. -->
 <!-- Translations extracted from Transifex on: -->
 
 <xliff version="1.2">
@@ -6532,8 +6532,8 @@
             <trans-unit id="e2088f1e39399c4fb0661d1d70056fd5">
                 <source>Could not delete this edition</source>
             </trans-unit>
-            <trans-unit id="062d4a6d6ec435653b3bff82f633f851">
-                <source>You don't have access to modify edition</source>
+            <trans-unit id="1e4a859d9cef8e9930322108df6e914f">
+                <source>You don't have access to modify editions</source>
             </trans-unit>
             <trans-unit id="843a6ca8809f8f701f5c294745fd1b1f">
                 <source>You need to specify a name for this edition</source>
