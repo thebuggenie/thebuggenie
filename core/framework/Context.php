@@ -1803,7 +1803,15 @@ class Context
                 break;
             }
         }
-
+        
+        // Prioritize self permission, if set
+        $selfValue = self::checkPermission($module, $permission, $target_id, $uid, $gid, $team_ids);
+        if (!is_null($selfValue))
+        {
+        	return $selfValue;
+        }
+        
+        // Search upward through parent hierarchy to find permission
         if ($key != 'config') {
             foreach (self::$_available_permission_paths[$key][$permission] as $parent_permission) {
                 $value = self::checkPermission($module, $parent_permission, $target_id, $uid, $gid, $team_ids);
@@ -1813,7 +1821,8 @@ class Context
             }
         }
 
-        return self::checkPermission($module, $permission, $target_id, $uid, $gid, $team_ids);
+        // No permissions found
+        return null;
     }
 
     /**
