@@ -527,6 +527,13 @@
         public function runAddEpic(framework\Request $request)
         {
             $this->forward403unless($this->_checkProjectPageAccess('project_planning'));
+            
+            // Since this creates an issue, user should also have permission to create an issue
+            $this->forward403unless(
+            	framework\Context::getCurrentProject() instanceof \thebuggenie\core\entities\Project && 
+            	framework\Context::getCurrentProject()->hasAccess() && 
+            	$this->getUser()->canReportIssues(framework\Context::getCurrentProject()));
+            
             $board = entities\tables\AgileBoards::getTable()->selectById($request['board_id']);
 
             try
