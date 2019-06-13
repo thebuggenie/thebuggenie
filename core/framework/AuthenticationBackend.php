@@ -46,6 +46,9 @@
          */
         function autoVerifyToken($username, $token, $is_elevated = false)
         {
+            if (empty($username) || empty($token)) // not claiming to be a user, no one to auth against. 
+                return null;
+            
             $user = Users::getTable()->getByUsername($username);
 
             if (!$user instanceof User)
