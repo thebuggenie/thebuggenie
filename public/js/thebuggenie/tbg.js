@@ -7813,11 +7813,15 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                 var unl = $('user_notifications_list'),
                     unl_data = unl.dataset;
                 if (unl) {
+                    var delimiter = "?";
+                    if (unl_data.notificationsUrl.indexOf("?") != -1) {
+                      delimiter = "&";
+                    }
                     if (loadToTop && unl.down('li') != undefined) {
-                        var url = unl_data.notificationsUrl+'&first_notification_id='+unl.down('li:not(.disabled)').dataset.notificationId;
+                        var url = unl_data.notificationsUrl+delimiter+'first_notification_id='+unl.down('li:not(.disabled)').dataset.notificationId;
                     }
                     else if (! loadToTop && unl.select("li:not(.disabled):last-child") != undefined && unl.select("li:not(.disabled):last-child")[0] != undefined) {
-                        var url = unl_data.notificationsUrl+'&last_notification_id='+unl.select("li:not(.disabled):last-child")[0].dataset.notificationId;
+                        var url = unl_data.notificationsUrl+delimiter+'last_notification_id='+unl.select("li:not(.disabled):last-child")[0].dataset.notificationId;
                     }
                     if (url != undefined) {
                         TBG.Main.Helpers.ajax(url, {
