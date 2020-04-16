@@ -57,7 +57,7 @@
             if ($request->isPost())
             {
                 $offset = $request->getParameter('offset', 0);
-                $this->commits = Commit::getByProject($this->selected_project->getID(), 40, $offset, $request->getParameter('branchname'), $request->getParameter('gitlab_repos_nss'));
+                $this->commits = Commit::getByProject($this->selected_project->getID(), 40, $offset, $request->getParameter('branch'), $request->getParameter('gitlab_repos_nss'));
 
                 return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/projectcommitsbox', array('commits' => $this->commits, 'selected_project' => $this->selected_project, 'branchname' => $request->getParameter('branchname'), 'gitlab_repos_nss' => $request->getParameter('gitlab_repos_nss'))), 'offset' => $offset + 40));
             }
@@ -112,7 +112,7 @@
             }
 
             $offset = $request->getParameter('offset', 0);
-            $this->commits = Commit::getByProject($this->selected_project->getID(), 40, $offset, $request->getParameter('branchname'), $request->getParameter('gitlab_repos_nss'));
+            $this->commits = Commit::getByProject($this->selected_project->getID(), 40, $offset, $request->getParameter('branch'), $request->getParameter('gitlab_repos_nss'));
 
             return $this->renderJSON(array('content' => $this->getComponentHTML('vcs_integration/projectcommits', array('commits' => $this->commits, 'selected_project' => $this->selected_project)), 'offset' => $offset + 40));
         }

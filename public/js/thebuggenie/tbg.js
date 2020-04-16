@@ -2128,9 +2128,8 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         TBG.Project.showBranchCommits = function (url, branch) {
             $$('body')[0].setStyle({'overflow': 'auto'});
 
-            TBG.Main.Helpers.ajax(url, {
+            var parameters = {
                 url_method: 'post',
-                additional_params: "branch=" + branch,
                 loading: {
                     indicator: 'fullpage_backdrop',
                     show: 'fullpage_backdrop_indicator',
@@ -2140,7 +2139,11 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     show: 'project_commits_box',
                     update: 'project_commits'
                 }
-            });
+            };
+            if(branch !== undefined) {
+                parameters['additional_params'] = "branch=" + branch;
+            }
+            TBG.Main.Helpers.ajax(url, parameters);
         }
 
         TBG.Project.Commits.update = function (url, branch) {
