@@ -562,7 +562,7 @@
          */
         public function deleteCookie($key)
         {
-            setcookie($key, '', NOW - 36000, (Context::getWebroot() != '/') ? Context::getWebroot() : '');
+            $this->setCookie($key, '', NOW - 36000);
             return true;
         }
 
