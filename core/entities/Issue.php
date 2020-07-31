@@ -3264,7 +3264,7 @@
                 $estimated += $this->getEstimatedMonths() * 8 * 22;
 
                 $spent = $this->getSpentMinutes();
-                $spent *= $this->getSpentHours() * 60;
+                $spent += $this->getSpentHours() * 60;
                 $spent += $this->getSpentDays() * 8;
                 $spent += $this->getSpentWeeks() * 8 * 5;
                 $spent += $this->getSpentMonths() * 8 * 22;
