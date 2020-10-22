@@ -73,6 +73,7 @@
             $this->show_article_options = (bool) ($this->article instanceof Article);
             $this->links_target_id = (framework\Context::isProjectContext()) ? framework\Context::getCurrentProject()->getID() : 0;
             $this->links = framework\Context::getModule('publish')->getMenuItems($this->links_target_id);
+            if (!isset($this->special)) $this->special = null;
         }
 
         public function componentManualSidebar()

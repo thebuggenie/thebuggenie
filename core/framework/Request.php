@@ -344,18 +344,6 @@
          */
         public function __construct()
         {
-            if (get_magic_quotes_gpc())
-            {
-                $strip_gpc = function(&$value)
-                {
-                    $value = stripslashes($value);
-                };
-                foreach (array($_GET, $_POST, $_COOKIE, $_REQUEST) as $inputarray)
-                {
-                    array_walk_recursive($inputarray, $strip_gpc);
-                }
-            }
-
             foreach ($_COOKIE as $key => $value)
             {
                 $this->_cookies[$key] = $value;
