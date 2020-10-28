@@ -36,6 +36,11 @@ class Main extends framework\Action
     const CSV_PROJECT_ALLOW_REPORTING = 'allow_reporting';
     const CSV_PROJECT_AUTOASSIGN = 'autoassign';
     const CSV_CLIENT_NAME = 'name';
+    const CSV_CLIENT_CODE = 'code';
+    const CSV_CLIENT_CONTACT = 'contact';
+    const CSV_CLIENT_TITLE = 'title';
+    const CSV_CLIENT_ADDRESS = 'address';
+    const CSV_CLIENT_NOTES = 'notes';
     const CSV_CLIENT_EMAIL = 'email';
     const CSV_CLIENT_TELEPHONE = 'telephone';
     const CSV_CLIENT_FAX = 'fax';
@@ -921,6 +926,21 @@ class Main extends framework\Action
 
                             $client = new entities\Client();
                             $client->setName($activerow[self::CSV_CLIENT_NAME]);
+
+                            if (isset($activerow[self::CSV_CLIENT_CODE]))
+                                $client->setCode($activerow[self::CSV_CLIENT_CODE]);
+                            
+                            if (isset($activerow[self::CSV_CLIENT_CONTACT]))
+                                $client->setContact($activerow[self::CSV_CLIENT_CONTACT]);
+                            
+                            if (isset($activerow[self::CSV_CLIENT_TITLE]))
+                                $client->setTitle($activerow[self::CSV_CLIENT_TITLE]);
+                            
+                            if (isset($activerow[self::CSV_CLIENT_ADDRESS]))
+                                $client->setAddress($activerow[self::CSV_CLIENT_ADDRESS]);
+                            
+                            if (isset($activerow[self::CSV_CLIENT_NOTES]))
+                                $client->setNotes($activerow[self::CSV_CLIENT_NOTES]);
 
                             if (isset($activerow[self::CSV_CLIENT_EMAIL]))
                                 $client->setEmail($activerow[self::CSV_CLIENT_EMAIL]);

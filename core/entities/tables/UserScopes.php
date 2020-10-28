@@ -224,8 +224,10 @@
                 {
                     try
                     {
-                        $user_id = (int) $row->get(self::USER_ID);
-                        $users[$user_id] = new \thebuggenie\core\entities\User($user_id);
+                        if (!Users::getTable()->isUserDeleted($row->get(self::USER_ID))) {
+                            $user_id = (int) $row->get(self::USER_ID);
+                            $users[$user_id] = new \thebuggenie\core\entities\User($user_id);
+                        }
                     }
                     catch (\Exception $e) {}
                 }
@@ -240,7 +242,21 @@
             $query->where(self::SCOPE, framework\Context::getScope()->getID());
             $query->where(self::GROUP_ID, $group_id);
             $query->where(self::CONFIRMED, true);
-            return $this->count($query);
+            $query->addSelectionColumn(self::USER_ID);
+            $query->setIsDistinct();
+
+            $count = 0;
+            if ($res = $this->rawSelect($query))
+            {
+                while ($row = $res->getNextRow())
+                {
+                    if (!Users::getTable()->isUserDeleted($row->get(self::USER_ID))) {
+                        ++$count;
+                    }
+                }
+            }
+
+            return $count; //$this->count($query);
         }
 
     }

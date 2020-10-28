@@ -2,7 +2,15 @@
     <?php if ($issue->isWorkflowTransitionsAvailable()): ?>
         <?php foreach ($issue->getAvailableWorkflowTransitions() as $transition): ?>
             <?php if ($transition instanceof \thebuggenie\core\entities\WorkflowTransition && $transition->hasTemplate()): ?>
-                <?php include_component($transition->getTemplate(), compact('issue', 'transition', 'ajax')); ?>
+                <?php
+                    $compact_array_vals = array(); $defd_vars = get_defined_vars();
+                    foreach (array('issue', 'transition', 'ajax') as $caval) {
+                        if (array_key_exists($caval, $defd_vars)) {
+                            $compact_array_vals[] = $caval;
+                        }
+                    }
+                    include_component($transition->getTemplate(), compact($compact_array_vals));
+                ?>
             <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>

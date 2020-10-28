@@ -201,7 +201,7 @@
 
                 jQuery('body').on('click', '#users_more_actions_dropdown', function (event) {
                     $('users_more_actions').toggleClassName('button-pressed');
-                    $('users_more_actions_dropdown').toggle();
+                    //$('users_more_actions_dropdown').toggle();
                 });
                 <?php if ($finduser): ?>
                     tbgjs.Config.User.show('<?= make_url('configure_users_find_user'); ?>', '<?= $finduser; ?>');

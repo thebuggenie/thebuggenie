@@ -765,7 +765,11 @@ class Main extends framework\Action
         $this->client = null;
         try
         {
-            $this->client = tables\Clients::getTable()->selectById($request['client_id']);
+            if (is_numeric($request['client_id'])) {
+                $this->client = tables\Clients::getTable()->selectById($request['client_id']);
+            } else {
+                $this->client = tables\Clients::getTable()->getByCode($request['client_id']);
+            }
 
             if (!$this->client instanceof entities\Client) {
                 return $this->return404(framework\Context::getI18n()->__('This client does not exist'));
@@ -2952,7 +2956,17 @@ class Main extends framework\Action
         $teamup_callback = $request['teamup_callback'];
         $team_callback = $request['team_callback'];
         $callback = $request['callback'];
-        return $this->renderComponent('identifiableselectorresults', compact('users', 'teams', 'clients', 'callback', 'teamup_callback', 'team_callback'));
+        
+        if ((defined($request['teams']) && defined($request['clients'])) || (isset($teams) && isset($clients))) {
+            return $this->renderComponent('identifiableselectorresults', compact('users', 'teams', 'clients', 'callback', 'teamup_callback', 'team_callback'));
+        }
+        if ((defined($request['teams']) && !defined($request['clients'])) || (isset($teams) && !isset($clients))) {
+            return $this->renderComponent('identifiableselectorresults', compact('users', 'teams', 'callback', 'teamup_callback', 'team_callback'));
+        }
+        if ((!defined($request['teams']) && defined($request['clients'])) || (!isset($teams) && isset($clients))) {
+            return $this->renderComponent('identifiableselectorresults', compact('users', 'clients', 'callback', 'teamup_callback', 'team_callback'));
+        }
+        return $this->renderComponent('identifiableselectorresults', compact('users', 'callback', 'teamup_callback', 'team_callback'));
     }
 
     /**

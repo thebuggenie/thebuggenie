@@ -3,7 +3,7 @@
         <?php echo image_tag('group_large.png', array('style' => 'float: left; margin-right: 5px;')); ?>
         <div style="position: absolute; right: 12px; top: 12px;">
             <button class="button button-silver dropper" id="group_<?php echo $group->getID(); ?>_more_actions"><?php echo __('Actions'); ?></button>
-            <ul id="group_<?php echo $group->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; right: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
+            <ul id="group_<?php echo $group->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; right: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');">
                 <li>
                     <?php if ($group->getNumberOfMembers() > 100): ?>
                         <?php echo javascript_link_tag(__('List users in this group'), array('onclick' => "TBG.Main.Helpers.Dialog.show('".__('This group has a lot of members')."', '".__('Trying to list all users in this group may time out or take a while. Are you sure you want to list all users in this group?')."', {yes: {click: function() {TBG.Config.Group.showMembers('".make_url('configure_users_get_group_members', array('group_id' => $group->getID()))."', ".$group->getID().");TBG.Main.Helpers.Dialog.dismiss(); }}, no: { click: TBG.Main.Helpers.Dialog.dismiss }});")); ?>

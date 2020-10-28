@@ -65,6 +65,14 @@ When the tables mention the 'column name', this is what should be in the first r
 |-
 | name || Yes || Client name || none
 |-
+| code || No || Client code || none
+|-
+| contact || No || Client main contact || none
+|-
+| title || No || Client main contact title || none
+|-
+| address || No || Client physical address || none
+|-
 | email || No || Email address || none
 |-
 | telephone || No || Telephone number || none
@@ -72,6 +80,8 @@ When the tables mention the 'column name', this is what should be in the first r
 | fax || No || Fax number || none
 |-
 | website || No || Website address || none
+|-
+| notes || No || Additional client notes || none
 |}
 
 == Importing issues ==

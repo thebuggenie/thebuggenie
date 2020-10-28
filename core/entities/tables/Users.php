@@ -141,6 +141,14 @@
             return !(bool) $this->count($query);
         }
 
+        public function isUserDeleted($userid)
+        {
+            $query = $this->getQuery();
+            $query->where(self::DELETED, true);
+            $query->where(self::ID, $userid);
+            return (bool) $this->count($query);
+        }
+
         public function getByUserIDs($userids)
         {
             if (empty($userids)) return array();

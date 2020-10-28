@@ -34,7 +34,7 @@
          * The name of the object
          *
          * @var string
-         * @Column(type="string", length=200)
+         * @Column(type="string", length=255)
          */
         protected $_name;
 
@@ -42,15 +42,15 @@
          * Email of client
          *
          * @param string
-         * @Column(type="string", length=200)
+         * @Column(type="string", length=255)
          */
         protected $_email = null;
 
         /**
          * Telephone number of client
          *
-         * @param integer
-         * @Column(type="string", length=200)
+         * @param string
+         * @Column(type="string", length=255)
          */
         protected $_telephone = null;
 
@@ -58,17 +58,58 @@
          * URL for client website
          *
          * @param string
-         * @Column(type="string", length=200)
+         * @Column(type="string", length=2083)
          */
         protected $_website = null;
 
         /**
          * Fax number of client
          *
-         * @param integer
-         * @Column(type="string", length=200)
+         * @param string
+         * @Column(type="string", length=255)
          */
         protected $_fax = null;
+
+        /**
+         * Short code of client
+         *
+         * @param string
+         * @Column(type="string", length=255)
+         */
+        protected $_code = null;
+
+        /**
+         * Main contact of client
+         *
+         * @param string
+         * @Column(type="string", length=255)
+         */
+        protected $_contact = null;
+
+        /**
+         * Title of main contact of client
+         *
+         * @param string
+         * @Column(type="string", length=255)
+         */
+        protected $_title = null;
+
+        /**
+         * Mailing address of client
+         *
+         * @param string
+         * @Column(type="string", length=255)
+         */
+        protected $_address = null;
+
+        /**
+         * Additional notes for client
+         *
+         * @param string
+         * @Column(string="string", length=4096)
+         */
+        protected $_notes = null;
+
 
         /**
          * List of client's dashboards
@@ -85,6 +126,11 @@
             return tables\Clients::getTable()->doesClientNameExist($client_name);
         }
 
+        public static function doesClientCodeExist($client_code)
+        {
+            return tables\Clients::getTable()->doesClientCodeExist($client_code);
+        }
+
         public static function getAll()
         {
             if (self::$_clients === null)
@@ -96,7 +142,6 @@
 
         public static function loadFixtures(\thebuggenie\core\entities\Scope $scope)
         {
-
         }
 
         public function __toString()
@@ -127,7 +172,7 @@
         /**
          * Get the client's telephone number
          *
-         * @return integer
+         * @return string
          */
         public function getTelephone()
         {
@@ -137,11 +182,111 @@
         /**
          * Get the client's fax number
          *
-         * @return integer
+         * @return string
          */
         public function getFax()
         {
             return $this->_fax;
+        }
+
+        /**
+         * Get the client's "short" code
+         *
+         * @return string
+         */
+        public function getCode()
+        {
+            return (empty($this->_code) ? $this->getID() : $this->_code);
+        }
+
+        /**
+         * Get the client's main contact name
+         *
+         * @return string
+         */
+        public function getContact()
+        {
+            return $this->_contact;
+        }
+
+        /**
+         * Get the client's main contact title
+         *
+         * @return string
+         */
+        public function getTitle()
+        {
+            return $this->_title;
+        }
+
+        /**
+         * Get the client's main addres
+         *
+         * @return string
+         */
+        public function getAddress()
+        {
+            return $this->_address;
+        }
+
+        /**
+         * Get the client's additional notes
+         *
+         * @return string
+         */
+        public function getNotes()
+        {
+            return $this->_notes;
+        }
+
+        /**
+         * Set the client code
+         *
+         * @return string
+         */
+        public function setCode($code)
+        {
+            $this->_code = strtoupper($code);
+        }
+
+        /**
+         * Set the client main contact
+         *
+         * @return string
+         */
+        public function setContact($contact)
+        {
+            $this->_contact = $contact;
+        }
+
+        /**
+         * Set the client main contact title
+         *
+         * @return string
+         */
+        public function setTitle($title)
+        {
+            $this->_title = $title;
+        }
+
+        /**
+         * Set the client main address
+         *
+         * @return string
+         */
+        public function setAddress($address)
+        {
+            $this->_address = $address;
+        }
+
+        /**
+         * Set the client additional notes
+         *
+         * @return string
+         */
+        public function setNotes($notes)
+        {
+            $this->_notes = $notes;
         }
 
         /**
@@ -246,11 +391,11 @@
 
         public function hasAccess()
         {
-            return (bool) (framework\Context::getUser()->hasPageAccess('clientlist') || framework\Context::getUser()->isMemberOfClient($this));
+            return (bool) (framework\Context::getUser()->hasPageAccess('clientlist') && framework\Context::getUser()->isMemberOfClient($this));
         }
 
         /**
-         * Return the items name
+         * Return the client name
          *
          * @return string
          */
@@ -260,13 +405,13 @@
         }
 
         /**
-         * Set the edition name
+         * Set the client name
          *
          * @param string $name
          */
         public function setName($name)
         {
-            $this->_name = $name;
+            $this->_name = trim($name);
         }
 
         /**

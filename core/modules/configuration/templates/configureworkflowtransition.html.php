@@ -112,7 +112,7 @@
                         <div id="pre_validation_tab_pane">
                             <h3>
                                 <a href="javascript:void(0);" class="button button-silver dropper">Add validation rule</a>
-                                <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_pre_validation_rule">
+                                <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');" id="add_pre_validation_rule">
                                     <?php foreach (\thebuggenie\core\entities\WorkflowTransitionValidationRule::getAvailablePreValidationRules() as $key => $description): ?>
                                         <li <?php if ($transition->hasPreValidationRule($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionprevalidationrule_<?php echo $key; ?>">
                                             <a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'pre', 'rule' => $key)); ?>', 'pre', '<?php echo $key; ?>');"><?php echo $description; ?></a>
@@ -142,7 +142,7 @@
                             <h3>
                                 <?php if ($transition->hasTemplate()): ?>
                                     <a href="javascript:void(0);" class="button button-silver dropper">Add validation rule</a>
-                                    <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_post_validation_rule">
+                                    <ul class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');" id="add_post_validation_rule">
                                         <?php foreach (\thebuggenie\core\entities\WorkflowTransitionValidationRule::getAvailablePostValidationRules() as $key => $description): ?>
                                             <li <?php if ($transition->hasPostValidationRule($key)) echo ' style="display: none;"'; ?> id="add_workflowtransitionpostvalidationrule_<?php echo $key; ?>"><a href="javascript:void(0);" onclick="TBG.Config.Workflows.Transition.Validations.add('<?php echo make_url('configure_workflow_transition_add_validation_rule', array('workflow_id' => $transition->getWorkflow()->getID(), 'transition_id' => $transition->getID(), 'postorpre' => 'post', 'rule' => $key)); ?>', 'post', '<?php echo $key; ?>');"><?php echo $description; ?></a></li>
                                         <?php endforeach; ?>
@@ -170,7 +170,7 @@
                         <div id="actions_tab_pane">
                             <h3>
                                 <a href="javascript:void(0);" class="button button-silver dropper">Add transition action</a>
-                                <div class="rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();" id="add_post_action">
+                                <div class="rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');" id="add_post_action">
                                     <div class="column">
                                         <h1><?php echo __('Set issue fields'); ?></h1>
                                         <ul class="simple_list">

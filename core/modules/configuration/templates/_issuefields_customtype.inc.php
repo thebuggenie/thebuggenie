@@ -1,7 +1,7 @@
 <div id="item_<?php echo $type_key; ?>_<?php echo $type->getID(); ?>" class="greybox" style="margin: 5px 0 0 0; position: relative;">
     <div style="position: absolute; right: 5px; top: 30px;">
         <button class="button button-silver dropper" id="<?php echo $type_key; ?>_<?php echo $type->getID(); ?>_more_actions"><?php echo __('Actions'); ?></button>
-        <ul id="<?php echo $type_key; ?>_<?php echo $type->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
+        <ul id="<?php echo $type_key; ?>_<?php echo $type->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');">
             <li>
                 <a href="javascript:void(0);" onclick="$('edit_custom_type_<?php echo $type_key; ?>_form').toggle();$('custom_type_<?php echo $type_key; ?>_info').toggle();"><?php echo __('Edit this issue field'); ?></a>
             </li>

@@ -35,7 +35,7 @@
     <div class="theme-actions plugin-actions">
         <?php if ($is_default_scope): ?>
             <button class="button button-lightblue update-button dropper" id="theme_<?php echo $theme['key']; ?>_update" data-key="<?php echo $theme['key']; ?>"><?php echo __('Update'); ?></button>
-            <ul id="theme_<?php echo $theme['key']; ?>_update_dropdown" style="font-size: 1.1em;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
+            <ul id="theme_<?php echo $theme['key']; ?>_update_dropdown" style="font-size: 1.1em;" class="popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');">
                 <li>
                     <?php echo link_tag(make_url('configuration_download_theme_update', array('theme_key' => $theme['key'])), __('Install latest version')); ?>
                 </li>

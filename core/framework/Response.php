@@ -734,7 +734,7 @@
                     foreach (\thebuggenie\core\entities\Client::getAll() as $client)
                     {
                         if ($client->hasAccess())
-                            $links[] = array('url' => Context::getRouting()->generate('client_dashboard', array('client_id' => $client->getID())), 'title' => $client->getName());
+                            $links[] = array('url' => Context::getRouting()->generate('client_dashboard', array('client_id' => $client->getCode())), 'title' => $client->getName());
                     }
                     break;
                 case 'team_list':

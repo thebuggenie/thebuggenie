@@ -2253,8 +2253,20 @@
                     {
                         throw new \Exception($this->getI18n()->__("Please enter a client name that doesn't already exist"));
                     }
+
                     $client = new entities\Client();
                     $client->setName($request['client_name']);
+                    if (strlen($request['client_name']) > 3) {
+                        $code = strtoupper(substr($request['client_name'], 0, 3));
+                    } else {
+                        $code = strtoupper($request['client_name']);
+                    }
+                    $cnum = 1;
+                    while (entities\Client::doesClientCodeExist($code)) {
+                        $code .= "$cnum";
+                        ++$cnum;
+                    }
+                    $client->setCode($code);
                     $client->save();
 
                     $message = $this->getI18n()->__('The client was added');
@@ -2375,12 +2387,24 @@
                     throw new \Exception($this->getI18n()->__("You cannot edit this client"));
                 }
 
-                if (entities\Client::doesClientNameExist(trim($request['client_name'])) && strtolower($request['client_name']) != strtolower($client->getName()))
+                if ((strtolower(trim($request['client_name'])) != strtolower($client->getName())) &&
+                    entities\Client::doesClientNameExist($tmpname))
                 {
                     throw new \Exception($this->getI18n()->__("Please enter a client name that doesn't already exist"));
                 }
 
+                if ((strtolower(trim($request['client_code'])) != strtolower($client->getCode())) &&
+                    entities\Client::doesClientCodeExist($request['client_code']))
+                {
+                    throw new \Exception($this->getI18n()->__("Please enter a client code that doesn't already exist"));
+                }
+
                 $client->setName($request['client_name']);
+                $client->setCode($request['client_code']);
+                $client->setContact($request['client_contact']);
+                $client->setTitle($request['client_title']);
+                $client->setAddress($request['client_address']);
+                $client->setNotes($request['client_notes']);
                 $client->setEmail($request['client_email']);
                 $client->setWebsite($request['client_website']);
                 $client->setTelephone($request['client_telephone']);

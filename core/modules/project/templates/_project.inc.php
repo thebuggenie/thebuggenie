@@ -14,7 +14,14 @@
                 <?= link_tag(make_url('project_dashboard', array('project_key' => $project->getKey())), '<span class="project_name_span">'.$project->getName()."</span>"); ?><?php if ($project->usePrefix()) echo '<span class="project_prefix_span">'.mb_strtoupper($project->getPrefix()).'</span>'; ?>
             </span>
             <div class="project_description">
-                <?= tbg_parse_text($project->getDescription()); ?>
+                <?php
+                    $project_description_uid = trim($project->getDescription());
+                    if (!empty($project_description_uid)) {
+                        echo tbg_parse_text($project_description_uid);
+                    } else {
+                        echo '<span style="opacity:0.5;">'.__('No project description')."</span>\n";
+                    }
+                ?>
             </div>
         </div>
         <?php if ($project->hasChildren()): ?>
