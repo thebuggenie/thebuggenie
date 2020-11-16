@@ -280,6 +280,11 @@
         {
             $this->setupVariables();
         }
+        
+        public function componentIssue_workflow_transition()
+        {
+            if (!isset($this->ajax)) $this->ajax = null;
+        }
 
         public function componentHideableInfoBox()
         {
@@ -425,6 +430,7 @@
         public function componentComments()
         {
             $this->comment_count = Comment::countComments($this->target_id, $this->target_type);
+            if (!isset($this->issue)) $this->issue = null;
         }
 
         public function componentCommentitem()
@@ -608,7 +614,8 @@
 
         public function componentReportIssueContainer()
         {
-
+            if (!isset($this->issue)) $this->issue = null;
+            if (!isset($this->permission_errors)) $this->permission_errors = null;
         }
 
         public function componentConfirmUsername()
