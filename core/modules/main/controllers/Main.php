@@ -819,6 +819,7 @@ class Main extends framework\Action
     {
         //if (!$this->getUser()->isGuest()) return $this->forward($this->$this->getRouting()->generate('home'));
         $this->section = $request->getParameter('section', 'login');
+        if (!isset($this->error)) $this->error = null;
     }
 
     /**

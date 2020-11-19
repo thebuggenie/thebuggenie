@@ -213,12 +213,12 @@
             $listtypes = array('*' => 'ul', '#' => 'ol');
             $output = "";
 
-            $matches[1] = trim($matches[1]);
-            $newlevel = ($close) ? 0 : mb_strlen($matches[1]);
+            $match = (!is_bool($matches)) ? trim($matches[1]) : '';
+            $newlevel = ($close || $matches === false) ? 0 : mb_strlen($match);
 
             while ($this->list_level != $newlevel)
             {
-                $listchar = mb_substr($matches[1], -1);
+                $listchar = mb_substr($match, -1);
                 if ((is_string($listchar) || is_numeric($listchar)) && array_key_exists($listchar, $listtypes))
                 {
                     $listtype = $listtypes[$listchar];
