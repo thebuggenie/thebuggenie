@@ -4910,9 +4910,11 @@ class Main extends framework\Action
         try
         {
             $issue = tables\Issues::getTable()->getIssueById((int) $request['issue_id']);
+
+            $board = null;
             if ($request['board_id']) $board = agile\entities\tables\AgileBoards::getTable()->selectById((int) $request['board_id']);
 
-            $times = (!isset($board) || $board->getType() != agile\entities\AgileBoard::TYPE_KANBAN);
+            $times = ($board === null || $board->getType() != agile\entities\AgileBoard::TYPE_KANBAN);
             $estimator_mode = isset($request['estimator_mode']) ? $request['estimator_mode'] : null;
 
             return $this->renderJSON(array('menu' => $this->getComponentHTML('main/issuemoreactions', compact('issue', 'times', 'board', 'estimator_mode'))));
