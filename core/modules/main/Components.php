@@ -616,6 +616,8 @@
         {
             if (!isset($this->issue)) $this->issue = null;
             if (!isset($this->permission_errors)) $this->permission_errors = null;
+            if (!isset($this->board)) $this->board = null;
+            if (!isset($this->locked_issuetype)) $this->locked_issuetype = null;
         }
 
         public function componentConfirmUsername()
