@@ -2590,7 +2590,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.1|^7.2",
-        "lib-pcre": "8.*",
+        "lib-pcre": ">=8.0",
         "ext-apc": "*",
         "ext-gd": "*",
         "ext-curl": "*",

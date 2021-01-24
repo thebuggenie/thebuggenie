@@ -24,7 +24,7 @@
         "realityking/pchart": "dev-master",
         "phpoffice/phpexcel": "~1.8",
         "kriswallsmith/assetic": "~1.2",
-        "lib-pcre" : "8.*",
+        "lib-pcre" : ">=8.0",
         "net/http" : "^1.1",
         "guzzlehttp/guzzle": "^6.3",
         "scrivo/highlight.php": "^9.0",
