@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
 
   # Configure a single virtual machine.
   config.vm.box = "debian/contrib-buster64"
-  config.vm.hostname = "tbg"
+  config.vm.hostname = "tbg-dev"
 
   # Forward ports for accessing the web server.
   config.vm.network "forwarded_port", guest: 80, host: 8080
