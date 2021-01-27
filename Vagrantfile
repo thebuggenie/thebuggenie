@@ -3,9 +3,14 @@
 
 Vagrant.configure("2") do |config|
 
+  # Increase default allocated memory for the virtual machines.
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 1024
+  end
+
   # Configure a single virtual machine.
-  config.vm.box = "bento/debian-9.4"
-  config.vm.hostname = "tbg"
+  config.vm.box = "debian/contrib-buster64"
+  config.vm.hostname = "tbg-dev"
 
   # Forward ports for accessing the web server.
   config.vm.network "forwarded_port", guest: 80, host: 8080
@@ -20,6 +25,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible_local" do |ansible|
     ansible.playbook = "ansible/provision.yml"
     ansible.install_mode = "pip"
-    ansible.version = "2.5.4"
+    ansible.pip_install_cmd = "curl https://bootstrap.pypa.io/2.7/get-pip.py | sudo python"
+    ansible.version = "2.9.16"
   end
 end
