@@ -22,7 +22,7 @@
         "webit/eval-math" : "^1.0",
         "mustangostang/spyc": "0.5.*",
         "realityking/pchart": "dev-master",
-        "phpoffice/phpexcel": "~1.8",
+        "phpoffice/phpspreadsheet": "^1.17.0",
         "kriswallsmith/assetic": "~1.2",
         "lib-pcre" : ">=8.0",
         "net/http" : "^1.1",

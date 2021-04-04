@@ -4,7 +4,8 @@
 
     use thebuggenie\core\framework,
         thebuggenie\core\entities,
-        thebuggenie\core\entities\tables;
+        thebuggenie\core\entities\tables,
+        PhpOffice\PhpSpreadsheet\Spreadsheet;
 
     class Components extends framework\ActionComponent
     {
@@ -120,15 +121,10 @@
         {
             $this->custom_columns = entities\CustomDatatype::getAll();
             $this->cc = (isset($this->cc)) ? $this->cc : 0;
-            require realpath(THEBUGGENIE_VENDOR_PATH) . DS . 'phpoffice' . DS . 'phpexcel' . DS . 'Classes' . DS . 'PHPExcel.php';
-            $phpexcel = new \PHPExcel();
-            foreach ($phpexcel->getAllSheets() as $index => $sheet)
-            {
-                $phpexcel->removeSheetByIndex($index);
-            }
-
-            $this->phpexcel = $phpexcel;
-            $this->sheet = $phpexcel->createSheet();
+            require realpath(THEBUGGENIE_VENDOR_PATH) . DS . 'phpoffice' . DS . 'phpspreadsheet' . DS . 'src' . DS . 'PhpSpreadsheet'  . DS . 'Spreadsheet.php';
+            $spreadsheet = new Spreadsheet();
+            $this->spreadsheet = $spreadsheet;
+            $this->sheet = $spreadsheet->getActiveSheet();
         }
 
         public function componentResults_todo()
