@@ -143,15 +143,15 @@
 
     switch ($format) {
         case 'xlsx':
-            $objWriter = new \PHPExcel_Writer_Excel2007($phpexcel);
+            $objWriter = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment;filename="issues.xlsx"');
             break;
         case 'ods':
         default:
+            $objWriter = new \PhpOffice\PhpSpreadsheet\Writer\Ods($spreadsheet);
             header('Content-Type: application/vnd.oasis.opendocument.spreadsheet');
             header('Content-Disposition: attachment;filename="issues.ods"');
-            $objWriter = new \PHPExcel_Writer_OpenDocument($phpexcel);
     }
 
     header('Cache-Control: max-age=0');
