@@ -2022,7 +2022,7 @@ class Context
                 self::getResponse()->addBreadcrumb(Settings::getSiteHeaderName(), self::getRouting()->generate('home'), self::getResponse()->getPredefinedBreadcrumbLinks('main_links', self::$_selected_project));
                 if (self::isClientContext())
                 {
-                    self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getID())), self::getResponse()->getPredefinedBreadcrumbLinks('client_list'));
+                    self::getResponse()->addBreadcrumb(self::getCurrentClient()->getName(), self::getRouting()->generate('client_dashboard', array('client_id' => self::getCurrentClient()->getCode())), self::getResponse()->getPredefinedBreadcrumbLinks('client_list'));
                 }
             }
 

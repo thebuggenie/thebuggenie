@@ -6,7 +6,7 @@
         </li>
         <li class="separator"></li>
     <?php endif; ?>
-    <li class="dropdown_content nohover form_container">
+    <li class="dropdown_content nohover form_container" style="padding-right: 0.25em;">
         <?php if (!$use_form): ?>
             <div id="<?php echo $base_id; ?>_form">
         <?php else: ?>
@@ -51,7 +51,7 @@
         <li><a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value', urlencode('%identifiable_type'), '%identifiable_type'), array($tbg_user->getID(), $tbg_user->getID(), 'user', "'user'"), $callback); ?>"><?php echo __('Select yourself'); ?> (<?php echo $tbg_user->getUsername(); ?>)</a></li>
         <li class="separator"></li>
         <?php if (count($tbg_user->getFriends()) == 0): ?>
-            <li class="disabled"><?php echo __("Your friends will appear here"); ?></li>
+            <li class="disabled" style="padding-left: 0.25em;"><?php echo __("Your friends will appear here"); ?></li>
         <?php else: ?>
             <?php include_component('main/identifiableselectorresults', array('header' => false, 'users' => $tbg_user->getFriends(), 'callback' => $callback, 'team_callback' => ((isset($team_callback)) ? $team_callback : null))); ?>
         <?php endif; ?>
@@ -78,9 +78,9 @@
     <?php endif; ?>
     <li id="<?php echo $base_id; ?>_spinning" style="margin-top: 3px; display: none;"><?php echo image_tag('spinning_20.gif', array('style' => 'float: left; margin-right: 5px;')) . '&nbsp;' . __('Please wait'); ?>...</li>
     <li id="<?php echo $base_id; ?>_change_error" class="error_message" style="display: none;"></li>
-    <?php /*if (isset($allow_close) && $allow_close == true): ?>
-        <li style="text-align: right;">
-            <a href="javascript:void(0);" onclick="$('<?php echo $html_id; ?>').toggle();"><?php echo __('Close popup'); ?></a>
+    <?php if (isset($allow_close) && $allow_close == true): ?>
+        <li style="text-align: right; padding-right: 0.5em;">
+            <button class="button button-silver first last" onclick="$('<?php echo $html_id; ?>').toggle();"><?php echo __('Close popup'); ?></button>
         </li>
-    <?php endif;*/ ?>
+    <?php endif; ?>
 </ul>

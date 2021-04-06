@@ -25,7 +25,7 @@
         <?php endif; ?>
         <?php if (!$tbg_user->isGuest() && $tbg_user->canSearchForIssues()): ?>
             <li class="with-dropdown <?php if (in_array($tbg_response->getPage(), array('project_issues', 'viewissue'))): ?>selected<?php endif; ?>">
-                <?= link_tag(make_url('search'), fa_image_tag('file-alt') . __('Issues') . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
+                <?= link_tag(make_url('search'), fa_image_tag('file-alt') . '<span>'.__('Issues').'</span>' . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
                 <div id="issues_menu" class="tab_menu_dropdown popup_box two-columns">
                     <ul>
                         <li class="header"><?= __('Predefined searches'); ?></li>
@@ -77,11 +77,11 @@
         <?php endif; ?>
         <?php if ($tbg_user->hasPageAccess('clientlist') && count($tbg_user->getClients()) && !is_null(\thebuggenie\core\entities\Client::getAll())): ?>
             <li class="with-dropdown <?php if ($tbg_response->getPage() == 'client'): ?>selected<?php endif; ?>">
-                <?= link_tag('javascript:void(0)', fa_image_tag('users') . '<span>'.__('Clients').'</span>' . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
+                <?= link_tag('javascript:void(0)', fa_image_tag('user-md') . '<span>'.__('Clients').'</span>' . fa_image_tag('caret-down', ['class' => 'dropdown-indicator']), ['class' => 'dropper']); ?>
                 <ul id="client_menu" class="tab_menu_dropdown popup_box">
                     <?php foreach (\thebuggenie\core\entities\Client::getAll() as $client): ?>
                         <?php if (!$client->hasAccess()) continue; ?>
-                        <li><?= link_tag(make_url('client_dashboard', array('client_id' => $client->getID())), fa_image_tag('users') . $client->getName()); ?></li>
+                        <li><?= link_tag(make_url('client_dashboard', array('client_id' => $client->getCode())), fa_image_tag('user-md') . $client->getName()); ?></li>
                     <?php endforeach; ?>
                 </ul>
             </li>

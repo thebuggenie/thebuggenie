@@ -31,7 +31,7 @@
         <div style="position: absolute; right: 20px; top: 20px;">
             <div style="float: left; margin-right: 10px; display: none;" id="project_<?= $project->getID(); ?>_archive_indicator"><?= image_tag('spinning_16.gif'); ?></div>
             <button class="button button-silver dropper" id="project_<?= $project->getID(); ?>_more_actions"><?= __('Actions'); ?></button>
-            <ul id="project_<?= $project->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
+            <ul id="project_<?= $project->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');">
                 <?php if (!$project->isArchived()): ?>
                     <li><?= javascript_link_tag((($access_level == \thebuggenie\core\framework\Settings::ACCESS_FULL) ? __('Edit project') : __('Show project details')), array('onclick' => "TBG.Main.Helpers.Backdrop.show('".make_url('get_partial_for_backdrop', array('key' => 'project_config', 'project_id' => $project->getID()))."');")); ?></li>
                 <?php endif; ?>

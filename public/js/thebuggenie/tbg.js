@@ -227,6 +227,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                     if ($('user_pain_additional').visible() && $('user_pain_additional').hasClassName('visible')) $('user_pain_additional').hide();
                     var vhc_layout = vihc.getLayout();
                     var vhc_height = vhc_layout.get('height') + vhc_layout.get('padding-top') + vhc_layout.get('padding-bottom');
+
                     if (y >= $('viewissue_comment_count').offsetTop) {
                         if ($('comment_add_button') != undefined && !$('comment_add_button').hasClassName('immobile')) {
                             var button = $('comment_add_button').remove();
@@ -1716,10 +1717,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Main.Comment.showPost = function () {
-            $$('.comment_editor').each(Element.hide);
+            $$('.comment_editor').each( function (elm) { elm.removeClassName('active'); } );
             $('comment_add_button').hide();
             $('comment_add').show();
-            $('comment_bodybox').focus();
+            window.scrollTo(0, 0);
         };
 
         TBG.Main.Comment.toggleOrder = function (target_type, target_id) {
@@ -4813,8 +4814,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                         $(type + '_' + cid + '_' + user_id + '_item').remove();
                         TBG.Config.Collection.updateDetailsFromJSON(json, false);
                         var ul = $(type + '_members_' + cid + '_list').down('ul');
-                        if (ul != undefined && ul.childElements().size() == 0)
+                        if (ul != undefined && ul.childElements().size() == 0) {
                             $(type + '_members_' + cid + '_no_users').show();
+                        }
+                        TBG.Main.Helpers.Message.success("Member Successfully Removed.", "The member has been removed from the list.");
                     }
                 }
             });
@@ -4831,6 +4834,7 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
                             $(type + '_members_' + cid + '_no_users').hide();
                         }
                         $(type + '_members_' + cid + '_list').down('ul').insert({bottom: json[type + 'listitem']});
+                        TBG.Main.Helpers.Message.success("Member Successfully Added.", "The member has been added to the list.");
                     }
                 }
             });
@@ -6199,10 +6203,10 @@ define(['prototype', 'effects', 'controls', 'scriptaculous', 'jquery', 'TweenMax
         };
 
         TBG.Issues.showTodo = function () {
-            $$('.todo_editor').each(Element.hide);
+            $$('.todo_editor').each( function (elm) { elm.removeClassName('active'); } );
             $('todo_add_button').hide();
             $('todo_add').show();
-            $('todo_bodybox').focus();
+            window.scrollTo(0, 0);
         };
 
         TBG.Issues.addTodo = function (url) {

@@ -3,9 +3,9 @@
         <?= image_tag('team_large.png', array('style' => 'float: left; margin-right: 5px;')); ?>
         <div style="position: absolute; right: 12px; top: 12px;">
             <button class="button button-silver dropper" id="team_<?= $team->getID(); ?>_more_actions"><?= __('Actions'); ?></button>
-            <ul id="team_<?= $team->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');$(this).toggle();">
+            <ul id="team_<?= $team->getID(); ?>_more_actions_dropdown" style="font-size: 1.1em; width: 200px; top: 23px; margin-top: 0; text-align: right; z-index: 1000;" class="simple_list rounded_box white shadowed popup_box more_actions_dropdown" onclick="$(this).previous().toggleClassName('button-pressed');">
                 <li>
-                    <?= javascript_link_tag(__('Add member(s) to this team'), array('onclick' => '$(\'addmember_team_'.$team->getID().'\').toggle(\'block\');')); ?>
+                    <?= javascript_link_tag(__('Add member(s) to this team'), array('onclick' => '$(\'addmember_team_'.$team->getID().'\').removeClassName(\'popup_box\');$(\'addmember_team_'.$team->getID().'\').toggle(\'block\');')); ?>
                 </li>
                 <li>
                     <?= javascript_link_tag(__('List users in this team'), array('onclick' => 'TBG.Config.Team.showMembers(\''.make_url('configure_users_get_team_members', array('team_id' => $team->getID())).'\', '.$team->getID().');')); ?>
@@ -47,15 +47,18 @@
                 </table>
             </div>
         </div>
-        <?php include_component('main/identifiableselector', array(    'html_id'        => "addmember_team_{$team->getID()}",
-                                                                'header'             => __('Add a member to this team'),
-                                                                'callback'             => "TBG.Config.Team.addMember('".make_url('configure_users_add_team_member', array('team_id' => $team->getID(), 'user_id' => '%identifiable_value'))."', ".$team->getID().", '%identifiable_value');$('addmember_team_{$team->getID()}').hide();",
-                                                                'base_id'            => "addmember_team_{$team->getID()}",
-                                                                'include_teams'        => false,
-                                                                'allow_clear'        => false,
-                                                                'allow_close'        => true,
-                                                                'style'                => array('right' => '12px', 'top' => '35px'),
-                                                                'absolute'            => true)); ?>
+        <?php include_component('main/identifiableselector', array(
+                                                                 'html_id'       => "addmember_team_{$team->getID()}",
+                                                                 'header'        => __('Add a member to this team'),
+                                                                 'callback'      => "TBG.Config.Team.addMember('".make_url('configure_users_add_team_member', array('team_id' => $team->getID(), 'user_id' => '%identifiable_value'))."', ".$team->getID().", '%identifiable_value');$('addmember_team_{$team->getID()}').hide();$('addmember_team_{$team->getID()}').addClassName('popup_box');",
+                                                                 'base_id'       => "addmember_team_{$team->getID()}",
+                                                                 'include_teams' => false,
+                                                                 'include_users' => true,
+                                                                 'allow_clear'   => false,
+                                                                 'allow_close'   => true,
+                                                                 'style'         => array('display' => 'none'),
+                                                                 'absolute'      => false
+        )); ?>
     </div>
     <div class="rounded_box lightgrey" style="margin-bottom: 5px; display: none;" id="team_members_<?= $team->getID(); ?>_container">
         <div class="dropdown_header"><?= __('Users in this team'); ?></div>

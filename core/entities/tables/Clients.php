@@ -36,6 +36,11 @@
         const EMAIL = 'clients.email';
         const TELEPHONE = 'clients.telephone';
         const FAX = 'clients.fax';
+        const CODE = 'clients.code';
+        const CONTACT = 'clients.contact';
+        const TITLE = 'clients.title';
+        const ADDRESS = 'clients.address';
+        const NOTES = 'clients.notes';
 
         public function getAll($limit = null)
         {
@@ -53,11 +58,37 @@
 
         public function doesClientNameExist($client_name)
         {
+            /*
+                Remove punctuation and spaces to test names: this tests for the case where "Jim's Burger's" == "Jims Burgers"
+                which wouldn't make sense to have two clients named so similarly.
+            */
+            $puncs = str_split("`~!@#$%^&*()_-+=[]\\{}|;':\",./<>? ");
+            $clow = trim(strtolower(str_replace($puncs, '', html_entity_decode($client_name, ENT_QUOTES | ENT_HTML401))));
+            foreach ($this->getAll() as $client) {
+                $tstr = trim(strtolower(str_replace($puncs, '', html_entity_decode($client->getName(), ENT_QUOTES | ENT_HTML401))));
+                if ($clow == $tstr) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public function doesClientCodeExist($client_code)
+        {
+            $client_code = strtoupper(trim($client_code));
             $query = $this->getQuery();
-            $query->where(self::NAME, $client_name);
+            $query->where(self::CODE, $client_code);
             $query->where(self::SCOPE, framework\Context::getScope()->getID());
 
             return (bool) $this->count($query);
+        }
+
+        public function getByCode($code)
+        {
+            $query = $this->getQuery();
+            $query->where(self::CODE, $code, \b2db\Criterion::EQUALS);
+
+            return $this->selectOne($query);
         }
 
         public function quickfind($client_name)

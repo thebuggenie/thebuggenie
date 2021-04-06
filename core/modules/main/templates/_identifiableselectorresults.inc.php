@@ -9,7 +9,7 @@
     <?php endif; ?>
 <?php else: ?>
     <?php if (!isset($header) || $header == true): ?><li class="nohover"><label><?php echo __('Users found'); ?></label></li><?php endif; ?>
-    <?php if (count($users) > 0): ?>
+    <?php if (isset($users) && count($users) > 0): ?>
         <?php foreach ($users as $user): ?>
             <li><a href="javascript:void(0);" onclick="<?php echo str_replace(array(urlencode('%identifiable_value'), '%identifiable_value', urlencode('%identifiable_type'), '%identifiable_type'), array($user->getID(), $user->getID(), 'user', "'user'"), $callback); ?>"><?php echo $user->getNameWithUsername(); ?></a></li>
             <?php if (isset($teamup_callback)): ?>
